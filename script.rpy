@@ -13,15 +13,17 @@ style default:
 
 label start:
     call game_init
-    jump label_cowgirl_start
+    # jump label_cowgirl_start
     jump label_prison
     return
 
 label label_prison:
     $ global_var = {"page":0}
     scene bg prison
-    show screen screen_card_deck
-    call screen screen_gameloop()
+    show screen screen_prison
+    label .gameLoop:
+        call screen screen_gameloop()
+    jump .gameLoop
 
 
 label label_cowgirl_start:
@@ -42,9 +44,9 @@ label label_cowgirl_start:
     j "Let the date begin!"
 
     call beginDuel()
-
+    $ current_speed = game.animation_speed
+    
     label .gameLoop:
-        $ current_speed = game.animation_speed
         $ game.jeu_sensitive = False
 
         if current_speed != game.animation_speed:
@@ -56,7 +58,7 @@ label label_cowgirl_start:
             show joyce cowgirl-orgasm 
             j "kyaaa{w=1.0}{nw}"
             pause(2)
-            show cowgirl-talk at top as joyce
+            show joyce cowgirl-talk at top
             pause(1)
             j "huff.."
             j "i-i came"
@@ -68,6 +70,7 @@ label label_cowgirl_start:
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
+        
     call .gameLoop
 
     # This ends the game.

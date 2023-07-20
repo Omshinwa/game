@@ -17,7 +17,7 @@ init python:
 
 transform trans_card_played:
     xalign 0.5 yanchor 1.0 ypos 1.0
-    ease 0.5 ypos 0.5
+    ease 0.4 ypos 0.5
 
 screen screen_card_hand:
     sensitive game.jeu_sensitive

@@ -2,7 +2,7 @@ label game_init:
     #set up the deck and keybinds
 
     $ deck = Deck()
-    $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("excite"),Card("draw2"),Card("emptymind"),Card("calm"),Card("ultracalm"),Card("shuang"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("excite"),Card("excite"),Card("excite"),Card("excite"),Card("excite"),Card("excite"),Card("excite"),Card("excite"),]
+    $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("excite"),Card("draw2"),Card("emptymind"),Card("calm"),Card("ultracalm"),Card("shuang"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("faster"),Card("faster"),Card("slower"),Card("slower"),Card("slower"),Card("slower"),Card("slower"),Card("slower"),Card("slower"),Card("faster"),Card("faster"),Card("faster"),]
     show screen keybinds()
     return
 
@@ -19,7 +19,7 @@ label beginDuel():
     $ game.animation_speed = 3
     $ game.pleasure = 0
     $ deck.deck = deck.list
-    $ renpy.random.shuffle(deck.deck)
+    $ deck.shuffle()
     $ deck.draw(5)
     
     $ game.jeu_sensitive = True;

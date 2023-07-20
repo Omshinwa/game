@@ -4,8 +4,22 @@ init python:
 transform customzoom:
     zoom deck_display_card_zoom
 
+screen screen_prison:
+    imagebutton:
+        idle "bg/toilet.png"
+        hover im.MatrixColor("bg/toilet.png", im.matrix.tint(1,1,5))
+        action Call("label_toilet")
+        focus_mask True
 
-screen screen_card_deck:
+label label_toilet:
+    show screen screen_card_deck(print_card_name)
+    return
+
+init python:
+    def print_card_name(card):
+        print(card.name)
+
+screen screen_card_deck(card_function):
     
     $ zoom = deck_display_card_zoom
     $ paddingPerCard = int( -50 )
@@ -37,7 +51,7 @@ screen screen_card_deck:
                         imagebutton:
                             idle card.img
                             hover card.img_hover
-                            action [NullAction()]
+                            action Function(card_function, card)
                             at customzoom
                         frame:
                             xalign 0.5
@@ -67,3 +81,10 @@ screen screen_card_deck:
             idle im.MatrixColor("ui/prev.png", im.matrix.desaturate())
         yalign 0.95
         xalign 0.4
+    
+    imagebutton:
+        idle "ui/cancel.png"
+        hover im.MatrixColor("ui/cancel.png", im.matrix.tint(1,1,0))
+        action Hide("screen_card_deck")
+        yalign 0.95
+        xalign 0.5

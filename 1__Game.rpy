@@ -3,6 +3,8 @@ init python:
         game.debug_flag = 1 - game.debug_flag
 
     renpy.music.register_channel("sexsfx", "sfx")
+    renpy.music.register_channel("drawcard", "sfx")
+    renpy.music.register_channel("activatecard", "sfx")
 
     class Game():
         def __init__(self):

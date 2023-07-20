@@ -40,12 +40,12 @@ init python:
         "excite": {"txt":"get +3 pleasure", "eff":"game.pleasure += 3",},
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
         "emptymind": {"txt":"Divide your pleasure by 2", "eff":"game.pleasure = int(game.pleasure/2)",},
-        "calm": {"txt":"-2 pleasure", "eff":"game.pleasure -= 5",},
-        "ultracalm":{"txt":"-4 pleasure", "eff":"game.pleasure -= 5",},
+        "calm": {"txt":"-2 pleasure", "eff":"game.pleasure -= 2",},
+        "ultracalm":{"txt":"-8 pleasure", "eff":"game.pleasure -= 8s",},
 
         "shuang": {"txt":"if you have a pair in your hand: draw 3 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(3)"},
 
-        "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"for i in range(len(deck.hand)): @deck.hand[i] = Card( renpy.random.choice( list(cardList.keys()) ) )"},
+        "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('card_change')"},
 
         "drawmax": {"txt":"Draw 1 card for each 5 points of pleasure.", "eff":"deck.draw( int(game.pleasure/5) )",},
         
@@ -53,11 +53,11 @@ init python:
         
         "recycle": {"txt":"Shuffle back all the cards played into the deck.", "eff":"deck.draw( int(game.pleasure/5) )",},
 
-        "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"deck.draw( int(game.pleasure/5) )",},
+        "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('card_shuffle')",},
         
         "recovery" : {"txt":"Discard the whole hand, -1 pleasure for each card discarded.", "eff":"deck.draw( int(game.pleasure/5) )",},
 
-        "draw5": {"txt":"Get to max speed. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5, deck.draw(5-len(deck.hand))",},
+        "draw5": {"txt":"Get to max speed. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5 ; deck.draw(5-len(deck.hand))",},
 
         "stop": {"txt":"Can't be played", "cond":"False", "eff":"",},
 
@@ -89,17 +89,17 @@ init python:
         
         def add_to_hand(self, *cards):
             for card in cards:
-                renpy.sound.play("draw.mp3")
+                renpy.play("draw.mp3", channel='drawcard')
                 self.hand.append(card)
 
-        def draw(self, number):
+        def draw(self, number, delay=0.2):
             global ydisplace
             ydisplace = 0
             for i in range(0,number):
                 if len(self.deck)>0: #si y a une carte dans le deck
                     self.add_to_hand( self.deck[0] )
                     self.deck.pop(0)
-                    renpy.pause(0.2, hard=True)
+                    renpy.pause(delay, hard=True)
 
         def __str__(self):
             txt = []
@@ -108,7 +108,7 @@ init python:
 
             return ", ".join(txt)
         
-        # return the number of cards in the hand that are the same.
+        # return the highest number of cards in the hand that are the same.
         def hasPair(self):
             highest = 0
             for i in self.hand:
@@ -120,6 +120,11 @@ init python:
                 if current > highest:
                     highest = current
             return highest
+
+        def shuffle(self):
+            renpy.random.shuffle(self.deck)
+            renpy.play("shuffle.mp3", channel='drawcard')
+            renpy.pause(0.5)
                 
 
     def for_in(i, list, callback):
@@ -127,8 +132,8 @@ init python:
             callback
 
 label playCard(card):
-    $ commands = card.eff.replace("@", "\n    ")
-    $ commands = commands.split(";")
+    $ commands = card.eff
+    $ commands = commands.split(" ; ")
     $ i = 0
     while i < len(commands):
         # j " [commands[0]] "
@@ -147,13 +152,13 @@ label playCardfromHand(index):
         
         $ print (deck.hand[index].img_path)
 
-        play sound "activate.mp3"
+        $ renpy.play("activate.mp3", channel='activatecard')
         $ card = Card( deck.hand[index].id )
         $ deck.hand.pop(index)
 
         # animation:
         $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played], zorder=2, layer="screens")
-        $ renpy.pause(1.0, hard=True)
+        $ renpy.pause(0.8)
         $ renpy.hide('cardPlayed', layer="screens")
 
         call playCard(card)

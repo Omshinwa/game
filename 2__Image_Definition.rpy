@@ -1,21 +1,7 @@
 init python:
     def play_sexsound(trans, st, at, filename):
-        renpy.play(filename, channel='sexsfx')
+        renpy.play(filename, channel='voice')
         return None
-
-    def play_sexsound2(trans, st, at, filename):
-        renpy.play(filename, channel="sexsfx")
-
-image anim:
-    "images/anim/a1.png"
-    function play_effect
-    0.7
-    "images/anim/a2.png"
-    function play_effect
-    0.7
-    "images/anim/a3.png"
-    function play_effect
-    0.7
    
 transform toobig:
     yalign 0.0
