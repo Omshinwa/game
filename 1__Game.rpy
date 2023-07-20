@@ -38,3 +38,13 @@ init python:
     
     game = Game()
     game.debug_flag = 0
+
+style default:
+    font FontGroup().add("FRABK.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+
+style outline_text:
+    color "#000000"
+    outlines [ (absolute(5), "#ffffff", absolute(0), absolute(0)) ]
+    font "ui"
+
+define config.font_name_map["ui"] = FontGroup().add("FRADMIT.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)

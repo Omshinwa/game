@@ -10,16 +10,38 @@ screen screen_prison:
         hover im.MatrixColor("bg/toilet.png", im.matrix.tint(1,1,5))
         action Call("label_toilet")
         focus_mask True
+    imagebutton:
+        idle "bg/bed.png"
+        hover im.MatrixColor("bg/bed.png", im.matrix.tint(1,1,5))
+        action Call("label_toilet")
+        focus_mask True
+    imagebutton:
+        idle "bg/food-tray.png"
+        hover im.MatrixColor("bg/food-tray.png", im.matrix.tint(1,1,5))
+        action Call("label_toilet")
+        focus_mask True
+    imagebutton:
+        idle "ui/exploring-deck_stack.png"
+        hover im.MatrixColor("ui/exploring-deck_stack.png", im.matrix.tint(0.8,0.8,1))
+        action Show("screen_card_deck", None, nullfunction)
+        focus_mask True
+    fixed:
+        xpos 1780
+        ypos 70
+        xsize 30
+        text str(len(deck.list)) size 60 xalign 0.5 style "outline_text"
 
 label label_toilet:
-    show screen screen_card_deck(print_card_name)
+    show screen screen_card_deck(prison_remove_card, "REMOVE A CARD")
     return
 
 init python:
-    def print_card_name(card):
-        print(card.name)
+    def nullfunction(index):
+        return
+    def prison_remove_card(index):
+        deck.list.pop(index)
 
-screen screen_card_deck(card_function):
+screen screen_card_deck(card_function=nullfunction, instruction=""):
     
     $ zoom = deck_display_card_zoom
     $ paddingPerCard = int( -50 )
@@ -51,7 +73,7 @@ screen screen_card_deck(card_function):
                         imagebutton:
                             idle card.img
                             hover card.img_hover
-                            action Function(card_function, card)
+                            action Function(card_function, index)
                             at customzoom
                         frame:
                             xalign 0.5
@@ -61,7 +83,7 @@ screen screen_card_deck(card_function):
                             if len(card.txt)<30:
                                 text card.txt style "style_card_effect" size 20 
                             else:
-                                text card.txt style "style_card_effect" size 16 
+                                text card.txt style "style_card_effect" size 18 
     imagebutton:
         idle "ui/next.png"
         
@@ -88,3 +110,5 @@ screen screen_card_deck(card_function):
         action Hide("screen_card_deck")
         yalign 0.95
         xalign 0.5
+
+    text instruction size 60 xalign 0.5 style "outline_text" ypos 200 xsize 1800

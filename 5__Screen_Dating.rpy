@@ -162,10 +162,6 @@ screen screen_orgasm_ui:
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
 
 
-style outline_text:
-    color "#000000"
-    outlines [ (absolute(5), "#ffffff", absolute(0), absolute(0)) ]
-
 style style_card_effect:
     xalign 0.5
     size 22
