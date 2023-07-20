@@ -36,12 +36,11 @@ label label_cowgirl_start:
     j "I'm Joyce"
     show joyce sitting at default
     j "Hi, this is your first date no?"
-
-
-    show joyce cowgirl at toobig
-
     j "I'll tell you how to get a successful date"
     j "Let the date begin!"
+
+    
+    # show joyce cowgirl at toobig
 
     call beginDuel()
     $ current_speed = game.animation_speed

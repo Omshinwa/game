@@ -15,6 +15,8 @@ init python:
             return 0
         return 150
 
+    focus_card_index = -1
+
 transform trans_card_played:
     xalign 0.5 yanchor 1.0 ypos 1.0
     ease 0.4 ypos 0.5
@@ -45,20 +47,29 @@ screen screen_card_hand:
             xsize int( len(deck.hand)* game.card_xsize + (paddingPerCard*(len(deck.hand)-1)) )
             xalign 0.5
             for index, card in enumerate(deck.hand):
+                if index != focus_card_index:
+                    drag:
+                        xpos int((index)* game.card_xsize + paddingPerCard*index)
+                        xsize game.card_xsize
+                        ysize game.card_ysize
+                        add card.img
+                        frame:
+                            xalign 0.5
+                            ypos 180
+                            xsize 210
+                            ysize 130
+                            if len(card.txt)<30:
+                                text card.txt style "style_card_effect" size 25 
+                            else:
+                                text card.txt style "style_card_effect"
+
+            if -1<focus_card_index<len(deck.hand):                    
+                $ card = deck.hand[focus_card_index]
                 drag:
-                    xpos int((index)* game.card_xsize + paddingPerCard*index)
+                    xpos int((focus_card_index)* game.card_xsize + paddingPerCard*focus_card_index)
                     xsize game.card_xsize
                     ysize game.card_ysize
-                    imagebutton:
-                        idle card.img
-                        if eval(card.cond):
-                            hover card.img_hover
-                            action [Call('playCardfromHand', index)]
-                        else:
-                            hover card.img
-                            action NullAction()
-                        hovered SetVariable("game.isHoverHand", True)
-                        unhovered SetVariable("game.isHoverHand", False)
+                    add card.img
                     frame:
                         xalign 0.5
                         ypos 180
@@ -69,13 +80,30 @@ screen screen_card_hand:
                         else:
                             text card.txt style "style_card_effect"
 
+            #BUTTONS
+            for index, card in enumerate(deck.hand):
+                drag:
+                    xpos int((index)* game.card_xsize + paddingPerCard*index)
+                    xsize game.card_xsize
+                    ysize game.card_ysize
+                    
+                    imagebutton:
+                        idle "cards/button.png"
+                        if eval(card.cond):
+                            hover "cards/button-hover.png"
+                            action [Call('playCardfromHand', index)]
+                        else:
+                            action NullAction()
+                        hovered [SetVariable("game.isHoverHand", True), SetVariable("focus_card_index", index)]
+                        unhovered [SetVariable("game.isHoverHand", False), SetVariable("focus_card_index", -1)]
+
     fixed:
         xpos 1750
         ypos 890
         image "cards/deck_stack.png"
         fixed:
             xpos 35
-            ypos 30
+            ypos 22
             xsize 30
             text str(len(deck.deck)) size 80 xalign 0.5 style "outline_text"
         

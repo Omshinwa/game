@@ -48,3 +48,11 @@ style outline_text:
     font "ui"
 
 define config.font_name_map["ui"] = FontGroup().add("FRADMIT.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+
+label game_init:
+    #set up the deck and keybinds
+
+    $ deck = Deck()
+    $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("excite"),Card("draw2"),Card("emptymind"),Card("calm"),Card("ultracalm"),Card("shuang"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("draw2"),Card("faster"),Card("draw2"),Card("draw2"),Card("draw2"),Card("draw2"),Card("draw2"),Card("slower"),Card("slower"),Card("faster"),Card("draw2"),Card("draw2"),]
+    show screen keybinds()
+    return

@@ -40,20 +40,22 @@ init python:
         "excite": {"txt":"get +3 pleasure", "eff":"game.pleasure += 3",},
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
         "emptymind": {"txt":"Divide your pleasure by 2", "eff":"game.pleasure = int(game.pleasure/2)",},
+
         "calm": {"txt":"-2 pleasure", "eff":"game.pleasure -= 2",},
-        "ultracalm":{"txt":"-8 pleasure", "eff":"game.pleasure -= 8s",},
+        "ultracalm":{"txt":"-8 pleasure", "eff":"game.pleasure -= 8",},
+        "newday":{"txt":"Can only be played when it's the leftmost card. -2 pleasure for each card in hand.", "eff":"game.pleasure -= 8s",},
 
         "shuang": {"txt":"if you have a pair in your hand: draw 3 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(3)"},
 
-        "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('card_change')"},
+        "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('label_card_change')"},
 
         "drawmax": {"txt":"Draw 1 card for each 5 points of pleasure.", "eff":"deck.draw( int(game.pleasure/5) )",},
         
-        "discardAll": {"txt":"Discard the whole hand and draw as many.", "eff":"deck.draw( int(game.pleasure/5) )",},
+        "discardAll": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
         
         "recycle": {"txt":"Shuffle back all the cards played into the deck.", "eff":"deck.draw( int(game.pleasure/5) )",},
 
-        "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('card_shuffle')",},
+        "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('label_card_shuffle')",},
         
         "recovery" : {"txt":"Discard the whole hand, -1 pleasure for each card discarded.", "eff":"deck.draw( int(game.pleasure/5) )",},
 
@@ -86,6 +88,13 @@ init python:
             self.deck = [] # the deck during a game
 
             self.list = []
+            self.discard_pile = []
+
+        def start(self):
+            self.deck = self.list
+            self.shuffle()
+            self.discard_pile = []
+            self.draw(5)
         
         def add_to_hand(self, *cards):
             for card in cards:
@@ -125,6 +134,13 @@ init python:
             renpy.random.shuffle(self.deck)
             renpy.play("shuffle.mp3", channel='drawcard')
             renpy.pause(0.5)
+
+        # discard card from hand
+        def discard(self, index, delay=0.2):
+            renpy.play("draw.mp3", channel='drawcard')
+            self.discard_pile.append( self.hand.pop(index) )
+            renpy.pause(delay, hard=True)
+
                 
 
     def for_in(i, list, callback):
@@ -154,7 +170,7 @@ label playCardfromHand(index):
 
         $ renpy.play("activate.mp3", channel='activatecard')
         $ card = Card( deck.hand[index].id )
-        $ deck.hand.pop(index)
+        $ deck.discard(index)
 
         # animation:
         $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played], zorder=2, layer="screens")

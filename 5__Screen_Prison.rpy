@@ -15,11 +15,19 @@ screen screen_prison:
         hover im.MatrixColor("bg/bed.png", im.matrix.tint(1,1,5))
         action Call("label_toilet")
         focus_mask True
+
+    imagebutton:
+        idle "bg/metal-door.png"
+        hover im.MatrixColor("bg/metal-door.png", im.matrix.tint(1,1,5))
+        action [Hide("screen_prison"),Jump("label_cowgirl_start")]
+        focus_mask True
+
     imagebutton:
         idle "bg/food-tray.png"
         hover im.MatrixColor("bg/food-tray.png", im.matrix.tint(1,1,5))
         action Call("label_toilet")
         focus_mask True
+
     imagebutton:
         idle "ui/exploring-deck_stack.png"
         hover im.MatrixColor("ui/exploring-deck_stack.png", im.matrix.tint(0.8,0.8,1))
