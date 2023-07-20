@@ -34,7 +34,7 @@ label SexEndTurn:
         $ i += 1
 
     $ handSize = len(deck.hand)
-    while handSize < 5:
+    while handSize < 5 and len(deck.deck)>0:
         $ deck.draw(1)
         $ handSize = len(deck.hand)
     return

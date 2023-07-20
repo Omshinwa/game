@@ -13,7 +13,7 @@ style default:
 
 label start:
     call game_init
-    # jump label_cowgirl_start
+    jump label_cowgirl_start
     jump label_prison
     return
 
@@ -56,7 +56,7 @@ label label_cowgirl_start:
             show joyce cowgirl-orgasm 
             j "kyaaa{w=1.0}{nw}"
             pause(2)
-            show joyce cowgirl-talk at top
+            show cowgirl-talk at top as joyce
             pause(1)
             j "huff.."
             j "i-i came"
