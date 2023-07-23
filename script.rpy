@@ -18,7 +18,6 @@ label start:
     return
 
 label label_prison:
-    $ global_var = {"page":0}
     scene bg prison
     show screen screen_prison
     label .gameLoop:
@@ -32,6 +31,10 @@ label label_cowgirl_start:
     show joyce standing at default
     show fg bbt-table 
 
+    # show img_moaning_bubbles
+
+    show moan_bubble
+    
     j "Hello, you must be Kevin."
     j "I'm Joyce"
     show joyce sitting at default
@@ -40,8 +43,8 @@ label label_cowgirl_start:
     j "Let the date begin!"
 
     
-    # show joyce cowgirl at toobig
-
+    show joyce cowgirl at toobig
+    
     call beginDuel()
     $ current_speed = game.animation_speed
     
@@ -50,6 +53,7 @@ label label_cowgirl_start:
 
         if current_speed != game.animation_speed:
             show joyce cowgirl
+            show moan_bubble
             $ current_speed = game.animation_speed
 
         if game.orgasm >= game.orgasmMax:
@@ -64,9 +68,6 @@ label label_cowgirl_start:
             j "i-i came"
             
             show joyce sitting at default
-        
-        if game.pleasure >= game.pleasureMax:
-            "i'm gonna coooom"
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
