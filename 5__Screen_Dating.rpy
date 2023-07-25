@@ -22,12 +22,11 @@ transform trans_card_played:
     ease 0.4 ypos 0.5
 
 screen screen_card_hand:
-    sensitive game.jeu_sensitive
     
     $ paddingPerCard = getCardPadding(len(deck.hand))
     $ ydisplace = getCardYdisplace()
 
-        # cards at the bottom
+    #     cards at the bottom
     button:
         hovered SetVariable("game.isHoverHand", True)
         unhovered SetVariable("game.isHoverHand", False)
@@ -53,15 +52,6 @@ screen screen_card_hand:
                         xsize game.card_xsize
                         ysize game.card_ysize
                         add card.img
-                        frame:
-                            xalign 0.5
-                            ypos 180
-                            xsize 210
-                            ysize 130
-                            if len(card.txt)<30:
-                                text card.txt style "style_card_effect" size 25 
-                            else:
-                                text card.txt style "style_card_effect"
 
             if -1<focus_card_index<len(deck.hand):                    
                 $ card = deck.hand[focus_card_index]
@@ -70,15 +60,6 @@ screen screen_card_hand:
                     xsize game.card_xsize
                     ysize game.card_ysize
                     add card.img
-                    frame:
-                        xalign 0.5
-                        ypos 180
-                        xsize 210
-                        ysize 130
-                        if len(card.txt)<30:
-                            text card.txt style "style_card_effect" size 25 
-                        else:
-                            text card.txt style "style_card_effect"
 
             #BUTTONS
             for index, card in enumerate(deck.hand):
@@ -88,6 +69,7 @@ screen screen_card_hand:
                     ysize game.card_ysize
                     
                     imagebutton:
+                        sensitive game.jeu_sensitive
                         idle "cards/button.png"
                         if eval(card.cond):
                             hover "cards/button-hover.png"
@@ -112,7 +94,23 @@ screen screen_card_hand:
             xpos -100
             idle "ui/end_turn.png"
             action Call("SexEndTurn")
+            sensitive game.jeu_sensitive
             hover "ui/end_turn_hover.png"
+    
+    # TRASHCAN
+    fixed:
+        xpos 5
+        ypos 950
+        imagebutton:
+            idle "ui/trashcan.png"
+            hover "ui/trashcan-hover.png"
+            action [SetVariable("game.jeu_sensitive", False),Show("screen_card_deck", dissolve, deck.discard_pile, "label_null", "DISCARD PILE")]
+            sensitive game.jeu_sensitive
+        fixed:
+            xpos 20
+            ypos 30
+            xsize 50
+            text str(len(deck.discard_pile)) size 50 xalign 0.5 style "outline_text"
 
     if game.debug_flag:
         drag:
@@ -158,7 +156,11 @@ screen screen_pleasure_ui:
         
         text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
-
+screen screen_sex_ui:
+    use screen_card_hand()
+    use screen_pleasure_ui()
+    use screen_orgasm_ui()
+    use screen_buttons_ui()
 # image orgasm_full_bar = Crop(( (game.orgasm/game.orgasmMax) * (456), 0, 456, 120), "ui/orgasm_full_bar.png")
 
 screen screen_orgasm_ui:
@@ -205,8 +207,9 @@ label label_gameloop(position): #when you just wait for user to do something
     call label_gameloop(position)
 
 screen screen_buttons_ui():
-    button:
+    imagebutton:
         xpos 20
         ypos 20
-        image "ui/hide_ui.png"
+        idle "ui/hide_ui.png"
+        hover "ui/hide_ui_hover.png"
         action HideInterface()

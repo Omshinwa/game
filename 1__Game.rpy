@@ -15,6 +15,10 @@ init python:
             self.pleasureMax = 10
             self.pleasure = 0
 
+            self.trust = 0
+            self.interest = 0
+            self.romance = 0
+
             self.orgasmMax = 20
             self.orgasm = 0
 

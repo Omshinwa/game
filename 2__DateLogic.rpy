@@ -1,10 +1,7 @@
-label beginDuel():
+label label_beginDuel():
     $ game.state = "dating"
 
-    show screen screen_card_hand()
-    show screen screen_pleasure_ui()
-    show screen screen_orgasm_ui()
-    show screen screen_buttons_ui()
+    show screen screen_sex_ui
     
     show card_zone_bg zorder 2
 
@@ -22,6 +19,10 @@ label SexEndTurn:
         $ game.orgasm += 1
 
         $ i += 1
+        pause(0.1)
+
+    if game.pleasure >= game.pleasureMax:
+        "i'm gonna coooom"
 
     $ handSize = len(deck.hand)
     while handSize < 5 and len(deck.deck)>0:

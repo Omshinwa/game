@@ -11,8 +11,15 @@ init python:
                 self.img_path = "cards/default.png"
             self.txt = cardList[hash]["txt"]
             
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path)
-            self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path)
+            if len(self.txt)<30:
+                self.text_effect = Text(self.txt, style="style_card_effect", size=30) 
+            else:
+                self.text_effect =  Text(self.txt, style="style_card_effect", size=25) 
+
+            self.textbox = Window(self.text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
+                        
+            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,180), self.textbox)
+            self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,180), self.textbox)
 
             if "cond" in cardList[hash]:
                 self.cond = cardList[hash]["cond"]
@@ -25,6 +32,8 @@ init python:
 
             # self.x = 0
             # self.y = 0
+        def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
+            return self.name<other.name
 
         # #this is a getter 
         # def update_x_in_hand(self, index, cards_in_hand):
@@ -53,7 +62,7 @@ init python:
         
         "discardAll": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
         
-        "recycle": {"txt":"Shuffle back all the cards played into the deck.", "eff":"deck.draw( int(game.pleasure/5) )",},
+        "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')",},
 
         "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('label_card_shuffle')",},
         
@@ -141,6 +150,10 @@ init python:
             self.discard_pile.append( self.hand.pop(index) )
             renpy.pause(delay, hard=True)
 
+        @staticmethod
+        def get_random_card():
+            return Card( renpy.random.choice( list(cardList.keys()) ) )
+
                 
 
     def for_in(i, list, callback):
@@ -164,9 +177,6 @@ label playCardfromHand(index):
     if eval(deck.hand[index].cond):
         $ game.jeu_sensitive = False
         $ ydisplace = 0
-        
-        
-        $ print (deck.hand[index].img_path)
 
         $ renpy.play("activate.mp3", channel='activatecard')
         $ card = Card( deck.hand[index].id )
