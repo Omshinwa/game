@@ -1,7 +1,7 @@
 label label_card_change:
     $ i = 0
     while i < len(deck.hand):
-        $ deck.hand[i] = game.get_random_card()
+        $ deck.hand[i] = Card.get_random_card()
         $ renpy.pause(0.2, hard=True)
         $ i+=1
     return

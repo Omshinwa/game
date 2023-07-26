@@ -73,7 +73,7 @@ screen screen_prison_add_cards():
     fixed:
         xsize game.card_xsize*2
         xalign 0.5
-        use screen_add_cards(global_var["prison_card1"])
+        use screen_add_cards( [global_var["prison_card1"]] )
 
 screen screen_add_cards(*cards):
     fixed:
@@ -81,5 +81,5 @@ screen screen_add_cards(*cards):
         ysize 600
         xalign 0.5
         yalign 0.5
-        for index, card in cards:
+        for index, card in enumerate(cards):
             add card.img xpos index*game.card_xsize

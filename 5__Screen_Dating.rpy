@@ -71,7 +71,7 @@ screen screen_card_hand:
                     imagebutton:
                         sensitive game.jeu_sensitive
                         idle "cards/button.png"
-                        if eval(card.cond):
+                        if card.cond(index):
                             hover "cards/button-hover.png"
                             action [Call('playCardfromHand', index)]
                         else:
@@ -119,21 +119,21 @@ screen screen_card_hand:
 
 screen screen_pleasure_ui:
 
-    $ shaft_size = int( 196*(game.pleasureMax / 20) )
+    $ shaft_size = int( 196*(game.lustMax / 20) )
     $ fullSizeDick = 122 + shaft_size + 152
-    $ croppedSize = int ( fullSizeDick * game.pleasure/game.pleasureMax )
+    $ croppedSize = int ( fullSizeDick * game.lust/game.lustMax )
     fixed:
         # xpos 1920 - 500 - shaft_size
         ypos 20
         xpos 220
         xsize 122 + shaft_size + 152
         image "ui/pleasure_bar1.png"
-        image "ui/pleasure_bar2.png" xpos 122 xzoom game.pleasureMax / 20
+        image "ui/pleasure_bar2.png" xpos 122 xzoom game.lustMax / 20
         image "ui/pleasure_bar3.png" xpos 122+shaft_size
 
         
         image Crop( (0, 0, croppedSize, 120), "ui/pleasure_full_bar1.png") 
-        image Crop( (0, 0, int( (croppedSize - 122) * 20 / game.pleasureMax), 120), "ui/pleasure_full_bar2.png")  xpos 122 xzoom game.pleasureMax / 20
+        image Crop( (0, 0, int( (croppedSize - 122) * 20 / game.lustMax), 120), "ui/pleasure_full_bar2.png")  xpos 122 xzoom game.lustMax / 20
         image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/pleasure_full_bar3.png")  xpos 122+shaft_size
 
         fixed: #cum bar
@@ -142,13 +142,13 @@ screen screen_pleasure_ui:
                 ysize 30
                 background Solid("#3700ff")
 
-        text str(game.pleasure) + "/" + str(game.pleasureMax):
+        text str(game.lust) + "/" + str(game.lustMax):
             size 50 style "outline_text" xalign 0.45 ypos 40
-            if (game.pleasure/game.pleasureMax)>0.9:
+            if (game.lust/game.lustMax)>0.9:
                 color "#ffed68"
-            if (game.pleasure/game.pleasureMax)>0.7:
+            if (game.lust/game.lustMax)>0.7:
                 color "#eb7412"
-            elif (game.pleasure/game.pleasureMax)>0.5:
+            elif (game.lust/game.lustMax)>0.5:
                 color "#c64826"
             else:
                 color "#000000"
@@ -190,13 +190,6 @@ screen screen_orgasm_ui:
                 color "#000000"
 
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
-
-
-style style_card_effect:
-    xalign 0.5
-    size 22
-    line_spacing  -5
-    textalign 0.5
 
 screen screen_gameloop():
     pass

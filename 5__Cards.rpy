@@ -1,30 +1,57 @@
+style style_card_effect:
+    xalign 0.5
+    size 22
+    line_spacing -5
+    textalign 0.5
+
+label game_init:
+    #set up the deck and keybinds
+
+    $ deck = Deck()
+    $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("peek"),Card("devil"),Card("newday"),Card("calm"),Card("maxcalm"),Card("pair"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("devil"),Card("faster"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("slower"),Card("slower"),Card("faster"),Card("devil"),Card("devil"),]
+    show screen keybinds()
+    return
+
 init python:
 
     class Card:
         def __init__(self, hash):
-            self.name = hash
+            self.id = hash
 
-            chemin = "cards/" + str(self.name) + ".png"
+            if "name" in cardList[hash]:
+                self.name = cardList[hash]["name"]
+            else:
+                self.name = self.id
+
+            chemin = "cards/" + str(self.id) + ".png"
+
             if renpy.exists("images/" + chemin):
                 self.img_path = chemin
             else:
                 self.img_path = "cards/default.png"
+
             self.txt = cardList[hash]["txt"]
             
             if len(self.txt)<30:
-                self.text_effect = Text(self.txt, style="style_card_effect", size=30) 
+                text_effect = Text(self.txt, style="style_card_effect", size=30) 
             else:
-                self.text_effect =  Text(self.txt, style="style_card_effect", size=25) 
+                text_effect =  Text(self.txt, style="style_card_effect", size=25) 
 
-            self.textbox = Window(self.text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
+            textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
+
+            card_name = Text(self.name, style="outline_text", xalign=0.5, size=30)
+            card_name_box =  Window(card_name, style="empty", xsize=200, ysize=30)
                         
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,180), self.textbox)
-            self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,180), self.textbox)
+            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,180), textbox)
+            # self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (5,5), card_name_box, (15,30), self.img_path, (15,195), textbox)
+
+            # self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,180), self.textbox)
+            self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (5,5), card_name_box, (15,30), self.img_path, (15,195), textbox)
 
             if "cond" in cardList[hash]:
-                self.cond = cardList[hash]["cond"]
+                self.condition = cardList[hash]["cond"]
             else:
-                self.cond = "True"
+                self.condition = "True"
 
             self.id = hash
 
@@ -33,7 +60,14 @@ init python:
             # self.x = 0
             # self.y = 0
         def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
-            return self.name<other.name
+            return self.name<other.id
+
+        def cond(self, index):
+            return eval(self.condition.replace( "index" , str(index)))
+
+        @staticmethod
+        def get_random_card():
+            return Card( renpy.random.choice( list(cardList.keys()) ) )
 
         # #this is a getter 
         # def update_x_in_hand(self, index, cards_in_hand):
@@ -42,33 +76,42 @@ init python:
 
     cardList = { 
         # get preview of next cards to come?
+        # the string 'index' is replaced with the index of the card in hand
 
         "faster": {"txt":"go faster", "eff":"game.speedUp()",},
         "slower": {"txt":"go slower", "eff":"game.speedDown()",},
-        "distract": {"txt":"you peek.. get distracted (+5 pleasure)", "eff":"game.pleasure += 5",},
-        "excite": {"txt":"get +3 pleasure", "eff":"game.pleasure += 3",},
+
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
-        "emptymind": {"txt":"Divide your pleasure by 2", "eff":"game.pleasure = int(game.pleasure/2)",},
 
-        "calm": {"txt":"-2 pleasure", "eff":"game.pleasure -= 2",},
-        "ultracalm":{"txt":"-8 pleasure", "eff":"game.pleasure -= 8",},
-        "newday":{"txt":"Can only be played when it's the leftmost card. -2 pleasure for each card in hand.", "eff":"game.pleasure -= 8s",},
+        "devil": {"txt":"Draw 2 cards, Double your current pleasure.", "eff":"deck.draw(2); game.lust *= 2",},
 
-        "shuang": {"txt":"if you have a pair in your hand: draw 3 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(3)"},
+        "newday": {"txt":"Divide your pleasure by 2", "eff":"game.lust = int(game.lust/2)",},
+
+        "calm": {"txt":"-2 pleasure", "eff":"game.lust -= 2",},
+
+        "maxcalm":{"txt":"-8 pleasure, can only be played if this card is your rightmost card.", 
+
+        "cond":"index == len(deck.hand)-1", "eff":"game.lust -= 8",},#card also work if you have multiple
+
+        "pair": {"txt":"if you have a pair in your hand: draw 3 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(3)"},
 
         "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('label_card_change')"},
 
-        "drawmax": {"txt":"Draw 1 card for each 5 points of pleasure.", "eff":"deck.draw( int(game.pleasure/5) )",},
+        "drawmax": {"txt":"Draw 1 card for each 5 points of pleasure.", "eff":"deck.draw( int(game.lust/5) )",},
         
-        "discardAll": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
+        "discard": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
         
         "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')",},
 
-        "shuffle": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('label_card_shuffle')",},
+        "angel's gift": {"txt":"If you have no cards left in your deck, -40 pleasure, go the slowest, shuffle back the discard pile into the deck", "eff":"renpy.call('label_card_ouroboros')",},
         
-        "recovery" : {"txt":"Discard the whole hand, -1 pleasure for each card discarded.", "eff":"deck.draw( int(game.pleasure/5) )",},
+        "future vision": {"txt":"You can see the next card in your deck (click on the deck). This effect stacks.", "eff":"renpy.call('label_card_ouroboros')",},
 
-        "draw5": {"txt":"Get to max speed. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5 ; deck.draw(5-len(deck.hand))",},
+        "reload": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('label_card_shuffle')",},
+        
+        "recovery" : {"txt":"Discard the whole hand, -1 pleasure for each card discarded.", "eff":"deck.draw( int(game.lust/5) )",},
+
+        "draw5": {"txt":"Halve your dick size this date. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))",},
 
         "stop": {"txt":"Can't be played", "cond":"False", "eff":"",},
 
@@ -77,17 +120,28 @@ init python:
         "block": {"txt":"You cant gain pleasure from cards this turn.", "eff":"deck.add_to_hand( Card(11) )",},
 
         
-        "exodia" : {"txt":"When you have 5 in your hand, you win.", "eff":"game.pleasure += 5",},
+        "exodia" : {"txt":"When you have 5 in your hand, you win.", "eff":"game.lust += 5",},
 
-        "smalltalk": {"txt":"+1 trust", "eff":"game.pleasure += 5",},
-        "big talk": {"txt":"+2 trust", "eff":"game.pleasure += 5",},
-        "peek": {"txt":"you peek.. (-2 pleasure)", "eff":"game.pleasure += 5",},
+        
+        "smalltalk": {"txt":"+1 trust", "eff":"game.lust += 5",},
+
+        "play": {"txt":"+1 trust", "eff":"game.lust += 5",},
+
+        "listen": {"txt":"", "eff":"game.lust += 5",},
+
+        "hobbies": {"txt":"+1 interest", "eff":"game.lust += 5",},
+        
+        "peek": {"txt":"you peek.. (-2 trust)", "eff":"game.lust += 5",},
+        "peek2": {"txt":"you peek.. (-4 trust)", "eff":"game.lust += 3",},
+        "peek3": {"txt":"get +3 pleasure", "eff":"game.lust += 3",},
 
         "eyecontact": {"txt":"+1 flirt -1 trust", "eff":"",},
         "flirt": {"txt":"+2 flirt -2 trust", "eff":"",},
-        "touch" : {"txt":"+4 flirt -4 trust", "eff":"",},
+        "kiss" : {"txt":"+10 flirt, divide trust by 2", "eff":"",},
 
-        "nothing" : {"txt":"does nothing", "eff":"",},
+        "touchy" : {"txt":"For the rest of the turn, Romance gains are doubled", "eff":"",},
+
+        "spaceout" : {"txt":"does nothing", "eff":"",},
     }
 
 
@@ -150,19 +204,16 @@ init python:
             self.discard_pile.append( self.hand.pop(index) )
             renpy.pause(delay, hard=True)
 
-        @staticmethod
-        def get_random_card():
-            return Card( renpy.random.choice( list(cardList.keys()) ) )
-
                 
 
     def for_in(i, list, callback):
         for i in list:
             callback
 
-label playCard(card):
+label playCard(card, index):
     $ commands = card.eff
-    $ commands = commands.split(" ; ")
+    $ commands.replace("index", str(index))
+    $ commands = commands.split("; ")
     $ i = 0
     while i < len(commands):
         # j " [commands[0]] "
@@ -174,7 +225,7 @@ label playCard(card):
     return
 
 label playCardfromHand(index):
-    if eval(deck.hand[index].cond):
+    if deck.hand[index].cond(index):
         $ game.jeu_sensitive = False
         $ ydisplace = 0
 
@@ -187,6 +238,6 @@ label playCardfromHand(index):
         $ renpy.pause(0.8)
         $ renpy.hide('cardPlayed', layer="screens")
 
-        call playCard(card)
+        call playCard(card, index)
     else:
         $ print("invalid")

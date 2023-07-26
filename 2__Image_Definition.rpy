@@ -59,6 +59,8 @@ layeredimage joyce:
             "joyce_base"
         attribute 2nd:
             "joyce_2nd"
+        attribute stand:
+            "joyce_stand"
     group eyes:
         attribute blink default:
             "img_blink"

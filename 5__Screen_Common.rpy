@@ -4,7 +4,7 @@ screen keybinds():
     
 init python:
     global_var = {"page":0, "card_per_line":7}
-    global_var["prison_card1"] = Deck.get_random_card()
+    global_var["prison_card1"] = Card.get_random_card()
 screen screen_card_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
     modal True
