@@ -1,22 +1,40 @@
-label label_beginDuel_common():
-    $ game.state = "dating"
-    show card_zone_bg zorder 2
-    $ deck.start()
-    $ game.jeu_sensitive = True;
+label label_cowgirl_begin():
+    # show screen screen_sex_ui
+    call label_beginDuel_common(endTurn = "label_SexEndTurn")
     return
 
-label label_beginDuel():
-    show screen screen_sex_ui
-    call label_beginDuel_common
+label label_SexEndTurn:
+    $ i=0
+    while i < game.animation_speed:
+        $ game.lust += 1
+        $ game.orgasm += 1
 
-    $ game.lust = 0
-    $ game.orgasm = 0
-    $ game.trust = 0
-    $ game.attraction = 0
+        $ i += 1
+        pause(0.1)
+
+    label .loseCondition:
+        if game.lust > game.trust:
+            j "um.. don't you think I can notice?"
+            j "Sorry but gotta go"
+            j "Maybe we can do this another day?"
+        elif date.turnLeft == 0 or len(deck.deck) == 0:
+            j "Aw gotta go."
+            j "Sorry bu that kinda dragged on"
+            j "Maybe we can do this another day?"
+
+    $ game.attractionMultiplier = 1
+    $ game.trustMultiplier = 1
+    $ game.lustMultiplier = 1
+
+    $ handSize = len(deck.hand)
+    while handSize < 5 and len(deck.deck)>0:
+        $ deck.draw(1)
+        $ handSize = len(deck.hand)
     return
 
+label label_cowgirl:
+    $ date = Date(objectif_trust = 10)
 
-label label_cowgirl_start:
     scene bg bbt
 
     show joyce stand at default
@@ -43,7 +61,7 @@ label label_cowgirl_start:
     
     show joyce cowgirl at toobig
     
-    call label_beginDuel()
+    call label_cowgirl_begin()
     $ current_speed = game.animation_speed
     
     label .gameLoop:

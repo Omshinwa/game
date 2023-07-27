@@ -13,16 +13,6 @@ style default:
 
 label start:
     call label_game_init
-    # jump label_second_date
-    jump label_first_date
-    jump label_cowgirl_start
-    # jump label_footjob_start
+    $ game.progress = 8
     jump label_prison
     return
-
-label label_prison:
-    scene bg prison
-    show screen screen_prison
-    label .gameLoop:
-        call screen screen_gameloop()
-    jump .gameLoop

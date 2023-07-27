@@ -21,7 +21,11 @@ transform trans_card_played:
     xalign 0.5 yanchor 1.0 ypos 1.0
     ease 0.4 ypos 0.5
 
-screen screen_card_hand:
+screen screen_card_hand(endTurn = "label_SexEndTurn"):
+    # if "endTurn" in kwargs:
+    #     $ endTurn = kwargs["endTurn"]
+    # else:
+    #     $ endTurn = "label_SexEndTurn"
     
     $ paddingPerCard = getCardPadding(len(deck.hand))
     $ ydisplace = getCardYdisplace()
@@ -34,6 +38,7 @@ screen screen_card_hand:
         xsize 1920
         ysize 300
         yalign 1.0
+        sensitive game.jeu_sensitive
     
     fixed:
         xsize 1800
@@ -47,7 +52,7 @@ screen screen_card_hand:
             xalign 0.5
             for index, card in enumerate(deck.hand):
                 if index != focus_card_index:
-                    drag:
+                    fixed:
                         xpos int((index)* game.card_xsize + paddingPerCard*index)
                         xsize game.card_xsize
                         ysize game.card_ysize
@@ -55,7 +60,7 @@ screen screen_card_hand:
 
             if -1<focus_card_index<len(deck.hand):                    
                 $ card = deck.hand[focus_card_index]
-                drag:
+                fixed:
                     xpos int((focus_card_index)* game.card_xsize + paddingPerCard*focus_card_index)
                     xsize game.card_xsize
                     ysize game.card_ysize
@@ -63,7 +68,7 @@ screen screen_card_hand:
 
             #BUTTONS
             for index, card in enumerate(deck.hand):
-                drag:
+                fixed:
                     xpos int((index)* game.card_xsize + paddingPerCard*index)
                     xsize game.card_xsize
                     ysize game.card_ysize
@@ -93,8 +98,8 @@ screen screen_card_hand:
             ypos -180
             xpos -100
             idle "ui/end_turn.png"
-            action Call("SexEndTurn")
-            sensitive game.jeu_sensitive
+            action Call(endTurn)
+            # sensitive game.jeu_sensitive
             hover "ui/end_turn_hover.png"
     
     # TRASHCAN
@@ -104,7 +109,7 @@ screen screen_card_hand:
         imagebutton:
             idle "ui/trashcan.png"
             hover "ui/trashcan-hover.png"
-            action [SetVariable("game.jeu_sensitive", False),Show("screen_card_deck", dissolve, deck.discard_pile, "label_null", "DISCARD PILE")]
+            action [SetVariable("game.jeu_sensitive", False),Show("screen_show_deck", dissolve, deck.discard_pile, "label_null", "DISCARD PILE")]
             sensitive game.jeu_sensitive
         fixed:
             xpos 20
@@ -156,16 +161,16 @@ screen screen_lust_ui:
         
         text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
-screen screen_sex_ui:
-    use screen_card_hand()
+screen screen_sex_ui(**kwargs):
+    use screen_card_hand(kwargs["endTurn"])
     use screen_lust_ui()
     use screen_orgasm_ui()
     use screen_buttons_ui()
     use screen_turn_counter()
 
-screen screen_date_ui(range_var = 20, objectif_lust=0, objectif_trust=0, objectif_attraction=0):
-    use screen_card_hand()
-    use screen_trust_ui(range_var, objectif_lust, objectif_trust, objectif_attraction)
+screen screen_date_ui(**kwargs):
+    use screen_card_hand(kwargs["endTurn"])
+    use screen_trust_ui(**kwargs["objectives"])
     use screen_buttons_ui()
     use screen_turn_counter()
 
@@ -197,7 +202,7 @@ screen screen_orgasm_ui:
 
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
     
-screen screen_trust_ui(range_var = 100, objectif_lust=0, objectif_trust=0, objectif_attraction=0):
+screen screen_trust_ui(range_var = 100, **kwargs):
     fixed:
         xpos 200
         ypos 20
@@ -205,37 +210,60 @@ screen screen_trust_ui(range_var = 100, objectif_lust=0, objectif_trust=0, objec
         ysize 200
         add "#00f"
         
-        text "{k=15.0}LUST{/k}{vspace=12}{k=5.0}TRUST{/k}{vspace=12}{k=-2.0}Attraction{/k}":
+        text "{k=15.0}LUST{/k}":
             size 40 style "outline_text" ypos 5
+            if kwargs["lust"] != 0:
+                if game.lust < kwargs["lust"]:
+                    color "#f00"
+                else:
+                    color "#00ffae"
+        
+        text "{k=5.0}TRUST{/k}":
+            size 40 style "outline_text" ypos 67
+            if kwargs["trust"] != 0:
+                if game.trust < kwargs["trust"]:
+                    color "#f00"
+                else:
+                    color "#00ffae"
+        
+        text "{vspace=12}{k=-2.0}Attraction{/k}":
+            size 40 style "outline_text" ypos 115
+            if kwargs["attraction"] != 0:
+                if game.attraction < kwargs["attraction"]:
+                    color "#f00"
+                else:
+                    color "#00ffae"
         
         fixed:
             xpos 190
             xsize 240
 
             bar value game.lust range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
-                # if objectif_lust>0:
-                #     right_bar"#aaa" 
-                # else:
-                #     right_bar"#0000" 
-            bar value game.trust range range_var ypos 70 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
-            bar value game.attraction range range_var ypos 130 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
+            bar value game.trust range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
+            bar value game.attraction range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
 
 
-            if objectif_lust==0:
-                $ lust_str = ""
-            else:
-                $ lust_str = "/" + str(objectif_lust)
-            if objectif_trust==0:
-                $ trust_str = ""
-            else:
-                $ trust_str = "/" + str(objectif_trust)
-            if objectif_attraction==0:
-                $ attraction_str = ""
-            else:
-                $ attraction_str = "/" + str(objectif_attraction)
+            for index, stat in enumerate(["lust", "trust", "attraction"]):
 
-            text str(game.lust)+lust_str+"\n"+str(game.trust)+trust_str+"\n"+str(game.attraction)+attraction_str:
-                size 50 style "outline_text" xalign 0.5
+                if stat == "lust":
+                    $ objectif = kwargs["lust"]
+                elif stat == "trust":
+                    $ objectif = kwargs["trust"]
+                elif stat == "attraction":
+                    $ objectif = kwargs["attraction"]
+
+                if objectif == 0:
+                    text str(eval('game.' + stat)):
+                        size 50 style "outline_text" xalign 0.5 ypos 60*index
+                else:
+                    if getattr(game, stat) < objectif:
+                        text str(eval('game.' + stat)) + "/" + str(objectif):
+                            size 50 style "outline_text" xalign 0.5 ypos 60*index color "#f00"
+                    else:
+                        text str(eval('game.' + stat)) + "/" + str(objectif):
+                            size 50 style "outline_text" xalign 0.5 ypos 60*index color "#00ffae"
+
+# screen screen_mini_trust_ui(stat, index):
 
         
 screen screen_turn_counter:
@@ -245,17 +273,17 @@ screen screen_turn_counter:
         ysize 200
         xpos 1900 ypos 20 xanchor 1.0
 
-        text "{b}{i}{k=-25.0}"+str(game.turnLeft)+"{/k}{/i}{/b}":
+        text "{b}{i}{k=-25.0}"+str(date.turnLeft)+"{/k}{/i}{/b}":
             size 200 style "outline_text" xalign 0 yalign 0.5
-            if (game.turnLeft)==1:
+            if (date.turnLeft)==1:
                 color "#ffed68"
-            if (game.turnLeft)<3:
+            if (date.turnLeft)<3:
                 color "#eb7412"
-            elif (game.turnLeft)<5:
+            elif (date.turnLeft)<5:
                 color "#c64826"
             else:
                 color "#000000"
-            if game.turnLeft>9:
+            if date.turnLeft>9:
                 size 180 xpos -80
 
         text "turn(s) left":

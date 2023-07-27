@@ -4,8 +4,8 @@ screen keybinds():
     
 init python:
     global_var = {"page":0, "card_per_line":7}
-    global_var["prison_card1"] = Card.get_random_card()
-screen screen_card_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
+
+screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
     modal True
     $ card_per_line = global_var["card_per_line"]
@@ -59,7 +59,7 @@ screen screen_card_deck(what=deck.list, label_callback="label_null", instruction
     imagebutton:
         idle "ui/cancel.png"
         hover im.MatrixColor("ui/cancel.png", im.matrix.tint(1,1,0))
-        action [Hide("screen_card_deck"),SetVariable("game.jeu_sensitive", True)]
+        action [Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.95
         xalign 0.5
 

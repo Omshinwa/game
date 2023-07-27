@@ -58,7 +58,9 @@ init python:
             # self.x = 0
             # self.y = 0
         def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
-            return self.name<other.id
+            return self.id<other.id
+        def __repr__(self):
+            return self.id
 
         def cond(self, index):
             return eval(self.condition.replace( "index" , str(index)))
@@ -123,22 +125,22 @@ init python:
         
         # "play": {"txt":"+1 trust", "eff":"game.lust += 5",},
 
-        "listen": {"txt":"", "eff":"game.lust += 5",},
+        "listen": {"txt":"This turn: double Trust gains.", "eff":"game.trustMultiplier *= 2",},
 
-        "smalltalk": {"txt":"+1 trust", "eff":"game.trust += 1",},
-        "hobbies": {"txt":"+2 trust", "eff":"game.trust += 2",},
+        "smalltalk": {"txt":"+1 trust", "eff":"game.increment('trust',1)",},
+        "hobbies": {"txt":"+2 trust", "eff":"game.increment('trust',2)",},
         
-        "peek": {"txt":"you peek.. (-2 trust +2 lust)", "eff":"game.trust -=2; game.lust += 2",},
-        "peek2": {"txt":"you peek.. (-4 trust +4 lust)", "eff":"game.trust -=4; game.lust += 4",},
-        "peek3": {"txt":"get +3 lust", "eff":"game.lust += 3",},
+        "peek": {"txt":"you peek.. (-1 trust +1 lust)", "eff":"game.increment('trust',-1,False); game.increment('lust',1)",},
+        "peek2": {"txt":"you peek.. (-3 trust +3 lust)", "eff":"game.increment('trust',-3,False); game.increment('lust',3)",},
+        "peek3": {"txt":"get +5 lust", "eff":"game.increment('lust',5)",},
 
-        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"game.attraction += 1; game.lust += 1",},
-        "flirt": {"txt":"+2 attraction +2 lust", "eff":"game.attraction += 2; game.lust += 2",},
-        "kiss" : {"txt":"+5 attraction +5 lust", "eff":"game.attraction += 5; game.lust += 5",},
+        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"game.increment('attraction',1,False); game.increment('lust',1)",},
+        "flirt": {"txt":"+2 attraction +2 lust", "eff":"game.increment('attraction',2,False); game.increment('lust',2)",},
+        "kiss" : {"txt":"+5 attraction +5 lust", "eff":"game.increment('attraction',5,False); game.increment('lust',5)",},
 
-        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"",},
+        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"game.attractionMultiplier *= 2",},
 
-        "drink" : {"txt":"Double the next gain or loss.", "eff":"",},
+        "drink" : {"txt":"Double the next gain or loss.", "eff":"game.allMultiplierOnce *= 2",},
 
         "spaceout" : {"txt":"does nothing", "eff":"",},
     }
@@ -152,11 +154,11 @@ init python:
             self.list = []
             self.discard_pile = []
 
-        def start(self):
-            self.deck = self.list
-            self.shuffle()
-            self.discard_pile = []
-            self.draw(5)
+        # def start(self):
+        #     self.deck = self.list
+        #     self.shuffle()
+        #     self.discard_pile = []
+        #     self.draw(5)
         
         def add_to_hand(self, *cards):
             for card in cards:
@@ -170,7 +172,7 @@ init python:
                 if len(self.deck)>0: #si y a une carte dans le deck
                     self.add_to_hand( self.deck[0] )
                     self.deck.pop(0)
-                    renpy.pause(delay, hard=True)
+                    renpy.pause(delay)
 
         def __str__(self):
             txt = []
@@ -201,13 +203,7 @@ init python:
         def discard(self, index, delay=0.2):
             renpy.play("draw.mp3", channel='drawcard')
             self.discard_pile.append( self.hand.pop(index) )
-            renpy.pause(delay, hard=True)
-
-                
-
-    def for_in(i, list, callback):
-        for i in list:
-            callback
+            renpy.pause(delay)
 
 label playCard(card, index):
     $ commands = card.eff
