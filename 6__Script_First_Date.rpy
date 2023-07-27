@@ -1,16 +1,12 @@
-label label_beginDuel():
-    $ game.state = "dating"
-
-    show screen screen_sex_ui
+label label_firstDate_begin():
     
-    show card_zone_bg zorder 2
+    show screen screen_date_ui(objectif_trust=5)
+    call label_beginDuel_common
 
-    $ game.animation_speed = 3
     $ game.lust = 0
-    $ game.orgasm = 0
+    $ game.trust = 0
+    $ game.attraction = 0
 
-    $ deck.start()
-    $ game.jeu_sensitive = True;
     return
 
 label SexEndTurn:
@@ -32,22 +28,22 @@ label SexEndTurn:
     return
 
 label label_first_date:
-    define pov = Character("[povname]")
+    # define pov = Character("[povname]")
     
-    python:
-        povname = renpy.input("What is your name?", length=32)
-        povname = povname.strip()
+    # python:
+    #     povname = renpy.input("What is your name?", length=32)
+    #     povname = povname.strip()
 
-        if not povname:
-            povname = "Watashi"
+    #     if not povname:
+    #         povname = "Watashi"
 
     scene bg bbt
-    show joyce standing at default
+    show joyce stand stare at default
     show fg bbt-table 
     
-    j "Hello, you're [povname] right?"
-    j "I'm Joyce."
-    show joyce smile
+    # j "Hello, you're [povname] right?"
+    # j "I'm Joyce."
+    show joyce base smile
     j "This is your first date no?"
     show joyce
     menu:
@@ -60,13 +56,14 @@ label label_first_date:
             j "Oh you're experienced"
             j "Then let the date begin!"
             $ tutorial = False
+
     show joyce 
     
-    call label_beginDuel()
+    call label_firstDate_begin()
     if tutorial:
         $ game.jeu_sensitive = False
         j "The aim of the date is to build trust, interest and attraction with the other."
-        j "You build trust and romance by playing the right cards at the right times."
+        j "You build trust and attraction by playing the right cards at the right times."
         j "This first date, you'll need to build 10 trust for it to be 'successful'"
         j "You will draw until you have 5 cards in your hand at the beginning of every turn."
         j "When you run out of cards in your deck, the date will end."
@@ -76,10 +73,10 @@ label label_first_date:
     label .gameLoop:
         $ game.jeu_sensitive = False
 
-        if current_speed != game.animation_speed:
-            show joyce cowgirl at toobig
-            show moan_bubble
-            $ current_speed = game.animation_speed
+        # if current_speed != game.animation_speed:
+            # show joyce cowgirl at toobig
+            # show moan_bubble
+            # $ current_speed = game.animation_speed
 
         if game.orgasm >= game.orgasmMax:
             j "i'm..{w=1.0}{nw}"

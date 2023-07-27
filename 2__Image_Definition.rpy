@@ -64,7 +64,7 @@ layeredimage joyce:
     group eyes:
         attribute blink default:
             "img_blink"
-        attribute noblink:
+        attribute stare:
             null
     attribute smile
 

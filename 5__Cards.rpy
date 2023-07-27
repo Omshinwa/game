@@ -4,11 +4,12 @@ style style_card_effect:
     line_spacing -5
     textalign 0.5
 
-label game_init:
+label label_game_init:
     #set up the deck and keybinds
 
     $ deck = Deck()
-    $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("peek"),Card("devil"),Card("newday"),Card("calm"),Card("maxcalm"),Card("pair"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("devil"),Card("faster"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("slower"),Card("slower"),Card("faster"),Card("devil"),Card("devil"),]
+    # $ deck.list = [Card("faster"),Card("slower"),Card("distract"),Card("peek"),Card("devil"),Card("newday"),Card("calm"),Card("maxcalm"),Card("pair"),Card("change"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("drawmax"),Card("devil"),Card("faster"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("devil"),Card("slower"),Card("slower"),Card("faster"),Card("devil"),Card("devil"),]
+    $ deck.list = [Card("peek"),Card("smalltalk"),Card("smalltalk"),Card("spaceout"),Card("spaceout"),Card("spaceout"),Card("spaceout"),Card("listen"),Card("flirt"),Card("hobbies"),Card("eyecontact"),Card("drink"),Card("touchy"),Card("listen")]
     show screen keybinds()
     return
 
@@ -35,7 +36,7 @@ init python:
             if len(self.txt)<30:
                 text_effect = Text(self.txt, style="style_card_effect", size=30) 
             else:
-                text_effect =  Text(self.txt, style="style_card_effect", size=25) 
+                text_effect =  Text(self.txt, style="style_card_effect", size=30 - (len(self.txt)/15) ) 
 
             textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
 
@@ -43,9 +44,6 @@ init python:
             card_name_box =  Window(card_name, style="empty", xsize=200, ysize=30)
                         
             self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,180), textbox)
-            # self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (5,5), card_name_box, (15,30), self.img_path, (15,195), textbox)
-
-            # self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,180), self.textbox)
             self.img_hover = Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (5,5), card_name_box, (15,30), self.img_path, (15,195), textbox)
 
             if "cond" in cardList[hash]:
@@ -83,13 +81,13 @@ init python:
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
 
-        "devil": {"txt":"Draw 2 cards, Double your current pleasure.", "eff":"deck.draw(2); game.lust *= 2",},
+        "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"deck.draw(2); game.lust *= 2",},
 
-        "newday": {"txt":"Divide your pleasure by 2", "eff":"game.lust = int(game.lust/2)",},
+        "newday": {"txt":"Divide your lust by 2", "eff":"game.lust = int(game.lust/2)",},
 
-        "calm": {"txt":"-2 pleasure", "eff":"game.lust -= 2",},
+        "calm": {"txt":"-2 lust", "eff":"game.lust -= 2",},
 
-        "maxcalm":{"txt":"-8 pleasure, can only be played if this card is your rightmost card.", 
+        "maxcalm":{"txt":"-8 lust, can only be played if this card is your rightmost card.", 
 
         "cond":"index == len(deck.hand)-1", "eff":"game.lust -= 8",},#card also work if you have multiple
 
@@ -97,19 +95,19 @@ init python:
 
         "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('label_card_change')"},
 
-        "drawmax": {"txt":"Draw 1 card for each 5 points of pleasure.", "eff":"deck.draw( int(game.lust/5) )",},
+        "drawmax": {"txt":"Draw 1 card for each 5 points of lust.", "eff":"deck.draw( int(game.lust/5) )",},
         
         "discard": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
         
         "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')",},
 
-        "angel's gift": {"txt":"If you have no cards left in your deck, -40 pleasure, go the slowest, shuffle back the discard pile into the deck", "eff":"renpy.call('label_card_ouroboros')",},
+        "angel's gift": {"txt":"If you have no cards left in your deck, -40 lust, go the slowest, shuffle back the discard pile into the deck", "eff":"renpy.call('label_card_ouroboros')",},
         
         "future vision": {"txt":"You can see the next card in your deck (click on the deck). This effect stacks.", "eff":"renpy.call('label_card_ouroboros')",},
 
         "reload": {"txt":"Shuffle back the whole hand and draw as many.", "eff":"renpy.call('label_card_shuffle')",},
         
-        "recovery" : {"txt":"Discard the whole hand, -1 pleasure for each card discarded.", "eff":"deck.draw( int(game.lust/5) )",},
+        "recovery" : {"txt":"Discard the whole hand, -1 lust for each card discarded.", "eff":"deck.draw( int(game.lust/5) )",},
 
         "draw5": {"txt":"Halve your dick size this date. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))",},
 
@@ -117,29 +115,30 @@ init python:
 
         "double": {"txt":"Next card is played twice.", "eff":"deck.add_to_hand( Card(11) )",},
         
-        "block": {"txt":"You cant gain pleasure from cards this turn.", "eff":"deck.add_to_hand( Card(11) )",},
+        "block": {"txt":"You cant gain lust from cards this turn.", "eff":"deck.add_to_hand( Card(11) )",},
 
         
         "exodia" : {"txt":"When you have 5 in your hand, you win.", "eff":"game.lust += 5",},
 
         
-        "smalltalk": {"txt":"+1 trust", "eff":"game.lust += 5",},
-
-        "play": {"txt":"+1 trust", "eff":"game.lust += 5",},
+        # "play": {"txt":"+1 trust", "eff":"game.lust += 5",},
 
         "listen": {"txt":"", "eff":"game.lust += 5",},
 
-        "hobbies": {"txt":"+1 interest", "eff":"game.lust += 5",},
+        "smalltalk": {"txt":"+1 trust", "eff":"game.trust += 1",},
+        "hobbies": {"txt":"+2 trust", "eff":"game.trust += 2",},
         
-        "peek": {"txt":"you peek.. (-2 trust)", "eff":"game.lust += 5",},
-        "peek2": {"txt":"you peek.. (-4 trust)", "eff":"game.lust += 3",},
-        "peek3": {"txt":"get +3 pleasure", "eff":"game.lust += 3",},
+        "peek": {"txt":"you peek.. (-2 trust +2 lust)", "eff":"game.trust -=2; game.lust += 2",},
+        "peek2": {"txt":"you peek.. (-4 trust +4 lust)", "eff":"game.trust -=4; game.lust += 4",},
+        "peek3": {"txt":"get +3 lust", "eff":"game.lust += 3",},
 
-        "eyecontact": {"txt":"+1 flirt -1 trust", "eff":"",},
-        "flirt": {"txt":"+2 flirt -2 trust", "eff":"",},
-        "kiss" : {"txt":"+10 flirt, divide trust by 2", "eff":"",},
+        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"game.attraction += 1; game.lust += 1",},
+        "flirt": {"txt":"+2 attraction +2 lust", "eff":"game.attraction += 2; game.lust += 2",},
+        "kiss" : {"txt":"+5 attraction +5 lust", "eff":"game.attraction += 5; game.lust += 5",},
 
-        "touchy" : {"txt":"For the rest of the turn, Romance gains are doubled", "eff":"",},
+        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"",},
+
+        "drink" : {"txt":"Double the next gain or loss.", "eff":"",},
 
         "spaceout" : {"txt":"does nothing", "eff":"",},
     }

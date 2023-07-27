@@ -12,10 +12,10 @@ style default:
 # The game starts here.
 
 label start:
-    call game_init
+    call label_game_init
     # jump label_second_date
-    # jump label_first_date
-    # jump label_cowgirl_start
+    jump label_first_date
+    jump label_cowgirl_start
     # jump label_footjob_start
     jump label_prison
     return

@@ -117,7 +117,7 @@ screen screen_card_hand:
             text "YOUR TURN" size 60 color "#FF0"
             xalign 0.5 yalign 0.5
 
-screen screen_pleasure_ui:
+screen screen_lust_ui:
 
     $ shaft_size = int( 196*(game.lustMax / 20) )
     $ fullSizeDick = 122 + shaft_size + 152
@@ -127,14 +127,14 @@ screen screen_pleasure_ui:
         ypos 20
         xpos 220
         xsize 122 + shaft_size + 152
-        image "ui/pleasure_bar1.png"
-        image "ui/pleasure_bar2.png" xpos 122 xzoom game.lustMax / 20
-        image "ui/pleasure_bar3.png" xpos 122+shaft_size
+        image "ui/lust_bar1.png"
+        image "ui/lust_bar2.png" xpos 122 xzoom game.lustMax / 20
+        image "ui/lust_bar3.png" xpos 122+shaft_size
 
         
-        image Crop( (0, 0, croppedSize, 120), "ui/pleasure_full_bar1.png") 
-        image Crop( (0, 0, int( (croppedSize - 122) * 20 / game.lustMax), 120), "ui/pleasure_full_bar2.png")  xpos 122 xzoom game.lustMax / 20
-        image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/pleasure_full_bar3.png")  xpos 122+shaft_size
+        image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
+        image Crop( (0, 0, int( (croppedSize - 122) * 20 / game.lustMax), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom game.lustMax / 20
+        image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
 
         fixed: #cum bar
             frame:
@@ -158,10 +158,16 @@ screen screen_pleasure_ui:
 
 screen screen_sex_ui:
     use screen_card_hand()
-    use screen_pleasure_ui()
+    use screen_lust_ui()
     use screen_orgasm_ui()
     use screen_buttons_ui()
-# image orgasm_full_bar = Crop(( (game.orgasm/game.orgasmMax) * (456), 0, 456, 120), "ui/orgasm_full_bar.png")
+    use screen_turn_counter()
+
+screen screen_date_ui(range_var = 20, objectif_lust=0, objectif_trust=0, objectif_attraction=0):
+    use screen_card_hand()
+    use screen_trust_ui(range_var, objectif_lust, objectif_trust, objectif_attraction)
+    use screen_buttons_ui()
+    use screen_turn_counter()
 
 screen screen_orgasm_ui:
 
@@ -190,7 +196,70 @@ screen screen_orgasm_ui:
                 color "#000000"
 
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
+    
+screen screen_trust_ui(range_var = 100, objectif_lust=0, objectif_trust=0, objectif_attraction=0):
+    fixed:
+        xpos 200
+        ypos 20
+        xsize 440
+        ysize 200
+        add "#00f"
+        
+        text "{k=15.0}LUST{/k}{vspace=12}{k=5.0}TRUST{/k}{vspace=12}{k=-2.0}Attraction{/k}":
+            size 40 style "outline_text" ypos 5
+        
+        fixed:
+            xpos 190
+            xsize 240
 
+            bar value game.lust range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
+                # if objectif_lust>0:
+                #     right_bar"#aaa" 
+                # else:
+                #     right_bar"#0000" 
+            bar value game.trust range range_var ypos 70 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
+            bar value game.attraction range range_var ypos 130 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
+
+
+            if objectif_lust==0:
+                $ lust_str = ""
+            else:
+                $ lust_str = "/" + str(objectif_lust)
+            if objectif_trust==0:
+                $ trust_str = ""
+            else:
+                $ trust_str = "/" + str(objectif_trust)
+            if objectif_attraction==0:
+                $ attraction_str = ""
+            else:
+                $ attraction_str = "/" + str(objectif_attraction)
+
+            text str(game.lust)+lust_str+"\n"+str(game.trust)+trust_str+"\n"+str(game.attraction)+attraction_str:
+                size 50 style "outline_text" xalign 0.5
+
+        
+screen screen_turn_counter:
+    fixed:
+        add "#00f"
+        xsize 200
+        ysize 200
+        xpos 1900 ypos 20 xanchor 1.0
+
+        text "{b}{i}{k=-25.0}"+str(game.turnLeft)+"{/k}{/i}{/b}":
+            size 200 style "outline_text" xalign 0 yalign 0.5
+            if (game.turnLeft)==1:
+                color "#ffed68"
+            if (game.turnLeft)<3:
+                color "#eb7412"
+            elif (game.turnLeft)<5:
+                color "#c64826"
+            else:
+                color "#000000"
+            if game.turnLeft>9:
+                size 180 xpos -80
+
+        text "turn(s) left":
+            size 25 style "outline_text" xalign 1.0 yalign 0.85
 screen screen_gameloop():
     pass
 
@@ -206,3 +275,10 @@ screen screen_buttons_ui():
         idle "ui/hide_ui.png"
         hover "ui/hide_ui_hover.png"
         action HideInterface()
+
+    # imagebutton:
+    #     xpos 20
+    #     ypos 180
+    #     idle "ui/prefs.png"
+    #     hover im.MatrixColor("ui/prefs.png", im.matrix.invert())
+    #     action ShowMenu('preferences')

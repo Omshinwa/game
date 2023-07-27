@@ -1,3 +1,21 @@
+label label_beginDuel_common():
+    $ game.state = "dating"
+    show card_zone_bg zorder 2
+    $ deck.start()
+    $ game.jeu_sensitive = True;
+    return
+
+label label_beginDuel():
+    show screen screen_sex_ui
+    call label_beginDuel_common
+
+    $ game.lust = 0
+    $ game.orgasm = 0
+    $ game.trust = 0
+    $ game.attraction = 0
+    return
+
+
 label label_cowgirl_start:
     scene bg bbt
 
