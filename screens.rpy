@@ -205,30 +205,30 @@ style input:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#choice
 
-screen choice(items):
-    style_prefix "choice"
+# screen choice(items):
+#     style_prefix "choice"
 
-    vbox:
-        for i in items:
-            textbutton i.caption action i.action
+#     vbox:
+#         for i in items:
+#             textbutton i.caption action i.action
 
 
-style choice_vbox is vbox
-style choice_button is button
-style choice_button_text is button_text
+# style choice_vbox is vbox
+# style choice_button is button
+# style choice_button_text is button_text
 
-style choice_vbox:
-    xalign 0.5
-    ypos 405
-    yanchor 0.5
+# style choice_vbox:
+#     xalign 0.5
+#     ypos 405
+#     yanchor 0.5
 
-    spacing gui.choice_spacing
+#     spacing gui.choice_spacing
 
-style choice_button is default:
-    properties gui.button_properties("choice_button")
+# style choice_button is default:
+#     properties gui.button_properties("choice_button")
 
-style choice_button_text is default:
-    properties gui.button_text_properties("choice_button")
+# style choice_button_text is default:
+#     properties gui.button_text_properties("choice_button")
 
 
 ## Quick Menu screen ###########################################################
@@ -415,13 +415,17 @@ style main_menu_version:
 ## transcluded (placed) inside it.
 
 screen game_menu(title, scroll=None, yinitial=0.0):
+    
 
     style_prefix "game_menu"
 
-    if main_menu:
-        add gui.main_menu_background
-    else:
-        add gui.game_menu_background
+    # if main_menu:
+    #     add gui.main_menu_background
+    # else:
+    #     add gui.game_menu_background
+    
+    if renpy.get_screen("load"): # title == "Save":
+        add "gui/overlay/test.png"
 
     frame:
         style "game_menu_outer_frame"
@@ -469,7 +473,7 @@ screen game_menu(title, scroll=None, yinitial=0.0):
                     transclude
 
     use navigation
-
+        
     textbutton _("Return"):
         style "return_button"
 
@@ -590,18 +594,15 @@ screen save():
 screen load():
 
     tag menu
-
     use file_slots(_("Load"))
 
 
 screen file_slots(title):
-
     default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
 
     use game_menu(title):
 
         fixed:
-
             ## This ensures the input will get the enter event before any of the
             ## buttons do.
             order_reverse True
@@ -625,21 +626,25 @@ screen file_slots(title):
                 xalign 0.5
                 yalign 0.5
 
-                spacing gui.slot_spacing
+                spacing 50 #gui.slot_spacing
 
                 for i in range(gui.file_slot_cols * gui.file_slot_rows):
 
                     $ slot = i + 1
 
                     button:
+
                         action FileAction(slot)
 
+                        # add "#00f"
                         has vbox
 
-                        add FileScreenshot(slot) xalign 0.5
+                        add FileScreenshot(slot) xalign 0.5 ypos 10
 
-                        text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
-                            style "slot_time_text"
+                        fixed:
+                            # add "#00f"
+                            text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
+                                style "slot_time_text"
 
                         text FileSaveName(slot):
                             style "slot_name_text"
@@ -713,6 +718,8 @@ style slot_button:
 
 style slot_button_text:
     properties gui.button_text_properties("slot_button")
+    xsize 325
+    size 33
 
 
 ## Preferences screen ##########################################################

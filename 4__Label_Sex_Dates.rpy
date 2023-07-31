@@ -6,14 +6,14 @@ label label_cowgirl_begin():
 label label_SexEndTurn:
     $ i=0
     while i < game.animation_speed:
-        $ game.lust += 1
+        $ date.lust += 1
         $ game.orgasm += 1
 
         $ i += 1
         pause(0.1)
 
     label .loseCondition:
-        if game.lust > game.trust:
+        if date.lust > date.trust:
             j "um.. don't you think I can notice?"
             j "Sorry but gotta go"
             j "Maybe we can do this another day?"
@@ -22,9 +22,9 @@ label label_SexEndTurn:
             j "Sorry bu that kinda dragged on"
             j "Maybe we can do this another day?"
 
-    $ game.attractionMultiplier = 1
-    $ game.trustMultiplier = 1
-    $ game.lustMultiplier = 1
+    $ date.attractionMultiplier = 1
+    $ date.trustMultiplier = 1
+    $ date.lustMultiplier = 1
 
     $ handSize = len(deck.hand)
     while handSize < 5 and len(deck.deck)>0:
@@ -37,16 +37,18 @@ label label_cowgirl:
 
     scene bg bbt
 
-    show joyce stand at default
+    show joyce stand at default_img_pos
     show fg bbt-table 
 
     # show img_moaning_bubbles
 
     show moan_bubble
     
+    $ renpy.music.play("sex_moans.wav", channel="sexvoice", loop=True)
+
     j "Hello, you must be Kevin."
     j "I'm Joyce"
-    show joyce base at default
+    show joyce base at default_img_pos
     j "Hi, this is your first date no?"
     j "I'll tell you how to get a successful date"
     j "Let the date begin!"
@@ -56,11 +58,10 @@ label label_cowgirl:
     j "Finally.. let's get a taste.."
     show expression "Joyce/sex/cowgirl/cowgirl (3).png" as joyce at toobig
     #play enter sex sound
+    $ renpy.play("sex_sloppy.wav", channel="sexsfx")
     j "Gnh..ugh.."
     j "You're so big..."
-    
     show joyce cowgirl at toobig
-    
     call label_cowgirl_begin()
     $ current_speed = game.animation_speed
     
@@ -83,7 +84,7 @@ label label_cowgirl:
             j "huff.."
             j "i-i came"
             
-            show joyce sitting at default
+            show joyce sitting at default_img_pos
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -111,7 +112,7 @@ label label_footjob_start:
     j "Hello, you must be Kevin."
     j "I'm Joyce"
     hide footjob-start-talk
-    show joyce smile at default
+    show joyce smile at default_img_pos
     j "Hi, this is your first date no?"
     j "I'll tell you how to get a successful date"
     j "Let the date begin!"
@@ -140,7 +141,7 @@ label label_footjob_start:
             j "huff.."
             j "i-i came"
             
-            show joyce sitting at default
+            show joyce sitting at default_img_pos
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()

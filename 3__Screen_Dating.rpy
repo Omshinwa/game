@@ -10,10 +10,10 @@ init python:
 
     def getCardYdisplace():
         if not game.jeu_sensitive:
-            return 0
+            return 10
         if game.isHoverHand:
-            return 0
-        return 150
+            return -140
+        return 10
 
     focus_card_index = -1
 
@@ -21,33 +21,16 @@ transform trans_card_played:
     xalign 0.5 yanchor 1.0 ypos 1.0
     ease 0.4 ypos 0.5
 
-screen screen_card_hand(endTurn = "label_SexEndTurn"):
-    # if "endTurn" in kwargs:
-    #     $ endTurn = kwargs["endTurn"]
-    # else:
-    #     $ endTurn = "label_SexEndTurn"
-    
+screen screen_card_hand():
     $ paddingPerCard = getCardPadding(len(deck.hand))
-    $ ydisplace = getCardYdisplace()
-
-    #     cards at the bottom
-    button:
-        hovered SetVariable("game.isHoverHand", True)
-        unhovered SetVariable("game.isHoverHand", False)
-        action NullAction()
-        xsize 1920
-        ysize 300
-        yalign 1.0
-        sensitive game.jeu_sensitive
     
-    fixed:
+    fixed at date.updateYdisplace(): #Transform(ypos = 1220 + date.ydisplace):
         xsize 1800
-        ysize 200
-        yalign 1.0
+        ysize game.card_ysize
+        yanchor 1.0
+        # ypos 1220 + date.ydisplace
 
         fixed:
-            ypos -140 + ydisplace
-            # ypos 750
             xsize int( len(deck.hand)* game.card_xsize + (paddingPerCard*(len(deck.hand)-1)) )
             xalign 0.5
             for index, card in enumerate(deck.hand):
@@ -84,6 +67,21 @@ screen screen_card_hand(endTurn = "label_SexEndTurn"):
                         hovered [SetVariable("game.isHoverHand", True), SetVariable("focus_card_index", index)]
                         unhovered [SetVariable("game.isHoverHand", False), SetVariable("focus_card_index", -1)]
 
+screen screen_date_bottom_ui(endTurn = "label_SexEndTurn"):
+
+    #     cards at the bottom
+    button:
+        hovered SetVariable("game.isHoverHand", True)
+        unhovered SetVariable("game.isHoverHand", False)
+        action NullAction()
+        xsize 1700
+        ysize game.card_ysize
+        yalign 1.0
+        xalign 0.35
+        sensitive game.jeu_sensitive
+
+    use screen_card_hand()
+
     fixed:
         xpos 1750
         ypos 890
@@ -93,14 +91,15 @@ screen screen_card_hand(endTurn = "label_SexEndTurn"):
             ypos 22
             xsize 30
             text str(len(deck.deck)) size 80 xalign 0.5 style "outline_text"
-        
+
+    fixed:
+        ypos 710
+        xpos 1650
         imagebutton:
-            ypos -180
-            xpos -100
             idle "ui/end_turn.png"
-            action Call(endTurn)
-            # sensitive game.jeu_sensitive
             hover "ui/end_turn_hover.png"
+            action Call(endTurn)
+            sensitive game.jeu_sensitive
     
     # TRASHCAN
     fixed:
@@ -124,52 +123,52 @@ screen screen_card_hand(endTurn = "label_SexEndTurn"):
 
 screen screen_lust_ui:
 
-    $ shaft_size = int( 196*(game.lustMax / 20) )
+    $ shaft_size = int( 196*(date.lustMax / 20) )
     $ fullSizeDick = 122 + shaft_size + 152
-    $ croppedSize = int ( fullSizeDick * game.lust/game.lustMax )
+    $ croppedSize = int ( fullSizeDick * date.lust/date.lustMax )
     fixed:
         # xpos 1920 - 500 - shaft_size
         ypos 20
         xpos 220
         xsize 122 + shaft_size + 152
         image "ui/lust_bar1.png"
-        image "ui/lust_bar2.png" xpos 122 xzoom game.lustMax / 20
+        image "ui/lust_bar2.png" xpos 122 xzoom date.lustMax / 20
         image "ui/lust_bar3.png" xpos 122+shaft_size
 
         
         image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
-        image Crop( (0, 0, int( (croppedSize - 122) * 20 / game.lustMax), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom game.lustMax / 20
+        image Crop( (0, 0, int( (croppedSize - 122) * 20 / date.lustMax), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom date.lustMax / 20
         image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
 
-        fixed: #cum bar
-            frame:
-                xsize croppedSize
-                ysize 30
-                background Solid("#3700ff")
+        # fixed: #cum bar
+        #     frame:
+        #         xsize croppedSize
+        #         ysize 30
+        #         background Solid("#3700ff")
 
-        text str(game.lust) + "/" + str(game.lustMax):
+        text str(date.lust) + "/" + str(date.lustMax):
             size 50 style "outline_text" xalign 0.45 ypos 40
-            if (game.lust/game.lustMax)>0.9:
+            if (date.lust/date.lustMax)>0.9:
                 color "#ffed68"
-            if (game.lust/game.lustMax)>0.7:
+            if (date.lust/date.lustMax)>0.7:
                 color "#eb7412"
-            elif (game.lust/game.lustMax)>0.5:
+            elif (date.lust/date.lustMax)>0.5:
                 color "#c64826"
             else:
                 color "#000000"
         
-        
-        text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+        if game.state == "dating":
+            text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
 screen screen_sex_ui(**kwargs):
-    use screen_card_hand(kwargs["endTurn"])
+    use screen_date_bottom_ui(kwargs["endTurn"])
     use screen_lust_ui()
     use screen_orgasm_ui()
     use screen_buttons_ui()
     use screen_turn_counter()
 
 screen screen_date_ui(**kwargs):
-    use screen_card_hand(kwargs["endTurn"])
+    use screen_date_bottom_ui(kwargs["endTurn"])
     use screen_trust_ui(**kwargs["objectives"])
     use screen_buttons_ui()
     use screen_turn_counter()
@@ -213,7 +212,7 @@ screen screen_trust_ui(range_var = 100, **kwargs):
         text "{k=15.0}LUST{/k}":
             size 40 style "outline_text" ypos 5
             if kwargs["lust"] != 0:
-                if game.lust < kwargs["lust"]:
+                if date.lust < kwargs["lust"]:
                     color "#f00"
                 else:
                     color "#00ffae"
@@ -221,7 +220,7 @@ screen screen_trust_ui(range_var = 100, **kwargs):
         text "{k=5.0}TRUST{/k}":
             size 40 style "outline_text" ypos 67
             if kwargs["trust"] != 0:
-                if game.trust < kwargs["trust"]:
+                if date.trust < kwargs["trust"]:
                     color "#f00"
                 else:
                     color "#00ffae"
@@ -229,7 +228,7 @@ screen screen_trust_ui(range_var = 100, **kwargs):
         text "{vspace=12}{k=-2.0}Attraction{/k}":
             size 40 style "outline_text" ypos 115
             if kwargs["attraction"] != 0:
-                if game.attraction < kwargs["attraction"]:
+                if date.attraction < kwargs["attraction"]:
                     color "#f00"
                 else:
                     color "#00ffae"
@@ -238,9 +237,9 @@ screen screen_trust_ui(range_var = 100, **kwargs):
             xpos 190
             xsize 240
 
-            bar value game.lust range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
-            bar value game.trust range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
-            bar value game.attraction range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
+            bar value date.lust range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
+            bar value date.trust range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
+            bar value date.attraction range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
 
 
             for index, stat in enumerate(["lust", "trust", "attraction"]):
@@ -262,8 +261,6 @@ screen screen_trust_ui(range_var = 100, **kwargs):
                     else:
                         text str(eval('game.' + stat)) + "/" + str(objectif):
                             size 50 style "outline_text" xalign 0.5 ypos 60*index color "#00ffae"
-
-# screen screen_mini_trust_ui(stat, index):
 
         
 screen screen_turn_counter:
@@ -288,6 +285,7 @@ screen screen_turn_counter:
 
         text "turn(s) left":
             size 25 style "outline_text" xalign 1.0 yalign 0.85
+            
 screen screen_gameloop():
     pass
 

@@ -4,12 +4,13 @@ label label_beginDuel_common(**kwargs):
     $ game.jeu_sensitive = False;
     $ game.state = "dating"
 
-    $ game.lust = 0
-    $ game.lustMultiplier = 1
-    $ game.trust = 0
-    $ game.trustMultiplier = 1
-    $ game.attraction = 0
-    $ game.attractionMultiplier = 1
+    $ date.lust = game.lust
+    $ date.lustMax = game.lustMax
+    $ date.lustMultiplier = 1
+    $ date.trust = game.trust
+    $ date.trustMultiplier = 1
+    $ date.attraction = game.attraction
+    $ date.attractionMultiplier = 1
     $ game.animation_speed = 3
 
     show card_zone_bg zorder 2
@@ -19,7 +20,7 @@ label label_beginDuel_common(**kwargs):
     $ deck.discard_pile = []
     $ deck.hand = []
 
-    if game.progress < 3:
+    if game.progress[0] < 3:
         show screen screen_date_ui(**kwargs)
     else:
         show screen screen_sex_ui(**kwargs)
@@ -30,9 +31,9 @@ label label_beginDuel_common(**kwargs):
     return
 
 label label_endTurn_common():
-    $ game.attractionMultiplier = 1
-    $ game.trustMultiplier = 1
-    $ game.lustMultiplier = 1
+    $ date.attractionMultiplier = 1
+    $ date.trustMultiplier = 1
+    $ date.lustMultiplier = 1
 
     $ handSize = len(deck.hand)
     while handSize < 5 and len(deck.deck)>0:

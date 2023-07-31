@@ -1,6 +1,6 @@
 init python:
     def play_sexsound(trans, st, at, filename):
-        renpy.play(filename, channel='voice')
+        renpy.play(filename, channel='sexsfx')
         return None
    
 transform toobig:
@@ -8,7 +8,7 @@ transform toobig:
     ypos -100
     zoom 0.9
 
-transform default:
+transform default_img_pos:
     xalign 0.5
     yanchor 1.0
     ypos 1080 - 200
@@ -61,34 +61,41 @@ layeredimage joyce:
             "joyce_2nd"
         attribute stand:
             "joyce_stand"
+        attribute armscrossed
+        attribute 2nd_armscrossed
+
     group eyes:
         attribute blink default:
             "img_blink"
         attribute stare:
             null
-    attribute smile
+        attribute upset
+    group mouth:
+        attribute smile
+        attribute neutral:
+            null
 
 image img_blink:
     "Joyce/joyce_blink.png"
+    alpha 0.0
+    pause(3.0)
     alpha 1.0
     pause(0.1)
     alpha 0.0
-    pause(4.0)
+    pause(3.0)
     alpha 1.0
     pause(0.1)
     alpha 0.0
     pause(0.1)
     alpha 1.0
     pause(0.1)
-    alpha 0.0
-    pause(4.0)
     repeat
 
 image joyce cowgirl:
     "Joyce/sex/cowgirl/cowgirl (1).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])
 
-    function renpy.curry(play_sexsound)(filename="draw.mp3") #hacky
+    function renpy.curry(play_sexsound)(filename="sex_slap.wav") #hacky
 
     "Joyce/sex/cowgirl/cowgirl (2).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])

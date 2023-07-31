@@ -2,8 +2,20 @@ screen keybinds():
     key 'K_F2' action Function(debugmode)
     # ... etc.
     
-init python:
-    global_var = {"page":0, "card_per_line":7}
+default global_var = {"page":0, "card_per_line":7}
+
+screen screen_day():
+    fixed:
+        add "#00f"
+        xsize 200
+        ysize 200
+        xpos 20 ypos 20
+
+        text "day":
+            size 50 style "outline_text"  xalign 0.5 yalign 0.0
+
+        text "{b}{k=0.0}"+str(game.day)+"{/k}{/b}":
+            size 150 style "outline_text"  xalign 0.5 yalign 1.0
 
 screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 

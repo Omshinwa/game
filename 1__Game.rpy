@@ -5,7 +5,9 @@ init python:
     def nullfunction(*args):
         return
 
-    renpy.music.register_channel("sexsfx", "sfx")
+    renpy.music.register_channel("sexsfx", "voice")
+    renpy.music.register_channel("sexvoice", "voice")
+
     renpy.music.register_channel("drawcard", "sfx")
     renpy.music.register_channel("activatecard", "sfx")
 
@@ -16,6 +18,8 @@ init python:
             self.card_xsize = 230
             self.card_ysize = 330
             
+            self.score = 0
+
             self.lustMax = 10
             self.lust = 0
 
@@ -34,12 +38,24 @@ init python:
             self.animation_speed = 3
             self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
 
-            self.state = ""
+            self.state = "" #either "dating" or "deckbuilding"
 
-            self.isHoverHand = True
+            self.isHoverHand = False
 
             self.story = ["firstDate", "secondDate", "thirdDate", "fourthDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
-            self.progress = 0
+            self.progress = [0,0] # left is progress, right is number of passing days spend on that step
+
+            self.day = 0
+
+            self.lastPlayed = ""
+
+            self.debug_flag = 0
+
+        def nextDay(self, label_callback):
+            renpy.play("newday.wav", channel='sound') 
+            self.day += 1
+            renpy.with_statement(fade)
+            renpy.jump(label_callback)
 
         def increment(self, which, value, resetAllMultiplier = True):
             if which == "trust":
@@ -64,14 +80,9 @@ init python:
             if self.animation_speed > 1:
                 self.animation_speed -= 1
                 # renpy.show("joyce cowgirl")
-    
-    
-    game = Game()
-    game.debug_flag = 0
 
     class Date():
         def __init__(self, **kwargs):
-            
             
             if "turnLeft" in kwargs:
                 self.turnLeft = kwargs["turnLeft"]
@@ -97,18 +108,53 @@ init python:
             if "isGameOver" in kwargs:
                 self.config["isGameOver"] = kwargs["isGameOver"]
             else:
-                self.config["isGameOver"] = "len(deck.deck) == 0 or game.lust > game.trust or game.turnLeft == 0"
+                self.config["isGameOver"] = "len(deck.deck) == 0 or date.lust > date.trust or game.turnLeft == 0"
 
             if "isWin" in kwargs:
                 self.config["isWin"] = kwargs["isWin"]
             else:
-                self.config["isWin"] = "game.lust >= self.config['objectif_lust'] and game.attraction >= self.config['objectif_attraction'] and game.trust >= self.config['objectif_trust']"
-        
+                self.config["isWin"] = "date.lust >= self.config['objectif_lust'] and date.attraction >= self.config['objectif_attraction'] and date.trust >= self.config['objectif_trust']"
+
+            # label to call at the end of every turn
+            if "endTurn" in kwargs:
+                self.endTurn = kwargs["endTurn"]
+            else:
+                self.endTurn = ""
+
+            self.ydisplace = Transform( ypos=1080 )
+
+            self.lustMax = 10
+            self.lust = 0
+
+            self.trust = 0
+            self.attraction = 0
+
+            self.trustMultiplier = 1
+            self.attractionMultiplier= 1
+            self.lustMultiplier = 1
+
         def isGameOver(self):
             return eval(self.config["isGameOver"])
         def isWin(self):
             return eval(self.config["isWin"])
 
+        def updateYdisplace(self):
+            if not game.jeu_sensitive:
+                pass
+            elif game.isHoverHand:
+                self.ydisplace = trsfm_cards_go_up
+            else:
+                self.ydisplace = trsfm_cards_go_down
+            
+            return self.ydisplace
+
+transform trsfm_cards_go_down:
+    ypos 1080
+    ease 0.2 ypos 1210
+
+transform trsfm_cards_go_up:
+    ypos 1210
+    ease 0.2 ypos 1080
 
 label label_null(*args):
     return
