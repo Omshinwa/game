@@ -17,6 +17,19 @@ screen screen_day():
         text "{b}{k=0.0}"+str(game.day)+"{/k}{/b}":
             size 150 style "outline_text"  xalign 0.5 yalign 1.0
 
+screen screen_deck_stack():
+    imagebutton:
+        idle "ui/exploring-deck_stack.png"
+        hover im.MatrixColor("ui/exploring-deck_stack.png", im.matrix.tint(0.8,0.8,1))
+        action Show("screen_show_deck", dissolve, deck.list, "label_null")
+        focus_mask True
+
+    fixed:
+        xpos 1780
+        ypos 70
+        xsize 30
+        text str(len(deck.list)) size 60 xalign 0.5 style "outline_text"
+
 screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
     modal True

@@ -17,10 +17,6 @@ init python:
 
     focus_card_index = -1
 
-transform trans_card_played:
-    xalign 0.5 yanchor 1.0 ypos 1.0
-    ease 0.4 ypos 0.5
-
 screen screen_card_hand():
     $ paddingPerCard = getCardPadding(len(deck.hand))
     
@@ -169,7 +165,7 @@ screen screen_sex_ui(**kwargs):
 
 screen screen_date_ui(**kwargs):
     use screen_date_bottom_ui(kwargs["endTurn"])
-    use screen_trust_ui(**kwargs["objectives"])
+    use screen_trust_ui()
     use screen_buttons_ui()
     use screen_turn_counter()
 
@@ -200,10 +196,16 @@ screen screen_orgasm_ui:
                 color "#000000"
 
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
-    
-screen screen_trust_ui(range_var = 100, **kwargs):
+
+screen screen_trust_ui(range_var = 100):
+
+    if game.state == "dating":
+        $ gameOrDate = date
+    else:
+        $ gameOrDate = game
+
     fixed:
-        xpos 200
+        xpos 220
         ypos 20
         xsize 440
         ysize 200
@@ -211,24 +213,24 @@ screen screen_trust_ui(range_var = 100, **kwargs):
         
         text "{k=15.0}LUST{/k}":
             size 40 style "outline_text" ypos 5
-            if kwargs["lust"] != 0:
-                if date.lust < kwargs["lust"]:
+            if game.state == "dating" and date.objectives["lust"] != 0:
+                if date.lust < date.objectives["lust"]:
                     color "#f00"
                 else:
                     color "#00ffae"
         
         text "{k=5.0}TRUST{/k}":
             size 40 style "outline_text" ypos 67
-            if kwargs["trust"] != 0:
-                if date.trust < kwargs["trust"]:
+            if game.state == "dating" and date.objectives["trust"] != 0:
+                if date.trust < date.objectives["trust"] :
                     color "#f00"
                 else:
                     color "#00ffae"
         
         text "{vspace=12}{k=-2.0}Attraction{/k}":
             size 40 style "outline_text" ypos 115
-            if kwargs["attraction"] != 0:
-                if date.attraction < kwargs["attraction"]:
+            if game.state == "dating" and date.objectives["attraction"] != 0:
+                if date.attraction < date.objectives["attraction"]:
                     color "#f00"
                 else:
                     color "#00ffae"
@@ -237,31 +239,32 @@ screen screen_trust_ui(range_var = 100, **kwargs):
             xpos 190
             xsize 240
 
-            bar value date.lust range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
-            bar value date.trust range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
-            bar value date.attraction range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
+            bar value getattr(gameOrDate, "lust") range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
+            bar value getattr(gameOrDate, "trust") range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
+            bar value getattr(gameOrDate, "attraction") range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
 
 
             for index, stat in enumerate(["lust", "trust", "attraction"]):
-
-                if stat == "lust":
-                    $ objectif = kwargs["lust"]
+                
+                if game.state != "dating":
+                    $ objectif = 0
+                elif stat == "lust":
+                    $ objectif = date.objectives["lust"]
                 elif stat == "trust":
-                    $ objectif = kwargs["trust"]
+                    $ objectif = date.objectives["trust"]
                 elif stat == "attraction":
-                    $ objectif = kwargs["attraction"]
+                    $ objectif = date.objectives["attraction"]
 
                 if objectif == 0:
-                    text str(eval('game.' + stat)):
+                    text str( getattr(gameOrDate, stat)):
                         size 50 style "outline_text" xalign 0.5 ypos 60*index
                 else:
-                    if getattr(game, stat) < objectif:
-                        text str(eval('game.' + stat)) + "/" + str(objectif):
-                            size 50 style "outline_text" xalign 0.5 ypos 60*index color "#f00"
-                    else:
-                        text str(eval('game.' + stat)) + "/" + str(objectif):
-                            size 50 style "outline_text" xalign 0.5 ypos 60*index color "#00ffae"
-
+                    text str( getattr(gameOrDate, stat) ) + "/" + str(objectif):
+                        size 50 style "outline_text" xalign 0.5 ypos 60*index 
+                        if getattr(gameOrDate, stat) < objectif:
+                            color "#f00"
+                        else:
+                            color "#00ffae"
         
 screen screen_turn_counter:
     fixed:

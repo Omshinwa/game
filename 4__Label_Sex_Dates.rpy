@@ -4,6 +4,11 @@ label label_cowgirl_begin():
     return
 
 label label_SexEndTurn:
+    
+    $ date.attractionMultiplier = 1
+    $ date.trustMultiplier = 1
+    $ date.lustMultiplier = 1
+
     $ i=0
     while i < game.animation_speed:
         $ date.lust += 1
@@ -21,10 +26,6 @@ label label_SexEndTurn:
             j "Aw gotta go."
             j "Sorry bu that kinda dragged on"
             j "Maybe we can do this another day?"
-
-    $ date.attractionMultiplier = 1
-    $ date.trustMultiplier = 1
-    $ date.lustMultiplier = 1
 
     $ handSize = len(deck.hand)
     while handSize < 5 and len(deck.deck)>0:

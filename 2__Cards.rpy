@@ -76,6 +76,7 @@ init python:
 
         "newday": {"txt":"Divide your lust by 2", "eff":"date.lust = int(date.lust/2)",},
 
+        "awakening": {"txt":"This turn: double Lust reductions.", "eff":"date.lustMultiplier *= 2",},
         "calm": {"txt":"-2 lust", "eff":"date.lust -= 2",},
 
         "maxcalm":{"txt":"-8 lust, can only be played if this card is your rightmost card.", 
@@ -117,21 +118,21 @@ init python:
 
         "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2",},
 
-        "smalltalk": {"txt":"+1 trust", "eff":"game.increment('trust',1)",},
-        "hobbies": {"txt":"+2 trust", "eff":"game.increment('trust',2)",},
-        "joke": {"txt":"+4 trust", "eff":"game.increment('trust',4)",},
+        "smalltalk": {"txt":"+1 trust", "eff":"date.increment('trust',1)",},
+        "hobbies": {"txt":"+2 trust", "eff":"date.increment('trust',2)",},
+        "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
-        "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"game.increment('trust',-1,False); game.increment('lust',1)",},
-        "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"game.increment('trust',-3,False); game.increment('lust',3)",},
-        "peek3": {"txt":"get +5 lust", "eff":"game.increment('lust',5)",},
+        "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"date.increment('trust',-1,False); date.increment('lust',1)",},
+        "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"date.increment('trust',-3,False); date.increment('lust',3)",},
+        "peek3": {"txt":"get +5 lust", "eff":"date.increment('lust',5)",},
 
-        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"game.increment('attraction',1,False); game.increment('lust',1)",},
-        "flirt": {"txt":"+2 attraction +2 lust", "eff":"game.increment('attraction',2,False); game.increment('lust',2)",},
-        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"game.increment('attraction',4,False); game.increment('lust',4)",},
+        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)",},
+        "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)",},
+        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"date.increment('attraction',4,False); date.increment('lust',4)",},
 
         "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2",},
 
-        "drink" : {"txt":"Double the next gain or loss.", "eff":"game.allMultiplierOnce *= 2",},
+        "drink" : {"txt":"Triple the next gain or loss effect.", "eff":"game.allMultiplierOnce *= 3",},
 
         "spaceout" : {"txt":"does nothing", "eff":"",},
     }

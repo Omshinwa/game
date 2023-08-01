@@ -96,6 +96,8 @@ style frame:
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
 screen say(who, what):
+    # modal True
+
     style_prefix "say"
 
     window:
@@ -357,12 +359,15 @@ screen main_menu():
     add gui.main_menu_background
 
     ## This empty frame darkens the main menu.
-    frame:
-        style "main_menu_frame"
+    # frame:
+    #     style "main_menu_frame"
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
-    use navigation
+    
+    fixed:
+        xpos 1000
+        use navigation
 
     if gui.show_name:
 
@@ -382,11 +387,11 @@ style main_menu_text is gui_text
 style main_menu_title is main_menu_text
 style main_menu_version is main_menu_text
 
-style main_menu_frame:
-    xsize 420
-    yfill True
+# style main_menu_frame:
+    # xsize 420
+    # yfill True
 
-    background "gui/overlay/main_menu.png"
+    # background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
     xalign 1.0
@@ -419,13 +424,13 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
     style_prefix "game_menu"
 
-    # if main_menu:
-    #     add gui.main_menu_background
-    # else:
-    #     add gui.game_menu_background
+    if main_menu:
+        add gui.main_menu_background
+    else:
+        add gui.game_menu_background
     
-    if renpy.get_screen("load"): # title == "Save":
-        add "gui/overlay/test.png"
+    # if renpy.get_screen("load"): # title == "Save":
+    #     add "gui/overlay/test.png"
 
     frame:
         style "game_menu_outer_frame"

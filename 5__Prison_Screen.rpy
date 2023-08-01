@@ -1,6 +1,8 @@
 screen screen_prison:
     use screen_lust_ui
     use screen_day
+    use screen_deck_stack
+
     imagebutton:
         idle "prison/toilet.png"
         hover im.MatrixColor("prison/toilet.png", im.matrix.tint(1,1,5))
@@ -23,17 +25,6 @@ screen screen_prison:
         hover im.MatrixColor("prison/food-tray.png", im.matrix.tint(1,1,5))
         action Show("screen_prison_food")
         focus_mask True
-
-    imagebutton:
-        idle "ui/exploring-deck_stack.png"
-        hover im.MatrixColor("ui/exploring-deck_stack.png", im.matrix.tint(0.8,0.8,1))
-        action Show("screen_show_deck", dissolve, deck.list, "label_null")
-        focus_mask True
-    fixed:
-        xpos 1780
-        ypos 70
-        xsize 30
-        text str(len(deck.list)) size 60 xalign 0.5 style "outline_text"
 
 
 init python:

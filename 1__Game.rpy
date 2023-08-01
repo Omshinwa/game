@@ -17,8 +17,6 @@ init python:
             self.jeu_sensitive = False
             self.card_xsize = 230
             self.card_ysize = 330
-            
-            self.score = 0
 
             self.lustMax = 10
             self.lust = 0
@@ -51,24 +49,11 @@ init python:
 
             self.debug_flag = 0
 
-        def nextDay(self, label_callback):
-            renpy.play("newday.wav", channel='sound') 
-            self.day += 1
-            renpy.with_statement(fade)
-            renpy.jump(label_callback)
-
-        def increment(self, which, value, resetAllMultiplier = True):
-            if which == "trust":
-                self.trust += value * self.trustMultiplier * self.allMultiplierOnce
-            elif which == "attraction":
-                self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
-            elif which == "lust":
-                self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-            else:
-                raise ValueError("no valid specified argument: + which : "+ which) 
-            
-            if resetAllMultiplier:
-                self.allMultiplierOnce = 1
+        def nextDay(self, label_callback=""):
+            # renpy.play("newday.wav", channel='sound') 
+            # self.day += 1
+            if label_callback != "":
+                renpy.call(label_callback, True)
 
 
         def speedUp(self):
@@ -89,21 +74,23 @@ init python:
             else:
                 self.turnLeft = 0
 
-            self.config = { "objectives":{} }
+            self.config = {}
+
+            self.objectives = {}
             if "objectif_trust" in kwargs:
-                self.config["objectives"]["trust"] = kwargs["objectif_trust"]
+                self.objectives["trust"] = kwargs["objectif_trust"]
             else:
-                self.config["objectives"]["trust"] = 0
+                self.objectives["trust"] = 0
             
             if "objectif_attraction" in kwargs:
-                self.config["objectives"]["attraction"] = kwargs["objectif_attraction"]
+                self.objectives["attraction"] = kwargs["objectif_attraction"]
             else:
-                self.config["objectives"]["attraction"] = 0
+                self.objectives["attraction"] = 0
             
             if "objectif_lust" in kwargs:
-                self.config["objectives"]["lust"] = kwargs["objectif_lust"]
+                self.objectives["lust"] = kwargs["objectif_lust"]
             else:
-                self.config["objectives"]["lust"] = 0
+                self.objectives["lust"] = 0
 
             if "isGameOver" in kwargs:
                 self.config["isGameOver"] = kwargs["isGameOver"]
@@ -133,6 +120,14 @@ init python:
             self.attractionMultiplier= 1
             self.lustMultiplier = 1
 
+            self.allMultiplierOnce= 1
+
+            self.orgasmMax = 20
+            self.orgasm = 0
+
+            self.animation_speed = 3
+            self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
+
         def isGameOver(self):
             return eval(self.config["isGameOver"])
         def isWin(self):
@@ -148,13 +143,18 @@ init python:
             
             return self.ydisplace
 
-transform trsfm_cards_go_down:
-    ypos 1080
-    ease 0.2 ypos 1210
-
-transform trsfm_cards_go_up:
-    ypos 1210
-    ease 0.2 ypos 1080
+        def increment(self, which, value, resetAllMultiplier = True):
+            if which == "trust":
+                self.trust += value * self.trustMultiplier * self.allMultiplierOnce
+            elif which == "attraction":
+                self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
+            elif which == "lust":
+                self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+            else:
+                raise ValueError("no valid specified argument: + which : "+ which) 
+            
+            if resetAllMultiplier:
+                self.allMultiplierOnce = 1
 
 label label_null(*args):
     return

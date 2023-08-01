@@ -1,10 +1,5 @@
-label label_firstDate_begin():
-    
-    call label_beginDuel_common(objectives = date.config["objectives"], endTurn = "label_firstDate_endTurn")
-
-    return
-
 label label_firstDate:
+    $ game.state = "dating"
     $ date = Date(objectif_trust = 8, isWin = "date.trust >= 8", turnLeft = 5, endTurn = "label_firstDate_endTurn")
 
     define pov = Character("[povname]")
@@ -44,7 +39,8 @@ label label_firstDate:
         j "hi again"
         j "I hope this date goes better than the last"
     
-    call label_firstDate_begin()
+    call label_beginDuel_common(endTurn = "label_firstDate_endTurn")
+
     if tutorial:
         $ game.jeu_sensitive = False
         show joyce neutral
@@ -63,8 +59,6 @@ label label_firstDate:
         hide screen screen_tutorial with dissolve
         show joyce smile 
         j "Got it?\nLet's start the date!"
-        
-        $ game.jeu_sensitive = True
     
     play sound "datestart.mp3"
     show date-start at truecenter with blinds
@@ -90,7 +84,7 @@ label label_firstDate:
                 j "See ya."
                 $ game.progress[0] += 1
                 $ game.progress[1] = 0
-                jump label_prison
+                jump label_home
             
             show joyce at default_img_pos
     
@@ -120,16 +114,16 @@ label label_firstDate_endTurn:
                 j "um.. don't you think I can notice?"
                 j "Sorry but gotta go"
                 j "Maybe we can do this another day?"
-                $ game.progress[1] += 1
-                jump label_prison
+
             elif date.turnLeft == 0 or len(deck.deck) == 0:
                 hide screen screen_date_ui with dissolve
                 j "OH look at the time."
                 j "Sorry but I gotta go."
                 j "That kinda dragged on no?"
                 j "Maybe we can do this another day? See ya."
-                $ game.progress[1] += 1
-                jump label_prison
+            
+            $ game.progress[1] += 1
+            $ game.nextDay("label_home")
         else:
             if date.turnLeft == 4:
                 j "So youre [povname], you often do blind dates like that?"
@@ -143,10 +137,9 @@ label label_firstDate_endTurn:
     call label_endTurn_common
     return
 
-screen screen_tutorial(disp):
-    add disp
-
-
+screen screen_tutorial(disp, properties={}):
+    add disp:
+        properties properties
 
 
 label label_secondDate:
@@ -158,7 +151,7 @@ label label_secondDate:
     j "Hello again"
     j "These days it's getting hotter and hotter huh?"
 
-    call label_beginDuel_common(objectives = date.config["objectives"], endTurn = "label_firstDate_endTurn")
+    call label_beginDuel_common(objectives = date.objectives, endTurn = "label_firstDate_endTurn")
     play sound "datestart.mp3"
     show date-start at truecenter with blinds
     pause 0.4

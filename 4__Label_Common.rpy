@@ -1,4 +1,4 @@
-# **config has **date.config["objectives"], endTurn = "label_firstDate_endTurn"
+# **config has **date.objectives, endTurn = "label_firstDate_endTurn"
 #
 label label_beginDuel_common(**kwargs):
     $ game.jeu_sensitive = False;
@@ -27,7 +27,6 @@ label label_beginDuel_common(**kwargs):
 
     $ deck.draw(5)
 
-    $ game.jeu_sensitive = True;
     return
 
 label label_endTurn_common():
@@ -41,4 +40,23 @@ label label_endTurn_common():
         $ handSize = len(deck.hand)
     
     $ game.jeu_sensitive = True;
+    return
+
+
+init python:
+    def hide_all_screens_but(expection = "#"):
+        listOfScreen = ["screen_prison", "screen_home", "tutorial"]
+        for screen in listOfScreen:
+            if expection not in screen:
+                renpy.hide_screen( screen )
+
+label label_add_card_to_deck( cardName, xbase, ybase):
+    hide screen screen_tutorial
+    show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xbase, ybase) ) 
+    pause 0.5
+    play sound "draw.mp3"
+    pause 0.45
+    $ deck.list.append( Card(cardName) )
+    $ deck.list.sort()
+    pause 0.2
     return
