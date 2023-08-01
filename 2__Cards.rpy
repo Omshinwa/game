@@ -26,12 +26,12 @@ init python:
             if len(self.txt)<30:
                 text_effect = Text(self.txt, style="style_card_effect", size=30) 
             else:
-                text_effect =  Text(self.txt, style="style_card_effect", size=30 - (len(self.txt)/15) ) 
+                text_effect =  Text(self.txt, style="style_card_effect", size=33 - (len(self.txt)/10) ) 
 
             textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
                         
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,180), textbox)
-            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,180), textbox)
+            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,175), textbox)
+            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,175), textbox)
 
             if "cond" in cardList[hash]:
                 self.condition = cardList[hash]["cond"]
@@ -68,13 +68,13 @@ init python:
         "faster": {"txt":"go faster", "eff":"game.speedUp()",},
         "slower": {"txt":"go slower", "eff":"game.speedDown()",},
 
-        "slowsteady": {"txt":"Can only be played when it's your leftmost card, go much slower.", "cond":"index == 0", "eff":"game.speedDown(); game.speedDown()",},
+        "slowsteady": {"txt":"Go much slower. Play this only when you have 5 cards in hand and this is your leftmost card.", "cond":"index == 0 and len(deck.hand)>=5", "eff":"game.speedDown(); game.speedDown()",},
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
 
         "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"deck.draw(2); date.lust *= 2",},
 
-        "newday": {"txt":"Divide your lust by 2", "eff":"date.lust = int(date.lust/2)",},
+        "newday": {"txt":"Change your current Lust with a random number.", "eff":"date.lust = renpy.random.randint(0, date.lustMax)",},
 
         "awakening": {"txt":"This turn: double Lust reductions.", "eff":"date.lustMultiplier *= 2",},
         "calm": {"txt":"-2 lust", "eff":"date.lust -= 2",},
@@ -85,22 +85,18 @@ init python:
         "pair": {"txt":"if you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)"},
         "threeof": {"txt":"if you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)"},
 
-        "change": {"txt":"Change all the cards in your hand with a random cards.", "eff":"renpy.call('label_card_change')"},
+        "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')"},
 
         "drawmax": {"txt":"Draw 1 card for each 5 points of lust.", "eff":"deck.draw( int(date.lust/5) )",},
         
-        "discard": {"txt":"Discard the whole hand and draw as many.", "eff":"renpy.call('label_card_discardAll')",},
+        "discard": {"txt":"Discard the whole hand, -1 Lust for each card.", "eff":"renpy.call('label_card_discardAll')",},
         
         "sisyphus": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_sisyphus')",},
         "ouroboros": {"txt":"", "eff":""},
 
-        "angel's gift": {"txt":"If you have no cards left in your deck, -40 lust, go the slowest, shuffle back the discard pile into the deck", "eff":"renpy.call('label_card_ouroboros')",},
-        
-        "future vision": {"txt":"You can see the next card in your deck (click on the deck). This effect stacks.", "eff":"renpy.call('label_card_ouroboros')",},
-
         "reload": {"txt":"Put all your cards at the bottom of your deck, then draw as many from the top.", "eff":"renpy.call('label_card_reload')",},
         
-        "recovery" : {"txt":"Discard the whole hand, -1 lust for each card discarded.", "eff":"deck.draw( int(date.lust/5) )",},
+        # "recovery" : {"txt":"Discard the whole hand, -1 lust for each card discarded.", "eff":"deck.draw( int(date.lust/5) )",},
 
         "draw5": {"txt":"Halve your dick size this date. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))",},
 
@@ -113,8 +109,7 @@ init python:
         # "exodia" : {"txt":"When you have 5 in your hand, you win.", "eff":"date.lust += 5",},
 
         "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))",},
-        
-        # "play": {"txt":"+1 trust", "eff":"date.lust += 5",},
+        "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')",},
 
         "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2",},
 

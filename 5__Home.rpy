@@ -42,22 +42,6 @@ screen screen_home:
         hover im.MatrixColor("home/cat.png", im.matrix.tint(1,1,5))
         action Call("label_cat")
         focus_mask True
-        tooltip "testeeeded"
-
-        
-    # This has to be the last thing shown in the screen.
-    $ tooltip = GetTooltip()
-
-    if tooltip:
-        text "[tooltip]"
-
-        nearrect:
-            focus "tooltip"
-            prefer_top True
-
-            frame:
-                xalign 0.5
-                text tooltip
 
 
 label label_home(newDay = False):

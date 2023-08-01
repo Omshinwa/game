@@ -22,7 +22,22 @@ label label_card_discardAll:
     while len(deck.hand)>0:
         $ deck.discard(0)
         $ i+= 1
-    $ deck.draw(i, 0.1)
+        $ date.increment("lust", -1, False)
+    
+    $ date.increment("lust", 0, True)
+    return
+
+label label_card_darkhole:
+    $ i = 0
+    while len(deck.hand)>0:
+        if deck.hand[0].name == "spaceout":
+            $ i+=1
+        $ deck.discard(0)
+    while i > 0:
+        $ date.increment("lust", -5, False)
+        pause 0.2
+        $ i-=1
+    $ date.increment("lust", 0, True)
     return
 
 label label_card_sisyphus:
