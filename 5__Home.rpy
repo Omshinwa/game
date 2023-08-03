@@ -13,7 +13,7 @@ screen screen_home:
     imagebutton:
         idle "home/phone.png"
         hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
-        action Call("label_home_toilet")
+        action Call("label_home_phone")
         focus_mask True
     imagebutton:
         idle "home/bed.png"
@@ -24,7 +24,7 @@ screen screen_home:
     imagebutton:
         idle "home/trash.png"
         hover im.MatrixColor("home/trash.png", im.matrix.tint(1,1,5))
-        action Jump("label_prison_toilet")
+        action Call("label_prison_toilet")
         focus_mask True
 
     imagebutton:
@@ -35,7 +35,7 @@ screen screen_home:
     imagebutton:
         idle "home/plant.png"
         hover im.MatrixColor("home/plant.png", im.matrix.tint(1,1,5))
-        action Show("screen_home_food")
+        action Call("label_plant")
         focus_mask True
     imagebutton:
         idle "home/cat.png"
@@ -43,9 +43,8 @@ screen screen_home:
         action Call("label_cat")
         focus_mask True
 
-
 label label_home(newDay = False):
-
+    "hello"
     $ game.state = "living"
 
     if newDay:
@@ -74,76 +73,83 @@ label label_cat:
     play sound "meow.wav"
     menu:
         "talk to it":
-            show expression trans_show_card_2(Card("smalltalk").img) as card
-            menu:
-                "Add a Small Talk to your deck?"
-                "yes":
-                    hide card
-                    call label_add_card_to_deck("smalltalk", 300, 500)
-                    $ hide_all_screens_but("home")
-                    $ game.nextDay("label_home")
-                "no":
-                    hide card
-                    hide screen screen_tutorial
-                    return
+            call label_home_add_cards("smalltalk", "Add a Small Talk to your deck?")
         "listen to it":
-            show expression trans_show_card_2(Card("listen").img) as card
-            menu:
-                "Add a Listen to your deck?"
-                "yes":
-                    hide card
-                    call label_add_card_to_deck("listen", 300, 500)
-                    $ hide_all_screens_but("home")
-                    $ game.nextDay("label_home")
-                "no":
-                    hide card
-                    hide screen screen_tutorial
-                    return
+            call label_home_add_cards("listen", "Add a Listen to your deck?")
         "look at it":
-            show expression trans_show_card_2(Card("eyecontact").img) as card
-            menu:
-                "Add an Eye Contact to your deck?"
-                "yes":
-                    hide card
-                    call label_add_card_to_deck("eyecontact", 300, 500)
-                    $ hide_all_screens_but("home")
-                    $ game.nextDay("label_home")
-                "no":
-                    hide card
-                    hide screen screen_tutorial
-                    return
+            call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
         "touch it":
-            show expression trans_show_card_2(Card("touchy").img) as card
-            menu:
-                "Add a Touchy to your deck?"
-                "yes":
-                    hide card
-                    call label_add_card_to_deck("touchy", 300, 500)
-                    $ hide_all_screens_but("home")
-                    $ game.nextDay("label_home")
-                "no":
-                    hide card
-                    hide screen screen_tutorial
-                    return
-        "play with it":
-            "It doesn't feel like playing, maybe if you looked at it first?"
-            show expression trans_show_card_2(Card("flirt").img) as card
-            show expression trans_show_card_2(Card("eyecontact").img) as card2:
-                xpos 1600
-            menu:
-                "Change an Eye Contact in your deck into a Flirt?"
-                "yes":
-                    hide card
-                    hide card2
-                    call label_add_card_to_deck("flirt", 300, 500)
-                    $ hide_all_screens_but("home")
-                    $ game.nextDay("label_home")
-                "no":
-                    hide card
-                    hide card2
-                    hide screen screen_tutorial
-                    return
-    show joyce 
-    "cool life"
-    "life"
+            call label_home_add_cards("touchy", "Add a Touchy to your deck?")
+        "X":
+            return
+
     return
+
+label label_plant():
+    menu:
+        "water it":
+            call label_home_add_cards("calm", "Add a Calm to your deck?")
+        "communicate with it":
+            call label_home_add_cards("awakening", "Add an Awakening to your deck?")
+        "X":
+            return
+    return
+
+label label_home_add_cards(cardID, prompt):
+    show expression trans_show_card_2(Card(cardID).img) as card
+    menu:
+        "[prompt]"
+        "yes":
+            hide card
+            call label_add_card_to_deck("list", cardID, 300, 500)
+            $ hide_all_screens_but("home")
+            $ game.nextDay("label_home")
+        "no":
+            hide card
+            hide screen screen_tutorial
+    return
+
+label label_home_phone():
+    # show phone-big:
+    #     ypos -1000 xalign 0.9
+    #     ease 0.5 ypos 100
+        
+    show screen screen_home_phone
+
+    # pause
+    # show phone-big:
+    #     ypos 100 xalign 0.9
+    #     ease 0.5 ypos -1000
+    # pause 0.5
+    # hide phone-big
+    return
+
+transform phone_in():
+    ypos -1000 xalign 0.9
+    ease 0.5 ypos 100
+transform phone_out():
+    ypos 100 xalign 0.9
+    ease 0.5 ypos -1000
+
+screen screen_home_phone():
+    modal True
+    # default toggle = True
+
+    imagebutton at switch:
+        idle "home/phone-big.png"
+        action [Hide("screen_home_phone")]
+
+    # if toggle:
+    #     textbutton "left" action SetScreenVariable('toggle', False ) at switch:
+    #         xcenter 0.33 ycenter 0.5
+    # if not toggle:
+    #     textbutton "right" action SetScreenVariable('toggle', True ) at switch:
+    #         xcenter 0.66 ycenter 0.5
+
+transform switch:
+    on show:
+        ypos -1000 xalign 0.9
+        ease 0.5 ypos 100
+    on hide:
+        ypos 100 xalign 0.9
+        ease 0.5 ypos -1000

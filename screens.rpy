@@ -157,12 +157,14 @@ style say_label:
 
 style say_dialogue:
     properties gui.text_properties("dialogue")
-
     xpos gui.dialogue_xpos
     xsize gui.dialogue_width
     ypos gui.dialogue_ypos
 
     adjust_spacing False
+
+style say_thought:
+    size 60
 
 ## Input screen ################################################################
 ##

@@ -2,22 +2,6 @@ init python:
     def play_sexsound(trans, st, at, filename):
         renpy.play(filename, channel='sexsfx')
         return None
-   
-transform toobig:
-    yalign 0.0
-    ypos -100
-    zoom 0.9
-
-transform default_img_pos:
-    xalign 0.5
-    yanchor 1.0
-    ypos 1080 - 200
-    zoom 1.0
-
-transform top:
-    zoom 1.0
-    xalign 0.5
-    yalign 0.0
 
 init python:
     class Moaning_bubble:
@@ -61,6 +45,8 @@ layeredimage joyce:
             "joyce_2nd"
         attribute stand:
             "joyce_stand"
+        attribute 2dstand:
+            "joyce_2ndstand"
         attribute armscrossed
         attribute 2nd_armscrossed
 

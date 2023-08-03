@@ -1,6 +1,4 @@
-# **config has **date.objectives, endTurn = "label_firstDate_endTurn"
-#
-label label_beginDuel_common(**kwargs):
+label label_beginDuel_common():
     $ game.jeu_sensitive = False;
     $ game.state = "dating"
 
@@ -13,7 +11,7 @@ label label_beginDuel_common(**kwargs):
     $ date.attractionMultiplier = 1
     $ game.animation_speed = 3
 
-    show card_zone_bg zorder 2
+    show card_zone_bg zorder 3 onlayer master
 
     $ deck.deck = deck.list.copy()
     $ deck.shuffle()
@@ -21,9 +19,9 @@ label label_beginDuel_common(**kwargs):
     $ deck.hand = []
 
     if game.progress[0] < 3:
-        show screen screen_date_ui(**kwargs)
+        show screen screen_date_ui()
     else:
-        show screen screen_sex_ui(**kwargs)
+        show screen screen_sex_ui()
 
     $ deck.draw(5)
 
@@ -50,13 +48,25 @@ init python:
             if expection not in screen:
                 renpy.hide_screen( screen )
 
-label label_add_card_to_deck( cardName, xbase, ybase):
+label label_add_card_to_deck( deckOrList, cardName, xfrom=960, yfrom=-100, pauseTime=0):
     hide screen screen_tutorial
-    show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xbase, ybase) ) 
-    pause 0.5
-    play sound "draw.mp3"
+
+    if deckOrList == "list":
+        show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xfrom, yfrom, 1900, 20, pauseTime) ) 
+    
+    elif deckOrList == "deck":
+        show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xfrom, yfrom, 1900, 1000, pauseTime) ) 
+
+    pause 0.5 + pauseTime
+    play sound "ghost.mp3"
     pause 0.45
-    $ deck.list.append( Card(cardName) )
-    $ deck.list.sort()
+    if deckOrList == "list":
+        $ deck.list.append( Card(cardName) )
+        $ deck.list.sort()
+    elif deckOrList == "deck":
+        $ rand = renpy.random.randint(0, len(deck.deck))
+        $ deck.deck.insert( rand , Card(cardName) )
+    else:
+        $ raise ValueError("deck or list not specified")
     pause 0.2
     return

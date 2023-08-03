@@ -63,7 +63,7 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
                         imagebutton:
                             idle card.img
                             hover card.img_hover
-                            action Call(label_callback, index)
+                            action [SetDict(global_var, "page", 0), Call(label_callback, index)]
                             at Transform(zoom=zoom)
         
     if global_var["page"]+1 < len(what)/(card_per_line * line_per_page):
@@ -84,7 +84,7 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
     imagebutton:
         idle "ui/cancel.png"
         hover im.MatrixColor("ui/cancel.png", im.matrix.tint(1,1,0))
-        action [Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
+        action [SetDict(global_var, "page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.95
         xalign 0.5
 

@@ -160,6 +160,8 @@ label label_null(*args):
     return
 
 style default:
+    properties gui.text_properties()
+    language gui.language
     font FontGroup().add("FRABK.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 
 style outline_text:

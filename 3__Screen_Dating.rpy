@@ -63,7 +63,7 @@ screen screen_card_hand():
                         hovered [SetVariable("game.isHoverHand", True), SetVariable("focus_card_index", index)]
                         unhovered [SetVariable("game.isHoverHand", False), SetVariable("focus_card_index", -1)]
 
-screen screen_date_bottom_ui(endTurn = "label_SexEndTurn"):
+screen screen_date_bottom_ui():
 
     #     cards at the bottom
     button:
@@ -94,7 +94,7 @@ screen screen_date_bottom_ui(endTurn = "label_SexEndTurn"):
         imagebutton:
             idle "ui/end_turn.png"
             hover "ui/end_turn_hover.png"
-            action Call(endTurn)
+            action Call(date.endTurn)
             sensitive game.jeu_sensitive
     
     # TRASHCAN
@@ -112,10 +112,16 @@ screen screen_date_bottom_ui(endTurn = "label_SexEndTurn"):
             xsize 50
             text str(len(deck.discard_pile)) size 50 xalign 0.5 style "outline_text"
 
-    if game.debug_flag:
-        drag:
-            text "YOUR TURN" size 60 color "#FF0"
+    # if game.debug_flag:
+    drag:
+            # ysize 400
+            # xsize 500
             xalign 0.5 yalign 0.5
+            # text "test" size 40 color "#FF0" ypos 0
+            # fixed:
+            text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive): #+ "\ndate.ydisplace: " + str(date.ydisplace):
+                size 40 color "#FF0" ypos 0
+            # text "date.ydisplace: " + str(date.ydisplace) size 40 color "#FF0" ypos 100
 
 screen screen_lust_ui:
 
@@ -156,15 +162,15 @@ screen screen_lust_ui:
         if game.state == "dating":
             text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
-screen screen_sex_ui(**kwargs):
-    use screen_date_bottom_ui(kwargs["endTurn"])
+screen screen_sex_ui():
+    use screen_date_bottom_ui()
     use screen_lust_ui()
     use screen_orgasm_ui()
     use screen_buttons_ui()
     use screen_turn_counter()
 
-screen screen_date_ui(**kwargs):
-    use screen_date_bottom_ui(kwargs["endTurn"])
+screen screen_date_ui():
+    use screen_date_bottom_ui()
     use screen_trust_ui()
     use screen_buttons_ui()
     use screen_turn_counter()

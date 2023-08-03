@@ -68,7 +68,7 @@ init python:
         "faster": {"txt":"go faster", "eff":"game.speedUp()",},
         "slower": {"txt":"go slower", "eff":"game.speedDown()",},
 
-        "slowsteady": {"txt":"Go much slower. Play this only when you have 5 cards in hand and this is your leftmost card.", "cond":"index == 0 and len(deck.hand)>=5", "eff":"game.speedDown(); game.speedDown()",},
+        "slowsteady": {"txt":"Go much slower. Play this only when you have 5 cards in hand and this is your leftmost card.", "cond":"index == 0 and len(deck.hand)>=5", "eff":"game.speedDown(); renpy.pause(1.0); game.speedDown()",},
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
 
@@ -79,8 +79,7 @@ init python:
         "awakening": {"txt":"This turn: double Lust reductions.", "eff":"date.lustMultiplier *= 2",},
         "calm": {"txt":"-2 lust", "eff":"date.lust -= 2",},
 
-        "maxcalm":{"txt":"-8 lust, can only be played if this card is your rightmost card.", 
-        "cond":"index == len(deck.hand)-1", "eff":"date.lust -= 8",},#card also work if you have multiple
+        "maxcalm":{"txt":"-5 lust, add one STOP card in your hand", "eff":"date.increment('lust',-5); deck.hand.append(Card('stop'))",},#card also work if you have multiple
 
         "pair": {"txt":"if you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)"},
         "threeof": {"txt":"if you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)"},
@@ -106,7 +105,9 @@ init python:
         
         # "block": {"txt":"You cant gain lust from cards this turn.", "eff":"deck.add_to_hand( Card(11) )",},
         
-        # "exodia" : {"txt":"When you have 5 in your hand, you win.", "eff":"date.lust += 5",},
+        "exodia1" : {"txt":"{b}THE WORLD{/b}\nare gathered:", "eff":"renpy.call('label_card_exodia', index)",},
+        "exodia2" : {"txt":"{b}OF{/b}\nthree pieces\nwill occur.", "eff":"renpy.call('label_card_exodia', index)",},
+        "exodia3" : {"txt":"{b}ORIGIN{/b}\nWhen all\na miracle", "eff":"renpy.call('label_card_exodia', index)",},
 
         "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))",},
         "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')",},
@@ -115,7 +116,8 @@ init python:
 
         "smalltalk": {"txt":"+1 trust", "eff":"date.increment('trust',1)",},
         "hobbies": {"txt":"+2 trust", "eff":"date.increment('trust',2)",},
-        "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
+
+        # "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
         "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"date.increment('trust',-1,False); date.increment('lust',1)",},
         "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"date.increment('trust',-3,False); date.increment('lust',3)",},
@@ -127,7 +129,7 @@ init python:
 
         "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2",},
 
-        "drink" : {"txt":"Triple the next gain or loss effect.", "eff":"game.allMultiplierOnce *= 3",},
+        "drink" : {"txt":"Triple the next gain or loss effect.", "eff":"date.allMultiplierOnce *= 3",},
 
         "spaceout" : {"txt":"does nothing", "eff":"",},
     }
@@ -197,12 +199,10 @@ label playCard(card, index):
     $ commands = commands.split("; ")
     $ i = 0
     while i < len(commands):
-        # j " [commands[0]] "
         $ print(commands[i])
         $ exec(commands[i])
         $ i+=1
         $ renpy.pause(0.2)
-    # $ game.isHoverHand = True
     $ game.lastPlayed = card.name
     return
 
@@ -212,7 +212,7 @@ label playCardfromHand(index):
         $ ydisplace = 0
 
         $ renpy.play("activate.mp3", channel='activatecard')
-        $ card = Card( deck.hand[index].id )
+        $ card = deck.hand[index]
         $ deck.discard(index)
 
         # animation:
@@ -231,16 +231,28 @@ label playCardfromHand(index):
     if len(deck.hand) == 0:
         call expression date.endTurn
 
+    return
+
+
+
+
+
+
+
+
 default done_flag = {}
 
+
 label label_reaction:
+
+    # "test"
 
     if game.lastPlayed not in done_flag:
         $ done_flag[game.lastPlayed] = 0
 
     $ value = done_flag[game.lastPlayed]
 
-    if game.progress[0] < value:
+    if value > game.progress[0] :
         return
 
     if game.lastPlayed == "smalltalk":
@@ -262,8 +274,10 @@ label label_reaction:
             j "Oh you like playing games?"
             j "What kind of games?"
         elif value == 1:
-            j "Oh yea dating sims are cool."
-            j "What are you playing now?"
+            j "So you play dating sims."
+            j "That's a little funny, I didn't expect it."
+            j "I used to play some on the Nintendo DS too."
+            j "What are you playing these days?"
         elif value == 2:
             j "Come on tell me what game you're playing."
             j "Ok at least next date tell me."
@@ -286,3 +300,4 @@ label label_reaction:
 
     $ done_flag[game.lastPlayed] += 1
         
+    return

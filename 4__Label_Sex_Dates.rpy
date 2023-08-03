@@ -1,6 +1,6 @@
 label label_cowgirl_begin():
     # show screen screen_sex_ui
-    call label_beginDuel_common(endTurn = "label_SexEndTurn")
+    call label_beginDuel_common()
     return
 
 label label_SexEndTurn:

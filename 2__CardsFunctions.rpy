@@ -41,9 +41,23 @@ label label_card_darkhole:
     return
 
 label label_card_sisyphus:
-    while len(deck.discard_pile)>0:
+    while len(deck.discard_pile)>1:
         $ deck.deck.append( deck.discard_pile.pop(0) )
+        #the last card played is sisyphys which we let in the graveyard
         $ renpy.play("shuffle.mp3", channel='drawcard')
         $ renpy.pause(0.1)
     $ deck.shuffle()
     return
+
+label label_card_exodia(index):
+    if deck.hand[index-1].name == 'exodia3' and deck.hand[index].name == 'exodia2' and deck.hand[index+1].name == 'exodia1':
+        $ date.increment("lust",-100)
+        $ renpy.pause(0.1)
+        $ game.speedDown()
+        $ renpy.pause(0.1)
+        $ game.speedDown()
+        $ renpy.pause(0.1)
+    else:
+        call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1).name)
+        # $ renpy.play("shuffle.mp3", channel='drawcard')
+        $ renpy.pause(0.1)

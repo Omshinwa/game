@@ -40,6 +40,7 @@ label label_prison_remove_card(index):
     pause(2.0)
     hide screen screen_flushing
     hide expression deck.list[index].img
+    $ deck.list.pop(index)
     show screen screen_prison with dissolve
     $ game.nextDay("label_prison")
 
