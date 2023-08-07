@@ -112,6 +112,7 @@ screen say(who, what):
 
         text what id "what"
 
+        background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
 
     ## If there's a side image, display it above the text. Do not display on the
     ## phone variant - there's no room.

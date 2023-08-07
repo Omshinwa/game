@@ -40,6 +40,13 @@ label label_endTurn_common():
     $ game.jeu_sensitive = True;
     return
 
+label label_after_successful_Date_common():
+    $ game.lust = date.lust
+    $ game.trust = date.trust
+    $ game.attraction = date.attraction
+    $ game.progress[0] += 1
+    $ game.progress[1] = 0
+    return
 
 init python:
     def hide_all_screens_but(expection = "#"):

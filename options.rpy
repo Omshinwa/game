@@ -1,7 +1,6 @@
 ﻿## This file contains options that can be changed to customize your game.
 ##
 
-
 ## Basics ######################################################################
 
 ## A human-readable name of the game. This is used to set the default window

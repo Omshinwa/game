@@ -14,7 +14,7 @@ init python:
 
     class Game():
         def __init__(self):
-            self.jeu_sensitive = False
+            self.jeu_sensitive = True
             self.card_xsize = 230
             self.card_ysize = 330
 
@@ -47,7 +47,7 @@ init python:
 
             self.lastPlayed = ""
 
-            self.debug_flag = 0
+            self.debug_flag = 1
 
         def nextDay(self, label_callback=""):
             # renpy.play("newday.wav", channel='sound') 
@@ -170,3 +170,16 @@ style outline_text:
     font "ui"
 
 define config.font_name_map["ui"] = FontGroup().add("FRADMIT.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+    
+
+default global_var = {
+    "page":0,
+    "card_per_line":7,
+    "phoneLogs":{
+        0:[
+            [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+        ]
+        },
+    "phoneProgress":[0,0]
+
+}

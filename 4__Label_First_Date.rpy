@@ -82,8 +82,7 @@ label label_firstDate:
                 j "Do you want to meet again in the week?"
                 j "I'll text you."
                 j "See ya."
-                $ game.progress[0] += 1
-                $ game.progress[1] = 0
+                call label_after_successful_Date_common
                 jump label_home
             
             show joyce at default_img_pos
@@ -156,7 +155,7 @@ label label_secondDate:
     $ date = Date(objectif_trust = 10, objectif_attraction = 5, isWin = "date.trust >= 10 and date.attraction >= 5", turnLeft = 6, endTurn = "label_secondDate_endTurn")
     scene bg cafe
     hide joyce
-    show joyce 2nd smile at default_img_pos
+    show joyce smile at default_img_pos
     show fg cafe-table onlayer master zorder 2
     j "Hello again"
     j "These days it's getting hotter and hotter huh?"
@@ -180,8 +179,7 @@ label label_secondDate:
 
                 j "t'es trop forte bewbew"
 
-                $ game.progress[0] += 1
-                $ game.progress[1] = 0
+                call label_after_successful_Date_common
                 jump label_prison
             
             show joyce at default_img_pos

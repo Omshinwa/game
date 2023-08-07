@@ -112,16 +112,16 @@ screen screen_date_bottom_ui():
             xsize 50
             text str(len(deck.discard_pile)) size 50 xalign 0.5 style "outline_text"
 
-    # if game.debug_flag:
-    drag:
-            # ysize 400
-            # xsize 500
-            xalign 0.5 yalign 0.5
-            # text "test" size 40 color "#FF0" ypos 0
-            # fixed:
-            text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive): #+ "\ndate.ydisplace: " + str(date.ydisplace):
-                size 40 color "#FF0" ypos 0
-            # text "date.ydisplace: " + str(date.ydisplace) size 40 color "#FF0" ypos 100
+    if game.debug_flag:
+        drag:
+                # ysize 400
+                # xsize 500
+                xalign 0.5 yalign 0.5
+                # text "test" size 40 color "#FF0" ypos 0
+                # fixed:
+                text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive): #+ "\ndate.ydisplace: " + str(date.ydisplace):
+                    size 40 color "#FF0" ypos 0
+                # text "date.ydisplace: " + str(date.ydisplace) size 40 color "#FF0" ypos 100
 
 screen screen_lust_ui:
 
