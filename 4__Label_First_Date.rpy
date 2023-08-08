@@ -75,7 +75,9 @@ label label_firstDate:
             if date.isWin():
                 hide screen screen_date_ui with dissolve
 
+                play sound "rpg/Holy5.wav"
                 show date-nice at truecenter with blinds
+                pause 0.3
                 hide date-nice with moveoutbottom
 
                 j "haha"
@@ -200,7 +202,6 @@ label label_secondDate_endTurn:
     label .loseCondition:
         if date.lust > date.trust or date.turnLeft == 0 or len(deck.deck) == 0:
 
-            play sound "gameover.mp3"
             show date-fail at truecenter with blinds
             pause 0.3
             hide date-fail with moveoutbottom

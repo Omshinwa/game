@@ -57,12 +57,20 @@ init python:
                 renpy.call(label_callback, True)
 
 
-        def speedUp(self):
-            if self.animation_speed < 5:
-                self.animation_speed += 1
-                # renpy.show("joyce cowgirl")
+        def speedUp(self, useMultiplier=False):            
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed < 5:
+                        self.animation_speed += 1
+                        if self.animation_speed < 5:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed < 5:
+                    self.animation_speed += 1
 
-        def speedDown(self, useMultiplier):
+        def speedDown(self, useMultiplier=False):
             if useMultiplier:
                 i = 1
                 while date.lustMultiplier >= i:
@@ -153,13 +161,25 @@ init python:
             
             return self.ydisplace
 
-        def increment(self, which, value, resetAllMultiplier = True):
+        def increment(self, which, value, resetAllMultiplier = True, allowNegative=False):
             if which == "trust":
-                self.trust += value * self.trustMultiplier * self.allMultiplierOnce
+                if allowNegative:
+                    self.trust += value * self.trustMultiplier * self.allMultiplierOnce
+                else:
+                    if self.trust<0:
+                            pass
             elif which == "attraction":
-                self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
+                if allowNegative:
+                    self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
+                else:
+                    if self.attraction<0:
+                        pass
             elif which == "lust":
-                self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                if allowNegative:
+                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                else:
+                    if self.lust<0:
+                        pass
             else:
                 raise ValueError("no valid specified argument: + which : "+ which) 
             
@@ -169,27 +189,30 @@ init python:
 label label_null(*args):
     return
 
-style default:
-    properties gui.text_properties()
-    language gui.language
-    font FontGroup().add("FRABK.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
-
-style outline_text:
-    color "#000000"
-    outlines [ (absolute(5), "#ffffff", absolute(0), absolute(0)) ]
-    font "ui"
-
 define config.font_name_map["ui"] = FontGroup().add("FRADMIT.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+
+define config.font_name_map["quirky_command"] = FontGroup().add("kindergarten.ttf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
     
 
-default global_var = {
-    "page":0,
-    "card_per_line":7,
-    "phoneLogs":{
+default global_var.page = 0
+default global_var.card_per_line = 7
+default global_var.phoneLogs = {
         0:[
             [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
         ]
-        },
-    "phoneProgress":[0,0]
+        }
+default global_var.phoneProgress = [0,0]
+default global_var.prison_cards = []
 
-}
+# default global_var = {
+#     "page":0,
+#     "card_per_line":7,
+#     "phoneLogs":{
+#         0:[
+#             [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+#         ]
+#         },
+#     "phoneProgress":[0,0],
+#     "prison_cards" : [],
+
+# }

@@ -14,11 +14,24 @@ label label_prison(newDay = False):
         show screen screen_prison
         with fade
 
-    $ global_var["prison_cards"] = []
-    $ global_var["prison_cards"].append( Card.get_random_card() )
-    $ global_var["prison_cards"].append( Card.get_random_card() )
-    $ global_var["prison_cards"].append( Card.get_random_card() )
-    $ global_var["prison_cards"].append( Card.get_random_card() )
+
+    $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
+
+    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
+    # $ print("card0 " + global_var.prison_cards[0].name)
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[global_var.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[global_var.prison_cards[0].name]["value"]}
+    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+    # $ print("card1 " + global_var.prison_cards[1])
+    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[global_var.prison_cards[2].name]["value"]}
+    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+
+    
+    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[global_var.prison_cards[4].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[global_var.prison_cards[4].name]["value"]}
+    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+
+    $ del availableCards, newlist
 
     label .gameLoop:
         call screen screen_gameloop()

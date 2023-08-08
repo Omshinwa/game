@@ -44,11 +44,14 @@ screen screen_prison_food():
     modal True
     
     fixed:
-        xpos -300
-        use screen_add_cards( global_var["prison_cards"][:2] )
+        xpos -550
+        use screen_add_cards( global_var.prison_cards[:2] )
     fixed:
-        xpos 300
-        use screen_add_cards( global_var["prison_cards"][2:] )
+        xpos 0
+        use screen_add_cards( global_var.prison_cards[2:4] )
+    fixed:
+        xpos 550
+        use screen_add_cards( global_var.prison_cards[4:] )
 
     imagebutton:
         idle "ui/cancel.png"
@@ -56,7 +59,7 @@ screen screen_prison_food():
         action [Hide("screen_prison_food"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.95
         xalign 0.5
-    text "Choose which cards to add" size 120 xalign 0.5 style "outline_text" ypos 0 xsize 1800
+    text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text
 
 screen screen_add_cards(cards):
     

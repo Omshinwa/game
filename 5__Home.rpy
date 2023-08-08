@@ -11,7 +11,7 @@ screen screen_home:
         action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
         focus_mask True
     
-    if global_var["phoneProgress"][1]<len(global_var["phoneLogs"][global_var["phoneProgress"][0]])-1:
+    if global_var.phoneProgress[1]<len(global_var.phoneLogs[global_var.phoneProgress[0]])-1:
         imagebutton:
             idle "home/phone-msg.png"
             hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
@@ -66,12 +66,6 @@ label label_home(newDay = False):
         scene bg home
         show screen screen_home onlayer master
         with fade
-
-    # $ global_var["prison_cards"] = []
-    # $ global_var["prison_cards"].append( Card.get_random_card() )
-    # $ global_var["prison_cards"].append( Card.get_random_card() )
-    # $ global_var["prison_cards"].append( Card.get_random_card() )
-    # $ global_var["prison_cards"].append( Card.get_random_card() )
 
     label .gameLoop:
         call screen screen_gameloop()
@@ -147,14 +141,14 @@ label label_home_add_cards(cardID, prompt):
     return
 
 label label_home_phone():
-    $ messagelog = global_var["phoneLogs"][global_var["phoneProgress"][0]]
+    $ messagelog = global_var.phoneLogs[global_var.phoneProgress[0]]
 
-    if len(messagelog)-1 > global_var["phoneProgress"][1]:  #if the log hasnt been completed yet
+    if len(messagelog)-1 > global_var.phoneProgress[1]:  #if the log hasnt been completed yet
 
-        $ global_var["phoneProgress"][1] += 1
-
-        $ typeOfLastMsg = messagelog[global_var["phoneProgress"][1]][0]
-        $ contentLastMsg = messagelog[global_var["phoneProgress"][1]][1]
+        $ global_var.phoneProgress[1] += 1
+        play sound "day/newmsg.wav"
+        $ typeOfLastMsg = messagelog[global_var.phoneProgress[1]][0]
+        $ contentLastMsg = messagelog[global_var.phoneProgress[1]][1]
 
         if typeOfLastMsg == "exe":
             $ commands = contentLastMsg.split("; ")
@@ -187,7 +181,7 @@ screen screen_home_phone():
         xsize 523
         ysize 918
         
-    # default todaysLog = global_var["phoneLogs"][global_var["phoneProgress"][0]]
+    # default todaysLog = global_var.phoneLogs[global_var.phoneProgress[0]]
         fixed: #phone screen
             xsize 420
             ysize 637
@@ -195,9 +189,9 @@ screen screen_home_phone():
             ypos 130
             vbox:
                 spacing 10
-                for index, message in enumerate(global_var["phoneLogs"][global_var["phoneProgress"][0]]):
+                for index, message in enumerate(global_var.phoneLogs[global_var.phoneProgress[0]]):
 
-                    if index>global_var["phoneProgress"][1]: #only display msg sent
+                    if index>global_var.phoneProgress[1]: #only display msg sent
                         break
 
                     if message[0] == 0: #text msg
@@ -214,7 +208,7 @@ screen screen_home_phone():
                             padding (30, 10)
                             background Frame("home/bubble-speech-interact.png")
                             imagebutton:
-                                sensitive global_var["phoneProgress"][1]+1 >= len(global_var["phoneLogs"][global_var["phoneProgress"][0]]) # if the whole log was shown
+                                sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
                                 hover im.MatrixColor("home/" + message[1], im.matrix.tint(1.3,1.3,1.3))
                                 idle "home/" + message[1]
                                 action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
@@ -232,6 +226,7 @@ label label_pic1_reaction:
     "this picture has some effect on you.."
     "Lust +2"
     $ game.lust += 2
+    play sound "rpg/Lust.wav"
     window hide 
     pause
     window auto
@@ -250,11 +245,3 @@ screen screen_fullscreen(disp):
     add disp:
         xalign 0.5
         yalign 0.5
-
-transform switch:
-    on show:
-        ypos -1000 xalign 0.9
-        ease 0.5 ypos 100
-    on hide:
-        ypos 100 xalign 0.9
-        ease 0.5 ypos -1000

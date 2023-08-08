@@ -303,7 +303,10 @@ screen navigation():
 
         if main_menu:
 
-            textbutton _("Start") action Start()
+            textbutton _("New Game") action Start()
+
+            if renpy.newest_slot():
+                textbutton _("Continue") action FileLoad(renpy.newest_slot(),newest=False,slot=True)
 
         else:
 

@@ -23,15 +23,7 @@ init python:
 
             self.txt = cardList[hash]["txt"]
             
-            if len(self.txt)<30:
-                text_effect = Text(self.txt, style="style_card_effect", size=30) 
-            else:
-                text_effect =  Text(self.txt, style="style_card_effect", size=33 - (len(self.txt)/10) ) 
-
-            textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
-                        
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,175), textbox)
-            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,175), textbox)
+            self.updateArt()
 
             if "cond" in cardList[hash]:
                 self.condition = cardList[hash]["cond"]
@@ -53,17 +45,19 @@ init python:
             return eval(self.condition.replace( "index" , str(index)))
 
         @staticmethod
-        def get_random_card():
-            return Card( renpy.random.choice( list(cardList.keys()) ) )
+        def get_random_card(customList=None):
+            if customList == None or len(customList)==0:
+                return Card( renpy.random.choice( list(cardList.keys()) ) )
+            else:
+                return Card( renpy.random.choice( list(customList.keys()) ) )
+                
 
         def updateArt(self):
             if len(self.txt)<30:
                 text_effect = Text(self.txt, style="style_card_effect", size=30) 
             else:
                 text_effect =  Text(self.txt, style="style_card_effect", size=33 - (len(self.txt)/10) ) 
-
             textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
-                        
             self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,175), textbox)
             self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,175), textbox)
 
@@ -134,48 +128,47 @@ init python:
         # get preview of next cards to come?
         # the string 'index' is replaced with the index of the card in hand
 
-        "faster": {"txt":"go faster", "eff":"game.speedUp()",},
-        "slower": {"txt":"go slower", "eff":"game.speedDown(True)",},
+        "faster": {"txt":"go faster", "eff":"game.speedUp(True)", "value":-1,},
+        "slower": {"txt":"go slower", "eff":"game.speedDown(True)", "value":1,},
 
-        "slowsteady": {"txt":"Go much slower. Play this only when this is your leftmost card.", "cond":"index == 0", "eff":"game.speedDown(True); renpy.pause(1.0); game.speedDown(True)",},
+        "slowsteady": {"txt":"Go much slower. Play this only when this is your leftmost card.", "cond":"index == 0", "eff":"game.speedDown(True); renpy.pause(1.0); game.speedDown(True)", "value":2,},
 
-        "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)",},
+        "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)", "value":3,},
 
-        "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"deck.draw(2); date.lust *= 2",},
+        "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"deck.draw(2); date.lust *= 2", "value":1,},
 
-        "newday": {"txt":"Change your current Lust with a random number.", "eff":"date.lust = renpy.random.randint(0, date.lustMax)",},
+        "newday": {"txt":"Change your current Lust with a random number.", "eff":"date.lust = renpy.random.randint(0, date.lustMax)", "value":2,},
 
-        "awakening": {"txt":"This turn: double Lust and speed reductions.", "eff":"date.lustMultiplier *= 2",},
-        "calm": {"txt":"-2 lust", "eff":"date.increment('lust',-2)",},
+        "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":2,},
+        "calm": {"txt":"-2 lust, can get into negatives", "eff":"date.increment('lust',-2, allowNegative=True)", "value":1,},
 
-        "maxcalm":{"txt":"-7 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))",},#card also work if you have multiple
+        "maxcalm":{"txt":"-7 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))", "value":1,},#card also work if you have multiple
 
-        "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')"},
+        "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":3,},
 
-        "pair": {"txt":"if you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)"},
-        "threeof": {"txt":"if you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)"},
+        "pair": {"txt":"if you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)", "value":2,},
+        "threeof": {"txt":"if you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)", "value":1,},
 
-        "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')"},
-
-        "drawmax": {"txt":"Draw 1 card for each 5 points of lust.", "eff":"deck.draw( int(date.lust/5) )",},
+        "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":2,},
         
-        "discardAll": {"txt":"Discard the whole hand, -1 Lust for each card.", "eff":"renpy.call('label_card_discardAll')",},
+        "discardAll": {"txt":"Discard the whole hand, -1 Lust for each card.", "eff":"renpy.call('label_card_discardAll')", "value":2,},
         
-        "sisyphus": {"txt":"Put the last card played on top of the deck.", "eff":"renpy.call('label_card_sisyphus')",},
-        "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')"},
+        "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.call('label_card_sisyphus')", "value":2,},
+        "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
-        "reload": {"txt":"Put all your cards at the bottom of your deck, then draw as many from the top.", "eff":"renpy.call('label_card_reload')",},
+        "reload": {"txt":"Put all your cards at the bottom of your deck, then draw as many from the top.", "eff":"renpy.call('label_card_reload')", "value":1,},
 
-        "draw5": {"txt":"Halve your dick size this date. Draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))",},
+        "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))", "value":1,},
 
-        "stop": {"txt":"Can't be played", "cond":"False", "eff":"",},
+        "stop": {"txt":"Can't be played", "cond":"False", "eff":"", "value":-2,},
     
-        "exodia3" : {"txt":"{b}WORLD{/b}\ninto Power.\nright order to\neffect.", "eff":"renpy.call('label_card_exodia', index)",},
-        "exodia2" : {"txt":"{b}OF THE{/b}\ncurrent Lust\npieces in the\nthis", "eff":"renpy.call('label_card_exodia', index)",},
-        "exodia1" : {"txt":"{b}ORIGIN{/b}\nConvert your\nYou need all 3\nactivate", "eff":"renpy.call('label_card_exodia', index)",},
+        "exodia3" : {"txt":"{b}WORLD{/b}\ninto Power.\nright order to\neffect.", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5,},
+        "exodia2" : {"txt":"{b}OF THE{/b}\ncurrent Lust\npieces in the\nthis", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5,},
+        "exodia1" : {"txt":"{b}ORIGIN{/b}\nConvert your\nYou need all 3\nactivate", "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare",},
 
-        "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))",},
-        "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')",},
+        "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))", "value":1,},
+        "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')", "value":2,},
+        "spaceout" : {"txt":"does nothing", "eff":"", "value":0,},
 
         "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2",},
 
@@ -184,9 +177,10 @@ init python:
 
         # "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
-        "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"date.increment('trust',-1,False); date.increment('lust',1)",},
-        "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"date.increment('trust',-3,False); date.increment('lust',3)",},
-        "peek3": {"txt":"get +5 lust", "eff":"date.increment('lust',5)",},
+        "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"date.increment('trust',-1,False); date.increment('lust',1)", },
+        "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"date.increment('trust',-3,False); date.increment('lust',3)", },
+        "peek3": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
+        "peek4": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-2,},
 
         "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)",},
         "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)",},
@@ -194,9 +188,9 @@ init python:
 
         "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2",},
 
-        "drink" : {"txt":"The last card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_drink')",},
+        "drink" : {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_drink')", "value":3,},
 
-        "spaceout" : {"txt":"does nothing", "eff":"",},
+        
     }
 
 label playCard(card, index):

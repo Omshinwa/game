@@ -44,4 +44,17 @@ transform trans_add_card_to_deck(displayable, xfrom, yfrom, xto, yto, pauseTime=
     ease 0.4 zoom 1.5 xpos 960 ypos 350
     pause pauseTime
     ease 0.4 zoom 0.2 xpos xto ypos yto alpha 0.0
-    
+
+transform animated_text:
+    zoom 1.2
+    crop (1.0,0.0,1.0,0.0)
+    yoffset -100
+    ease 1.0 crop (0,0,1.0,1.0) yoffset 0 zoom 1.0
+
+transform switch:
+    on show:
+        ypos -1000 xalign 0.9
+        ease 0.5 ypos 100
+    on hide:
+        ypos 100 xalign 0.9
+        ease 0.5 ypos -1000
