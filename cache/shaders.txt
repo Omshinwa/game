@@ -1,7 +1,7 @@
 renpy.alpha renpy.texture
 renpy.texture -renpy.texture renpy.blur renpy.texture -renpy.texture renpy.blur
-renpy.blur renpy.geometry
 renpy.dissolve renpy.geometry
+renpy.blur renpy.geometry
 renpy.ftl
 renpy.texture
 renpy.solid
