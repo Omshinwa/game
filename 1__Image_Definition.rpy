@@ -81,7 +81,7 @@ image joyce cowgirl:
     "Joyce/sex/cowgirl/cowgirl (1).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])
 
-    function renpy.curry(play_sexsound)(filename="sex_slap.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/slap.wav") #hacky
 
     "Joyce/sex/cowgirl/cowgirl (2).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])
@@ -104,7 +104,7 @@ image joyce footjob:
     "Joyce/sex/footjob/footjob (3).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])
 
-    function renpy.curry(play_sexsound)(filename="draw.mp3") #hacky
+    function renpy.curry(play_sexsound)(filename="card/draw.mp3") #hacky
     "Joyce/sex/footjob/footjob (4).png"
     pause(0.1 / game.animation_speed_hash[game.animation_speed])
     "Joyce/sex/footjob/footjob (3).png"

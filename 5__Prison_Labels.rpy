@@ -3,7 +3,7 @@ label label_prison(newDay = False):
     $ game.state = "living"
 
     if newDay:
-        $ renpy.play("newday.wav", channel='sound') 
+        $ renpy.play("day/newday.wav", channel='sound') 
         scene bg prison
         show screen screen_prison
         with Fade(0.5, 1.0, 0.5)

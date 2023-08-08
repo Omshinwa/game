@@ -60,10 +60,12 @@ label label_firstDate:
         show joyce smile 
         j "Got it?\nLet's start the date!"
     
-    play sound "datestart.mp3"
+    play sound "rpg/Wind1.wav"
+    # play sound "date/datestart.mp3"
     show date-start at truecenter with blinds
     pause 0.4
-    play sound "datestart2.mp3"
+    play sound "date/datestart2.mp3"
+    # play sound "rpg/Flash2.wav"
     hide date-start with moveoutbottom
     
     label .gameLoop:
@@ -100,7 +102,7 @@ label label_firstDate_endTurn:
     label .loseCondition:
         if date.lust > date.trust or date.turnLeft == 0 or len(deck.deck) == 0:
 
-            play sound "gameover.mp3"
+            play sound "rpg/Fall1.wav"
             show date-fail at truecenter with blinds
             pause 0.3
             hide date-fail with moveoutbottom

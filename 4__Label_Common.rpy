@@ -55,25 +55,27 @@ init python:
             if expection not in screen:
                 renpy.hide_screen( screen )
 
-label label_add_card_to_deck( deckOrList, cardName, xfrom=960, yfrom=-100, pauseTime=0):
-    hide screen screen_tutorial
-
+label label_add_card_to_deck( deckOrList, card, xfrom=960, yfrom=-100, pauseTime=0, index=None):
     if deckOrList == "list":
-        show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xfrom, yfrom, 1900, 20, pauseTime) ) 
+        show screen screen_tutorial( trans_add_card_to_deck(card.img, xfrom, yfrom, 1900, 20, pauseTime) ) 
     
     elif deckOrList == "deck":
-        show screen screen_tutorial( trans_add_card_to_deck(Card(cardName).img, xfrom, yfrom, 1900, 1000, pauseTime) ) 
+        show screen screen_tutorial( trans_add_card_to_deck(card.img, xfrom, yfrom, 1900, 1000, pauseTime) ) 
 
-    pause 0.5 + pauseTime
-    play sound "ghost.mp3"
-    pause 0.45
+    pause 0.4 + pauseTime
+    play sound "card/ghost.mp3"
+    pause 0.3
     if deckOrList == "list":
-        $ deck.list.append( Card(cardName) )
+        $ deck.list.append( card )
         $ deck.list.sort()
     elif deckOrList == "deck":
-        $ rand = renpy.random.randint(0, len(deck.deck))
-        $ deck.deck.insert( rand , Card(cardName) )
+        if index==None:
+            $ rand = renpy.random.randint(0, len(deck.deck))
+            $ deck.deck.insert( rand , card )
+        else:
+            $ deck.deck.insert( index , card )
     else:
         $ raise ValueError("deck or list not specified")
     pause 0.2
+    hide screen screen_tutorial
     return

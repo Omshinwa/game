@@ -45,7 +45,8 @@ init python:
 
             self.day = 0
 
-            self.lastPlayed = ""
+            self.lastPlayed = None
+            self.cardPlaying = None
 
             self.debug_flag = 1
 
@@ -61,9 +62,18 @@ init python:
                 self.animation_speed += 1
                 # renpy.show("joyce cowgirl")
 
-        def speedDown(self):
-            if self.animation_speed > 1:
-                self.animation_speed -= 1
+        def speedDown(self, useMultiplier):
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed > 1:
+                        self.animation_speed -= 1
+                        if self.animation_speed > 1:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed > 1:
+                    self.animation_speed -= 1
                 # renpy.show("joyce cowgirl")
 
     class Date():

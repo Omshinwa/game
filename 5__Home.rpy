@@ -10,11 +10,19 @@ screen screen_home:
         hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
         action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
         focus_mask True
-    imagebutton:
-        idle "home/phone.png"
-        hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
-        action Show("screen_home_phone", None, _layer = "master")
-        focus_mask True
+    
+    if global_var["phoneProgress"][1]<len(global_var["phoneLogs"][global_var["phoneProgress"][0]])-1:
+        imagebutton:
+            idle "home/phone-msg.png"
+            hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
+            action Show("screen_home_phone", None, _layer = "master")
+            focus_mask True
+    else:
+        imagebutton:
+            idle "home/phone.png"
+            hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+            action Show("screen_home_phone", None, _layer = "master")
+            focus_mask True
     imagebutton:
         idle "home/bed.png"
         hover im.MatrixColor("home/bed.png", im.matrix.tint(1,1,5))
@@ -48,7 +56,7 @@ label label_home(newDay = False):
     $ game.jeu_sensitive = True
 
     if newDay:
-        $ renpy.play("newday.wav", channel='sound') 
+        $ renpy.play("day/newday.wav", channel='sound') 
         scene bg home
         show screen screen_home onlayer master
         with Fade(0.5, 1.0, 0.5)
@@ -83,7 +91,7 @@ label label_home_trash_cutscene(index):
     $ renpy.call("label_home", newDay = True)
 
 label label_home_cat:
-    play sound "meow.wav"
+    play sound "day/meow.wav"
     menu:
         "talk to it":
             call label_home_add_cards("smalltalk", "Add a Small Talk to your deck?")
@@ -129,6 +137,7 @@ label label_home_add_cards(cardID, prompt):
         "[prompt]"
         "yes":
             hide card
+            hide screen screen_tutorial
             call label_add_card_to_deck("list", cardID, 300, 500)
             $ hide_all_screens_but("home")
             $ game.nextDay("label_home")
@@ -178,6 +187,7 @@ screen screen_home_phone():
         xsize 523
         ysize 918
         
+    # default todaysLog = global_var["phoneLogs"][global_var["phoneProgress"][0]]
         fixed: #phone screen
             xsize 420
             ysize 637

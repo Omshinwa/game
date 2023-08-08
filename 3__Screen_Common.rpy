@@ -53,8 +53,6 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
         add "#0005"
 
         fixed:
-            yalign 0.5
-            ysize int(game.card_ysize*zoom) * line_per_page
 
             for index, card in enumerate(what):
                 if offset<=index<offset+(line_per_page*card_per_line):

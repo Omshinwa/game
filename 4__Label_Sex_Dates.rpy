@@ -3,7 +3,7 @@ label label_cowgirl_begin():
     call label_beginDuel_common()
     return
 
-label label_SexEndTurn:
+label label_cowgirl_SexEndTurn:
     
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
@@ -34,7 +34,7 @@ label label_SexEndTurn:
     return
 
 label label_cowgirl:
-    $ date = Date(objectif_trust = 10)
+    $ date = Date(objectif_trust = 10, endTurn = "label_cowgirl_SexEndTurn")
 
     scene bg bbt
 
@@ -44,8 +44,6 @@ label label_cowgirl:
     # show img_moaning_bubbles
 
     show moan_bubble
-    
-    $ renpy.music.play("sex_moans.wav", channel="sexvoice", loop=True)
 
     j "Hello, you must be Kevin."
     j "I'm Joyce"
@@ -59,12 +57,14 @@ label label_cowgirl:
     j "Finally.. let's get a taste.."
     show expression "Joyce/sex/cowgirl/cowgirl (3).png" as joyce at toobig
     #play enter sex sound
-    $ renpy.play("sex_sloppy.wav", channel="sexsfx")
+    $ renpy.play("sex/slap.wav", channel="sexsfx")
     j "Gnh..ugh.."
     j "You're so big..."
     show joyce cowgirl at toobig
     call label_cowgirl_begin()
     $ current_speed = game.animation_speed
+    
+    $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
     
     label .gameLoop:
         $ game.jeu_sensitive = False
@@ -75,11 +75,14 @@ label label_cowgirl:
             $ current_speed = game.animation_speed
 
         if game.orgasm >= game.orgasmMax:
+            $ renpy.music.play("sex/moans3.wav", channel="sexvoice", loop=True)
             j "i'm..{w=1.0}{nw}"
             j "it's coming !{w=1.0}{nw}"
             show joyce cowgirl-orgasm 
+            $ renpy.music.play("sex/moans_climax.wav", channel="sexvoice", loop=True)
             j "kyaaa{w=1.0}{nw}"
             pause(2)
+            $ renpy.music.stop(channel="sexvoice")
             show cowgirl-talk at top as joyce
             pause(1)
             j "huff.."
