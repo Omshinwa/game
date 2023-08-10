@@ -16,22 +16,18 @@ transform top:
 
 
 transform trsfm_cards_go_down:
-    # on hide:
-    #     ypos 1080
     ypos 1080
     ease 0.2 ypos 1220
 
 transform trsfm_cards_go_up:
-    # on hide:
-    #     ypos 1080
     ypos 1220
     ease 0.2 ypos 1080
 
-transform trans_card_played:
-    xalign 0.5 yanchor 0.5 ypos 1080
-    ease 0.4 ypos 450
+transform trans_card_played(xfrom=0.5, yfrom=1080, xto=0.5, yto=450): #when card is played from hand
+    xanchor 0.5 yanchor 0.5 xpos xfrom ypos yfrom
+    ease 0.4 xpos xto ypos yto
 
-transform trans_show_card_2(displayable):
+transform trans_show_card_2(displayable): #floating up and down card
     displayable
     xanchor 0.5 yanchor 0.5 xpos 300 ypos 550
     ease 1.0 xpos 300 ypos 500

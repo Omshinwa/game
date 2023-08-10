@@ -33,14 +33,11 @@ init python:
             self.orgasmMax = 20
             self.orgasm = 0
 
-            self.animation_speed = 3
-            self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
-
             self.state = "" #either "dating" or "deckbuilding"
 
             self.isHoverHand = False
 
-            self.story = ["firstDate", "secondDate", "thirdDate", "fourthDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
+            self.story = ["tutorial", "firstDate", "secondDate", "thirdDate", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
             self.progress = [0,0] # left is progress, right is number of passing days spend on that step
 
             self.day = 0
@@ -56,37 +53,10 @@ init python:
             if label_callback != "":
                 renpy.call(label_callback, True)
 
-
-        def speedUp(self, useMultiplier=False):            
-            if useMultiplier:
-                i = 1
-                while date.lustMultiplier >= i:
-                    if self.animation_speed < 5:
-                        self.animation_speed += 1
-                        if self.animation_speed < 5:
-                            renpy.pause(0.3)
-                    i += 1
-            else:
-                if self.animation_speed < 5:
-                    self.animation_speed += 1
-
-        def speedDown(self, useMultiplier=False):
-            if useMultiplier:
-                i = 1
-                while date.lustMultiplier >= i:
-                    if self.animation_speed > 1:
-                        self.animation_speed -= 1
-                        if self.animation_speed > 1:
-                            renpy.pause(0.3)
-                    i += 1
-            else:
-                if self.animation_speed > 1:
-                    self.animation_speed -= 1
-                # renpy.show("joyce cowgirl")
-
     class Date():
         def __init__(self, **kwargs):
-            
+            game.jeu_sensitive = False;
+
             if "turnLeft" in kwargs:
                 self.turnLeft = kwargs["turnLeft"]
             else:
@@ -128,6 +98,8 @@ init python:
 
             self.ydisplace = Transform( ypos=1080 )
 
+            self.drink = 3
+
             self.lustMax = 10
             self.lust = 0
 
@@ -146,15 +118,46 @@ init python:
             self.animation_speed = 3
             self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
 
+        def speedUp(self, useMultiplier=False):            
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed < 5:
+                        self.animation_speed += 1
+                        if self.animation_speed < 5:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed < 5:
+                    self.animation_speed += 1
+
+        def speedDown(self, useMultiplier=False):
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed > 1:
+                        self.animation_speed -= 1
+                        if self.animation_speed > 1:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed > 1:
+                    self.animation_speed -= 1
+
         def isGameOver(self):
             return eval(self.config["isGameOver"])
         def isWin(self):
             return eval(self.config["isWin"])
 
         def updateYdisplace(self):
-            if not game.jeu_sensitive:
-                pass
-            elif game.isHoverHand:
+            # if not game.jeu_sensitive:
+            #     self.ydisplace = trsfm_cards_go_down
+            # elif game.isHoverHand:
+            #     self.ydisplace = trsfm_cards_go_up
+            # else:
+            #     self.ydisplace = trsfm_cards_go_down
+            
+            if game.jeu_sensitive and game.isHoverHand:
                 self.ydisplace = trsfm_cards_go_up
             else:
                 self.ydisplace = trsfm_cards_go_down
@@ -163,23 +166,23 @@ init python:
 
         def increment(self, which, value, resetAllMultiplier = True, allowNegative=False):
             if which == "trust":
-                if allowNegative:
+                if not allowNegative:
+                    temp = value * self.trustMultiplier * self.allMultiplierOnce
+                    self.trust = max(0, temp)
+                else:
                     self.trust += value * self.trustMultiplier * self.allMultiplierOnce
-                else:
-                    if self.trust<0:
-                            pass
             elif which == "attraction":
-                if allowNegative:
+                if not allowNegative:
+                    temp = value * self.attractionMultiplier * self.allMultiplierOnce
+                    self.attraction = max(0, temp)
+                else:
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
-                else:
-                    if self.attraction<0:
-                        pass
             elif which == "lust":
-                if allowNegative:
-                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                if not allowNegative:
+                    temp = value * self.lustMultiplier * self.allMultiplierOnce
+                    self.lust = max(0, temp)
                 else:
-                    if self.lust<0:
-                        pass
+                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
             else:
                 raise ValueError("no valid specified argument: + which : "+ which) 
             

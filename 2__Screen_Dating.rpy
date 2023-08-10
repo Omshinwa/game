@@ -20,7 +20,7 @@ init python:
 screen screen_card_hand():
     $ paddingPerCard = getCardPadding(len(deck.hand))
     
-    fixed at date.updateYdisplace(): #Transform(ypos = 1220 + date.ydisplace):
+    fixed at date.updateYdisplace():
         xsize 1800
         ysize game.card_ysize
         yanchor 1.0
@@ -65,13 +65,17 @@ screen screen_card_hand():
 
 screen screen_date_bottom_ui():
 
+    add "card_zone_bg" yalign 1.0
     #     cards at the bottom
     button:
         hovered SetVariable("game.isHoverHand", True)
         unhovered SetVariable("game.isHoverHand", False)
         action NullAction()
         xsize 1700
-        ysize game.card_ysize
+        if game.isHoverHand:
+            ysize game.card_ysize
+        else:
+            ysize 200
         yalign 1.0
         xalign 0.35
         sensitive game.jeu_sensitive
@@ -160,7 +164,7 @@ screen screen_lust_ui:
                 color "#000000"
         
         if game.state == "dating":
-            text "( next turn: +" +str(game.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+            text "( next turn: +" +str(date.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
 screen screen_sex_ui():
     use screen_date_bottom_ui()
@@ -204,6 +208,9 @@ screen screen_orgasm_ui:
         image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
 
 screen screen_trust_ui(range_var = 100):
+    default textStat = ""
+    default colorStat = "#fff"
+    default colorStat2 = "#fff"
 
     if game.state == "dating":
         $ gameOrDate = date
@@ -212,65 +219,62 @@ screen screen_trust_ui(range_var = 100):
 
     fixed:
         xpos 220
-        ypos 20
-        xsize 440
+        ypos 21
+        xsize 400
         ysize 200
-        add "#00f"
-        
-        text "{k=15.0}LUST{/k}":
-            size 40 style "outline_text" ypos 5
-            if game.state == "dating" and date.objectives["lust"] != 0:
-                if date.lust < date.objectives["lust"]:
-                    color "#f00"
-                else:
-                    color "#00ffae"
-        
-        text "{k=5.0}TRUST{/k}":
-            size 40 style "outline_text" ypos 67
-            if game.state == "dating" and date.objectives["trust"] != 0:
-                if date.trust < date.objectives["trust"] :
-                    color "#f00"
-                else:
-                    color "#00ffae"
-        
-        text "{vspace=12}{k=-2.0}Attraction{/k}":
-            size 40 style "outline_text" ypos 115
-            if game.state == "dating" and date.objectives["attraction"] != 0:
-                if date.attraction < date.objectives["attraction"]:
-                    color "#f00"
-                else:
-                    color "#00ffae"
-        
-        fixed:
-            xpos 190
-            xsize 240
 
-            bar value getattr(gameOrDate, "lust") range range_var ypos 10 xpos 0 xsize 480 left_bar "#ffd561" right_bar"#0000" 
-            bar value getattr(gameOrDate, "trust") range range_var ypos 75 xpos 0 left_bar "#61e5ff" xsize 480 right_bar"#0000" 
-            bar value getattr(gameOrDate, "attraction") range range_var ypos 140 xpos 0 left_bar "#ff8bf0" xsize 480 right_bar"#0000" 
-
+        vbox:
 
             for index, stat in enumerate(["lust", "trust", "attraction"]):
                 
-                if game.state != "dating":
-                    $ objectif = 0
-                elif stat == "lust":
-                    $ objectif = date.objectives["lust"]
-                elif stat == "trust":
-                    $ objectif = date.objectives["trust"]
-                elif stat == "attraction":
-                    $ objectif = date.objectives["attraction"]
+                fixed:
+                    ysize 66
+                    
+                    if stat == "lust":
+                        $ objectif = date.objectives["lust"]
+                        $ textStat = "{k=15.0}LUST{/k}"
+                        $ colorStat = "#666"
+                        $ colorStat2 = "#ffd561"
+                    elif stat == "trust":
+                        $ objectif = date.objectives["trust"]
+                        $ textStat = "{k=5.0}TRUST{/k}"
+                        $ colorStat = "#61e5ff"
+                        $ colorStat2 = "#aaa"
+                    elif stat == "attraction":
+                        $ objectif = date.objectives["attraction"]
+                        $ textStat = "{k=-2.0}Attraction{/k}"
+                        $ colorStat = "#ff8bf0"
+                        $ colorStat2 = "#aaa"
+                    
+                    if game.state != "dating":
+                        $ objectif = 0
 
-                if objectif == 0:
-                    text str( getattr(gameOrDate, stat)):
-                        size 50 style "outline_text" xalign 0.5 ypos 60*index
-                else:
-                    text str( getattr(gameOrDate, stat) ) + "/" + str(objectif):
-                        size 50 style "outline_text" xalign 0.5 ypos 60*index 
-                        if getattr(gameOrDate, stat) < objectif:
-                            color "#f00"
-                        else:
-                            color "#00ffae"
+                    bar bar_invert stat == "lust" value getattr(gameOrDate, stat) range range_var xsize 400 ysize 66 left_bar colorStat right_bar colorStat2
+                    
+
+                    if objectif == 0:
+                        text str( getattr(gameOrDate, stat)):
+                            size 50 style "outline_text" xalign 0.8 #ypos 60*index
+                    else:
+                        text str( getattr(gameOrDate, stat) ) + "/" + str(objectif):
+                            size 50 style "outline_text" xalign 0.8 #ypos 60*index 
+                            if getattr(gameOrDate, stat) < objectif:
+                                color "#f00"
+                            else:
+                                color "#00ffae"
+        
+                    text textStat:
+                        xalign 0.1
+                        yalign 0.5
+                        size 40 style "outline_text"
+                        if game.state == "dating" and date.objectives[stat] != 0:
+                            if getattr(gameOrDate,stat) < date.objectives[stat]:
+                                color "#f00"
+                            else:
+                                color "#00ffae"
+
+
+
         
 screen screen_turn_counter:
     fixed:
@@ -317,3 +321,14 @@ screen screen_buttons_ui():
     #     idle "ui/prefs.png"
     #     hover im.MatrixColor("ui/prefs.png", im.matrix.invert())
     #     action ShowMenu('preferences')
+
+screen screen_glass(id):
+    if date.drink>0:
+        imagebutton:
+            idle "bg/" + id + "-glass-" + str(date.drink) + ".png"
+            focus_mask True
+            hover im.MatrixColor("bg/" + id + "-glass-" + str(date.drink) + ".png", im.matrix.tint(1.5,1.5,1))
+            action Call("label_drink")
+            sensitive game.jeu_sensitive
+    else:
+        add "bg/" + id + "-glass-0.png"

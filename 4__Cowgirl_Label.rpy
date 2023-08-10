@@ -10,7 +10,7 @@ label label_cowgirl_SexEndTurn:
     $ date.lustMultiplier = 1
 
     $ i=0
-    while i < game.animation_speed:
+    while i < date.animation_speed:
         $ date.lust += 1
         $ game.orgasm += 1
 
@@ -38,16 +38,14 @@ label label_cowgirl:
 
     scene bg bbt
 
-    show joyce stand at default_img_pos
+    show joyce stand 
     show fg bbt-table 
-
-    # show img_moaning_bubbles
 
     show moan_bubble
 
     j "Hello, you must be Kevin."
     j "I'm Joyce"
-    show joyce base at default_img_pos
+    show joyce base 
     j "Hi, this is your first date no?"
     j "I'll tell you how to get a successful date"
     j "Let the date begin!"
@@ -62,17 +60,17 @@ label label_cowgirl:
     j "You're so big..."
     show joyce cowgirl at toobig
     call label_cowgirl_begin()
-    $ current_speed = game.animation_speed
+    $ current_speed = date.animation_speed
     
     $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
     
     label .gameLoop:
         $ game.jeu_sensitive = False
 
-        if current_speed != game.animation_speed:
+        if current_speed != date.animation_speed:
             show joyce cowgirl at toobig
             show moan_bubble
-            $ current_speed = game.animation_speed
+            $ current_speed = date.animation_speed
 
         if game.orgasm >= game.orgasmMax:
             $ renpy.music.play("sex/moans3.wav", channel="sexvoice", loop=True)
@@ -88,7 +86,7 @@ label label_cowgirl:
             j "huff.."
             j "i-i came"
             
-            show joyce sitting at default_img_pos
+            show joyce sitting 
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -116,7 +114,7 @@ label label_footjob_start:
     j "Hello, you must be Kevin."
     j "I'm Joyce"
     hide footjob-start-talk
-    show joyce smile at default_img_pos
+    show joyce smile 
     j "Hi, this is your first date no?"
     j "I'll tell you how to get a successful date"
     j "Let the date begin!"
@@ -124,15 +122,15 @@ label label_footjob_start:
     show joyce footjob at top
     
     call label_beginDuel()
-    $ current_speed = game.animation_speed
+    $ current_speed = date.animation_speed
     
     label .gameLoop:
         $ game.jeu_sensitive = False
 
-        if current_speed != game.animation_speed:
+        if current_speed != date.animation_speed:
             show joyce footjob at top
             show moan_bubble
-            $ current_speed = game.animation_speed
+            $ current_speed = date.animation_speed
 
         if game.orgasm >= game.orgasmMax:
             j "i'm..{w=1.0}{nw}"
@@ -145,7 +143,7 @@ label label_footjob_start:
             j "huff.."
             j "i-i came"
             
-            show joyce sitting at default_img_pos
+            show joyce sitting 
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()

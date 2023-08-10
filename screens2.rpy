@@ -9,7 +9,7 @@ screen choice(items):
 
 transform anim_choice(t):
     yoffset ((t%2)*2-1) * 1000
-    easein 1.0 yoffset 0
+    easein 0.5 yoffset 0
     on hover:
         linear 0.1 ypos -20
     on idle:

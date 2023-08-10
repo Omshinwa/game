@@ -128,10 +128,10 @@ init python:
         # get preview of next cards to come?
         # the string 'index' is replaced with the index of the card in hand
 
-        "faster": {"txt":"go faster", "eff":"game.speedUp(True)", "value":-1,},
-        "slower": {"txt":"go slower", "eff":"game.speedDown(True)", "value":1,},
+        "faster": {"txt":"go faster", "eff":"date.speedUp(True)", "value":-1,},
+        "slower": {"txt":"go slower", "eff":"date.speedDown(True)", "value":1,},
 
-        "slowsteady": {"txt":"Go much slower. Play this only when this is your leftmost card.", "cond":"index == 0", "eff":"game.speedDown(True); renpy.pause(1.0); game.speedDown(True)", "value":2,},
+        "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); renpy.pause(1.0); date.speedDown(True)", "value":2,},
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)", "value":3,},
 
@@ -146,8 +146,8 @@ init python:
 
         "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":3,},
 
-        "pair": {"txt":"if you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)", "value":2,},
-        "threeof": {"txt":"if you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)", "value":1,},
+        "pair": {"txt":"IF you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)", "value":2,},
+        "threeof": {"txt":"IF you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)", "value":1,},
 
         "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":2,},
         
@@ -156,9 +156,7 @@ init python:
         "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.call('label_card_sisyphus')", "value":2,},
         "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
-        "reload": {"txt":"Put all your cards at the bottom of your deck, then draw as many from the top.", "eff":"renpy.call('label_card_reload')", "value":1,},
-
-        "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"game.animation_speed = 5; deck.draw(5-len(deck.hand))", "value":1,},
+        "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"date.animation_speed = 5; deck.draw(5-len(deck.hand))", "value":1,},
 
         "stop": {"txt":"Can't be played", "cond":"False", "eff":"", "value":-2,},
     
@@ -188,7 +186,9 @@ init python:
 
         "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2",},
 
-        "drink" : {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_drink')", "value":3,},
+        "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2,},
+
+        "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":3,},
 
         
     }

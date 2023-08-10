@@ -59,7 +59,12 @@ label label_home(newDay = False):
         $ renpy.play("day/newday.wav", channel='sound') 
         scene bg home
         show screen screen_home onlayer master
-        with Fade(0.5, 1.0, 0.5)
+        show black
+        with fade
+        pause 2.0
+        play sound "day/alarm.wav"
+        pause 2.0
+        hide black with dissolve
         
         $ game.day += 1
     else:
@@ -103,13 +108,18 @@ label label_home_cat:
 label label_home_bed:
     menu:
         "rub a quickie":
+            show black with dissolve
+            queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
+            pause 2.0
+            queue sound ["sex/Poison-cum.wav"]
+            "Lust reset to 0"
             while game.lust>0:
                 $ game.lust -= 5
                 if game.lust < 0:
                     $ game.lust = 0
             call label_home(True)
-        "listen to it":
-            call label_home_add_cards("listen", "Add a Listen to your deck?")
+        "sleep":
+            call label_dream()
         "X":
             return
 
@@ -132,7 +142,7 @@ label label_home_add_cards(cardID, prompt):
         "yes":
             hide card
             hide screen screen_tutorial
-            call label_add_card_to_deck("list", cardID, 300, 500)
+            call label_add_card_to_deck("list", Card(cardID), 300, 500)
             $ hide_all_screens_but("home")
             $ game.nextDay("label_home")
         "no":

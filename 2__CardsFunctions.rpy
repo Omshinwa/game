@@ -6,14 +6,20 @@ label label_card_change:
         $ i+=1
     return
 
-label label_card_reload:
+label label_card_drink:
+    $ date.drink = 3
+    play sound "day/pour-drink.wav"
+    pause 0.2
+    return
+
+label label_shuffle:
     $ i = 0
     while len(deck.hand)>0:
         $ deck.deck.append( deck.hand.pop(0) )
         $ renpy.play("card/draw.mp3", channel='drawcard')
         $ renpy.pause(0.2, hard=True)
         $ i+= 1
-    # $ deck.shuffle()
+    $ deck.shuffle()
     $ deck.draw(i, 0.2)
     return
 
@@ -54,26 +60,26 @@ label label_card_ouroboros:
     $ deck.shuffle()
     return
 
-label label_card_drink():
+label label_card_reload():
     $ i = 2
-    while i<=len(deck.discard_pile) and deck.discard_pile[-i].name == "drink":
+    while i<=len(deck.discard_pile) and deck.discard_pile[-i].name == "reload":
         $ i += 1
     if i<=len(deck.discard_pile):
         $ card = deck.discard_pile[-i]
     else:
-        $ card = Card("drink")
+        $ card = Card("reload")
 
     while i>2:
         $ renpy.play("card/activate.mp3", channel='activatecard')
-        $ renpy.show('cardPlayed', what=Card("drink").img, at_list=[trans_card_played], zorder=2, layer="screens")
+        $ renpy.show('cardPlayed', what=Card("reload").img, at_list=[trans_card_played(xfrom=150, yfrom=850, xto=540)], zorder=2, layer="screens")
         $ renpy.pause(0.8)
         $ renpy.hide('cardPlayed', layer="screens")
         $ i -= 1
-    if card.name == "drink":
+    if card.name == "reload":
         pass
     else:
         $ renpy.play("card/activate.mp3", channel='activatecard')
-        $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played], zorder=2, layer="screens")
+        $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played(xfrom=150, yfrom=850, xto=960)], zorder=2, layer="screens")
         $ renpy.pause(0.8)
         $ renpy.hide('cardPlayed', layer="screens")
         if "index" not in card.eff:
@@ -83,24 +89,24 @@ label label_card_drink():
 label label_card_exodia(index):
     if len(deck.hand) >= 2 and deck.discard_pile[-1].name == 'exodia1': # its annoying that to get the card being played you need to do this
         if deck.hand[index-2].name == 'exodia3' and deck.hand[index-1].name == 'exodia2':
-            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index-1), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index-2), yfrom=450, pauseTime=0)
+            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index-1), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index-2), pauseTime=0, fromWhere="field")
             jump .effect
     elif len(deck.hand) >= 2 and deck.discard_pile[-1].name =='exodia2':
         if deck.hand[index-1].name == 'exodia3' and deck.hand[index].name == 'exodia1':
-            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index-1), yfrom=450, pauseTime=0)
+            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index-1), pauseTime=0, fromWhere="field")
             jump .effect
     elif len(deck.hand) >= 2 and deck.discard_pile[-1].name == 'exodia3':
         if deck.hand[index].name == 'exodia2' and deck.hand[index+1].name == 'exodia1':
-            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index+1), yfrom=450, pauseTime=0)
-            call label_add_card_to_deck("deck", deck.hand.pop(index), yfrom=450, pauseTime=0)
+            call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index+1), pauseTime=0, fromWhere="field")
+            call label_add_card_to_deck("deck", deck.hand.pop(index), pauseTime=0, fromWhere="field")
             jump .effect
 
-    call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), yfrom=450, pauseTime=0)
+    call label_add_card_to_deck("field", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
     return
 
     label .effect:

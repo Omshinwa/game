@@ -21,7 +21,7 @@ init python:
             else:
                 img_path = "ui/bubble_02.png"
 
-            if st > (2/game.animation_speed_hash[game.animation_speed])-0.1 :
+            if st > (2/date.animation_speed_hash[date.animation_speed])-0.1 :
                 self.cycle += 1
                 self.rand_pos()
 
@@ -31,10 +31,10 @@ init python:
 image moan_bubble:
     DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat
     alpha 0.0
-    linear 0.5/game.animation_speed_hash[game.animation_speed] alpha 1.0
-    pause 1.0/game.animation_speed_hash[game.animation_speed]
-    linear 0.5/game.animation_speed_hash[game.animation_speed] alpha 0.0
-    # pause 1.0/game.animation_speed_hash[game.animation_speed]**2
+    linear 0.5/date.animation_speed_hash[date.animation_speed] alpha 1.0
+    pause 1.0/date.animation_speed_hash[date.animation_speed]
+    linear 0.5/date.animation_speed_hash[date.animation_speed] alpha 0.0
+    # pause 1.0/date.animation_speed_hash[date.animation_speed]**2
     repeat
 
 layeredimage joyce:
@@ -45,10 +45,13 @@ layeredimage joyce:
             "joyce_2nd"
         attribute stand:
             "joyce_stand"
-        attribute 2dstand:
-            "joyce_2ndstand"
+        attribute 2nd-stand:
+            "joyce_2nd-stand"
         attribute armscrossed
         attribute 2nd_armscrossed
+        attribute fancy
+        attribute fancy-stand
+        attribute sm
 
     group eyes:
         attribute blink default:
@@ -56,6 +59,7 @@ layeredimage joyce:
         attribute stare:
             null
         attribute upset
+        attribute worried
     group mouth:
         attribute smile
         attribute neutral:
@@ -79,38 +83,38 @@ image img_blink:
 
 image joyce cowgirl:
     "Joyce/sex/cowgirl/cowgirl (1).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
 
     function renpy.curry(play_sexsound)(filename="sex/slap.wav") #hacky
 
     "Joyce/sex/cowgirl/cowgirl (2).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/cowgirl/cowgirl (3).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/cowgirl/cowgirl (4).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/cowgirl/cowgirl (5).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/cowgirl/cowgirl (6).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 
 image joyce footjob:
     "Joyce/sex/footjob/footjob (1).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
 
     "Joyce/sex/footjob/footjob (2).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob (3).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
 
     function renpy.curry(play_sexsound)(filename="card/draw.mp3") #hacky
     "Joyce/sex/footjob/footjob (4).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob (3).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob (2).png"
-    pause(0.1 / game.animation_speed_hash[game.animation_speed])
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 
 image card_zone_bg:

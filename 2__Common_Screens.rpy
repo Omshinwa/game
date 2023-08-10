@@ -3,6 +3,10 @@ screen keybinds():
     # ... etc.
 
 
+screen screen_tutorial(disp, properties={}):
+    add disp:
+        properties properties
+        
 screen screen_day():
     fixed:
         add "#00f"
