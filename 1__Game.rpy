@@ -37,7 +37,7 @@ init python:
 
             self.isHoverHand = False
 
-            self.story = ["tutorial", "firstDate", "secondDate", "thirdDate", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
+            self.story = ["tutorial", "park", "bubbleTea", "bubbleTea2", "terrasse", "terrase2", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
             self.progress = [0,0] # left is progress, right is number of passing days spend on that step
 
             self.day = 0
@@ -48,19 +48,22 @@ init python:
             self.debug_flag = 1
 
         def nextDay(self, label_callback=""):
-            # renpy.play("newday.wav", channel='sound') 
-            # self.day += 1
-            if label_callback != "":
-                renpy.call(label_callback, True)
+            renpy.call("label_newDay", label_callback)
+
+        @staticmethod
+        def hasNewMessage():
+            return global_var.phoneProgress[1]<len(global_var.phoneLogs[global_var.phoneProgress[0]])-1
 
     class Date():
         def __init__(self, **kwargs):
             game.jeu_sensitive = False;
 
             if "turnLeft" in kwargs:
-                self.turnLeft = kwargs["turnLeft"]
+                self._turnLeft = kwargs["turnLeft"]
             else:
-                self.turnLeft = 0
+                self._turnLeft = 0
+
+            self.turn = 0
 
             self.config = {}
 
@@ -80,10 +83,13 @@ init python:
             else:
                 self.objectives["lust"] = 0
 
-            if "isGameOver" in kwargs:
-                self.config["isGameOver"] = kwargs["isGameOver"]
+            if "isLost" in kwargs:
+                self.config["isLost"] = kwargs["isLost"]
             else:
-                self.config["isGameOver"] = "len(deck.deck) == 0 or date.lust > date.trust or game.turnLeft == 0"
+                if game.progress[0] <5:
+                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust > date.trust"
+                else:
+                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"
 
             if "isWin" in kwargs:
                 self.config["isWin"] = kwargs["isWin"]
@@ -118,6 +124,10 @@ init python:
             self.animation_speed = 3
             self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
 
+        @property
+        def turnLeft(self):
+            return self._turnLeft - self.turn
+
         def speedUp(self, useMultiplier=False):            
             if useMultiplier:
                 i = 1
@@ -144,20 +154,14 @@ init python:
                 if self.animation_speed > 1:
                     self.animation_speed -= 1
 
-        def isGameOver(self):
-            return eval(self.config["isGameOver"])
+        def isLost(self):
+            return eval(self.config["isLost"])
         def isWin(self):
             return eval(self.config["isWin"])
 
         def updateYdisplace(self):
-            # if not game.jeu_sensitive:
-            #     self.ydisplace = trsfm_cards_go_down
-            # elif game.isHoverHand:
-            #     self.ydisplace = trsfm_cards_go_up
-            # else:
-            #     self.ydisplace = trsfm_cards_go_down
-            
-            if game.jeu_sensitive and game.isHoverHand:
+            # game.jeu_sensitive and 
+            if game.isHoverHand:
                 self.ydisplace = trsfm_cards_go_up
             else:
                 self.ydisplace = trsfm_cards_go_down
@@ -201,21 +205,18 @@ default global_var.page = 0
 default global_var.card_per_line = 7
 default global_var.phoneLogs = {
         0:[
-            [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+            [0, "hello~"],[0, "today was so fun!"],[0, "I hope to see you next time too!"],[0, "right now i'm stuck on a sudoku haha"], [0,"blablab\nlalbl"],[1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+        ],
+        # 0:[
+        #     [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+        # ],
+        1:[
+            [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
         ]
         }
 default global_var.phoneProgress = [0,0]
+default global_var.phoneMsgPosition = 0
 default global_var.prison_cards = []
+default global_var.dreamProgress = 0
 
-# default global_var = {
-#     "page":0,
-#     "card_per_line":7,
-#     "phoneLogs":{
-#         0:[
-#             [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
-#         ]
-#         },
-#     "phoneProgress":[0,0],
-#     "prison_cards" : [],
-
-# }
+default phone_Scroll = ui.adjustment(range=0, value=0, step=None, page=1, changed=None, adjustable=None, ranged=None, force_step=False)

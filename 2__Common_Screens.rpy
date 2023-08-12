@@ -115,3 +115,14 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
             xpos 100
 
     text instruction xalign 0.5 style "quirky_command" ypos 790 xsize 1600 at animated_text
+
+screen screen_fullscreen(disp):
+    # modal True
+    button:
+        xsize 1.0
+        ysize 1.0
+        action [Hide("screen_fullscreen", dissolve), Hide("screen_home_phone")]
+    add "#000a"
+    add disp:
+        xalign 0.5
+        yalign 0.5

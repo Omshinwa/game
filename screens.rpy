@@ -1460,8 +1460,8 @@ style bubble_what is default
 
 style bubble_window:
     xpadding 30
-    top_padding 5
-    bottom_padding 5
+    # top_padding 5
+    # bottom_padding 5
 
 style bubble_namebox:
     xalign 0.5

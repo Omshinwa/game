@@ -39,7 +39,7 @@ screen screen_home:
     imagebutton:
         idle "home/comp.png"
         hover im.MatrixColor("home/comp.png", im.matrix.tint(1,1,5))
-        action Jump("label_prison") #Show("screen_home_food")
+        action #Show("screen_home_food")
         focus_mask True
     imagebutton:
         idle "home/plant.png"
@@ -242,6 +242,15 @@ label label_home_cat:
         "X":
             return
     return
+
+label label_home_comp:
+    menu:
+        "You log into discord"
+        "Post messages":
+            call label_home_add_cards("talk", "Transform 1 Small Talk card into Talk?")
+        "Read messages":
+            call label_home_add_cards("listen", "Transform 1 Small Talk card into Listen?")
+    Jump("label_prison") 
 
 label label_home_bed:
     $ game.jeu_sensitive = False

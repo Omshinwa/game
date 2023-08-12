@@ -1,3 +1,9 @@
+define config.modal_blocks_pause = False # setting modal on screen made pausing with time not work
+
+define config.say_attribute_transition_layer = "master"
+define config.say_attribute_transition = Dissolve(.2)
+
+
 screen choice(items):
     modal True
     style_prefix "choice"

@@ -39,19 +39,20 @@ image moan_bubble:
 
 layeredimage joyce:
     group base:
-        attribute base default:
-            "joyce_base"
-        attribute 2nd:
-            "joyce_2nd"
-        attribute stand:
-            "joyce_stand"
-        attribute 2nd-stand:
-            "joyce_2nd-stand"
+        attribute base default
+        attribute 2nd
         attribute armscrossed
         attribute 2nd_armscrossed
         attribute fancy
-        attribute fancy-stand
         attribute sm
+        attribute dream
+        attribute dream2
+        attribute dream3
+    
+    group skin:
+        attribute neutral default:
+            null
+        attribute blush
 
     group eyes:
         attribute blink default:
@@ -60,6 +61,7 @@ layeredimage joyce:
             null
         attribute upset
         attribute worried
+        attribute eyesside
     group mouth:
         attribute smile
         attribute neutral:

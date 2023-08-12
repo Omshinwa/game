@@ -26,10 +26,10 @@ label label_beginDuel_common():
     $ deck.draw(5)
 
     play sound "rpg/Wind1.wav"
-    show date-start at truecenter with blinds
+    show date-start onlayer screens at truecenter with blinds
     pause 0.4
     play sound "date/datestart2.mp3"
-    hide date-start with moveoutbottom
+    hide date-start  onlayer screens with moveoutbottom
 
     return
 
@@ -37,8 +37,15 @@ label label_endTurn_common():
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
     $ date.lustMultiplier = 1
+    
+    $ date.turn += 1
 
     $ handSize = len(deck.hand)
+    
+    play sound "rpg/Item1.wav"
+
+    pause 0.3
+
     while handSize < 5 and len(deck.deck)>0:
         $ deck.draw(1)
         $ handSize = len(deck.hand)
@@ -47,6 +54,13 @@ label label_endTurn_common():
     return
 
 label label_after_successful_Date_common():
+    hide screen screen_date_ui with dissolve
+
+    play sound "rpg/Holy5.wav"
+    show date-nice at truecenter with blinds
+    pause 0.3
+    hide date-nice with moveoutbottom
+    
     $ game.lust = date.lust
     $ game.trust = date.trust
     $ game.attraction = date.attraction
@@ -105,3 +119,33 @@ label label_drink:
         pause 1.0
         call label_shuffle
         return
+
+label label_date_endTurn():
+    $ game.jeu_sensitive = False
+
+    if date.isLost():
+        play sound "rpg/Fall1.wav"
+        show date-fail at truecenter with blinds
+        pause 0.3
+        hide date-fail with moveoutbottom
+
+        if date.lust > date.trust:
+            show joyce neutral
+            hide screen screen_date_ui with dissolve
+            j joyce armscrossed upset "um.. don't you think I can notice?"
+            j "Sorry but I'm gonna go. I'm really not in the mood today."
+            j "Let's do this another day."
+
+        elif len(deck.deck) == 0:
+            show joyce neutral
+            hide screen screen_date_ui with dissolve
+            j eyesside armscrossed "OH look at the time."
+            j "Sorry but I gotta go."
+            j "That kinda dragged on no?"
+            j "Maybe we can do this another day? See ya."
+
+        hide joyce with dissolve
+        $ game.progress[1] += 1
+        $ game.nextDay("label_home")
+
+    return

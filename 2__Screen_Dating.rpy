@@ -8,13 +8,6 @@ init python:
         padding = ( 1800 - (handSize+1)*game.card_xsize ) / handSize
         return min(padding, 20)
 
-    def getCardYdisplace():
-        if not game.jeu_sensitive:
-            return 10
-        if game.isHoverHand:
-            return -140
-        return 10
-
     focus_card_index = -1
 
 screen screen_card_hand():
@@ -78,7 +71,6 @@ screen screen_date_bottom_ui():
             ysize 200
         yalign 1.0
         xalign 0.35
-        sensitive game.jeu_sensitive
 
     use screen_card_hand()
 
@@ -211,6 +203,7 @@ screen screen_trust_ui(range_var = 100):
     default textStat = ""
     default colorStat = "#fff"
     default colorStat2 = "#fff"
+    default textColor = "000"
 
     if game.state == "dating":
         $ gameOrDate = date
@@ -233,23 +226,26 @@ screen screen_trust_ui(range_var = 100):
                     if stat == "lust":
                         $ objectif = date.objectives["lust"]
                         $ textStat = "{k=15.0}LUST{/k}"
-                        $ colorStat = "#666"
-                        $ colorStat2 = "#ffd561"
+                        $ colorStat2 = "#666"
+                        $ colorStat = "#ffd561"
+                        $ textColor ="#cc3"
                     elif stat == "trust":
                         $ objectif = date.objectives["trust"]
                         $ textStat = "{k=5.0}TRUST{/k}"
                         $ colorStat = "#61e5ff"
+                        $ textColor ="#55f"
                         $ colorStat2 = "#aaa"
                     elif stat == "attraction":
                         $ objectif = date.objectives["attraction"]
                         $ textStat = "{k=-2.0}Attraction{/k}"
                         $ colorStat = "#ff8bf0"
+                        $ textColor = "#f3a"
                         $ colorStat2 = "#aaa"
                     
                     if game.state != "dating":
                         $ objectif = 0
 
-                    bar bar_invert stat == "lust" value getattr(gameOrDate, stat) range range_var xsize 400 ysize 66 left_bar colorStat right_bar colorStat2
+                    bar value getattr(gameOrDate, stat) range range_var xsize 400 ysize 66 left_bar colorStat right_bar colorStat2
                     
 
                     if objectif == 0:
@@ -267,11 +263,7 @@ screen screen_trust_ui(range_var = 100):
                         xalign 0.1
                         yalign 0.5
                         size 40 style "outline_text"
-                        if game.state == "dating" and date.objectives[stat] != 0:
-                            if getattr(gameOrDate,stat) < date.objectives[stat]:
-                                color "#f00"
-                            else:
-                                color "#00ffae"
+                        color textColor
 
 
 

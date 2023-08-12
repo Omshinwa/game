@@ -3,11 +3,14 @@ transform toobig:
     ypos -100
     zoom 0.9
 
-transform default_img_pos:
-    xalign 0.5
-    yanchor 1.0
-    ypos 1080 - 200
-    zoom 1.0
+transform standing:
+    yoffset 0
+    zoom 0.9 xalign 0.5 yalign 1.0 
+
+transform sitting:
+    yoffset 137
+    zoom 1.0 xalign 0.5
+
 
 transform top:
     zoom 1.0
