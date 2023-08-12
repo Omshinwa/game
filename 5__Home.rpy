@@ -3,7 +3,8 @@ screen screen_home:
     use screen_day
     use screen_deck_stack
 
-    sensitive not renpy.get_screen("say")
+    # sensitive not renpy.get_screen("say")
+    sensitive game.jeu_sensitive
 
     imagebutton:
         idle "home/door.png"
@@ -11,7 +12,7 @@ screen screen_home:
         action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
         focus_mask True
     
-    if global_var.phoneProgress[1]<len(global_var.phoneLogs[global_var.phoneProgress[0]])-1:
+    if game.hasNewMessage():
         imagebutton:
             idle "home/phone-msg.png"
             hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
@@ -51,28 +52,170 @@ screen screen_home:
         action Call("label_home_cat")
         focus_mask True
 
-label label_home(newDay = False):
-    $ game.state = "living"
-    $ game.jeu_sensitive = True
 
-    if newDay:
-        $ renpy.play("day/newday.wav", channel='sound') 
+screen screen_home_phone():
+    
+    modal True #break pauses?
+
+    sensitive game.jeu_sensitive
+            
+    button:
+        xsize 1.0
+        ysize 1.0
+        action Hide("screen_home_phone", None, _layer="master")
+
+    fixed at switch:
+        xsize 523
+        ysize 918
+    
+        imagebutton:
+            idle "home/phone-big.png"
+            action [Call("label_home_phone")]
+
+        # bar value FieldValue(global_var, "phoneMsgPosition", len(global_var.phoneLogs[global_var.phoneProgress[0]]) )
+        fixed:
+            
+            xsize 410
+            ysize 637
+            xpos 40
+            ypos 130
+
+            viewport id "id_phonescreen":
+
+                yinitial 1.0
+                if not game.hasNewMessage():
+                    mousewheel True
+
+                yadjustment phone_Scroll
+                vbox:
+                    spacing 10
+                    fixed:
+                        ysize 0
+                    for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
+
+                        if index>global_var.phoneProgress[1]: #only display msg sent
+                            break
+                        
+                        # elif index<=global_var.phoneProgress[1]-4:
+                        #     continue
+
+                        if message[0] == 0: #text msg
+                            frame:
+                                padding (30, 10)
+                                background Frame("home/phone-bubble.png")
+                                text message[1] size 33 xalign 0.5
+                                
+                                xmaximum 300
+
+                        elif message[0] == 1: #picture
+                            default disp = "home/" + message[1]
+                            frame:
+                                padding (30, 10)
+                                background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
+                                imagebutton:
+                                    sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
+                                    hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
+                                    idle "Joyce/selfie/small-" + message[1]
+                                    action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
+                                    xsize 200
+                                    ysize 200
+
+                        elif message[0] == 2: #my text msg
+                            frame:
+                                xmaximum 300
+                                xanchor 1.0
+                                xpos 420
+                                padding (30, 10)
+                                background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
+                                text message[1] size 33 xalign 0.5
+                        elif message[0] == 3: #my photo
+                            frame:
+                                xmaximum 300
+                                xanchor 1.0
+                                xpos 420
+                                padding (30, 10)
+                                background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
+                                add "Joyce/selfie/small-" + message[1]
+                        
+                    fixed:
+                        ysize 0
+
+            vbar adjustment phone_Scroll xalign 1.08 ysize 600 yalign 0.5 xsize 20 bar_invert True base_bar "#fff" thumb "#aaa"#unscrollable "hide" 
+
+
+#############################################################################
+##                                                                                     
+##
+##     #######    #####  ######    #######  #######  ###   ##   #######
+##     ##       ###      ##   ##   ##       ##       ####  ##   ##
+##     #######  ##       ######    #####    #####    ## ## ##   #######
+##          ##  ###      ##  ##    ##       ##       ##  ####        ##
+##     #######    #####  ##   ##   #######  #######  ##   ###   #######
+##
+##
+#############################################################################
+
+label label_newDay(callback):
+    window hide
+    $ game.day += 1
+    $ game.state = "living"
+    $ renpy.play("day/newday.wav", channel='sound') 
+    show screen screen_home onlayer master
+    show black onlayer screens
+    with dissolve
+    pause 2.0
+    play sound "day/alarm.wav"
+    pause 2.0
+    window auto
+    jump expression callback
+
+label label_home_tutorial():
+    window hide
+    $ game.day += 1
+    $ game.state = "living"
+    $ renpy.play("day/newday.wav", channel='sound')
+    show screen screen_home onlayer master
+    show black onlayer screens
+    with dissolve
+    pause 2.0
+    play sound "day/alarm.wav"
+    pause 2.0
+    window auto
+
+    if tutorial:
         scene bg home
         show screen screen_home onlayer master
-        show black
-        with fade
-        pause 2.0
-        play sound "day/alarm.wav"
-        pause 2.0
-        hide black with dissolve
-        
-        $ game.day += 1
-    else:
-        scene bg home
-        show screen screen_home onlayer master
-        with fade
+        show black onlayer screens
+        hide black onlayer screens with dissolve
+        show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+        play sound "rpg/Item1.wav"
+        "You will keep your stats you built up after a successful date."
+        "If you fail, they stay the way they were before."
+        "{b}Lust{/b} do builds up every day."
+        "Try to build a stronger deck before the second date!"
+        hide screen screen_tutorial
+        show black onlayer screens with dissolve
+    jump label_home
+
+label label_home_weirdDream():
+    $ game.state = "living"
+    scene bg home
+    show screen screen_home onlayer master
+    show black onlayer screens
+    hide black onlayer screens with dissolve
+    "You felt like you had a weird dream"
+    "You cannot remember the content though."
+    jump label_home
+
+label label_home():
+    $ game.state = "living"
+    scene bg home
+    show screen screen_home onlayer master
+    show black onlayer screens
+    hide black onlayer screens with dissolve
 
     label .gameLoop:
+        $ game.jeu_sensitive = True
         call screen screen_gameloop()
     jump .gameLoop
 
@@ -93,19 +236,15 @@ label label_home_cat:
     play sound "day/meow.wav"
     menu:
         "talk to it":
-            call label_home_add_cards("smalltalk", "Add a Small Talk to your deck?")
-        "listen to it":
-            call label_home_add_cards("listen", "Add a Listen to your deck?")
-        "look at it":
+            call label_home_add_cards("talk", "Add a Small Talk to your deck?")
+        "stare it":
             call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
-        "touch it":
-            call label_home_add_cards("touchy", "Add a Touchy to your deck?")
         "X":
             return
-
     return
 
 label label_home_bed:
+    $ game.jeu_sensitive = False
     menu:
         "rub a quickie":
             show black with dissolve
@@ -117,9 +256,9 @@ label label_home_bed:
                 $ game.lust -= 5
                 if game.lust < 0:
                     $ game.lust = 0
-            call label_home(True)
+            call label_home()
         "sleep":
-            call label_dream()
+            call expression "label_dream_" + str(global_var.dreamProgress)
         "X":
             return
 
@@ -151,83 +290,116 @@ label label_home_add_cards(cardID, prompt):
     return
 
 label label_home_phone():
+
     $ messagelog = global_var.phoneLogs[global_var.phoneProgress[0]]
 
     if len(messagelog)-1 > global_var.phoneProgress[1]:  #if the log hasnt been completed yet
-
+        
         $ global_var.phoneProgress[1] += 1
-        play sound "day/newmsg.wav"
+
         $ typeOfLastMsg = messagelog[global_var.phoneProgress[1]][0]
         $ contentLastMsg = messagelog[global_var.phoneProgress[1]][1]
+        
+        if typeOfLastMsg != "exe":
+            play sound "day/newmsg.wav"
 
-        if typeOfLastMsg == "exe":
+        elif typeOfLastMsg == "exe":
             $ commands = contentLastMsg.split("; ")
-            $ print(commands)
+            $ global_var.phoneLogs[global_var.phoneProgress[0]].pop(global_var.phoneProgress[1])  # POP THE EXE MSGS
+            $ global_var.phoneProgress[1] -= 1
+
             $ i = 0
             while i < len(commands):
                 $ print(commands[i])
                 $ exec(commands[i])
                 $ i += 1
+            
+        
+        with Dissolve(0.2)
+        $ print(phone_Scroll.range)
+        $ phone_Scroll.change(phone_Scroll.range)
 
     else:
         hide screen screen_home_phone onlayer master
 
     return
 
-screen screen_home_phone():
-    modal True
-
-    sensitive game.jeu_sensitive
-            
-    button:
-        xsize 1.0
-        ysize 1.0
-        action Hide("screen_home_phone", None, _layer="master")
-
-    fixed at switch:
-        imagebutton:
-            idle "home/phone-big.png"
-            action Call("label_home_phone")
-        xsize 523
-        ysize 918
-        
-    # default todaysLog = global_var.phoneLogs[global_var.phoneProgress[0]]
-        fixed: #phone screen
-            xsize 420
-            ysize 637
-            xalign 0.5
-            ypos 130
-            vbox:
-                spacing 10
-                for index, message in enumerate(global_var.phoneLogs[global_var.phoneProgress[0]]):
-
-                    if index>global_var.phoneProgress[1]: #only display msg sent
-                        break
-
-                    if message[0] == 0: #text msg
-                        frame:
-                            padding (30, 10)
-                            background Frame("home/bubble-speech.png")
-                            text message[1] size 33 xalign 0.5
-                            
-                            xmaximum 300
-
-                    elif message[0] == 1: #picture
-                        default disp = "home/" + message[1]
-                        frame:
-                            padding (30, 10)
-                            background Frame("home/bubble-speech-interact.png")
-                            imagebutton:
-                                sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
-                                hover im.MatrixColor("home/" + message[1], im.matrix.tint(1.3,1.3,1.3))
-                                idle "home/" + message[1]
-                                action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
-                                xsize 200
-                                ysize 200
-
 label label_pic1_reaction:
     $ game.jeu_sensitive = False
     # show screen screen_fullscreen("Joyce/selfie/nightgown.png", False)
+    show expression "#000a"
+    show expression "Joyce/selfie/pic1.png" at truecenter
+    
+    with dissolve
+    pause
+    "why this"
+    label .sudoku:
+        "Help her by finding a number?"
+        menu:
+            "Yes":
+                $ sudokuNumber = ["","",""]
+                while type(sudokuNumber[0]) != type(1):
+                    $ sudokuNumber[0] = renpy.input("What number did you find?", length=1)
+                    if sudokuNumber[0].isnumeric() :
+                        $ sudokuNumber[0] = int(sudokuNumber[0])
+                    else:
+                        "Not a number."
+                while type(sudokuNumber[1]) != type(1):
+                    $ sudokuNumber[1] = renpy.input("What row?", length=1)
+                    if sudokuNumber[1].isnumeric() :
+                        $ sudokuNumber[1] = int(sudokuNumber[1])
+                    else:
+                        "Not a number."
+                while type(sudokuNumber[2]) != type(1):
+                    $ sudokuNumber[2] = renpy.input("What column?", length=1)
+                    if sudokuNumber[2].isnumeric() :
+                        $ sudokuNumber[2] = int(sudokuNumber[2])
+                    else:
+                        "Not a number."
+            
+                show expression Text("{b}"+str(sudokuNumber[0])+"{/b}", color="#f00") at Transform(xpos=740+51*(sudokuNumber[2]-1), ypos=340+52*(sudokuNumber[1]-1)+ 2*(8 - sudokuNumber[1])-2*(8 - sudokuNumber[2])) as chiffre
+                
+                "Ok?"
+                menu:
+                    "Yes":
+                        pass
+                    "No":
+                        hide chiffre
+                        jump .sudoku
+                
+                
+                define answer = """4_7_______3__7_26___2_3__75683149_5__5478___17193256_8____125_7___4_315__215_74__"""
+                $ sudoku_pos = (sudokuNumber[1]-1)*9 + (sudokuNumber[2]-1)
+                $ global_var.phoneLogs[0].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
+                $ global_var.phoneLogs[0].append( [2, "sudoku_pos [sudoku_pos]"])
+                if answer[sudoku_pos] == str(sudokuNumber[0]):
+                    $ global_var.phoneLogs[0].append( [0, "Wow! How did you find that? Thanks!"])
+                    $ global_var.phoneLogs[0].append( [2, "+4 trust"])
+                    $ global_var.phoneLogs[0].append( [0, "what?"])
+                    $ global_var.phoneLogs[0].append( [2, "dont worry about it ;-)"])
+                    $ global_var.phoneLogs[0].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
+                else:
+                    $ global_var.phoneLogs[0].append( [0, "thanks! I'll see what I can do with that."])
+            "No":
+                $ global_var.phoneLogs[0].append( [2, "Good luck with that!"])
+                pass
+    
+
+
+    window hide 
+    window auto
+    hide chiffre
+    hide expression "Joyce/selfie/pic1.png"
+    hide expression "#000a"
+    with dissolve
+    pause 0.5
+    $ game.jeu_sensitive = True
+    # $ del answer
+    call label_home_phone
+    return
+
+label label_pic3_reaction:
+    $ game.jeu_sensitive = False
     show expression "#000a"
     show expression "Joyce/selfie/pic1.png" at truecenter
     
@@ -244,14 +416,27 @@ label label_pic1_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
+    call label_home_phone
+    return
 
-screen screen_fullscreen(disp):
-    # modal True
-    button:
-        xsize 1.0
-        ysize 1.0
-        action [Hide("screen_fullscreen", dissolve), Hide("screen_home_phone")]
-    add "#000a"
-    add disp:
-        xalign 0.5
-        yalign 0.5
+label label_pic2_reaction:
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic2.png" at truecenter
+    
+    with dissolve
+    pause
+    menu:
+        "Take a picture of your cat?"
+        "Yes":
+            $ global_var.phoneLogs[1] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
+        "No":
+            $ global_var.phoneLogs[1] += [[2, "cool"]]
+    window hide 
+    window auto
+    hide expression "Joyce/selfie/pic2.png"
+    hide expression "#000a"
+    with dissolve
+    $ game.jeu_sensitive = True
+    call label_home_phone
+    return
