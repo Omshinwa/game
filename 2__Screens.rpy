@@ -18,7 +18,15 @@ screen screen_day():
             size 50 style "outline_text"  xalign 0.5 yalign 0.0
 
         text "{b}{k=0.0}"+str(game.day)+"{/k}{/b}":
-            size 150 style "outline_text"  xalign 0.5 yalign 1.0
+            size 145 style "outline_text"  xalign 0.5 yalign 0.55
+    
+        if game.state == "living":
+            if game.day % game.dateEvery==0:
+                text "today!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+            elif game.day % game.dateEvery==3:
+                text "tomorrow" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+            else:
+                text "next date: " +str(game.day + (game.dateEvery - game.day % game.dateEvery))+ "" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
 
 screen screen_deck_stack():
     imagebutton:
@@ -35,6 +43,8 @@ screen screen_deck_stack():
 
 screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
+    sensitive game.jeu_sensitive
+    
     modal True
     $ card_per_line = global_var.card_per_line
 

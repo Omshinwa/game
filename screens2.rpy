@@ -9,7 +9,7 @@ screen choice(items):
     style_prefix "choice"
 
     hbox: 
-        spacing int( 200/(len(items)-1) )
+        spacing int( 300/(len(items)) )
         for n, i in enumerate(items):
             textbutton i.caption action i.action at anim_choice(n)
 

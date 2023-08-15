@@ -5,11 +5,12 @@ label label_barDate:
     show fg bar-table onlayer master zorder 2
     show screen screen_glass("bar") onlayer master zorder 2
     
-    show joyce fancy at standing onlayer master zorder 2
+   
+    show expression "joyce " + whichDress at standing onlayer master zorder 2
     j "Hey fancy meeting your there huh?"
     j "hehe"
     
-    show joyce fancy smile at sitting onlayer master zorder 0
+    show joyce smile at sitting onlayer master zorder 0
 
     call label_beginDuel_common()
 

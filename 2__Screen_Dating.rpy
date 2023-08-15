@@ -155,7 +155,7 @@ screen screen_lust_ui:
             else:
                 color "#000000"
         
-        if game.state == "dating":
+        if game.state == "sexing":
             text "( next turn: +" +str(date.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
 screen screen_sex_ui():
@@ -205,7 +205,7 @@ screen screen_trust_ui(range_var = 100):
     default colorStat2 = "#fff"
     default textColor = "000"
 
-    if game.state == "dating":
+    if game.state == "dating" or game.state == "sexing":
         $ gameOrDate = date
     else:
         $ gameOrDate = game
@@ -294,10 +294,6 @@ screen screen_turn_counter:
 screen screen_gameloop():
     pass
 
-label label_gameloop(position): #when you just wait for user to do something
-    $ renpy.show(position)
-    call screen screen_gameloop()
-    call label_gameloop(position)
 
 screen screen_buttons_ui():
     imagebutton:

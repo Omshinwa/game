@@ -48,6 +48,8 @@ layeredimage joyce:
         attribute dream
         attribute dream2
         attribute dream3
+        attribute red
+        attribute blue
     
     group skin:
         attribute neutral default:
@@ -110,12 +112,29 @@ image joyce footjob:
     "Joyce/sex/footjob/footjob (3).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
 
-    function renpy.curry(play_sexsound)(filename="card/draw.mp3") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/footjob/footjob (4).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob (3).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob (2).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    repeat
+
+image joyce footjobv2:
+    "Joyce/sex/footjob/footjob v2 (1).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/footjob/footjob v2 (2).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/footjob/footjob v2 (3).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+
+    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    "Joyce/sex/footjob/footjob v2 (4).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/footjob/footjob v2 (3).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/footjob/footjob v2 (2).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 

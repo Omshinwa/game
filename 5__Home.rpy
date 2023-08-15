@@ -6,12 +6,6 @@ screen screen_home:
     # sensitive not renpy.get_screen("say")
     sensitive game.jeu_sensitive
 
-    imagebutton:
-        idle "home/door.png"
-        hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
-        action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
-        focus_mask True
-    
     if game.hasNewMessage():
         imagebutton:
             idle "home/phone-msg.png"
@@ -24,33 +18,41 @@ screen screen_home:
             hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
             action Show("screen_home_phone", None, _layer = "master")
             focus_mask True
-    imagebutton:
-        idle "home/bed.png"
-        hover im.MatrixColor("home/bed.png", im.matrix.tint(1,1,5))
-        action Call("label_home_bed")
-        focus_mask True
 
-    imagebutton:
-        idle "home/trash.png"
-        hover im.MatrixColor("home/trash.png", im.matrix.tint(1,1,5))
-        action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="img_toilet-static")
-        focus_mask True
+    if game.day % game.dateEvery == 0:
+        imagebutton:
+            idle "home/door.png"
+            hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
+            action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+            focus_mask True
+    else:
+        imagebutton:
+            idle "home/bed.png"
+            hover im.MatrixColor("home/bed.png", im.matrix.tint(1,1,5))
+            action Call("label_home_bed")
+            focus_mask True
 
-    imagebutton:
-        idle "home/comp.png"
-        hover im.MatrixColor("home/comp.png", im.matrix.tint(1,1,5))
-        action #Show("screen_home_food")
-        focus_mask True
-    imagebutton:
-        idle "home/plant.png"
-        hover im.MatrixColor("home/plant.png", im.matrix.tint(1,1,5))
-        action Call("label_home_plant")
-        focus_mask True
-    imagebutton:
-        idle "home/cat.png"
-        hover im.MatrixColor("home/cat.png", im.matrix.tint(1,1,5))
-        action Call("label_home_cat")
-        focus_mask True
+        imagebutton:
+            idle "home/trash.png"
+            hover im.MatrixColor("home/trash.png", im.matrix.tint(1,1,5))
+            action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="img_toilet-static")
+            focus_mask True
+
+        imagebutton:
+            idle "home/comp.png"
+            hover im.MatrixColor("home/comp.png", im.matrix.tint(1,1,5))
+            action Call("label_home_comp")
+            focus_mask True
+        imagebutton:
+            idle "home/plant.png"
+            hover im.MatrixColor("home/plant.png", im.matrix.tint(1,1,5))
+            action Call("label_home_plant")
+            focus_mask True
+        imagebutton:
+            idle "home/cat.png"
+            hover im.MatrixColor("home/cat.png", im.matrix.tint(1,1,5))
+            action Call("label_home_cat")
+            focus_mask True
 
 
 screen screen_home_phone():
@@ -73,74 +75,78 @@ screen screen_home_phone():
             action [Call("label_home_phone")]
 
         # bar value FieldValue(global_var, "phoneMsgPosition", len(global_var.phoneLogs[global_var.phoneProgress[0]]) )
-        fixed:
-            
-            xsize 410
-            ysize 637
-            xpos 40
-            ypos 130
+        
+        
+        if global_var.phoneProgress[0] in global_var.phoneLogs:
+            fixed:
+                
+                xsize 410
+                ysize 637
+                xpos 40
+                ypos 130
 
-            viewport id "id_phonescreen":
+                
+                viewport id "id_phonescreen":
 
-                yinitial 1.0
-                if not game.hasNewMessage():
-                    mousewheel True
+                    yinitial 1.0
+                    if not game.hasNewMessage():
+                        mousewheel True
 
-                yadjustment phone_Scroll
-                vbox:
-                    spacing 10
-                    fixed:
-                        ysize 0
-                    for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
+                    yadjustment phone_Scroll
+                    vbox:
+                        spacing 10
+                        fixed:
+                            ysize 0
+                            for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
 
-                        if index>global_var.phoneProgress[1]: #only display msg sent
-                            break
-                        
-                        # elif index<=global_var.phoneProgress[1]-4:
-                        #     continue
-
-                        if message[0] == 0: #text msg
-                            frame:
-                                padding (30, 10)
-                                background Frame("home/phone-bubble.png")
-                                text message[1] size 33 xalign 0.5
+                                if index>global_var.phoneProgress[1]: #only display msg sent
+                                    break
                                 
-                                xmaximum 300
+                                # elif index<=global_var.phoneProgress[1]-4:
+                                #     continue
 
-                        elif message[0] == 1: #picture
-                            default disp = "home/" + message[1]
-                            frame:
-                                padding (30, 10)
-                                background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
-                                imagebutton:
-                                    sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
-                                    hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
-                                    idle "Joyce/selfie/small-" + message[1]
-                                    action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
-                                    xsize 200
-                                    ysize 200
+                                if message[0] == 0: #text msg
+                                    frame:
+                                        padding (30, 10)
+                                        background Frame("home/phone-bubble.png")
+                                        text message[1] size 33 xalign 0.5
+                                        
+                                        xmaximum 300
 
-                        elif message[0] == 2: #my text msg
-                            frame:
-                                xmaximum 300
-                                xanchor 1.0
-                                xpos 420
-                                padding (30, 10)
-                                background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
-                                text message[1] size 33 xalign 0.5
-                        elif message[0] == 3: #my photo
-                            frame:
-                                xmaximum 300
-                                xanchor 1.0
-                                xpos 420
-                                padding (30, 10)
-                                background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
-                                add "Joyce/selfie/small-" + message[1]
-                        
-                    fixed:
-                        ysize 0
+                                elif message[0] == 1: #picture
+                                    default disp = "home/" + message[1]
+                                    frame:
+                                        padding (30, 10)
+                                        background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
+                                        imagebutton:
+                                            sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
+                                            hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
+                                            idle "Joyce/selfie/small-" + message[1]
+                                            action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
+                                            xsize 200
+                                            ysize 200
 
-            vbar adjustment phone_Scroll xalign 1.08 ysize 600 yalign 0.5 xsize 20 bar_invert True base_bar "#fff" thumb "#aaa"#unscrollable "hide" 
+                                elif message[0] == 2: #my text msg
+                                    frame:
+                                        xmaximum 300
+                                        xanchor 1.0
+                                        xpos 420
+                                        padding (30, 10)
+                                        background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
+                                        text message[1] size 33 xalign 0.5
+                                elif message[0] == 3: #my photo
+                                    frame:
+                                        xmaximum 300
+                                        xanchor 1.0
+                                        xpos 420
+                                        padding (30, 10)
+                                        background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
+                                        add "Joyce/selfie/small-" + message[1]
+                                
+                            fixed:
+                                ysize 0
+
+                vbar adjustment phone_Scroll xalign 1.08 ysize 600 yalign 0.5 xsize 20 bar_invert True base_bar "#fff" thumb "#aaa"#unscrollable "hide" 
 
 
 #############################################################################
@@ -155,19 +161,6 @@ screen screen_home_phone():
 ##
 #############################################################################
 
-label label_newDay(callback):
-    window hide
-    $ game.day += 1
-    $ game.state = "living"
-    $ renpy.play("day/newday.wav", channel='sound') 
-    show screen screen_home onlayer master
-    show black onlayer screens
-    with dissolve
-    pause 2.0
-    play sound "day/alarm.wav"
-    pause 2.0
-    window auto
-    jump expression callback
 
 label label_home_tutorial():
     window hide
@@ -189,9 +182,9 @@ label label_home_tutorial():
         hide black onlayer screens with dissolve
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         play sound "rpg/Item1.wav"
-        "You will keep your stats you built up after a successful date."
+        "You will keep your stats after a successful date."
         "If you fail, they stay the way they were before."
-        "{b}Lust{/b} do builds up every day."
+        "{b}Lust{/b} do builds up every day, so be careful."
         "Try to build a stronger deck before the second date!"
         hide screen screen_tutorial
         show black onlayer screens with dissolve
@@ -225,12 +218,11 @@ label label_home_trash_cutscene(index):
     show expression deck.list[index].img:
         function trans_flush_card
     show screen screen_flushing(deck.list[index].img) with dissolve
-    pause(2.0)
+    pause(1.0)
     hide screen screen_flushing
     hide expression deck.list[index].img
     $ deck.list.pop(index)
-    show screen screen_prison with dissolve
-    $ renpy.call("label_home", newDay = True)
+    $ renpy.call("label_newDay","label_home")
 
 label label_home_cat:
     play sound "day/meow.wav"
@@ -247,10 +239,14 @@ label label_home_comp:
     menu:
         "You log into discord"
         "Post messages":
-            call label_home_add_cards("talk", "Transform 1 Small Talk card into Talk?")
+            call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?")
         "Read messages":
-            call label_home_add_cards("listen", "Transform 1 Small Talk card into Listen?")
-    Jump("label_prison") 
+            call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?")
+        "go to prison":
+            jump label_prison 
+        "X":
+            return
+    return
 
 label label_home_bed:
     $ game.jeu_sensitive = False
@@ -300,6 +296,10 @@ label label_home_add_cards(cardID, prompt):
 
 label label_home_phone():
 
+    if global_var.phoneProgress[0] not in global_var.phoneLogs:
+        hide screen screen_home_phone onlayer master
+        return
+
     $ messagelog = global_var.phoneLogs[global_var.phoneProgress[0]]
 
     if len(messagelog)-1 > global_var.phoneProgress[1]:  #if the log hasnt been completed yet
@@ -325,12 +325,80 @@ label label_home_phone():
             
         
         with Dissolve(0.2)
-        $ print(phone_Scroll.range)
         $ phone_Scroll.change(phone_Scroll.range)
 
     else:
         hide screen screen_home_phone onlayer master
 
+    return
+
+
+
+label label_pic3_reaction:
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic3.png" at truecenter
+    
+    with dissolve
+    pause
+    "this picture has some effect on you.."
+    "Lust +5"
+    $ game.lust += 5
+    play sound "rpg/Lust.wav"
+    window hide 
+    pause
+    window auto
+    hide expression "Joyce/selfie/pic3.png"
+    hide expression "#000a"
+    with dissolve
+    $ game.jeu_sensitive = True
+    call label_home_phone
+    return
+
+label label_pic2_reaction:
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic2.png" at truecenter
+    
+    with dissolve
+    pause
+    menu:
+        "Take a picture of your cat?"
+        "Yes":
+            $ global_var.phoneLogs[1] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
+        "No":
+            $ global_var.phoneLogs[1] += [[2, "cool"]]
+    window hide 
+    window auto
+    hide expression "Joyce/selfie/pic2.png"
+    hide expression "#000a"
+    with dissolve
+    $ game.jeu_sensitive = True
+    call label_home_phone
+    return
+
+label label_pic4_reaction:
+    default whichDress = "red"
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic4.png" at truecenter
+    
+    with dissolve
+    pause
+    menu:
+        "Red":
+            $ global_var.phoneLogs[5] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],]
+            $ whichDress = "red"
+        "Blue":
+            $ global_var.phoneLogs[5] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[2, "You'll pull it off"],[0, "I gained so much weight since the last time I wore it though."],[0, "near the chest area"],]
+            $ whichDress = "blue"
+    window hide 
+    window auto
+    hide expression "Joyce/selfie/pic4.png"
+    hide expression "#000a"
+    with dissolve
+    $ game.jeu_sensitive = True
+    call label_home_phone
     return
 
 label label_pic1_reaction:
@@ -404,48 +472,5 @@ label label_pic1_reaction:
     pause 0.5
     $ game.jeu_sensitive = True
     # $ del answer
-    call label_home_phone
-    return
-
-label label_pic3_reaction:
-    $ game.jeu_sensitive = False
-    show expression "#000a"
-    show expression "Joyce/selfie/pic1.png" at truecenter
-    
-    with dissolve
-    pause
-    "this picture has some effect on you.."
-    "Lust +2"
-    $ game.lust += 2
-    play sound "rpg/Lust.wav"
-    window hide 
-    pause
-    window auto
-    hide expression "Joyce/selfie/pic1.png"
-    hide expression "#000a"
-    with dissolve
-    $ game.jeu_sensitive = True
-    call label_home_phone
-    return
-
-label label_pic2_reaction:
-    $ game.jeu_sensitive = False
-    show expression "#000a"
-    show expression "Joyce/selfie/pic2.png" at truecenter
-    
-    with dissolve
-    pause
-    menu:
-        "Take a picture of your cat?"
-        "Yes":
-            $ global_var.phoneLogs[1] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
-        "No":
-            $ global_var.phoneLogs[1] += [[2, "cool"]]
-    window hide 
-    window auto
-    hide expression "Joyce/selfie/pic2.png"
-    hide expression "#000a"
-    with dissolve
-    $ game.jeu_sensitive = True
     call label_home_phone
     return

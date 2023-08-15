@@ -85,12 +85,6 @@ label label_tutorial_endTurn:
         show joyce stare neutral
         j smile "So youre [povname], nice to meet you"
         j "I was a bit worried before coming here, but you seem nice."
-    # if date.turnLeft == 3:
-    #     j base neutral "I often come to this bubble tea place."
-    # if date.turnLeft == 2:
-    #     j base neutral "I have a cat, do you have any pet?"
-    # if date.turnLeft == 1:
-    #     j base neutral "I eat too much sugar lately"
 
     call label_endTurn_common
     return

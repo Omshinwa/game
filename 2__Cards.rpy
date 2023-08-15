@@ -72,12 +72,6 @@ init python:
 
             self.list = []
             self.discard_pile = []
-
-        # def start(self):
-        #     self.deck = self.list
-        #     self.shuffle()
-        #     self.discard_pile = []
-        #     self.draw(5)
         
         def add_to_hand(self, *cards):
             for card in cards:
@@ -131,10 +125,10 @@ label playCard(card, index):
     $ commands = commands.split("; ")
     $ i = 0
     while i < len(commands):
-        $ print(commands[i])
         $ exec(commands[i])
         $ i+=1
-        $ renpy.pause(0.2)
+        if i < len(commands):
+            pause 0.2
     $ game.lastPlayed = card
     $ game.cardPlaying = None
     return
@@ -150,12 +144,12 @@ label playCardfromHand(index):
 
         # animation:
         $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played], zorder=2, layer="screens")
-        $ renpy.pause(0.8)
+        # $ renpy.pause(0.5)
         $ renpy.hide('cardPlayed', layer="screens")
 
         call playCard(card, index)
     else:
-        $ print("invalid")
+        raise ValueError("playCardfromHand cond invalid")
     
     call label_reaction
     
@@ -164,104 +158,4 @@ label playCardfromHand(index):
     if len(deck.hand) == 0:
         call expression date.endTurn
 
-    return
-
-
-
-
-
-
-
-
-default done_flag = {}
-
-
-label label_reaction(what = game.lastPlayed.name):
-
-    
-    if what == "talk2":
-        call label_reaction("talk")
-        return
-
-    if what not in done_flag:
-        $ done_flag[what] = 0
-
-    $ value = done_flag[what]
-
-    if value > game.progress[0] :
-        return
-    
-    if what == "talk" :
-        if value == 0:
-            j "These days I have picked sudoku again."
-            j "I play it during my offtime."
-            j "What about you?"
-        if value == 1:
-            j "Oh you like playing games too?"
-            j "What kind of games do you play?"
-        elif value == 2:
-            j "So you play dating sims."
-            j "That's a little funny, I didn't expect it."
-            j "I used to play some on the Nintendo DS too."
-            j "What are you playing these days?"
-        elif value == 3:
-            j "Come on tell me what game you're playing."
-            j "Ok at least next date tell me."
-        elif value == 4:
-            j "Wow you play erotic games?"
-            j "Nah I get it, I've played some crazy stuff too."
-            j "..."
-            j "But I like it more in real life."
-        elif value == 5:
-            j "Maybe you can show me what kind of erotic games you like."
-            j "And show me what you do while you play with it"
-            j "Oops I said too much."
-
-        elif value == 1:
-            j "I loves cats sooo much"
-            j "I'm kinda wondering if I should get one"
-            j "But it's a big responsability still."
-        elif value == 3:
-            j "I'm not such a fan of summer to be honest."
-            j "I easily get sunburns because my skin is too thin."
-        elif value == 4:
-            j "Cats are also so useful for pests."
-            j "I could get some help getting rid of rats."
-            j "My place has a pretty big basement, I could show you!"
-        elif value == 5:
-            j "How often do you meet girls like that?"
-            j "I'm trying to look for the one."
-            j "But I have pretty strange tastes"
-            j "Will you pass the tests? I wonder heehee."
-
-        elif value == 2:
-            j "It's getting pretty warm these days!"
-            j "That's why I enjoy coming here to get a drink."
-            if game.progress[0] < 4: # in case we trigger it on a second date
-                j "Though I regret wearing so many layers today."
-
-
-    elif what == "eyecontact":
-        
-        show layer master:
-            zoom 2.0 xalign 0.5 yalign 0.1
-        with dissolve
-        pause
-
-        if value == 0:
-            j "..."
-            j eyesside blush "hey"
-        elif value == 1:
-            j "Why do you stare at me so often?"
-            j "I feel so shy."
-        elif value == 2:
-            j "You enjoy what you're seeing?"
-            j "I bet you wanna see more"
-
-        show layer master:
-            zoom 1.0 xalign 0.5 yalign 0.5
-        with dissolve
-
-    $ done_flag[what] += 1
-        
     return

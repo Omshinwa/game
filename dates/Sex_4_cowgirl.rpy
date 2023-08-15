@@ -1,7 +1,4 @@
-label label_cowgirl_begin():
-    # show screen screen_sex_ui
-    call label_beginDuel_common()
-    return
+
 
 label label_cowgirl_SexEndTurn:
     
@@ -34,21 +31,41 @@ label label_cowgirl_SexEndTurn:
     return
 
 label label_cowgirl:
+    $ game.state = "dating"
     $ date = Date(objectif_trust = 10, endTurn = "label_cowgirl_SexEndTurn")
 
-    scene bg bbt
+    scene bg basement
 
-    show joyce stand 
-    show fg bbt-table 
+    show footjob-start-talk as joyce
 
-    show moan_bubble
+    # show moan_bubble
 
-    j "Hello, you must be Kevin."
-    j "I'm Joyce"
-    show joyce base 
-    j "Hi, this is your first date no?"
-    j "I'll tell you how to get a successful date"
-    j "Let the date begin!"
+    j "Are you ready for your first test?"
+    j "Can you guess what is it?"
+    j "Here's a hint"
+    show footjob-start-hint as joyce
+    window hide
+    pause
+    window auto
+    j "So, did you guess?"
+    j "yes"
+    j "I'm gonna masturbate you with my feet"
+    j "First, let's release this bad boy."
+    j "You must have been waiting for this no?"
+    show get-hard (1) as anim
+    pause 0.2
+    show get-hard (2) as anim
+    pause 0.2
+    show get-hard (3) as anim
+    pause 0.2
+    show get-hard (4) as anim
+    pause 0.2
+    show get-hard (5) as anim
+    j "Such nice shape."
+    hide anim
+    j "Please resist this if you want a taste of my pussy."
+    show footjob (1) as joyce
+    j "Are you ready?"
 
     show expression "Joyce/sex/cowgirl/cowgirl (6).png" as joyce at toobig
 
@@ -59,7 +76,7 @@ label label_cowgirl:
     j "Gnh..ugh.."
     j "You're so big..."
     show joyce cowgirl at toobig
-    call label_cowgirl_begin()
+    call label_beginDuel_common()
     $ current_speed = date.animation_speed
     
     $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
@@ -92,63 +109,6 @@ label label_cowgirl:
         call screen screen_gameloop()
         
     call .gameLoop
-
-    # This ends the game.
-
-    return
-
-
-
-label label_footjob_start:
-
-    scene bg bbt
-
-    show footjob-start-talk at top
-    
-    # show locked-legs
-
-    # show img_moaning_bubbles
-
-    show moan_bubble
-    
-    j "Hello, you must be Kevin."
-    j "I'm Joyce"
-    hide footjob-start-talk
-    show joyce smile 
-    j "Hi, this is your first date no?"
-    j "I'll tell you how to get a successful date"
-    j "Let the date begin!"
-    
-    show joyce footjob at top
-    
-    call label_beginDuel()
-    $ current_speed = date.animation_speed
-    
-    label .gameLoop:
-        $ game.jeu_sensitive = False
-
-        if current_speed != date.animation_speed:
-            show joyce footjob at top
-            show moan_bubble
-            $ current_speed = date.animation_speed
-
-        if game.orgasm >= game.orgasmMax:
-            j "i'm..{w=1.0}{nw}"
-            j "it's coming !{w=1.0}{nw}"
-            show joyce cowgirl-orgasm 
-            j "kyaaa{w=1.0}{nw}"
-            pause(2)
-            show cowgirl-talk at top as joyce
-            pause(1)
-            j "huff.."
-            j "i-i came"
-            
-            show joyce sitting 
-    
-        $ game.jeu_sensitive = True
-        call screen screen_gameloop()
-        
-    jump .gameLoop
 
     # This ends the game.
 

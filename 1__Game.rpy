@@ -40,18 +40,22 @@ init python:
             self.story = ["tutorial", "park", "bubbleTea", "bubbleTea2", "terrasse", "terrase2", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
             self.progress = [0,0] # left is progress, right is number of passing days spend on that step
 
-            self.day = 0
+            self.day = 1
 
             self.lastPlayed = None
             self.cardPlaying = None
 
             self.debug_flag = 1
 
+            self.dateEvery = 3
+
         def nextDay(self, label_callback=""):
             renpy.call("label_newDay", label_callback)
 
         @staticmethod
         def hasNewMessage():
+            if global_var.phoneProgress[0] not in global_var.phoneLogs:
+                return False
             return global_var.phoneProgress[1]<len(global_var.phoneLogs[global_var.phoneProgress[0]])-1
 
     class Date():
@@ -171,19 +175,19 @@ init python:
         def increment(self, which, value, resetAllMultiplier = True, allowNegative=False):
             if which == "trust":
                 if not allowNegative:
-                    temp = value * self.trustMultiplier * self.allMultiplierOnce
+                    temp = self.trust + value * self.trustMultiplier * self.allMultiplierOnce
                     self.trust = max(0, temp)
                 else:
                     self.trust += value * self.trustMultiplier * self.allMultiplierOnce
             elif which == "attraction":
                 if not allowNegative:
-                    temp = value * self.attractionMultiplier * self.allMultiplierOnce
+                    temp = self.attraction + value * self.attractionMultiplier * self.allMultiplierOnce
                     self.attraction = max(0, temp)
                 else:
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
             elif which == "lust":
                 if not allowNegative:
-                    temp = value * self.lustMultiplier * self.allMultiplierOnce
+                    temp = self.lust + value * self.lustMultiplier * self.allMultiplierOnce
                     self.lust = max(0, temp)
                 else:
                     self.lust += value * self.lustMultiplier * self.allMultiplierOnce
@@ -204,16 +208,28 @@ define config.font_name_map["quirky_command"] = FontGroup().add("kindergarten.tt
 default global_var.page = 0
 default global_var.card_per_line = 7
 default global_var.phoneLogs = {
-        0:[
-            [0, "hello~"],[0, "today was so fun!"],[0, "I hope to see you next time too!"],[0, "right now i'm stuck on a sudoku haha"], [0,"blablab\nlalbl"],[1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
-        ],
-        # 0:[
-        #     [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
-        # ],
-        1:[
-            [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
-        ]
-        }
+    1:[
+        [0, "heloo~ it's joyce"],[0, "are you free in 4 days?"],[0, "let's meet up again!"],
+    ],
+    2:[
+        [0, "heeey"],[0, "wanna get some drinks tmr?"],[0, "There's a bubble tea place I like."],[2, "Okay see your there."]
+    ],
+    3:[
+        [0, "today was so fun!"],[0, "I hope to see you next time too!"],[0, "right now i'm stuck on a sudoku haha"],[1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+    ],
+    4:[
+        [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
+    ],
+    5:[
+        [0, "woo im so tiired now"],[0, "are you gonna go to sleep?"],[0, "good niight"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
+    ],
+    6:[
+        [0, "about the fancy bar"],[0, "I don't know what to wear for tomorrow"],[0, "which dress do you think looks better?"],[1, "pic4.png"], ["exe", "renpy.call('label_pic4_reaction')"]
+    ],
+    # 0:[
+    #     [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
+    # ],
+    }
 default global_var.phoneProgress = [0,0]
 default global_var.phoneMsgPosition = 0
 default global_var.prison_cards = []

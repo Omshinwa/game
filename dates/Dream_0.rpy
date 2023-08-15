@@ -4,10 +4,8 @@ label label_dream_0:
     with fade
     pause 2.0
 
-    $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, endTurn = "label_dream_0_endTurn")
+    $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
     scene bg dream
-    # show fg bar-table onlayer master zorder 2
-    # show screen screen_glass("bar") onlayer master zorder 2
     show black
     hide black with Dissolve(1.0)
     pause
@@ -43,7 +41,10 @@ label label_dream_0:
                 j "nicely done"
                 j "So that's what your perfect date would look like huh"
                 j "Does this give you any new ideas?"
-                show screen screen_dream_addCards([Card("flirt"), Card("flirt"), Card("talk2"), Card("flirt"), Card("flirt"), Card("flirt")]) with dissolve
+                "You can transform up to two Eye Contact cards."
+                call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
+                pause
+                call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
                 
                 label .afterAddedCards:
                     pause
@@ -87,7 +88,6 @@ label label_dream_afterAddedCards(cards):
     $ deck.list.sort()
 
     hide screen screen_dream_addCards with dissolve
-    $ print("hide the cards please")
     return
 
 screen screen_dream_addCards(sixCards):

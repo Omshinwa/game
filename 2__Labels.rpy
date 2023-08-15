@@ -1,6 +1,25 @@
+
+label label_newDay(callback):
+    window hide
+    $ game.day += 1
+    $ game.state = "living"
+    $ renpy.play("day/newday.wav", channel='sound') 
+    show screen screen_home onlayer master
+    show black onlayer screens
+    with dissolve
+    pause 2.0
+    play sound "day/alarm.wav"
+    pause 2.0
+    window auto
+    jump expression callback
+
 label label_beginDuel_common():
     $ game.jeu_sensitive = False;
-    $ game.state = "dating"
+
+    if game.progress[0] < 8:
+        $ game.state = "dating"
+    else:
+        $ game.state = "sexing"
 
     $ date.lust = game.lust
     $ date.lustMax = game.lustMax
@@ -9,7 +28,7 @@ label label_beginDuel_common():
     $ date.trustMultiplier = 1
     $ date.attraction = game.attraction
     $ date.attractionMultiplier = 1
-    $ date.animation_speed = 3
+    $ date.animation_speed = 1
 
     $ deck.drink = 3
 
@@ -55,6 +74,7 @@ label label_endTurn_common():
 
 label label_after_successful_Date_common():
     hide screen screen_date_ui with dissolve
+    hide screen screen_sex_ui with dissolve
 
     play sound "rpg/Holy5.wav"
     show date-nice at truecenter with blinds
@@ -66,6 +86,7 @@ label label_after_successful_Date_common():
     $ game.attraction = date.attraction
     $ game.progress[0] += 1
     $ game.progress[1] = 0
+    $ global_var.phoneProgress += 1
     return
 
 init python:
@@ -75,7 +96,8 @@ init python:
             if expection not in screen:
                 renpy.hide_screen( screen )
 
-label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, index=None, fromWhere=None):
+label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, fromWhere=None, index=None,):
+    $ game.jeu_sensitive = False
     if toWhere == "list":
         $ xto = 1900
         $ yto = 20
@@ -83,7 +105,10 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
     elif toWhere == "deck":
         $ xto = 1900
         $ yto = 1000
-        show screen screen_tutorial( trans_add_card_to_deck(card.img, xfrom, yfrom, 1900, 1000, pauseTime) ) 
+
+    elif toWhere == "hand":
+        $ xto = 960
+        $ yto = 1000
 
     else:
         $ raise ValueError("toWhere deck or list not specified")
@@ -105,10 +130,14 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
             $ deck.deck.insert( rand , card )
         else:
             $ deck.deck.insert( index , card )
+    elif toWhere == "hand":
+        $ deck.hand.append( card )
     else:
         $ raise ValueError("deck or list not specified")
     pause 0.2
     hide screen screen_tutorial
+
+    # $ game.jeu_sensitive = True
     return
 
 label label_drink:
@@ -148,4 +177,31 @@ label label_date_endTurn():
         $ game.progress[1] += 1
         $ game.nextDay("label_home")
 
+    return
+
+label label_transform_card(cardID, cardID2, prompt):
+    show expression trans_show_card_2(Card(cardID).img)  as card onlayer screens
+    show expression trans_show_card_2(Card(cardID2).img, offset=1.0) as card2 onlayer screens
+    if any(c.name == cardID for c in deck.list):
+        menu:
+            "[prompt]"
+            "yes":
+                hide card onlayer screens
+                hide card2 onlayer screens
+                python:
+                    for index,card in enumerate(deck.list):
+                        if card.name == cardID:
+                            deck.list.pop(index)
+                            break
+                call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5)
+                $ game.nextDay("label_home")
+            "no":
+                hide card onlayer screens
+                hide card2 onlayer screens
+    else:
+        menu:
+            "[prompt]"
+            "(you dont have any)":
+                hide card onlayer screens
+                hide card2 onlayer screens
     return
