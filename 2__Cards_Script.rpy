@@ -16,9 +16,9 @@ init python:
         "newday": {"txt":"Change your current Lust with a random number.", "eff":"date.lust = renpy.random.randint(0, date.lustMax)", "value":2,},
 
         "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":2,},
-        "calm": {"txt":"-2 lust, can get into negatives", "eff":"date.increment('lust',-2, allowNegative=True)", "value":1,},
 
-        "maxcalm":{"txt":"-7 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))", "value":1,},#card also work if you have multiple
+        "calm": {"txt":"-2 lust", "eff":"date.increment('lust',-2, allowNegative=True)", "value":1,},
+        "maxcalm":{"txt":"-5 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))", "value":1,},#card also work if you have multiple
 
         "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":3,},
 
@@ -51,9 +51,10 @@ init python:
 
         # "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
-        "peek": {"txt":"you peek..\n-1 trust +1 lust", "eff":"date.increment('trust',-1,False); date.increment('lust',1)", },
-        "peek2": {"txt":"you peek.. -3 trust +3 lust", "eff":"date.increment('trust',-3,False); date.increment('lust',3)", },
-        "peek3": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
+        "peek": {"txt":"you peek..\n+1 lust", "eff":"date.increment('lust',1)", },
+        "peek2": {"txt":"you peek.. +3 lust", "eff":"date.increment('lust',3)", },
+        "peekred": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
+        "peekblue": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
         "peek4": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-2,},
 
         "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)",},
@@ -67,11 +68,61 @@ init python:
 
     }
 
+label label_fillin_talk():
 
+    if value == 0:
+        j "It's getting pretty warm these days!"
+        j "That's why I enjoy coming here to get a drink."
+        if game.progress[0] < 4: # in case we trigger it on a second date
+            j "Though I regret wearing so many layers today."
+    if value == 1:
+        j "These days I have picked sudoku again."
+        j "I play it during my offtime."
+        j "That seems like such a boring activity no?"
+        j "It's fine, I have other wilder activities haha"
+        pause
+        j "What about you? Do you like playing games?"
+        j "Oh you do?"
+        j "What kind of games do you play?"
+    elif value == 2:
+        j "So you play dating sims."
+        j "That's a little funny, I didn't expect it."
+        j "I used to play some on the Nintendo DS too."
+        j "What are you playing these days?"
+    elif value == 3:
+        j "Come on tell me what game you're playing."
+        j "Ok at least next date tell me."
+    elif value == 4:
+        j "Wow you play erotic games?"
+        j "Nah I get it, I've played some crazy stuff too."
+        j "..."
+        j "But I like it more in real life."
+    elif value == 5:
+        j "Maybe you can show me what kind of erotic games you like."
+        j "And show me what you do while you play with it"
+        j "Oops I said too much."
+
+    if value == 0:
+        j "I'm not such a fan of summer to be honest."
+        j "I easily get sunburns because my skin is too thin."
+    if value == 1:
+        j "I loves cats sooo much"
+        j "Petting one is soo soothing"
+        j "I'm kinda wondering if I should get one"
+        j "But it's a big responsability still."
+    elif value == 2:
+        j "Cats are also useful for pests."
+        j "I've seen some rats in my basement. A cat would be a good help"
+        j "My place has a pretty big basement, I could show you!"
+    elif value == 3:
+        j "How often do you meet girls like that?"
+        j "I'm trying to look for the one."
+        j "But I have pretty strange tastes"
+        j "Will you pass the tests? I wonder heehee."
+    return
 
 
 default done_flag = {}
-
 
 label label_reaction(what = game.lastPlayed.name):
 
@@ -90,11 +141,18 @@ label label_reaction(what = game.lastPlayed.name):
     
     if what == "talk" :
         if value == 0:
+            j "It's getting pretty warm these days!"
+            j "That's why I enjoy coming here to get a drink."
+            if game.progress[0] < 4: # in case we trigger it on a second date
+                j "Though I regret wearing so many layers today."
+        if value == 1:
             j "These days I have picked sudoku again."
             j "I play it during my offtime."
-            j "What about you?"
-        if value == 1:
-            j "Oh you like playing games too?"
+            j "That seems like such a boring activity no?"
+            j "It's fine, I have other wilder activities haha"
+            pause
+            j "What about you? Do you like playing games?"
+            j "Oh you do?"
             j "What kind of games do you play?"
         elif value == 2:
             j "So you play dating sims."
@@ -114,28 +172,24 @@ label label_reaction(what = game.lastPlayed.name):
             j "And show me what you do while you play with it"
             j "Oops I said too much."
 
-        elif value == 1:
-            j "I loves cats sooo much"
-            j "I'm kinda wondering if I should get one"
-            j "But it's a big responsability still."
-        elif value == 3:
+    elif what == "listen" :
+        if value == 0:
             j "I'm not such a fan of summer to be honest."
             j "I easily get sunburns because my skin is too thin."
-        elif value == 4:
-            j "Cats are also so useful for pests."
-            j "I could get some help getting rid of rats."
+        if value == 1:
+            j "I loves cats sooo much"
+            j "Petting one is soo soothing"
+            j "I'm kinda wondering if I should get one"
+            j "But it's a big responsability still."
+        elif value == 2:
+            j "Cats are also useful for pests."
+            j "I've seen some rats in my basement. A cat would be a good help"
             j "My place has a pretty big basement, I could show you!"
-        elif value == 5:
+        elif value == 3:
             j "How often do you meet girls like that?"
             j "I'm trying to look for the one."
             j "But I have pretty strange tastes"
             j "Will you pass the tests? I wonder heehee."
-
-        elif value == 2:
-            j "It's getting pretty warm these days!"
-            j "That's why I enjoy coming here to get a drink."
-            if game.progress[0] < 4: # in case we trigger it on a second date
-                j "Though I regret wearing so many layers today."
 
 
     elif what == "eyecontact":

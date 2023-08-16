@@ -38,18 +38,44 @@ image moan_bubble:
     repeat
 
 layeredimage joyce:
+
+
+    attribute outfit1 null
+    attribute outfit2 null
+    attribute outfitred null
+    attribute outfitblue null
+    attribute outfitsm null
+    attribute outfitdream null
+    attribute outfitdream2 null
+    attribute outfitdream3 null
+
     group base:
-        attribute base default
-        attribute 2nd
-        attribute armscrossed
-        attribute 2nd_armscrossed
-        attribute fancy
-        attribute sm
-        attribute dream
-        attribute dream2
-        attribute dream3
-        attribute red
-        attribute blue
+        attribute base default:
+            "joyce_2"
+        attribute base if_any "outfit1":
+            "joyce_1"
+        attribute base if_any "outfit2":
+            "joyce_2"
+        attribute base if_any "outfitsm":
+            "joyce_sm"
+        attribute base if_any "outfitdream":
+            "joyce_dream"
+        attribute base if_any "outfitdream2":
+            "joyce_dream2"
+        attribute base if_any "outfitdream3":
+            "joyce_dream3"
+        attribute base if_any "outfitred":
+            "joyce_red"
+        attribute base if_any "outfitblue":
+            "joyce_blue"
+
+
+        attribute armscrossed:
+            "joyce_armscrossed"
+        attribute armscrossed if_any "outfit1":
+            "joyce_armscrossed"
+        attribute armscrossed if_any "outfit2":
+            "joyce_2armscrossed"
     
     group skin:
         attribute neutral default:

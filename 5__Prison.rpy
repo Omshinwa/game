@@ -57,7 +57,7 @@ label label_prison_bed:
         "Gain +1 dick size?"
         "Yes":
             $ date.lustMax += 1
-            $ game.nextDay("label_prison")
+            call label_newDay("label_prison")
         "No":
             pass
     return
@@ -71,7 +71,7 @@ label label_prison_add_card(cards):
     $ deck.list.sort()
 
     hide screen screen_prison_food
-    $ game.nextDay("label_prison")
+    call label_newDay("label_prison")
 
 
 

@@ -8,15 +8,22 @@ label label_newDay(callback):
     show black onlayer screens
     with dissolve
     pause 2.0
-    play sound "day/alarm.wav"
-    pause 2.0
+    # play sound "day/alarm.wav"
+    # pause 2.0
     window auto
+    
+    $ game.lust += 1
+
+    if game.progress[0]*2>global_var.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
+        $ global_var.phoneProgress[0] += 1
+        $ global_var.phoneProgress[1] = 0
+
     jump expression callback
 
 label label_beginDuel_common():
     $ game.jeu_sensitive = False;
 
-    if game.progress[0] < 8:
+    if game.progress[0] < 4:
         $ game.state = "dating"
     else:
         $ game.state = "sexing"
@@ -31,6 +38,9 @@ label label_beginDuel_common():
     $ date.animation_speed = 1
 
     $ deck.drink = 3
+
+    if game.progress[1] == -1:
+        $ game.progress[1] = 0
 
     $ deck.deck = deck.list.copy()
     $ deck.shuffle()
@@ -53,16 +63,18 @@ label label_beginDuel_common():
     return
 
 label label_endTurn_common():
+
+    if not renpy.get_screen("screen_date_ui"):
+        show screen screen_date_ui with dissolve
+
+
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
     $ date.lustMultiplier = 1
-    
     $ date.turn += 1
-
+    $ game.progress[1] = max(date.turn, game.progress[1])
     $ handSize = len(deck.hand)
-    
     play sound "rpg/Item1.wav"
-
     pause 0.3
 
     while handSize < 5 and len(deck.deck)>0:
@@ -85,8 +97,8 @@ label label_after_successful_Date_common():
     $ game.trust = date.trust
     $ game.attraction = date.attraction
     $ game.progress[0] += 1
-    $ game.progress[1] = 0
-    $ global_var.phoneProgress += 1
+    $ game.progress[1] = -1
+    $ global_var.phoneProgress[0] += 1
     return
 
 init python:
@@ -161,11 +173,11 @@ label label_date_endTurn():
         if date.lust > date.trust:
             show joyce neutral
             hide screen screen_date_ui with dissolve
-            j joyce armscrossed upset "um.. don't you think I can notice?"
+            j armscrossed upset "um.. don't you think I can notice?"
             j "Sorry but I'm gonna go. I'm really not in the mood today."
             j "Let's do this another day."
 
-        elif len(deck.deck) == 0:
+        elif len(deck.deck) == 0 or date.turnLeft == 0:
             show joyce neutral
             hide screen screen_date_ui with dissolve
             j eyesside armscrossed "OH look at the time."
@@ -174,8 +186,7 @@ label label_date_endTurn():
             j "Maybe we can do this another day? See ya."
 
         hide joyce with dissolve
-        $ game.progress[1] += 1
-        $ game.nextDay("label_home")
+        call label_newDay("label_home")
 
     return
 
@@ -194,7 +205,7 @@ label label_transform_card(cardID, cardID2, prompt):
                             deck.list.pop(index)
                             break
                 call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5)
-                $ game.nextDay("label_home")
+                call label_newDay("label_home")
             "no":
                 hide card onlayer screens
                 hide card2 onlayer screens

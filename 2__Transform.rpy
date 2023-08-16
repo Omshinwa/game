@@ -3,12 +3,16 @@ transform toobig:
     ypos -100
     zoom 0.9
 
-transform standing:
+transform depied:
     yoffset 0
     zoom 0.9 xalign 0.5 yalign 1.0 
 
+transform standing:
+    yoffset 0
+    zoom 1.0 xalign 0.5
+
 transform sitting:
-    yoffset 137
+    yoffset 100 #137
     zoom 1.0 xalign 0.5
 
 transform top:

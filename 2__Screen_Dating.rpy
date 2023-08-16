@@ -63,7 +63,8 @@ screen screen_date_bottom_ui():
     button:
         hovered SetVariable("game.isHoverHand", True)
         unhovered SetVariable("game.isHoverHand", False)
-        action NullAction()
+        action Return()
+        # action NullAction()
         xsize 1700
         if game.isHoverHand:
             ysize game.card_ysize
@@ -93,6 +94,25 @@ screen screen_date_bottom_ui():
             action Call(date.endTurn)
             sensitive game.jeu_sensitive
     
+    if game.state == "sexing":
+        fixed:
+            xpos 20
+            ypos 830
+            if date.drink>0:
+                imagebutton:
+                    idle "ui/water-bottle.png"
+                    hover "ui/water-bottle-hover.png"
+                    action Call("label_drink")
+                    sensitive game.jeu_sensitive
+            else:
+                add "ui/water-bottle-empty.png"
+            fixed:
+                xpos 20
+                ypos 30
+                xsize 50
+                text str(date.drink) size 50 xalign 0.5 style "outline_text"
+        
+
     # TRASHCAN
     fixed:
         xpos 5
@@ -100,7 +120,7 @@ screen screen_date_bottom_ui():
         imagebutton:
             idle "ui/trashcan.png"
             hover "ui/trashcan-hover.png"
-            action [SetVariable("game.jeu_sensitive", False),Show("screen_show_deck", dissolve, deck.discard_pile, "label_null", "DISCARD PILE")]
+            action [Show("screen_show_deck", dissolve, deck.discard_pile, "label_null", "DISCARD PILE")]
             sensitive game.jeu_sensitive
         fixed:
             xpos 20
@@ -108,14 +128,13 @@ screen screen_date_bottom_ui():
             xsize 50
             text str(len(deck.discard_pile)) size 50 xalign 0.5 style "outline_text"
 
+screen screen_debug:
     if game.debug_flag:
         drag:
                 # ysize 400
                 # xsize 500
-                xalign 0.5 yalign 0.5
-                # text "test" size 40 color "#FF0" ypos 0
-                # fixed:
-                text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive): #+ "\ndate.ydisplace: " + str(date.ydisplace):
+                xalign 0.0 yalign 0.3
+                text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]):
                     size 40 color "#FF0" ypos 0
                 # text "date.ydisplace: " + str(date.ydisplace) size 40 color "#FF0" ypos 100
 

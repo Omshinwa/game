@@ -1,12 +1,16 @@
-label label_terrasse:
-    $ date = Date(objectif_trust = 10, objectif_attraction = 5, isWin = "date.trust >= 10 and date.attraction >= 5", turnLeft = 6, endTurn = "label_terrasse_endTurn")
-    scene bg terrasse
-    hide joyce
-    show joyce smile 
-    show fg terrasse-table onlayer master zorder 2
-    show screen screen_glass("terrasse") onlayer master zorder 2
-    j "Hello again"
-    j "These days it's getting hotter and hotter huh?"
+
+label label_barDate:
+    $ date = Date(objectif_attraction = 35, isWin = "date.attraction >= 35", turnLeft = 7, endTurn = "label_barDate_endTurn")
+    scene bg bar
+    show fg bar-table onlayer master zorder 2
+    show screen screen_glass("bar") onlayer master zorder 2
+    
+   
+    show expression "joyce " + whichDress at depied onlayer master zorder 2
+    j "Hey fancy meeting your there huh?"
+    j "hehe"
+    
+    show joyce smile at sitting onlayer master zorder 0
 
     call label_beginDuel_common()
 
@@ -34,7 +38,7 @@ label label_terrasse:
     return
 
 
-label label_terrasse_endTurn:
+label label_barDate_endTurn:
     $ game.jeu_sensitive = False;
     $ date.turnLeft -= 1
 
@@ -61,8 +65,7 @@ label label_terrasse_endTurn:
                 j "That kinda dragged on no?"
                 j "Maybe we can do this another day? See ya."
             
-            $ game.progress[1] += 1
-            $ game.nextDay("label_home")
+            call label_newDay("label_home")
                 
     if date.turnLeft == 5:
         hide screen screen_date_ui with dissolve
@@ -73,10 +76,10 @@ label label_terrasse_endTurn:
         pause
         hide joyce with dissolve
         pause
-        show joyce_2nd_stand as joyce with dissolve
+        show joyce outfit2 at standing as joyce with dissolve
         j "hey" 
         j "sorry it was just too hot"
-        show joyce 2nd
+        show joyce outfit2
         j "I had to remove a few layers"
         # show boob-shoot at truecenter with moveinright
         show layer master:

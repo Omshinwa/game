@@ -13,11 +13,14 @@ screen screen_home:
             action Show("screen_home_phone", None, _layer = "master")
             focus_mask True
     else:
-        imagebutton:
-            idle "home/phone.png"
-            hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
-            action Show("screen_home_phone", None, _layer = "master")
-            focus_mask True
+        if game.progress[0]==0:
+            add "home/phone.png"
+        else:
+            imagebutton:
+                idle "home/phone.png"
+                hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+                action Show("screen_home_phone", None, _layer = "master")
+                focus_mask True
 
     if game.day % game.dateEvery == 0:
         imagebutton:
@@ -26,6 +29,12 @@ screen screen_home:
             action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
             focus_mask True
     else:
+        imagebutton:
+            idle "home/door.png"
+            hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
+            action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+            focus_mask True
+            
         imagebutton:
             idle "home/bed.png"
             hover im.MatrixColor("home/bed.png", im.matrix.tint(1,1,5))
@@ -54,7 +63,6 @@ screen screen_home:
             action Call("label_home_cat")
             focus_mask True
 
-
 screen screen_home_phone():
     
     modal True #break pauses?
@@ -73,8 +81,6 @@ screen screen_home_phone():
         imagebutton:
             idle "home/phone-big.png"
             action [Call("label_home_phone")]
-
-        # bar value FieldValue(global_var, "phoneMsgPosition", len(global_var.phoneLogs[global_var.phoneProgress[0]]) )
         
         
         if global_var.phoneProgress[0] in global_var.phoneLogs:
@@ -97,54 +103,55 @@ screen screen_home_phone():
                         spacing 10
                         fixed:
                             ysize 0
-                            for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
 
-                                if index>global_var.phoneProgress[1]: #only display msg sent
-                                    break
+                        for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
+                            
+                            if index>global_var.phoneProgress[1]: #only display msg sent
+                                break
+                            
+                            # elif index<=global_var.phoneProgress[1]-4:
+                            #     continue
+
+                            if message[0] == 0: #text msg
+                                frame:
+                                    padding (30, 10)
+                                    background Frame("home/phone-bubble.png")
+                                    text message[1] size 33 xalign 0.5
+                                    
+                                    xmaximum 300
+
+                            elif message[0] == 1: #picture
+                                default disp = "home/" + message[1]
+                                frame:
+                                    padding (30, 10)
+                                    background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
+                                    imagebutton:
+                                        sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
+                                        hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
+                                        idle "Joyce/selfie/small-" + message[1]
+                                        action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
+                                        xsize 200
+                                        ysize 200
+
+                            elif message[0] == 2: #my text msg
+                                frame:
+                                    xmaximum 300
+                                    xanchor 1.0
+                                    xpos 420
+                                    padding (30, 10)
+                                    background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
+                                    text message[1] size 33 xalign 0.5
+                            elif message[0] == 3: #my photo
+                                frame:
+                                    xmaximum 300
+                                    xanchor 1.0
+                                    xpos 420
+                                    padding (30, 10)
+                                    background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
+                                    add "Joyce/selfie/small-" + message[1]
                                 
-                                # elif index<=global_var.phoneProgress[1]-4:
-                                #     continue
-
-                                if message[0] == 0: #text msg
-                                    frame:
-                                        padding (30, 10)
-                                        background Frame("home/phone-bubble.png")
-                                        text message[1] size 33 xalign 0.5
-                                        
-                                        xmaximum 300
-
-                                elif message[0] == 1: #picture
-                                    default disp = "home/" + message[1]
-                                    frame:
-                                        padding (30, 10)
-                                        background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
-                                        imagebutton:
-                                            sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
-                                            hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
-                                            idle "Joyce/selfie/small-" + message[1]
-                                            action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
-                                            xsize 200
-                                            ysize 200
-
-                                elif message[0] == 2: #my text msg
-                                    frame:
-                                        xmaximum 300
-                                        xanchor 1.0
-                                        xpos 420
-                                        padding (30, 10)
-                                        background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
-                                        text message[1] size 33 xalign 0.5
-                                elif message[0] == 3: #my photo
-                                    frame:
-                                        xmaximum 300
-                                        xanchor 1.0
-                                        xpos 420
-                                        padding (30, 10)
-                                        background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
-                                        add "Joyce/selfie/small-" + message[1]
-                                
-                            fixed:
-                                ysize 0
+                        fixed:
+                            ysize 0
 
                 vbar adjustment phone_Scroll xalign 1.08 ysize 600 yalign 0.5 xsize 20 bar_invert True base_bar "#fff" thumb "#aaa"#unscrollable "hide" 
 
@@ -171,8 +178,8 @@ label label_home_tutorial():
     show black onlayer screens
     with dissolve
     pause 2.0
-    play sound "day/alarm.wav"
-    pause 2.0
+    # play sound "day/alarm.wav"
+    # pause 2.0
     window auto
 
     if tutorial:
@@ -188,6 +195,7 @@ label label_home_tutorial():
         "Try to build a stronger deck before the second date!"
         hide screen screen_tutorial
         show black onlayer screens with dissolve
+        $ tutorial = False
     jump label_home
 
 label label_home_weirdDream():
@@ -206,6 +214,12 @@ label label_home():
     show screen screen_home onlayer master
     show black onlayer screens
     hide black onlayer screens with dissolve
+
+    if game.progress[0] == 2 and game.progress[1] == 0:
+        play sound "day/meow.wav"
+        "seems like he has something in his mouth"
+        call label_home_add_cards("drink", "Add a Drink to your deck?")
+
 
     label .gameLoop:
         $ game.jeu_sensitive = True
@@ -257,11 +271,8 @@ label label_home_bed:
             pause 2.0
             queue sound ["sex/Poison-cum.wav"]
             "Lust reset to 0"
-            while game.lust>0:
-                $ game.lust -= 5
-                if game.lust < 0:
-                    $ game.lust = 0
-            call label_home()
+            $ game.lust = -1
+            call label_newDay("label_home")
         "sleep":
             call expression "label_dream_" + str(global_var.dreamProgress)
         "X":
@@ -273,8 +284,8 @@ label label_home_plant():
     menu:
         "water it":
             call label_home_add_cards("calm", "Add a Calm to your deck?")
-        "meditate":
-            call label_home_add_cards("awakening", "Add an Awakening to your deck?")
+        # "meditate":
+        #     call label_home_add_cards("awakening", "Add an Awakening to your deck?")
         "X":
             return
     return
@@ -288,7 +299,7 @@ label label_home_add_cards(cardID, prompt):
             hide screen screen_tutorial
             call label_add_card_to_deck("list", Card(cardID), 300, 500)
             $ hide_all_screens_but("home")
-            $ game.nextDay("label_home")
+            call label_newDay("label_home")
         "no":
             hide card
             hide screen screen_tutorial
@@ -331,7 +342,6 @@ label label_home_phone():
         hide screen screen_home_phone onlayer master
 
     return
-
 
 
 label label_pic3_reaction:

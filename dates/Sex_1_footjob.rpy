@@ -157,9 +157,7 @@ label label_footjob_SexEndTurn:
         show footjob-start-talk as joyce with dissolve
         j "time to lock you up again"
 
-
-        $ game.progress[1] += 1
-        $ game.nextDay("label_prison")
+        call label_newDay("label_prison")
 
     if date.turn == 5:
         j "You're holding out well"

@@ -149,7 +149,7 @@ label playCardfromHand(index):
 
         call playCard(card, index)
     else:
-        raise ValueError("playCardfromHand cond invalid")
+        $ raise Exception("playCardfromHand cond invalid")
     
     call label_reaction
     

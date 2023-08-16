@@ -37,20 +37,17 @@ init python:
 
             self.isHoverHand = False
 
-            self.story = ["tutorial", "park", "bubbleTea", "bubbleTea2", "terrasse", "terrase2", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
-            self.progress = [0,0] # left is progress, right is number of passing days spend on that step
+            self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
+            self.progress = [0,0] # left is progress, right is numbers of turns 
 
-            self.day = 1
+            self.day = 4
 
             self.lastPlayed = None
             self.cardPlaying = None
 
             self.debug_flag = 1
 
-            self.dateEvery = 3
-
-        def nextDay(self, label_callback=""):
-            renpy.call("label_newDay", label_callback)
+            self.dateEvery = 4
 
         @staticmethod
         def hasNewMessage():
@@ -91,14 +88,14 @@ init python:
                 self.config["isLost"] = kwargs["isLost"]
             else:
                 if game.progress[0] <5:
-                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust > date.trust"
+                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust > date.trust or date.turnLeft == 0"
                 else:
                     self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"
 
             if "isWin" in kwargs:
                 self.config["isWin"] = kwargs["isWin"]
             else:
-                self.config["isWin"] = "date.lust >= self.config['objectif_lust'] and date.attraction >= self.config['objectif_attraction'] and date.trust >= self.config['objectif_trust']"
+                self.config["isWin"] = "date.lust >= date.objectives['lust'] and date.attraction >= date.objectives['attraction'] and date.trust >= date.objectives['trust']"
 
             # label to call at the end of every turn
             if "endTurn" in kwargs:
@@ -172,7 +169,7 @@ init python:
             
             return self.ydisplace
 
-        def increment(self, which, value, resetAllMultiplier = True, allowNegative=False):
+        def increment(self, which, value, resetAllMultiplier = True, allowNegative=True): #allowNegative=False
             if which == "trust":
                 if not allowNegative:
                     temp = self.trust + value * self.trustMultiplier * self.allMultiplierOnce
@@ -192,7 +189,7 @@ init python:
                 else:
                     self.lust += value * self.lustMultiplier * self.allMultiplierOnce
             else:
-                raise ValueError("no valid specified argument: + which : "+ which) 
+                raise Exception("no valid specified argument: which") 
             
             if resetAllMultiplier:
                 self.allMultiplierOnce = 1
@@ -209,10 +206,10 @@ default global_var.page = 0
 default global_var.card_per_line = 7
 default global_var.phoneLogs = {
     1:[
-        [0, "heloo~ it's joyce"],[0, "are you free in 4 days?"],[0, "let's meet up again!"],
+        [0, "heloo~ it's joyce"],[0, "are you free in 3 days?"],[0, "let's meet up again!"],
     ],
     2:[
-        [0, "heeey"],[0, "wanna get some drinks tmr?"],[0, "There's a bubble tea place I like."],[2, "Okay see your there."]
+        [0, "heeey"],[0, "wanna get some drinks tmr?"],[0, "There's a bubble tea place I like."],[2, "Okay see you there."]
     ],
     3:[
         [0, "today was so fun!"],[0, "I hope to see you next time too!"],[0, "right now i'm stuck on a sudoku haha"],[1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
@@ -221,7 +218,7 @@ default global_var.phoneLogs = {
         [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
     ],
     5:[
-        [0, "woo im so tiired now"],[0, "are you gonna go to sleep?"],[0, "good niight"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
+        [0, "next time, let's go to a fancy bar!"], [0, "im so tiired now"],[0, "im gonna go to sleep now"],[0, "good niight"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
     ],
     6:[
         [0, "about the fancy bar"],[0, "I don't know what to wear for tomorrow"],[0, "which dress do you think looks better?"],[1, "pic4.png"], ["exe", "renpy.call('label_pic4_reaction')"]
@@ -231,7 +228,6 @@ default global_var.phoneLogs = {
     # ],
     }
 default global_var.phoneProgress = [0,0]
-default global_var.phoneMsgPosition = 0
 default global_var.prison_cards = []
 default global_var.dreamProgress = 0
 

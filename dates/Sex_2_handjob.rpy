@@ -157,8 +157,6 @@ label label_handjob_SexEndTurn:
         show handjob-start-talk as joyce with dissolve
         j "time to lock you up again"
 
-
-        $ game.progress[1] += 1
         $ game.nextDay("label_prison")
 
     if date.turn == 5:

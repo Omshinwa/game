@@ -1,16 +1,16 @@
-label label_dream_0:
+label label_dream_2:
     $ renpy.play("day/newday.wav", channel='sound') 
     show black
     with fade
     pause 2.0
 
-    $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
+    $ date = Date(objectif_attraction = 10, isWin = "date.attraction >= 10", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
     scene bg dream
     show black
     hide black with Dissolve(1.0)
     pause
     "?"
-    show joyce dream stare at standing onlayer master zorder 2
+    show joyce dream3 stare at depied onlayer master zorder 2
     with Dissolve(1.0)
     pause
     j "Hello [povname]"
@@ -42,12 +42,16 @@ label label_dream_0:
                 j "So that's what your perfect date would look like huh"
                 j "Does this give you any new ideas?"
                 "You can transform up to two Eye Contact cards."
-                call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
-                pause
-                call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
                 
-                label .afterAddedCards:
-                    pause
+                menu:
+                    "drink!":
+                        call label_transform_card("eyecontact", "drink", "Transform 1 Eye Contact card into Flirt?")
+                    "flirt":
+                        call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
+                    "touchy":
+                        call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
+                pause
+                
                 j "I hope you use those ideas for the next date.."
                 play sound "day/alarm.wav"
                 pause 1.0
@@ -79,34 +83,7 @@ label label_dream_0:
     jump .gameLoop
     return
 
-label label_dream_afterAddedCards(cards):
-    $ i = 0
-    while i < len(cards):
-        call label_add_card_to_deck( "list", cards[i])
-        $ deck.list.append( cards[i] )
-        $ i += 1
-    $ deck.list.sort()
-
-    hide screen screen_dream_addCards with dissolve
-    return
-
-screen screen_dream_addCards(sixCards):
-    add "#000a"
-    modal True
-    
-    fixed:
-        xpos -550
-        use screen_add_cards( sixCards[:2], "label_dream_afterAddedCards")
-    fixed:
-        xpos 0
-        use screen_add_cards( sixCards[2:4], "label_dream_afterAddedCards")
-    fixed:
-        xpos 550
-        use screen_add_cards( sixCards[4:], "label_dream_afterAddedCards")
-
-    text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text
-
-label label_dream_0_endTurn:
+label label_dream_2_endTurn:
     $ game.jeu_sensitive = False;
     $ date.turn += 1
 
@@ -124,20 +101,13 @@ label label_dream_0_endTurn:
             if date.turnLeft == 0 or len(deck.deck) == 0:
                 hide screen screen_date_ui with dissolve
                 play sound "day/alarm.wav"
-                j "nicely done"
-                j "So that's what your perfect date would look like huh"
-                j "Does this give you any new ideas?"
-                show screen screen_prison_food([Card("talk2"), Card("talk2"), Card("talk2"), Card("flirt"), Card("flirt"), Card("flirt")])
-                j "I hope you use those ideas for the next date.."
-                # call label_add_card_to_deck( "list", card, xfrom=960, yfrom=-100, pauseTime=0, index=None, fromWhere=None):
                 pause 1.5
                 j "Seems like our time is up."
                 j "You didn't satisfy me yet.."
                 j "Come back next time."
                 j "Please try harder next time baby."
             
-                # $ game.progress[1] += 1
-                $ game.nextDay("label_home")
+                call label_newDay("label_home")
                 
     if date.turn == 1:
         hide screen screen_date_ui with dissolve

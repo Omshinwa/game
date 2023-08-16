@@ -23,10 +23,10 @@ screen screen_day():
         if game.state == "living":
             if game.day % game.dateEvery==0:
                 text "today!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
-            elif game.day % game.dateEvery==3:
-                text "tomorrow" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+            elif game.day % game.dateEvery==game.dateEvery-1:
+                text "tomorrow!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
             else:
-                text "next date: " +str(game.day + (game.dateEvery - game.day % game.dateEvery))+ "" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
 
 screen screen_deck_stack():
     imagebutton:
@@ -43,7 +43,7 @@ screen screen_deck_stack():
 
 screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
-    sensitive game.jeu_sensitive
+    # sensitive game.jeu_sensitive
     
     modal True
     $ card_per_line = global_var.card_per_line
@@ -82,7 +82,7 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
                             imagebutton:
                                 idle card.img
                                 hover card.img_hover
-                                action [SetVariable("global_var.page", 0), Call(label_callback, index)]
+                                action [SetVariable("global_var.page", 0), SetVariable("game.jeu_sensitive", False), Call(label_callback, index)]
                                 at Transform(zoom=zoom)
         
     imagebutton:

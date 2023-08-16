@@ -4,13 +4,13 @@ label label_dream_0:
     with fade
     pause 2.0
 
-    $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
+    $ date = Date(objectif_trust = 5, turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
     scene bg dream
     show black
     hide black with Dissolve(1.0)
     pause
     "?"
-    show joyce dream stare at standing onlayer master zorder 2
+    show joyce dream stare at depied onlayer master zorder 2
     with Dissolve(1.0)
     pause
     j "Hello [povname]"
@@ -79,6 +79,55 @@ label label_dream_0:
     jump .gameLoop
     return
 
+
+
+label label_dream_0_endTurn:
+    $ game.jeu_sensitive = False;
+
+    label .loseCondition:
+        if len(deck.deck) == 0:
+
+            show date-fail at truecenter with blinds
+            pause 0.3
+            hide date-fail with moveoutbottom
+
+            show joyce neutral
+            show joyce armscrossed upset
+
+
+            if date.turnLeft == 0 or len(deck.deck) == 0:
+                hide screen screen_date_ui with dissolve
+                play sound "day/alarm.wav"
+                pause 1.5
+                j "Seems like our time is up."
+                j "You didn't satisfy me yet.."
+                j "Come back next time."
+                j "Please try harder next time baby."
+            
+                call label_newDay("label_home")
+                
+    if date.turn == 1:
+        hide screen screen_date_ui with dissolve
+
+        if date.turn == 1:
+            j "Stop being so shy."
+            j "You can be as horny as you want here.."
+            j "You'll forget everything when you wake up.'"
+
+        show screen screen_date_ui with dissolve
+        pause 0.5
+
+    call label_endTurn_common
+
+    return
+
+
+########################################################################################################
+########################################################################################################
+########################################################################################################
+########################################################################################################
+
+
 label label_dream_afterAddedCards(cards):
     $ i = 0
     while i < len(cards):
@@ -105,51 +154,3 @@ screen screen_dream_addCards(sixCards):
         use screen_add_cards( sixCards[4:], "label_dream_afterAddedCards")
 
     text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text
-
-label label_dream_0_endTurn:
-    $ game.jeu_sensitive = False;
-    $ date.turn += 1
-
-    label .loseCondition:
-        if len(deck.deck) == 0:
-
-            show date-fail at truecenter with blinds
-            pause 0.3
-            hide date-fail with moveoutbottom
-
-            show joyce neutral
-            show joyce armscrossed upset
-
-
-            if date.turnLeft == 0 or len(deck.deck) == 0:
-                hide screen screen_date_ui with dissolve
-                play sound "day/alarm.wav"
-                j "nicely done"
-                j "So that's what your perfect date would look like huh"
-                j "Does this give you any new ideas?"
-                show screen screen_prison_food([Card("talk2"), Card("talk2"), Card("talk2"), Card("flirt"), Card("flirt"), Card("flirt")])
-                j "I hope you use those ideas for the next date.."
-                # call label_add_card_to_deck( "list", card, xfrom=960, yfrom=-100, pauseTime=0, index=None, fromWhere=None):
-                pause 1.5
-                j "Seems like our time is up."
-                j "You didn't satisfy me yet.."
-                j "Come back next time."
-                j "Please try harder next time baby."
-            
-                # $ game.progress[1] += 1
-                $ game.nextDay("label_home")
-                
-    if date.turn == 1:
-        hide screen screen_date_ui with dissolve
-
-        if date.turn == 1:
-            j "Stop being so shy."
-            j "You can be as horny as you want here.."
-            j "You'll forget everything when you wake up.'"
-
-        show screen screen_date_ui with dissolve
-        pause 0.5
-
-    call label_endTurn_common
-
-    return

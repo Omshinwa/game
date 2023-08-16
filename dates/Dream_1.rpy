@@ -1,8 +1,10 @@
 label label_dream_1:
+    if game.progress[0] <= 4 :
+        jump label_dream_0
     $ renpy.play("day/newday.wav", channel='sound') 
     show black
     with fade
-    pause 2.0
+    pause 1.0
 
     $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
     scene bg dream
@@ -10,13 +12,13 @@ label label_dream_1:
     hide black with Dissolve(1.0)
     pause
     "?"
-    show joyce dream stare at standing onlayer master zorder 2
+    show joyce dream2 stare at depied onlayer master zorder 2
     with Dissolve(1.0)
     pause
-    j "Hello [povname]"
-    j "Did you miss me that much?"
-    j "You just can't wait for our next date huh.."
-    j "I'll entertain you. Let's play a shadow game.."
+    j "Hey sweety"
+    j "What's wrong? Something different about me?"
+    j "Did you think I didn't notice during the date?"
+    j "You were just oogling at those tits huh"
 
     call label_beginDuel_common()
     $ date.lust = 0
@@ -24,8 +26,8 @@ label label_dream_1:
     $ date.trust = 0
     with dissolve
     
-    j "Don't be scared baby"
-    j "This is just you and me"
+    j "Maybe you'll get to suck on these tits"
+    j "In real life that is."
 
 
     label .gameLoop:
@@ -97,20 +99,13 @@ label label_dream_1_endTurn:
             if date.turnLeft == 0 or len(deck.deck) == 0:
                 hide screen screen_date_ui with dissolve
                 play sound "day/alarm.wav"
-                j "nicely done"
-                j "So that's what your perfect date would look like huh"
-                j "Does this give you any new ideas?"
-                show screen screen_prison_food([Card("talk2"), Card("talk2"), Card("talk2"), Card("flirt"), Card("flirt"), Card("flirt")])
-                j "I hope you use those ideas for the next date.."
-                # call label_add_card_to_deck( "list", card, xfrom=960, yfrom=-100, pauseTime=0, index=None, fromWhere=None):
                 pause 1.5
                 j "Seems like our time is up."
                 j "You didn't satisfy me yet.."
                 j "Come back next time."
                 j "Please try harder next time baby."
             
-                # $ game.progress[1] += 1
-                $ game.nextDay("label_home")
+                call label_newDay("label_home")
                 
     if date.turn == 1:
         hide screen screen_date_ui with dissolve

@@ -99,7 +99,7 @@ label label_card_exodia(index):
             call label_add_card_to_deck("deck", deck.hand.pop(index), pauseTime=0, fromWhere="field")
             call label_add_card_to_deck("deck", deck.hand.pop(index-1), pauseTime=0, fromWhere="field")
             jump .effect
-    elif len(deck.hand) >= 2 and deck.discard_pile[-1].name == 'exodia1':
+    elif len(deck.hand) >= index+2 and deck.discard_pile[-1].name == 'exodia1':
         if deck.hand[index].name == 'exodia2' and deck.hand[index+1].name == 'exodia3':
             call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
             call label_add_card_to_deck("deck", deck.hand.pop(index+1), pauseTime=0, fromWhere="field")
