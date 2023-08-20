@@ -12,7 +12,7 @@ label label_newDay(callback):
     # pause 2.0
     window auto
     
-    $ game.lust += 1
+    # $ game.lust += 1
 
     if game.progress[0]*2>global_var.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
         $ global_var.phoneProgress[0] += 1
@@ -60,13 +60,17 @@ label label_beginDuel_common():
     play sound "date/datestart2.mp3"
     hide date-start  onlayer screens with moveoutbottom
 
+    if date.lust > date.trust and date.lust > date.attraction:
+        pause 0.5
+        play sound "rpg/Sonic1-onTheEdge.wav"
+        show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+        hide screen screen_tutorial with dissolve
     return
 
 label label_endTurn_common():
 
-    if not renpy.get_screen("screen_date_ui"):
-        show screen screen_date_ui with dissolve
-
+    # if not renpy.get_screen("screen_date_ui"):
+    #     show screen screen_date_ui with dissolve
 
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
@@ -93,20 +97,20 @@ label label_after_successful_Date_common():
     pause 0.3
     hide date-nice with moveoutbottom
     
-    $ game.lust = date.lust
-    $ game.trust = date.trust
-    $ game.attraction = date.attraction
+    $ game.lust = 0 #date.lust
+    $ game.trust = 0 #date.trust
+    $ game.attraction = 0 #date.attraction
+    
+    $ date.objectives["lust"] = -999
+    $ date.objectives["trust"] = -999
+    $ date.objectives["attraction"] = -999
+
     $ game.progress[0] += 1
     $ game.progress[1] = -1
     $ global_var.phoneProgress[0] += 1
+    $ global_var.phoneProgress[1] = 0
     return
 
-init python:
-    def hide_all_screens_but(expection = "#"):
-        listOfScreen = ["screen_prison", "screen_home", "tutorial"]
-        for screen in listOfScreen:
-            if expection not in screen:
-                renpy.hide_screen( screen )
 
 label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, fromWhere=None, index=None,):
     $ game.jeu_sensitive = False
@@ -166,19 +170,19 @@ label label_date_endTurn():
 
     if date.isLost():
         play sound "rpg/Fall1.wav"
-        show date-fail at truecenter with blinds
+        show date-fail onlayer screens at truecenter with blinds
         pause 0.3
-        hide date-fail with moveoutbottom
+        hide date-fail onlayer screens with moveoutbottom
 
-        if date.lust > date.trust:
-            show joyce neutral
+        if date.lust > date.trust and date.lust > date.attraction:
+            show joyce null
             hide screen screen_date_ui with dissolve
             j armscrossed upset "um.. don't you think I can notice?"
             j "Sorry but I'm gonna go. I'm really not in the mood today."
             j "Let's do this another day."
 
         elif len(deck.deck) == 0 or date.turnLeft == 0:
-            show joyce neutral
+            show joyce null
             hide screen screen_date_ui with dissolve
             j eyesside armscrossed "OH look at the time."
             j "Sorry but I gotta go."
@@ -186,13 +190,17 @@ label label_date_endTurn():
             j "Maybe we can do this another day? See ya."
 
         hide joyce with dissolve
+
+        $ date.lust = 0
+        $ date.trust = 0
+        $ date.attraction = 0
         call label_newDay("label_home")
 
     return
 
-label label_transform_card(cardID, cardID2, prompt):
-    show expression trans_show_card_2(Card(cardID).img)  as card onlayer screens
-    show expression trans_show_card_2(Card(cardID2).img, offset=1.0) as card2 onlayer screens
+label label_transform_card(cardID, cardID2, prompt, callback=None):
+    show expression trans_show_card_1(Card(cardID).img)  as card onlayer screens
+    show expression trans_show_card_2(Card(cardID2).img) as card2 onlayer screens
     if any(c.name == cardID for c in deck.list):
         menu:
             "[prompt]"
@@ -205,7 +213,8 @@ label label_transform_card(cardID, cardID2, prompt):
                             deck.list.pop(index)
                             break
                 call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5)
-                call label_newDay("label_home")
+                if callback != None:
+                    call label_newDay(callback)
             "no":
                 hide card onlayer screens
                 hide card2 onlayer screens

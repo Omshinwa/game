@@ -1,3 +1,7 @@
+label label_welcome_prison():
+    "So you're the new guy"
+    "How awful of her"
+
 label label_prison():
 
     $ game.state = "living"

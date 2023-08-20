@@ -1,5 +1,4 @@
 label label_dream_2:
-    $ renpy.play("day/newday.wav", channel='sound') 
     show black
     with fade
     pause 2.0
@@ -94,7 +93,7 @@ label label_dream_2_endTurn:
             pause 0.3
             hide date-fail with moveoutbottom
 
-            show joyce neutral
+            show joyce null
             show joyce armscrossed upset
 
 

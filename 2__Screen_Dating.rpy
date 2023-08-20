@@ -78,7 +78,11 @@ screen screen_date_bottom_ui():
     fixed:
         xpos 1750
         ypos 890
-        image "cards/deck_stack.png"
+        imagebutton:
+            idle "cards/deck_stack.png"
+            hover im.MatrixColor("cards/deck_stack.png", im.matrix.tint(0.8,1.0,1.4))
+            action [Show("screen_show_deck", dissolve, sorted(deck.deck), "label_null", "CARDS LEFT")]
+            sensitive game.jeu_sensitive
         fixed:
             xpos 35
             ypos 22
@@ -245,7 +249,10 @@ screen screen_trust_ui(range_var = 100):
                     if stat == "lust":
                         $ objectif = date.objectives["lust"]
                         $ textStat = "{k=15.0}LUST{/k}"
-                        $ colorStat2 = "#666"
+                        if date.lust > date.trust and date.lust > date.attraction:
+                            $ colorStat2 = "#ff0000"
+                        else:
+                            $ colorStat2 = "#666"
                         $ colorStat = "#ffd561"
                         $ textColor ="#cc3"
                     elif stat == "trust":
@@ -261,13 +268,13 @@ screen screen_trust_ui(range_var = 100):
                         $ textColor = "#f3a"
                         $ colorStat2 = "#aaa"
                     
-                    if game.state != "dating":
-                        $ objectif = 0
+                    # if game.state != "dating":
+                    #     $ objectif = -999
 
                     bar value getattr(gameOrDate, stat) range range_var xsize 400 ysize 66 left_bar colorStat right_bar colorStat2
                     
 
-                    if objectif == 0:
+                    if objectif == -999:
                         text str( getattr(gameOrDate, stat)):
                             size 50 style "outline_text" xalign 0.8 #ypos 60*index
                     else:

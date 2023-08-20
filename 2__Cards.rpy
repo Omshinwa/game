@@ -127,8 +127,8 @@ label playCard(card, index):
     while i < len(commands):
         $ exec(commands[i])
         $ i+=1
-        if i < len(commands):
-            pause 0.2
+        # if i < len(commands):
+        pause 0.2
     $ game.lastPlayed = card
     $ game.cardPlaying = None
     return
@@ -151,7 +151,7 @@ label playCardfromHand(index):
     else:
         $ raise Exception("playCardfromHand cond invalid")
     
-    call label_reaction
+    call label_card_reaction
     
     $ game.jeu_sensitive = True
 

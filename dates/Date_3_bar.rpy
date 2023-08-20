@@ -1,6 +1,6 @@
 
 label label_barDate:
-    $ date = Date(objectif_attraction = 35, isWin = "date.attraction >= 35", turnLeft = 7, endTurn = "label_barDate_endTurn")
+    $ date = Date(objectif_attraction = 25, turnLeft = 7, endTurn = "label_barDate_endTurn")
     scene bg bar
     show fg bar-table onlayer master zorder 2
     show screen screen_glass("bar") onlayer master zorder 2
@@ -43,16 +43,16 @@ label label_barDate_endTurn:
     $ date.turnLeft -= 1
 
     label .loseCondition:
-        if date.lust > date.trust or date.turnLeft == 0 or len(deck.deck) == 0:
+        if (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0 or len(deck.deck) == 0:
 
             show date-fail at truecenter with blinds
             pause 0.3
             hide date-fail with moveoutbottom
 
-            show joyce neutral
+            show joyce null
             show joyce armscrossed upset
 
-            if date.lust > date.trust:
+            if date.lust > date.trust and date.lust > date.attraction:
                 hide screen screen_date_ui with dissolve
                 j "um.. don't you think I can notice?"
                 j "Sorry but gotta go"

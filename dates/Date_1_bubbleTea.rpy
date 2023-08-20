@@ -1,6 +1,6 @@
 label label_bubbleTea:
     $ game.state = "dating"
-    $ date = Date(objectif_trust = 10, objectif_attraction = 6, isWin = "date.trust >= 10 and date.attraction >= 6", turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
+    $ date = Date(objectif_trust = 8, objectif_attraction = 3, turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
 
     scene bg bbt
     show fg bbt-table onlayer master zorder 2
@@ -8,10 +8,13 @@ label label_bubbleTea:
     if game.progress[1]>=1:
         show screen screen_glass("bbt") onlayer master zorder 2
 
-    show joyce smile at sitting
+    show joyce outfit1 smile at sitting
+
+    with dissolve
+
     if game.progress[1] == -1:
         j "Hey how have you been?"
-        j "I really like this place."
+        j "I really like this cafe."
         j "I hope you like it too."
     else:
         j "Hello again"
@@ -33,14 +36,11 @@ label label_bubbleTea:
                 pause 0.3
                 hide date-nice with moveoutbottom
 
-                j "haha"
-                j "That was a nice first date. I feel like I can trust you."
-                j "Hey... Here's my number"
-                j "Do you want to meet again in the week?"
-                j "I'll text you."
-                j "See ya."
+                j "So did you like the drink?"
+                j "I think we should get a drink every time we hang out now haha"
+                j "It is getting pretty hot!"
                 call label_after_successful_Date_common
-                jump label_home
+                call label_newDay("label_home")
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -59,9 +59,9 @@ label label_bubbleTea_endTurn:
             pause 0.5
             hide joyce with dissolve
             pause 3.0
-            show joyce smile at standing with dissolve
+            show joyce outfit1 smile at standing with dissolve
             pause 2.0
-            show joyce base at sitting with dissolve
+            show joyce at sitting with dissolve
             j "here"
             show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
             pause
@@ -77,8 +77,8 @@ label label_bubbleTea_endTurn:
         elif date.turn == 1:
             hide screen screen_date_ui with dissolve
             j "Does it taste good?"
-            show joyce neutral worried
-            j "Em"
+            show joyce null
+            j worried "Em"
             j "Can I taste it?"
             menu:
                 "yes":
@@ -104,21 +104,23 @@ label label_bubbleTea_endTurn:
                         $ date.drink-=1
                     with dissolve
                     "You feel a little weird.."
-                    "You feel like you want to look at her mouth again..."
+                    "You feel like you want to look at her lips closer..."
                     show screen screen_date_ui with dissolve
-                    call label_add_card_to_deck("deck", Card("peek"),pauseTime=2.0)
-                    "(a Peek card was added to your deck)"
+                    "(a Peek card was added to your hand)"
                 "no":
                     j "oh, ok.."
                     $ date.attraction -= 2
                     $ date.trust -= 4
                     "-2 attraction -4 trust."
-            
-    if date.turn>=2 or game.progress[1]>=2:
-        call label_add_card_to_deck("deck", Card("peek"),pauseTime=1.0)
+    else:
+        call label_reaction
         
     show screen screen_date_ui with dissolve
             
 
     call label_endTurn_common
+    
+    if date.turn>=2 or game.progress[1]>=2:
+        call label_add_card_to_deck("hand", Card("peek"),pauseTime=1.0)
+
     return

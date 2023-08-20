@@ -36,8 +36,16 @@ transform trans_show_card_2(displayable, offset=0): #floating up and down card
     displayable
     xanchor 0.5 yanchor 0.5 xpos 800 ypos 550
     block:
-        ease 1.0 xpos 300 ypos 500 alpha 1.0-offset
-        ease 1.0 xpos 300 ypos 550 alpha 1.0
+        ease 1.0 xpos 300 ypos 500
+        ease 1.0 xpos 300 ypos 550
+        repeat
+
+transform trans_show_card_1(displayable, offset=0): #floating up and down card, card from deck
+    displayable
+    xanchor 0.5 yanchor 0.5 xpos 1800 ypos 50
+    block:
+        ease 1.0 xpos 1600 ypos 550
+        ease 1.0 xpos 1600 ypos 500
         repeat
 
 transform trans_add_card_to_deck(displayable, xfrom, yfrom, xto, yto, pauseTime=0):

@@ -6,29 +6,35 @@ screen screen_home:
     # sensitive not renpy.get_screen("say")
     sensitive game.jeu_sensitive
 
-    if game.hasNewMessage():
-        imagebutton:
-            idle "home/phone-msg.png"
-            hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
-            action Show("screen_home_phone", None, _layer = "master")
-            focus_mask True
-    else:
-        if game.progress[0]==0:
-            add "home/phone.png"
-        else:
-            imagebutton:
-                idle "home/phone.png"
-                hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
-                action Show("screen_home_phone", None, _layer = "master")
-                focus_mask True
-
     if game.day % game.dateEvery == 0:
         imagebutton:
             idle "home/door.png"
             hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
             action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
             focus_mask True
+
+        imagebutton:
+            idle "home/phone.png"
+            hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+            action Call("label_skip_day")
+            focus_mask True
     else:
+        if game.hasNewMessage():
+            imagebutton:
+                idle "home/phone-msg.png"
+                hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
+                action Show("screen_home_phone", None, _layer = "master")
+                focus_mask True
+        else:
+            if game.progress[0]==0:
+                add "home/phone.png"
+            else:
+                imagebutton:
+                    idle "home/phone.png"
+                    hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+                    action Show("screen_home_phone", None, _layer = "master")
+                    focus_mask True
+
         imagebutton:
             idle "home/door.png"
             hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
@@ -168,7 +174,14 @@ screen screen_home_phone():
 ##
 #############################################################################
 
-
+label label_skip_day():
+    menu:
+        "Postpone date until next time?"
+        "Yes":
+            call label_newDay("label_home")
+        "No":
+            return
+        
 label label_home_tutorial():
     window hide
     $ game.day += 1
@@ -191,7 +204,8 @@ label label_home_tutorial():
         play sound "rpg/Item1.wav"
         "You will keep your stats after a successful date."
         "If you fail, they stay the way they were before."
-        "{b}Lust{/b} do builds up every day, so be careful."
+        "{b}Lust{/b} builds up automatically after every day."
+        "This is your home, this is where you can improve your deck."
         "Try to build a stronger deck before the second date!"
         hide screen screen_tutorial
         show black onlayer screens with dissolve
@@ -215,10 +229,11 @@ label label_home():
     show black onlayer screens
     hide black onlayer screens with dissolve
 
-    if game.progress[0] == 2 and game.progress[1] == 0:
+    if game.progress[0] == 2 and game.progress[1] == -1 and "cat" not in done_flag:
+        $ done_flag["cat"] = 1
         play sound "day/meow.wav"
         "seems like he has something in his mouth"
-        call label_home_add_cards("drink", "Add a Drink to your deck?")
+        call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False)
 
 
     label .gameLoop:
@@ -253,9 +268,9 @@ label label_home_comp:
     menu:
         "You log into discord"
         "Post messages":
-            call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?")
+            call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
         "Read messages":
-            call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?")
+            call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
         "go to prison":
             jump label_prison 
         "X":
@@ -273,7 +288,7 @@ label label_home_bed:
             "Lust reset to 0"
             $ game.lust = -1
             call label_newDay("label_home")
-        "sleep":
+        "dream":
             call expression "label_dream_" + str(global_var.dreamProgress)
         "X":
             return
@@ -290,7 +305,7 @@ label label_home_plant():
             return
     return
 
-label label_home_add_cards(cardID, prompt):
+label label_home_add_cards(cardID, prompt, callback="label_home"):
     show expression trans_show_card_2(Card(cardID).img) as card
     menu:
         "[prompt]"
@@ -298,8 +313,8 @@ label label_home_add_cards(cardID, prompt):
             hide card
             hide screen screen_tutorial
             call label_add_card_to_deck("list", Card(cardID), 300, 500)
-            $ hide_all_screens_but("home")
-            call label_newDay("label_home")
+            if callback:
+                call label_newDay(callback)
         "no":
             hide card
             hide screen screen_tutorial
@@ -375,9 +390,9 @@ label label_pic2_reaction:
     menu:
         "Take a picture of your cat?"
         "Yes":
-            $ global_var.phoneLogs[1] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
+            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
         "No":
-            $ global_var.phoneLogs[1] += [[2, "cool"]]
+            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "cool"]]
     window hide 
     window auto
     hide expression "Joyce/selfie/pic2.png"
@@ -419,7 +434,7 @@ label label_pic1_reaction:
     
     with dissolve
     pause
-    "why this"
+    "..."
     label .sudoku:
         "Help her by finding a number?"
         menu:
@@ -457,18 +472,18 @@ label label_pic1_reaction:
                 
                 define answer = """4_7_______3__7_26___2_3__75683149_5__5478___17193256_8____125_7___4_315__215_74__"""
                 $ sudoku_pos = (sudokuNumber[1]-1)*9 + (sudokuNumber[2]-1)
-                $ global_var.phoneLogs[0].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
-                $ global_var.phoneLogs[0].append( [2, "sudoku_pos [sudoku_pos]"])
+                $ global_var.phoneLogs[3].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
+                # $ global_var.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
                 if answer[sudoku_pos] == str(sudokuNumber[0]):
-                    $ global_var.phoneLogs[0].append( [0, "Wow! How did you find that? Thanks!"])
-                    $ global_var.phoneLogs[0].append( [2, "+4 trust"])
-                    $ global_var.phoneLogs[0].append( [0, "what?"])
-                    $ global_var.phoneLogs[0].append( [2, "dont worry about it ;-)"])
-                    $ global_var.phoneLogs[0].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
+                    $ global_var.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
+                    $ global_var.phoneLogs[3].append( [2, "+4 trust"])
+                    $ global_var.phoneLogs[3].append( [0, "what?"])
+                    $ global_var.phoneLogs[3].append( [2, "dont worry about it ;-)"])
+                    $ global_var.phoneLogs[3].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
                 else:
-                    $ global_var.phoneLogs[0].append( [0, "thanks! I'll see what I can do with that."])
+                    $ global_var.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
             "No":
-                $ global_var.phoneLogs[0].append( [2, "Good luck with that!"])
+                $ global_var.phoneLogs[3].append( [2, "Good luck with that!"])
                 pass
     
 

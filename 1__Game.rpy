@@ -38,7 +38,7 @@ init python:
             self.isHoverHand = False
 
             self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
-            self.progress = [0,0] # left is progress, right is numbers of turns 
+            self.progress = [0,-1] # left is progress, right is numbers of turns 
 
             self.day = 4
 
@@ -72,23 +72,23 @@ init python:
             if "objectif_trust" in kwargs:
                 self.objectives["trust"] = kwargs["objectif_trust"]
             else:
-                self.objectives["trust"] = 0
+                self.objectives["trust"] = -999
             
             if "objectif_attraction" in kwargs:
                 self.objectives["attraction"] = kwargs["objectif_attraction"]
             else:
-                self.objectives["attraction"] = 0
+                self.objectives["attraction"] = -999
             
             if "objectif_lust" in kwargs:
                 self.objectives["lust"] = kwargs["objectif_lust"]
             else:
-                self.objectives["lust"] = 0
+                self.objectives["lust"] = -999
 
             if "isLost" in kwargs:
                 self.config["isLost"] = kwargs["isLost"]
             else:
-                if game.progress[0] <5:
-                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust > date.trust or date.turnLeft == 0"
+                if game.progress[0]<5:
+                    self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0"
                 else:
                     self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"
 

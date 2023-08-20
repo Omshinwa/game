@@ -1,6 +1,6 @@
 label label_tutorial:
     $ game.state = "dating"
-    $ date = Date(objectif_trust = 5, isWin = "date.trust >= 5", turnLeft = 5, endTurn = "label_tutorial_endTurn")
+    $ date = Date(objectif_trust = 5, turnLeft = 5, endTurn = "label_tutorial_endTurn")
 
 
     scene bg park
@@ -25,7 +25,7 @@ label label_tutorial:
         show joyce 
     else:
         $ tutorial = False
-        show joyce outfit1 neutral
+        show joyce outfit1 null
         j "Hi again"
         j "I hope this date goes better than last time"
     
@@ -35,20 +35,19 @@ label label_tutorial:
         $ game.jeu_sensitive = False
         show screen screen_tutorial("misc/tutorial-cards.png") with dissolve
         play sound "rpg/Item1.wav"
-        j neutral armscrossed "During a date, you play cards from your hand that have various effects."
+        j null armscrossed "During a date, you play cards from your hand that have various effects."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         j "The aim of a date is to build {b}{color=#55f}{u}trust{/u}{/color}{/b} and {b}{color=#f3a}{u}attraction{/u}{/color}{/b}."
         j "{b}{color=#cc3}{u}Lust{/u}{/color}{/b} is a negative trait."
-        j "If you have {b}more lust than trust{/b}, the girl will notive you're being too pervy."
+        j "If {b}Lust is your highest stat{/b}, the girl will notive you're being too horny."
         j "They will be upset and the date will be over."
         j "So don't act too horny. At least not on your first dates!"
-        j "This date, you only need to build 3 trust for it to be successful."
+        j "This date, you need to build 5 trusts to be successful."
         show screen screen_tutorial("misc/tutorial-end-turn.png") with dissolve
         j "The date is also over when you {b}run out of card{/b}."
         j "After every turn, you draw until you have 5 cards in hand."
         hide screen screen_tutorial with dissolve
-        show joyce smile outfit1
-        j "Got it?\nLet's start the date!"
+        j smile base "Got it?\nLet's start the date!"
     
     label .gameLoop:
         $ game.jeu_sensitive = False
@@ -84,15 +83,15 @@ label label_tutorial_endTurn:
         pause 0.3
         hide date-fail with moveoutbottom
 
-        if date.lust > date.trust:
-            show joyce neutral
+        if date.lust > date.trust and date.lust > date.attraction:
+            show joyce null
             hide screen screen_date_ui with dissolve
             j armscrossed upset "um.. don't you think I can notice?"
             j "Sorry but I'm gonna go. I'm really not in the mood today."
             j "Let's do this another day."
 
         elif len(deck.deck) == 0 or date.turnLeft == 0:
-            show joyce neutral
+            show joyce null
             hide screen screen_date_ui with dissolve
             j eyesside armscrossed "OH look at the time."
             j "Sorry but I gotta go."
@@ -104,19 +103,15 @@ label label_tutorial_endTurn:
     
 
     if game.progress[1]<=date.turn:
-
         if date.turn == 0:
-            # hide screen screen_date_ui with dissolve
-            show joyce stare neutral
+            hide screen screen_date_ui with dissolve
+            show joyce null
             j smile "So youre [povname], nice to meet you"
             j "I was a bit worried before coming here, but you seem nice."
+            j "Do you often meet girls like that?"
+            show screen screen_date_ui with dissolve
+        else:
+            call label_reaction
         
-        elif date.turn == 1:
-            j smile "Nothing like a walk in the park to get some fresh air."
-        
-        elif date.turn == 2:
-            j smile "Summer is coming! I might need to buy a new swimsuit."
-
-
     call label_endTurn_common
     return

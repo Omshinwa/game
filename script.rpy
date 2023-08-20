@@ -29,7 +29,6 @@ label start:
     #         deck.list.append(Card(card))
 
     show screen keybinds()
-    $ game.progress = [0,0]
 
     # jump label_prison
     jump label_home

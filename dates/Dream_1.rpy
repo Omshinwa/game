@@ -1,12 +1,11 @@
 label label_dream_1:
     if game.progress[0] <= 4 :
         jump label_dream_0
-    $ renpy.play("day/newday.wav", channel='sound') 
     show black
     with fade
     pause 1.0
 
-    $ date = Date(objectif_attraction = 20, isWin = "date.attraction >= 20", turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
+    $ date = Date(objectif_attraction = 10, turnLeft = 7, isLost= "len(deck.deck)==0", endTurn = "label_dream_0_endTurn")
     scene bg dream
     show black
     hide black with Dissolve(1.0)
@@ -92,7 +91,7 @@ label label_dream_1_endTurn:
             pause 0.3
             hide date-fail with moveoutbottom
 
-            show joyce neutral
+            show joyce null
             show joyce armscrossed upset
 
 

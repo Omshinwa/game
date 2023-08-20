@@ -52,15 +52,7 @@ label label_cowgirl:
     j "I'm gonna masturbate you with my feet"
     j "First, let's release this bad boy."
     j "You must have been waiting for this no?"
-    show get-hard (1) as anim
-    pause 0.2
-    show get-hard (2) as anim
-    pause 0.2
-    show get-hard (3) as anim
-    pause 0.2
-    show get-hard (4) as anim
-    pause 0.2
-    show get-hard (5) as anim
+    show joyce cowgirl at toobig
     j "Such nice shape."
     hide anim
     j "Please resist this if you want a taste of my pussy."
