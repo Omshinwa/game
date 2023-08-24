@@ -135,12 +135,18 @@ screen screen_date_bottom_ui():
 screen screen_debug:
     if game.debug_flag:
         drag:
-                # ysize 400
-                # xsize 500
+            fixed:
+                xsize 500
+                ysize 200
                 xalign 0.0 yalign 0.3
                 text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]):
                     size 40 color "#FF0" ypos 0
-                # text "date.ydisplace: " + str(date.ydisplace) size 40 color "#FF0" ypos 100
+
+                imagebutton:
+                    xsize 100
+                    ysize 100
+                    action Jump("label_welcome_prison")
+                    idle "#00f"
 
 screen screen_lust_ui:
 

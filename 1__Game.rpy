@@ -40,7 +40,7 @@ init python:
             self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
             self.progress = [0,-1] # left is progress, right is numbers of turns 
 
-            self.day = 4
+            self.day = 3
 
             self.lastPlayed = None
             self.cardPlaying = None
@@ -87,7 +87,7 @@ init python:
             if "isLost" in kwargs:
                 self.config["isLost"] = kwargs["isLost"]
             else:
-                if game.progress[0]<5:
+                if game.state == "dating":
                     self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0"
                 else:
                     self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"

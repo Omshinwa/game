@@ -12,6 +12,10 @@ label label_bubbleTea:
 
     with dissolve
 
+    show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9,0.15) at sitting as anim
+    pause 0.15*9
+    hide anim
+
     if game.progress[1] == -1:
         j "Hey how have you been?"
         j "I really like this cafe."

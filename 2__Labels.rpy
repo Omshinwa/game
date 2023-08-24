@@ -23,10 +23,10 @@ label label_newDay(callback):
 label label_beginDuel_common():
     $ game.jeu_sensitive = False;
 
-    if game.progress[0] < 4:
-        $ game.state = "dating"
-    else:
-        $ game.state = "sexing"
+    # if game.progress[0] <= 4:
+    #     $ game.state = "dating"
+    # else:
+    #     $ game.state = "sexing"
 
     $ date.lust = game.lust
     $ date.lustMax = game.lustMax
@@ -47,7 +47,7 @@ label label_beginDuel_common():
     $ deck.discard_pile = []
     $ deck.hand = []
 
-    if game.progress[0] < 5:
+    if game.state == "dating":
         show screen screen_date_ui()
     else:
         show screen screen_sex_ui()
@@ -86,6 +86,11 @@ label label_endTurn_common():
         $ handSize = len(deck.hand)
     
     $ game.jeu_sensitive = True;
+
+    if game.state == "dating":
+        show joyce null with dissolve
+    # show joyce null with dissolve
+
     return
 
 label label_after_successful_Date_common():

@@ -27,10 +27,10 @@ init python:
 
         "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":2,},
         
-        "discardAll": {"txt":"Discard the whole hand, -1 Lust for each card.", "eff":"renpy.call('label_card_discardAll')", "value":2,},
+        "discardAll": {"txt":"Discard your hand, reduce your Lust by the number of cards discarded squared.", "eff":"renpy.call('label_card_discardAll')", "value":2,},
         
         "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus', instruction='Choose a card to add back', background='#000a')", "value":2,},
-        "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
+        # "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
         "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"date.animation_speed = 5; deck.draw(5-len(deck.hand))", "value":1,},
 
@@ -44,10 +44,12 @@ init python:
         "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')", "value":2,},
         "spaceout" : {"txt":"does nothing", "eff":"", "value":0,},
 
-        "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2",},
+        "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":2,},
 
-        "talk": {"txt":"+1 trust", "eff":"date.increment('trust',1)",},
-        "talk2": {"txt":"+2 trust", "eff":"date.increment('trust',2)",},
+        "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2","value2":2},
+
+        "talk": {"txt":"+1 trust", "eff":"date.increment('trust',1)","value2":1},
+        "talk2": {"txt":"+2 trust", "eff":"date.increment('trust',2)","value2":2},
 
         # "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
@@ -57,15 +59,12 @@ init python:
         "peekblue": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
         "peek4": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-2,},
 
-        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)",},
-        "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)",},
-        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"date.increment('attraction',4,False); date.increment('lust',4)",},
-        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2",},
+        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)","value2":1},
+        "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)","value2":2},
+        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"date.increment('attraction',4,False); date.increment('lust',4)","value2":3},
+        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2},
 
         "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2,},
-
-        "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":3,},
-
     }
 
 label label_card_change:

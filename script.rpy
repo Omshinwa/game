@@ -4,6 +4,7 @@
 # name of the character.
 
 define j = Character(None, image="joyce", kind=bubble)
+define rat = Character(None, image="rat", kind=bubble)
 
 default povname = "William"
 # define pov = Character(None, what_italic=True)#, what_prefix='"', what_suffix='"')
@@ -29,6 +30,7 @@ label start:
     #         deck.list.append(Card(card))
 
     show screen keybinds()
+    show screen screen_debug
 
     # jump label_prison
     jump label_home

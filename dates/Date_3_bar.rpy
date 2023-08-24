@@ -4,13 +4,32 @@ label label_barDate:
     scene bg bar
     show fg bar-table onlayer master zorder 2
     show screen screen_glass("bar") onlayer master zorder 2
+
+    if whichDress == "red":
+        show joyce outfitred at depied onlayer master zorder 2
+    else:
+        show joyce outfitblue at depied onlayer master zorder 2
+
     
-   
-    show expression "joyce " + whichDress at depied onlayer master zorder 2
+    with dissolve
+    
+
     j "Hey fancy meeting your there huh?"
-    j "hehe"
+
+    if whichDress == "red":
+        show joyce outfitred at sitting onlayer master zorder 0 
+    else:
+        show joyce outfitblue at sitting onlayer master zorder 0 
+
+    j "dynamic"
+    show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9, 0.15) at sitting as anim
+    pause 0.15*9
+    hide anim
     
-    show joyce smile at sitting onlayer master zorder 0
+
+    j "hehe"
+    # hide joyce with dissolve
+    # show expression "joyce " + " outfit"+whichDress at sitting
 
     call label_beginDuel_common()
 
@@ -40,7 +59,6 @@ label label_barDate:
 
 label label_barDate_endTurn:
     $ game.jeu_sensitive = False;
-    $ date.turnLeft -= 1
 
     label .loseCondition:
         if (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0 or len(deck.deck) == 0:

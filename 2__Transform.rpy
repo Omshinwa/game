@@ -4,21 +4,30 @@ transform toobig:
     zoom 0.9
 
 transform depied:
-    yoffset 0
-    zoom 0.9 xalign 0.5 yalign 1.0 
+    ypos 1080
+    yanchor 1.0
+    zoom 0.9 xalign 0.5
 
 transform standing:
-    yoffset 0
+    ypos 1080
+    yanchor 1.0
     zoom 1.0 xalign 0.5
 
 transform sitting:
-    yoffset 100 #137
+    # yoffset 100 #137
+    ypos 1220
+    yanchor 1.0
     zoom 1.0 xalign 0.5
 
 transform top:
     zoom 1.0
     xalign 0.5
     yalign 0.0
+
+transform shock:
+    zoom 1.0
+    linear 0.1 zoom 0.98
+    linear 0.1 zoom 1.0
 
 transform trsfm_cards_go_down:
     ypos 1080

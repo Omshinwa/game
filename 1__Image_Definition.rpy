@@ -28,8 +28,17 @@ init python:
             d = Transform(img_path, ypos=self.ypos, xpos=self.xpos)
             return d, 0.1
     
+    def generate_anim3(img_path, frames, speed=0.1):
+        txt = "Animation("
+        for frame in range(frames):
+            txt += "'"+ img_path + str(frame+1) + ").png', "+str(speed)+","
+        
+        txt += "'#0000', 2.0)"
+        return eval(txt)
+
+
 image moan_bubble:
-    DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat
+    DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
     alpha 0.0
     linear 0.5/date.animation_speed_hash[date.animation_speed] alpha 1.0
     pause 1.0/date.animation_speed_hash[date.animation_speed]
@@ -46,6 +55,10 @@ init python:
             atts.add("null_skin")
             atts.add("null_eyes")
             atts.add("null_mouth")
+            if "defend" in atts:
+                atts.remove("defend")
+            if "armscrossed" in atts:
+                atts.remove("armscrossed")
 
         if "armscrossed" in atts:
             if "outfit1" not in renpy.get_attributes("joyce") and "outfit2" not in renpy.get_attributes("joyce"):
@@ -54,6 +67,8 @@ init python:
         return names[0], *atts
 
 define config.adjust_attributes["joyce"] = joyce_adjuster
+
+define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue"]
 
 layeredimage joyce:
 
@@ -68,7 +83,7 @@ layeredimage joyce:
 
     group base:
         attribute base default:
-            "joyce_2"
+            null
         attribute base if_any "outfit1":
             "joyce_1"
         attribute base if_any "outfit2":
@@ -93,24 +108,43 @@ layeredimage joyce:
             "joyce_armscrossed"
         attribute armscrossed if_any "outfit2":
             "joyce_2armscrossed"
+
+        attribute whip:
+            "joyce_sm_whip"
+        attribute key:
+            "joyce_sm_key"
+        attribute push:
+            "joyce_sm_push"
+
+        attribute defend:
+            "joyce_2_defend"
+        attribute defend if_any "outfitred":
+            "joyce_red_defend"
+        attribute defend if_any "outfitblue":
+            "joyce_blue_defend"
     
     group skin:
         attribute null_skin if_any "null":
             null
-        attribute blush
+        attribute blush if_any normal_face
 
     group eyes:
         attribute blink default:
             "img_blink"
         attribute null_eyes if_any "null":
             null
-        attribute upset
-        attribute worried
-        attribute eyesside
+        attribute upset if_any normal_face
+        attribute worried if_any normal_face
+        attribute eyesside if_any normal_face
+        attribute foxy if_any normal_face
+        attribute foxy if_any "outfitsm":
+            "joyce_sm_foxy"
+
     group mouth if_not "null":
         attribute null_mouth if_any "null":
             null
-        attribute smile
+        attribute smile if_any normal_face
+        attribute smirk if_any normal_face
 
 image img_blink:
     "Joyce/joyce_blink.png"
@@ -164,7 +198,7 @@ image joyce footjob:
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 
-image joyce footjobv2:
+image joyce footjob v2:
     "Joyce/sex/footjob/footjob v2 (1).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/footjob/footjob v2 (2).png"
@@ -180,7 +214,6 @@ image joyce footjobv2:
     "Joyce/sex/footjob/footjob v2 (2).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
-
 
 image joyce handjob:
     "Joyce/sex/handjob/handjob (1).png"
@@ -198,7 +231,7 @@ image joyce handjob:
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 
-image joyce handjobv2:
+image joyce handjob v2:
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/handjob/handjob v2 (1).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
@@ -211,6 +244,38 @@ image joyce handjobv2:
     "Joyce/sex/handjob/handjob v2 (5).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     "Joyce/sex/handjob/handjob v2 (6).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    repeat
+
+image joyce blowjob:
+    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
+    "Joyce/sex/blowjob/blowjob (1).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob (2).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob (3).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob (4).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob (5).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob (6).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    repeat
+
+image joyce blowjob v2:
+    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
+    "Joyce/sex/blowjob/blowjob v2 (1).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob v2 (2).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob v2 (3).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob v2 (4).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob v2 (5).png"
+    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    "Joyce/sex/blowjob/blowjob v2 (6).png"
     pause(0.1 / date.animation_speed_hash[date.animation_speed])
     repeat
 
@@ -232,3 +297,9 @@ image joyce cowgirl-orgasm:
     "Joyce/sex/cowgirl/cowgirl-orgasm (2).png"
     pause(0.1)
     repeat
+
+image img_hand_caress:
+    "Joyce/anim/hand-caress.png"
+    alpha 0.8
+    xpos 301
+    ypos 177

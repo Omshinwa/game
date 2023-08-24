@@ -412,10 +412,10 @@ label label_pic4_reaction:
     pause
     menu:
         "Red":
-            $ global_var.phoneLogs[5] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],]
+            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],[0, ";-P"]]
             $ whichDress = "red"
         "Blue":
-            $ global_var.phoneLogs[5] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[2, "You'll pull it off"],[0, "I gained so much weight since the last time I wore it though."],[0, "near the chest area"],]
+            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[0, "I gained so much weight since the last time I wore it."],[2, "You'll pull it off"],[0, "near the chest area"],[0, ";-P"]]
             $ whichDress = "blue"
     window hide 
     window auto
