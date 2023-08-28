@@ -1,6 +1,6 @@
 
 label label_barDate:
-    $ date = Date("date", objectif_attraction = 25, turnLeft = 7, endTurn = "label_barDate_endTurn")
+    $ date = Date("date", objectif_trust = 40, objectif_attraction = 40, turnLeft = 7, endTurn = "label_barDate_endTurn")
     scene bg bar
     show fg bar-table onlayer master zorder 2
     show screen screen_glass("bar") onlayer master zorder 2
@@ -40,12 +40,10 @@ label label_barDate:
             if date.isWin():
                 hide screen screen_date_ui with dissolve
 
-                show date-nice at truecenter with blinds
-                hide date-nice with moveoutbottom
+                call label_after_successful_Date_common
 
                 j "t'es trop forte bewbew"
 
-                call label_after_successful_Date_common
                 jump label_prison
             
             show joyce 

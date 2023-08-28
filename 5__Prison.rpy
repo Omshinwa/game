@@ -1,4 +1,6 @@
 label label_welcome_prison():
+    $ game.lustPerDay = 1
+
     $ game.state = "living"
     $ game.jeu_sensitive = False
     scene bg prison
@@ -16,33 +18,49 @@ label label_welcome_prison():
     "An appartus is attached to your penis."
     hide naked-mugshot with dissolve
     j "Oh you woke up."
+    play sound "day/door_opening.wav"
+    pause 0.4
     show joyce smirk foxy outfitsm at depied with dissolve
     j "Did you sleep well?"
+    "?!"
+    j smile "Poor boy is confused."
+    j "Let me explain it to you."
+    j "You're now my bitch."
+    j smile "You will sleep here and I'll take care of you like the good pet you are."
+    "??!!"
     menu:
-        "Ask what's happening":
+        "Ask what does she want":
+            j "You're my plaything now."
+            j "I will train you so you become a good slave."
             pass
         "Try and jump on her":
             show joyce whip
             play sound "sex/whip.mp3"
-            j "Wowo"
+            j -smile "Wowo"
             j "Did you sleep on the wrong side?"
-    j smile "Right now you're my little slave, you're gonna stay in my basement."
-    j "You will sleep here and I'll feed you like the good pet you are."
-    j "Every three days, I will come pick you, you will go through a physical exam."
+            j "Do you still not understand who's in control?"
+    j "See that chastity belt I've attached to you?"
+    j "I have its key, and the key to your new room."
+    j smile "Every three days, I will come pick you, you will go through a physical exam."
     j "I will only free your chastity during those exams."
     j "If you manage not to cum, you'll move to the next stage."
     j "There's 4 different examinations in total."
     j "{b}At the last exam, we will have sex{/b}"
     j key "If at the last exam you manage to make me cum, then you win the key to your cage."
     j -key "Understood?"
-    j "The milking starts now."
-    play sound "sex/Fouet.mp3"
-    show joyce push
-    with vpunch
-    jump label_sex_tutorial
+    j "I'll see you in 3 days."
+    j "Oh, and get rid of those Trust and Attraction cards, they're useless now."
+    
+    play sound "day/door_opening.wav"
+    hide joyce with dissolve
+
+    $ g.rat = game.day + 2
+
+    jump label_prison
+
         
 label label_prison_first_time():
-
+    $ game.jeu_sensitive = False
     $ game.state = "living"
     scene bg prison
     show screen screen_prison_sans_rat onlayer master
@@ -107,15 +125,33 @@ label label_prison_first_time():
     rat "..from past prisonners hehe."
     rat "Just leave me some food around."
     rat "Good luck staying alive"
+    $ g.rat -= 1
     jump label_prison
 
 label label_prison():
 
     $ game.state = "living"
     scene bg prison
-    show screen screen_prison onlayer master
+
+    if game.day <= g.rat:
+        show screen screen_prison_sans_rat onlayer master 
+    else:
+        show screen screen_prison onlayer master
+
     show black onlayer screens
     hide black onlayer screens with dissolve
+
+    if game.day == g.rat:
+        jump label_prison_first_time
+    elif game.day % game.dateEvery == 0:
+        play sound "day/door_opening.wav"
+        show joyce foxy outfitsm smile whip at depied with dissolve
+        j "Hello my slave."
+        j "The milking starts now."
+        play sound "sex/Fouet.mp3"
+        show joyce push
+        with vpunch
+        jump label_prison_open_door
 
 
     $ g.prison_cards = []
@@ -143,7 +179,6 @@ label label_prison():
         call screen screen_gameloop()
     jump .gameLoop
 
-
 label label_prison_open_door:
     hide screen screen_prison
     jump expression "label_" + game.story[game.progress[0]]
@@ -163,11 +198,21 @@ label label_prison_toilet:
     show screen screen_show_deck(label_callback="label_prison_remove_card", instruction=_("REMOVE A CARD"), background="img_toilet-static")
     return
 
+label label_prison_food:
+    menu:
+        "Eat and get stronger? (+1 dick size)"
+        "Yes":
+            $ game.lustMax += 1
+            call label_newDay("label_prison")
+        "No":
+            pass
+    return
+
 label label_prison_bed:
     menu:
-        "Gain +1 dick size?"
+        "Try to calm down (Cut your lust by 2)"
         "Yes":
-            $ date.lustMax += 1
+            $ game.lust = int(game.lust/2)
             call label_newDay("label_prison")
         "No":
             pass
@@ -179,7 +224,7 @@ label label_prison_add_card(cards):
         call label_add_card_to_deck( "list", cards[i])
         $ i += 1
 
-    hide screen screen_prison_food
+    hide screen screen_prison_add_cards
     call label_newDay("label_prison")
 
 
@@ -209,11 +254,31 @@ screen screen_prison_sans_rat:
     use screen_lust_ui
     use screen_day
     use screen_deck_stack
+    sensitive game.jeu_sensitive
 
-    add "prison/toilet.png"
-    add "prison/bed.png"
-    add "prison/metal-door.png"
-    add "prison/food-tray.png"
+    imagebutton:
+        idle "prison/toilet.png"
+        hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Call("label_prison_toilet")
+        focus_mask True
+
+    imagebutton:
+        idle "prison/bed.png"
+        hover Transform("prison/bed.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Call("label_prison_bed")
+        focus_mask True
+
+    imagebutton:
+        idle "prison/metal-door.png"
+        hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Jump("label_prison_open_door")
+        focus_mask True
+
+    imagebutton:
+        idle "prison/food-tray.png"
+        hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Call("label_prison_food")
+        focus_mask True
 
 screen screen_prison:
     use screen_lust_ui
@@ -223,48 +288,18 @@ screen screen_prison:
 
     imagebutton:  
         idle "prison/rat.png"
-        hover im.MatrixColor("prison/rat.png", im.matrix.tint(1,1,5))
-        action Show("screen_prison_food")
+        hover Transform("prison/rat.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Show("screen_prison_add_cards")
         focus_mask True
 
-    imagebutton:
-        idle "prison/toilet.png"
-        hover im.MatrixColor("prison/toilet.png", im.matrix.tint(1,1,5))
-        action Call("label_prison_toilet")
-        focus_mask True
+    use screen_prison_sans_rat
 
-    imagebutton:
-        idle "prison/bed.png"
-        hover im.MatrixColor("prison/bed.png", im.matrix.tint(1,1,5))
-        action Call("label_prison_bed")
-        focus_mask True
-
-    imagebutton:
-        idle "prison/metal-door.png"
-        hover im.MatrixColor("prison/metal-door.png", im.matrix.tint(1,1,5))
-        action Jump("label_prison_open_door")
-        focus_mask True
-
-    imagebutton:
-        idle "prison/food-tray.png"
-        hover im.MatrixColor("prison/food-tray.png", im.matrix.tint(1,1,5))
-        action Show("screen_prison_food")
-        focus_mask True
-
-
-
-init python:
-    def trans_flush_card(trans, st, at):
-        trans.xalign = 0.5
-        trans.yalign = 0.5
-        trans.zoom = min(4.0, 1.0 / ((st/1.5)+0.1))
-        return 0
 
 screen screen_flushing(card):
     add "img_toilet-flush" zoom 3.0
-    add Transform(card, function=trans_flush_card)
+    add card at trans_flush_card
 
-screen screen_prison_food(sixCards = g.prison_cards):
+screen screen_prison_add_cards(sixCards = g.prison_cards):
     add "#000a"
     modal True
     
@@ -280,8 +315,8 @@ screen screen_prison_food(sixCards = g.prison_cards):
 
     imagebutton:
         idle "ui/cancel.png"
-        hover im.MatrixColor("ui/cancel.png", im.matrix.tint(1,1,0))
-        action [Hide("screen_prison_food"),SetVariable("game.jeu_sensitive", True)]
+        hover Transform("ui/cancel.png", matrixcolor=TintMatrix((255,255,0)))
+        action [Hide("screen_prison_add_cards"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.95
         xalign 0.5
     text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text

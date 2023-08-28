@@ -11,14 +11,16 @@ label label_blowjob:
     play sound "rpg/Key.wav"
     show blowjob get-hard (1) as joyce with dissolve
     pause
-    j "You must have been waiting for this no?" 
-    j "How does it feel being finally free?"
-    j "Now, can you get hard for me baby?"
+    j "My little slut"
+    j "Now be a good boy and get hard for me."
+    j "So I can rape you nice and tight."
     pause 0.4
     show blowjob get-hard (2) as joyce
     pause 0.4
     show blowjob get-hard (3) as joyce
     pause
+
+    j "Good boy."
 
     call label_beginDuel_common()
     $ current_speed = date.animation_speed

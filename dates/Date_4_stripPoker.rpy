@@ -5,7 +5,7 @@ label label_stripPoker:
     play sound "day/doorbell.mp3"
     pause 0.4
     "You ring the bell"
-    play sound "day/door_opening.mp3"
+    play sound "day/door_opening.wav"
     pause 0.2
     scene bg flat open with dissolve
     pause 0.2
@@ -52,12 +52,56 @@ label label_stripPoker:
 
                 
                 if "night4" in renpy.get_attributes("joyce"):
-                    show date-nice at truecenter with blinds
-                    hide date-nice with moveoutbottom
-
-                    j "t'es trop forte bewbew"
+                    $ date.lust = 0
                     call label_after_successful_Date_common
-                    jump label_prison
+                    
+                    j foxy smile "This is so sexy."
+                    j foxy smile "I think you're a good candidate."     
+                    show black onlayer screens:
+                        alpha 0.4
+                    with Dissolve(0.4) 
+                    show black onlayer screens:
+                        alpha 0.2
+                    with Dissolve(0.4) 
+
+                    "You suddenly feel tired.."
+                    j foxy "What's wrong?"
+                    j foxy "Are you getting too excited? Do you need to sit down?"
+                    "You need to lie down."
+                    window hide
+                    window auto
+
+                    show black onlayer screens:
+                        alpha 0.8
+                    with Dissolve(0.4) 
+                    show black onlayer screens:
+                        alpha 0.5
+                    with Dissolve(0.4) 
+
+
+                    j foxy -night4 night5 "Did you drink too much?"
+                    "..."
+                    "You feel like something was wrong in the drink."
+                    "You need to go home NOW."
+                    window hide
+                    window auto
+
+                    show black onlayer screens:
+                        alpha 1.0
+                    with Dissolve(0.4) 
+                    show black onlayer screens:
+                        alpha 0.9
+                    with Dissolve(0.4) 
+
+                    j "Be a good boy, and go to sleep."
+
+                    show black onlayer screens:
+                        alpha 1.0
+                    with Dissolve(0.4) 
+                    pause
+                    j "Everything will be just fine."
+                    pause
+                    jump label_welcome_prison
 
                 elif "night" in renpy.get_attributes("joyce"):
                     j foxy smile "Is it hot or it's just me?"
@@ -73,7 +117,7 @@ label label_stripPoker:
                 elif "night3" in renpy.get_attributes("joyce"):
                     j foxy smile "Ooh, last one.."
                     play sound "sex/undress.wav"
-                    show joyce night4 hideboobs with Dissolve(1.0)
+                    show joyce night4 with Dissolve(1.0)
                     $ date.objectives["lust"] = 100
 
 

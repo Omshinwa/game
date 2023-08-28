@@ -92,6 +92,15 @@ transform throw_away_home(a, b, c):
     zoom 4.0 xalign 0.5 yalign 0.5 rotate 0
     ease 1.0 zoom 0.5 rotate a xalign b yalign c
 
+transform trans_flush_card:
+    parallel:
+        rotate 0
+        pause 0.8
+        ease 2.0 rotate 360
+    parallel:
+        zoom 4.0 xpos 0.5 ypos 0.5 xanchor 0.5 yanchor 0.5
+        ease 1.0 zoom 1.0
+
 transform image_qui_defile:
     ypos 0
     linear 30 ypos -3570 

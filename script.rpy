@@ -1,7 +1,16 @@
-﻿# The script of the game goes in this file.
-
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+﻿define BALANCE = {"keepStat":True, 
+"lustGainEveryDay":"game.progress[0]", 
+"requirements_for_each_dates": {0: {"stat":[-999,5,0], "turns":0},
+1: {"stat":[0,0,0], "turns":0},
+2: {"stat":[0,0,0], "turns":0},
+3: {"stat":[0,0,0], "turns":0},
+4: {"stat":[0,0,0], "turns":0},
+5: {"stat":[0,0,0], "turns":0},
+6: {"stat":[0,0,0], "turns":0},
+7: {"stat":[0,0,0], "turns":0},
+8: {"stat":[0,0,0], "turns":0},
+}
+}
 
 define j = Character(None, image="joyce", kind=bubble)
 define rat = Character(None, image="rat", kind=bubble)
@@ -31,10 +40,44 @@ screen game_complete():
 
     text "Omshinwa18" yalign 0.85 xalign 0.8 size 60 style "outline_text"
     textbutton _("https://omshinwa18.itch.io/ (click me)") action OpenURL("https://omshinwa18.itch.io/") yalign 0.9 xalign 0.8 
+    textbutton _("@Omshinwa18 (click me)") action OpenURL("https://twitter.com/Omshinwa18") yalign 0.92 xalign 0.8 
     use screen_deck_stack
 
+screen Content_Warning():
+    add "#000"
+    vbox:
+        xalign 0.5
+        fixed:
+            add "#1a1e38"
+            xsize 1400
+            xalign 0.5
+            text """
+{color=#f00}{b}Content Warning{/b}{/color}
+
+All the characters, places, and events are purely fictional and for entertainment purposes only. All the characters in this game that engage in sexual activities in any way are 18 years of age or older. 
+This game features depictions of sexual assault. The author does not condone rape. If you don't feel comfortable viewing such content, you are advised to close the game.
+            
+By clicking play you agree that you are at least 18 years old and consent to seeing explicit content.
+            """  color "#ffffff" xsize 1300 xalign 0.5 yalign 0.2 size 40 justify True textalign 0.5
+            button:
+                text _("Play") size 50 align (0.5,0.5)
+                action Jump("start2")
+                yalign 0.85 xalign 0.2 xysize (200,200) background "#fff"
+                hover_background "#8080ff"
+            button:
+                text _("Quit") size 50 align (0.5,0.5)
+                action Call("_confirm_quit") 
+                yalign 0.85 xalign 0.8 xysize (200,200) background "#fff"
+                hover_background "#8080ff"
+
 label start:
-    
+    show screen Content_Warning()
+    label .gameLoop:
+        call screen screen_gameloop()
+    jump .gameLoop
+
+label start2:
+    hide screen Content_Warning
     #set up the deck and keybinds
 
     default deck = Deck()
@@ -53,6 +96,6 @@ label start:
 
     # jump label_prison_first_time
     jump label_home
-    jump test_sprites
+    # jump test_sprites
 
     return

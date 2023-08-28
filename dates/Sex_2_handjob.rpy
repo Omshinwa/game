@@ -12,12 +12,15 @@ label label_handjob:
     show handjob get-hard (1) as anim with dissolve
     pause
     j "How does it feel being finally free?"
-    j "Now, can you get hard for me baby?"
     pause 0.4
     show handjob get-hard (2) as anim
     pause 0.4
     show handjob get-hard (3) as anim
     pause
+    j "How come you got hard?"
+    j "Do you enjoy being raped?"
+    j "You're such a pervert."
+    j "You need to be punished."
 
     call label_beginDuel_common()
     $ current_speed = date.animation_speed

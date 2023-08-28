@@ -1,5 +1,5 @@
 label label_bubbleTea:
-    $ date = Date("date", objectif_trust = 8, objectif_attraction = 3, turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
+    $ date = Date("date", objectif_trust = 8, objectif_attraction = 3, turnLeft = 4, endTurn = "label_bubbleTea_endTurn")
 
     scene bg bbt
     show fg bbt-table onlayer master zorder 2
@@ -10,10 +10,6 @@ label label_bubbleTea:
     show joyce outfit1 smile at sitting
 
     with dissolve
-
-    show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9,0.15) at sitting as anim
-    pause 0.15*9
-    hide anim
 
     if game.progress[1] == -1:
         j "Hey how have you been?"
@@ -32,17 +28,11 @@ label label_bubbleTea:
 
         label .winCondition:
             if date.isWin():
-                hide screen screen_date_ui with dissolve
-
-                play sound "rpg/Holy5.wav"
-                show date-nice at truecenter with blinds
-                pause 0.3
-                hide date-nice with moveoutbottom
-
-                j "So did you like the drink?"
-                j "I think we should get a drink every time we hang out now haha"
-                j "It is getting pretty hot!"
                 call label_after_successful_Date_common
+
+                j smile "So did you like the cafe?"
+                j "I think we should hang out outside again."
+                j worried "It is getting pretty hot! Let's drink outside next time."
                 call label_newDay("label_home")
     
         $ game.jeu_sensitive = True
@@ -61,19 +51,18 @@ label label_bubbleTea_endTurn:
             show joyce at standing with dissolve
             pause 0.5
             hide joyce with dissolve
-            pause 3.0
-            show joyce outfit1 smile at standing with dissolve
             pause 2.0
+            show joyce outfit1 smile at standing with dissolve
             show joyce at sitting with dissolve
             j "here"
+            play sound "day/put_on_table.wav"
             show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
             pause
             show joyce smile
             j "Isn't it nice to be able to drink something sweet?"
             show screen screen_tutorial("misc/tutorial-drink.png") with dissolve
             j "When you take a sip, you'll shuffle back all your cards in hand into the deck"
-            j "Then you'll redraw as many! Do this when you feel like you're stuck"
-            j "You can drink it 3 times until it's empty"
+            j "Then you'll redraw as many! Do this when you feel like you're stuck."
             j "Here, try it:"
             hide screen screen_tutorial with dissolve 
 
@@ -98,7 +87,7 @@ label label_bubbleTea_endTurn:
                     with dissolve
                     pause
                     j "huh, what's wrong?"
-                    j "Is there something on my face?"
+                    j "Is there something wrong with my face?"
                     pause
                     show layer master:
                         zoom 1.0 xalign 0.5 yalign 0.5
@@ -106,15 +95,21 @@ label label_bubbleTea_endTurn:
                     if date.drink>0:
                         $ date.drink-=1
                     with dissolve
-                    "You feel a little weird.."
                     "You feel like you want to look at her lips closer..."
                     show screen screen_date_ui with dissolve
                     "(a Peek card was added to your hand)"
+                    $ g.bubbleTea_share_drink = True
+                    window hide
+                    window auto
                 "no":
                     j "oh, ok.."
                     $ date.attraction -= 2
-                    $ date.trust -= 4
-                    "-2 attraction -4 trust."
+                    $ date.trust -= 2
+                    $ game.attraction -= 2
+                    $ game.trust -= 2
+                    "-2 attraction -2 trust."
+                    window hide
+                    window auto
     else:
         call label_reaction
         
@@ -123,7 +118,7 @@ label label_bubbleTea_endTurn:
 
     call label_endTurn_common
     
-    if date.turn>=2 or game.progress[1]>=2:
-        call label_add_card_to_deck("hand", Card("peek"),pauseTime=1.0)
+    if game.progress[1]>=2 and g.bubbleTea_share_drink:
+        call label_add_card_to_deck("hand", Card("peek"),pauseTime=0.5)
 
     return

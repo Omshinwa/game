@@ -1,5 +1,5 @@
 label label_terrasse:
-    $ date = Date("date", objectif_trust = 10, objectif_attraction = 10, turnLeft = 6, endTurn = "label_terrasse_endTurn")
+    $ date = Date("date", objectif_trust = 25, objectif_attraction = 15, turnLeft = 5, endTurn = "label_terrasse_endTurn")
     scene bg terrasse
     show fg terrasse-table onlayer master zorder 2
     show screen screen_glass("terrasse") onlayer master zorder 2
@@ -12,6 +12,7 @@ label label_terrasse:
         show joyce outfit1 smile at sitting
         with dissolve
         j "Hey!"
+        j "You found me, come sit there."
 
     call label_beginDuel_common()
 

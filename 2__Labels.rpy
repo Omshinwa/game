@@ -1,32 +1,33 @@
 
 label label_newDay(callback):
     window hide
-    $ game.day += 1
-    $ game.state = "living"
+    scene black
     $ renpy.play("day/newday.wav", channel='sound') 
-    show screen screen_home onlayer master
-    show black onlayer screens
+    # show black
+    if game.day % game.dateEvery == 0:
+        show screen screen_day
     with dissolve
-    pause 2.0
-    # play sound "day/alarm.wav"
-    # pause 2.0
+    pause 1.5
     window auto
+
+    if game.day % game.dateEvery == 0:
+        # show layer screens:
+        #     zoom 2.0 xalign 0.0 yalign 0.0
+        #     ease 1.0 zoom 1.0
+        play music "music/clock-tick.mp3" noloop
+        $ game.day += 1
+        with blinds
+    else:
+        $ game.day += 1
     
-    # $ game.lust += 1
-
-    if game.progress[0]*2>g.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
-        $ g.phoneProgress[0] += 1
-        $ g.phoneProgress[1] = 0
-
+    $ game.state = "living"
+    with dissolve
+    $ game.lust += eval(game.lustPerDay)
+    
     jump expression callback
 
 label label_beginDuel_common():
     $ game.jeu_sensitive = False;
-
-    # if game.progress[0] <= 4:
-    #     $ game.state = "dating"
-    # else:
-    #     $ game.state = "sexing"
 
     $ date.lust = game.lust
     $ date.lustMax = game.lustMax
@@ -60,11 +61,18 @@ label label_beginDuel_common():
     play sound "date/datestart2.mp3"
     hide date-start  onlayer screens with moveoutbottom
 
-    if date.lust > date.trust and date.lust > date.attraction:
-        pause 0.5
-        play sound "rpg/Sonic1-onTheEdge.wav"
-        show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
-        hide screen screen_tutorial with dissolve
+    if game.state == "dating":
+        if date.lust > date.trust and date.lust > date.attraction:
+            pause 0.5
+            play sound "rpg/Sonic1-onTheEdge.wav"
+            show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+            hide screen screen_tutorial with dissolve
+    elif game.state == "sexing":
+        if date.lust > date.lustMax:
+            pause 0.5
+            play sound "rpg/Sonic1-onTheEdge.wav"
+            show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+            hide screen screen_tutorial with dissolve
     return
 
 label label_endTurn_common():
@@ -103,9 +111,14 @@ label label_after_successful_Date_common():
         pause 0.3
         hide date-nice with moveoutbottom
     
-    $ game.lust = 0 #date.lust
-    $ game.trust = 0 #date.trust
-    $ game.attraction = 0 #date.attraction
+    if BALANCE["keepStat"]:
+        $ game.lust = date.lust
+        $ game.trust = date.trust 
+        $ game.attraction = date.attraction
+    else:
+        $ game.lust = 0 #date.lust
+        $ game.trust = 0 #date.trust
+        $ game.attraction = 0 #date.attraction
     
     $ date.objectives["lust"] = -999
     $ date.objectives["trust"] = -999
@@ -115,6 +128,8 @@ label label_after_successful_Date_common():
     $ game.progress[1] = -1
     $ g.phoneProgress[0] += 1
     $ g.phoneProgress[1] = 0
+
+    show joyce null
     return
 
 
@@ -171,7 +186,7 @@ label label_drink:
         call label_shuffle
         return
 
-label label_date_isLost_common():
+label label_date_isLost_common(label_callback = "label_home"):
     $ game.jeu_sensitive = False
 
     if date.isLost():
@@ -187,7 +202,7 @@ label label_date_isLost_common():
             j "Sorry but I'm gonna go. I'm really not in the mood today."
             j "Let's do this another day."
 
-        elif len(deck.deck) == 0 or date.turnLeft == 0:
+        elif len(deck.deck) == 0 or date.turnLeft <= 1:
             show joyce null
             hide screen screen_date_ui with dissolve
             j eyeside armscrossed "OH look at the time."
@@ -197,10 +212,11 @@ label label_date_isLost_common():
 
         hide joyce with dissolve
 
-        $ date.lust = 0
-        $ date.trust = 0
-        $ date.attraction = 0
-        call label_newDay("label_home")
+        if not BALANCE["keepStat"]:
+            $ date.lust = 0
+            $ date.trust = 0
+            $ date.attraction = 0
+        call label_newDay(label_callback)
 
     return
 

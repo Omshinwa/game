@@ -25,10 +25,9 @@ label label_dream_0:
                 j "You sure you have nothing in your mind?"
         j "What would you like to do to me?"
     else:
-        hide black with Dissolve(1.0)
+        hide black
         show joyce outfitdream null at depied onlayer master zorder 2
         with Dissolve(0.5)
-        pause 0.5
         j "So quick to come back"
         j "Did you come here to get a card."
         j "Or did you come here to eye on my body?"

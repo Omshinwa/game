@@ -106,7 +106,7 @@ label test_sprites:
             $ m += 1
         $ i += 1
 
-define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4",]
+define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5"]
 
 layeredimage joyce:
 
@@ -123,20 +123,28 @@ layeredimage joyce:
         attribute night2 null
         attribute night3 null
         attribute night4 null
+        attribute night5 null
 
 
     group arm variant "back":
-        attribute arm default:
+        attribute arm default if_not "night4":
             "joyce_arm"
+        attribute arm if_any "night4":
+            "joyce_arm_hide_back"
+
         attribute arm if_any "outfit1":
             "joyce_arm_1"
         attribute arm if_any "night":
             "joyce_arm_night"
             
-        attribute reveal-1:
+        attribute reveal-1 if_not "night":
             "joyce_arm_left_back"
-        attribute reveal-2:
+        attribute reveal-1 if_any "night":
+            "joyce_arm_left_back_night"
+        attribute reveal-2 if_not ["night","night3", "night4"]:
             "joyce_arm_left_back"
+        attribute reveal-2 if_any "night":
+            "joyce_arm_left_back_night"
         attribute push:
             "joyce_arm_right_back"
 
@@ -152,8 +160,8 @@ layeredimage joyce:
         attribute defend:
             "joyce_arm_crossed_back"
         
-        attribute hideboobs:
-            "joyce_arm_hide_back"
+        # attribute hideboobs:
+        #     "joyce_arm_hide_back"
 
 
     group base:
@@ -173,18 +181,30 @@ layeredimage joyce:
             "joyce_dream3"
         attribute base if_any "outfitred" if_not "reveal-2":
             "joyce_red"
-        attribute base if_all ["outfitred", "reveal-2"]:
-            "joyce_red_reveal"
         attribute base if_any "outfitblue":
             "joyce_blue"
         attribute base if_any "night":
             "joyce_night"
         attribute base if_any "night2":
             "joyce_night2"
-        attribute base if_any "night3":
+        attribute base if_any "night3" if_not "reveal-2":
             "joyce_night3"
-        attribute base if_any "night4":
+        attribute base if_any "night4" if_not "reveal-2":
             "joyce_night4"
+        attribute base if_any "night5":
+            "joyce_night4"
+
+        
+        attribute base if_all ["outfitred", "reveal-2"]:
+            "joyce_red_reveal"
+        attribute base if_all ["night", "reveal-2"]:
+            "joyce_night_reveal"
+        attribute base if_all ["night2", "reveal-2"]:
+            "joyce_night2_reveal"
+        attribute base if_all ["night3", "reveal-2"]:
+            "joyce_night3_reveal"
+        attribute base if_all ["night4", "reveal-2"]:
+            "joyce_night4_reveal"
 
         # attribute armscrossed if_any "outfit2":
         #     "joyce_2_armscrossed"
@@ -199,11 +219,12 @@ layeredimage joyce:
     
     
     group arm:
-        attribute reveal-1:
+        attribute reveal-1 if_not ["night"]:
             "joyce_arm_right_reveal (1)"
-        attribute reveal-2:
+        attribute reveal-1 if_any ["night"]:
+            "joyce_arm_right_reveal (1)_night"
+        attribute reveal-2 if_not ["night","night3", "night4"]:
             "joyce_arm_right_reveal (2)"
-
         attribute reveal-2 if_any "outfitblue":
             "joyce_blue_reveal (2)"
 
@@ -228,7 +249,7 @@ layeredimage joyce:
         attribute defend if_any "night":
             "joyce_arm_defend_night"
 
-        attribute hideboobs:
+        attribute arm if_any "night4":
             "joyce_arm_hide_front"
 
             

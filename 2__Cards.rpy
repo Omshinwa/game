@@ -6,14 +6,15 @@ init python:
 
     class Card:
         def __init__(self, hash):
-            self.id = hash
 
-            if "name" in cardList[hash]:
-                self.name = cardList[hash]["name"]
+            self.name = hash
+
+            if "sort" in cardList[hash]:
+                self.sort = cardList[hash]["sort"]
             else:
-                self.name = self.id
+                self.sort = self.name
 
-            chemin = "cards/" + str(self.id) + ".png"
+            chemin = "cards/" + str(self.name) + ".png"
 
             if renpy.exists("images/" + chemin):
                 self.img_path = chemin
@@ -29,16 +30,22 @@ init python:
             else:
                 self.condition = "True"
 
-            self.id = hash
-
             self.eff = cardList[hash]["eff"]
 
-            # self.x = 0
-            # self.y = 0
+
         def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
-            return self.id<other.id
+            if "sort" in cardList[self.name]:
+                i = cardList[self.name]["sort"]
+            else:
+                i = self.name
+            if "sort" in cardList[other.name]:
+                j = cardList[other.name]["sort"]
+            else:
+                j = other.name
+            return i<j
+        
         def __repr__(self):
-            return self.id
+            return self.name
 
         def cond(self, index):
             return eval(self.condition.replace( "index" , str(index)))
@@ -100,7 +107,7 @@ init python:
         def __str__(self):
             txt = []
             for card in self.hand:
-                txt.append(str(card.id) + card.name)
+                txt.append(card.name)
 
             return ", ".join(txt)
         

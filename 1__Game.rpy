@@ -1,6 +1,8 @@
 init python:
     def debugmode():
-        game.debug_flag = 1 - game.debug_flag
+        game.debug_mode = 1 - game.debug_mode
+        config.developer = True
+        config.console = True
 
     def nullfunction(*args):
         return
@@ -42,7 +44,7 @@ init python:
             self.lastPlayed = None
             self.cardPlaying = None
 
-            self.debug_flag = 1
+            self.debug_mode = 1
 
             self.dateEvery = 4
 
@@ -94,7 +96,7 @@ init python:
                 self.config["isLost"] = kwargs["isLost"]
             else:
                 if game.state == "dating":
-                    self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0"
+                    self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
                 else:
                     self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"
 
@@ -200,10 +202,16 @@ init python:
             if resetAllMultiplier:
                 self.allMultiplierOnce = 1
 
+            if value<0:
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.3))
+            else:
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.3, reverse=True) )
+
 label label_null(*args):
     return
 
 default g.page = 0
+default g.rat = 0 #when does the rat appear
 default g.card_per_line = 7
 default g.phoneLogs = {
     1:[
@@ -224,13 +232,20 @@ default g.phoneLogs = {
     6:[
         [0, "about the fancy bar"],[0, "I don't know what to wear for tomorrow"],[0, "which dress do you think looks better?"],[1, "pic4.png"], ["exe", "renpy.call('label_pic4_reaction')"]
     ],
-    # 0:[
-    #     [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
-    # ],
+    7:[
+        [0, "I looved this bar"],[0, "I felt like such a lady, thanks for helping me choose the dress."],[2, "No problem, you were such a sight! I love spending time with you."],[0, "haha"],[0, "hey.. about next time"],[0, "How about coming to my house?"],[2, "sure! I'd love to."],[0, "nice I can't wait <3"]
+    ],
+    8:[
+        [1, "pic6.png"],["exe", "renpy.call('label_pic6_reaction')"], [0, "Oh no I didn't mean to send this pic!"],[2, "Really?"],[0, ":-P"],[0, "It's an appetize for tomorrow"],[2, "Wow, i'm excited"],[0, "<3"]
+    ],
+    9:[
+        [1, "pic7.png"],["exe", "renpy.call('label_pic7_reaction')"]
+    ],
     }
 default g.phoneProgress = [0,0]
 default g.prison_cards = []
 default g.dreamProgress = 0
 default g.trashbin = []
+default g.bubbleTea_share_drink = False
 
 default phone_Scroll = ui.adjustment(range=0, value=0, step=None, page=1, changed=None, adjustable=None, ranged=None, force_step=False)

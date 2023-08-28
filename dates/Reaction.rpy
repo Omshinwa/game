@@ -8,7 +8,7 @@ label label_reaction():
     $ print( str((game.progress[0]+1)*2))
     $ print( str(done_flag["script"]))
 
-    if (game.progress[0]+1)*2 <= value:
+    if (game.progress[0]+1) <= value:
         return
 
     hide screen screen_date_ui with dissolve
@@ -115,13 +115,8 @@ label label_card_reaction(what = game.lastPlayed.name):
                 zoom 1.5 xalign 0.5 yalign 0.1
             with dissolve
             pause 0.4
-            if any("dream" in tag for tag in renpy.get_attributes("joyce")) or game.progress[0]>7:
-                pass
-            else:
-                show joyce eyeside blush with dissolve
-            pause
             j "..."
-            j eyeside "Is there something on my face?"
+            j eyeside blush "..."
 
         elif value == 1:
             show layer master:
@@ -129,8 +124,7 @@ label label_card_reaction(what = game.lastPlayed.name):
             with dissolve
             pause 0.4
             j blush "..."
-            j "Why do you stare at me so often?"
-            j "I feel so shy. I'm so bad with keeping eyecontact."
+            j eyeside "Is there something on my face?"
 
         elif value == 2:
             show layer master:
@@ -138,7 +132,8 @@ label label_card_reaction(what = game.lastPlayed.name):
             with dissolve
             pause 0.4
             j blush "..."
-            j "Do you enjoy looking at me that much?"
+            j "Why do you stare at me so often?"
+            j "I feel so shy. I'm so bad with keeping eyecontact."
             j "Can you look elsewhere besides my eyes at least?"
             show layer master:
                 zoom 4.0 xalign 0.5 yalign 0.3
@@ -155,6 +150,7 @@ label label_card_reaction(what = game.lastPlayed.name):
             with dissolve
             pause
             j eyeside blush "..."
+            j "Do you enjoy looking at me that much?"
 
         elif value == 4:
             show layer master:
@@ -172,7 +168,7 @@ label label_card_reaction(what = game.lastPlayed.name):
         with dissolve
 
     elif what == "touchy":
-        if game.progress[0] == 4:
+        if renpy.get_image_bounds("joyce")[1]<55:
             $ i = depied
         else:
             $ i = sitting
@@ -301,13 +297,21 @@ label label_card_reaction(what = game.lastPlayed.name):
                 "You have nice boobs":
                     j foxy smirk "You like them?"
                     j "They are pretty big"
-                    j "Here's a peek"
-                    show joyce reveal-1 with dissolve
-                    pause 0.5
-                    show joyce reveal-2 with dissolve
-                    pause
-                    j wink reveal-1 "That's it"
-                    show joyce -wink -reveal-1 with dissolve
+                    if "night3" not in renpy.get_attributes("joyce") and "night4" not in renpy.get_attributes("joyce"):
+                        j "Here's a peek"
+                        show joyce reveal-1 with dissolve
+                        pause 0.5
+                        show joyce reveal-2 with dissolve
+                        pause
+                        j wink reveal-1 "That's it"
+                        show joyce -wink -reveal-1 with dissolve
+                    else:
+                        show joyce reveal-2 with dissolve
+                        j "You wanna lick them?"
+                        j wink tongue "Slurp slurp"
+                        j -wink -reveal-2 -tongue smile "Not yet hehe."
+                        show joyce -reveal-2 -smile with dissolve
+            $ done_flag[what] -= 1
 
 
 

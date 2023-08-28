@@ -6,7 +6,7 @@ label label_sex_tutorial:
     show screen screen_lust_ui
     with dissolve
     pause
-    j "Are you ready for your first test?"
+    j "Are you ready for your first exam?"
     j "Can you guess what is it?"
     j "Here's a hint"
     show footjob hint as joyce with dissolve
@@ -21,6 +21,8 @@ label label_sex_tutorial:
     j "First, let's release this bad boy."
     play sound "rpg/Key.wav"
     show get-hard (1) as anim with dissolve
+    j "Can you get hard for me baby?"
+    j "I'll make you feel really good."
     pause 0.4
     show get-hard (2) as anim
     pause 0.4
@@ -33,14 +35,14 @@ label label_sex_tutorial:
     j "Wow"
     j "You're a good boy with a nice big cock."
     j "I did well picking you"
+    j "Let me explain how this work."
+    show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+    j "This is your dick strength."
+    j "If you get too excited, you'll cum and fail."
+    j "How do you get excited? Well for example..."
     hide anim
     show footjob (1) as joyce
     with dissolve
-    j "hehe"
-    show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
-    j "This is your dick strength."
-    j "If you get too excited, you'll cum and fail the exam."
-    j "How do you get excited? Well for example..."
 
     show footjob (2) as joyce
     pause 0.1
@@ -54,7 +56,9 @@ label label_sex_tutorial:
     pause 0.1
     show footjob (1) as joyce
     pause 0.1
+    $ game.lust += 1
     $ date.lust += 1
+    with blinds
     j "There, you got a little bit excited."
     j "Depending on the speed I'm going, you'll get more and more excited."
     j "I'll start slow and go faster every turn."
@@ -70,12 +74,17 @@ label label_sex_tutorial:
     jump label_footjob_gameLoop
 
 label label_footjob:
+
+    if game.progress[1] == -1:
+        jump label_sex_tutorial
+
     $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
     scene bg basement
     show footjob talk as joyce
     with Dissolve
 
     j "Hello my good boy"
+    j "Are you getting used to your new room?"
     j "You did good holding it in so far."
     j "Are you in pain?"
     j "First, let's release this bad boy."

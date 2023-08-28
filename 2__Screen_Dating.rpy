@@ -80,7 +80,7 @@ screen screen_date_bottom_ui():
         ypos 890
         imagebutton:
             idle "cards/deck_stack.png"
-            hover im.MatrixColor("cards/deck_stack.png", im.matrix.tint(0.8,1.0,1.4))
+            hover Transform("cards/deck_stack.png", matrixcolor=TintMatrix((204,255,357)))
             action [Show("screen_show_deck", dissolve, sorted(deck.deck), "label_null", "CARDS LEFT")]
             sensitive game.jeu_sensitive
         fixed:
@@ -133,7 +133,7 @@ screen screen_date_bottom_ui():
             text str(len(deck.discard_pile)) size 50 xalign 0.5 style "outline_text"
 
 screen screen_debug:
-    if game.debug_flag:
+    if game.debug_mode:
         drag:
             fixed:
                 xsize 500
@@ -150,21 +150,26 @@ screen screen_debug:
 
 screen screen_lust_ui:
 
-    $ shaft_size = int( 196*(date.lustMax / 20) )
+    if game.state == "dating" or game.state == "sexing":
+        $ gameOrDate = date
+    else:
+        $ gameOrDate = game
+
+    $ shaft_size = int( 196*(getattr(gameOrDate, "lustMax") / 20) )
     $ fullSizeDick = 122 + shaft_size + 152
-    $ croppedSize = int ( fullSizeDick * date.lust/date.lustMax )
+    $ croppedSize = int ( fullSizeDick * getattr(gameOrDate, "lust")/getattr(gameOrDate, "lustMax") )
     fixed:
         # xpos 1920 - 500 - shaft_size
         ypos 20
         xpos 220
         xsize 122 + shaft_size + 152
         image "ui/lust_bar1.png"
-        image "ui/lust_bar2.png" xpos 122 xzoom date.lustMax / 20
+        image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
         image "ui/lust_bar3.png" xpos 122+shaft_size
 
         
         image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
-        image Crop( (0, 0, int( (croppedSize - 122) * 20 / date.lustMax), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom date.lustMax / 20
+        image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
         image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
 
         # fixed: #cum bar
@@ -173,19 +178,21 @@ screen screen_lust_ui:
         #         ysize 30
         #         background Solid("#3700ff")
 
-        text str(date.lust) + "/" + str(date.lustMax):
+        text str(getattr(gameOrDate, "lust") ) + "/" + str(getattr(gameOrDate, "lustMax") ):
             size 50 style "outline_text" xalign 0.45 ypos 40
-            if (date.lust/date.lustMax)>0.9:
+            if (getattr(gameOrDate, "lust") /getattr(gameOrDate, "lustMax") )>0.9:
                 color "#ffed68"
-            if (date.lust/date.lustMax)>0.7:
+            if (getattr(gameOrDate, "lust") /getattr(gameOrDate, "lustMax") )>0.7:
                 color "#eb7412"
-            elif (date.lust/date.lustMax)>0.5:
+            elif (getattr(gameOrDate, "lust") /getattr(gameOrDate, "lustMax") )>0.5:
                 color "#c64826"
             else:
                 color "#000000"
         
         if game.state == "sexing":
             text "( next turn: +" +str(date.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+        elif game.state == "living":
+            text "( next day: +" +str(eval(game.lustPerDay))+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
 screen screen_sex_ui():
     use screen_date_bottom_ui()
@@ -255,7 +262,7 @@ screen screen_trust_ui(range_var = 100):
                     if stat == "lust":
                         $ objectif = date.objectives["lust"]
                         $ textStat = "{k=15.0}LUST{/k}"
-                        if date.lust > date.trust and date.lust > date.attraction:
+                        if getattr(gameOrDate, "lust") > getattr(gameOrDate, "trust") and getattr(gameOrDate, "lust") > getattr(gameOrDate, "attraction"):
                             $ colorStat2 = "#ff0000"
                         else:
                             $ colorStat2 = "#666"
@@ -302,8 +309,6 @@ screen screen_trust_ui(range_var = 100):
                 ypos 10
                 size 35 style "outline_text"
                 color "#cc3"
-
-
 
         
 screen screen_turn_counter:

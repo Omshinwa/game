@@ -120,9 +120,8 @@ label label_cowgirl:
                 show screen screen_prison_sans_rat onlayer master
                 show black onlayer screens
                 hide black onlayer screens with Dissolve(2.0)
-
                 
-                jump label_home
+                jump label_home_end
     
         $ game.jeu_sensitive = True
         call screen screen_gameloop()

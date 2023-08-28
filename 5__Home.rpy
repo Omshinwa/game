@@ -9,20 +9,20 @@ screen screen_home:
     if game.day % game.dateEvery == 0:
         imagebutton:
             idle "home/door.png"
-            hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
+            hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
             action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
             focus_mask True
 
         imagebutton:
             idle "home/phone.png"
-            hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+            hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_skip_day")
             focus_mask True
     else:
         if game.hasNewMessage():
             imagebutton:
                 idle "home/phone-msg.png"
-                hover im.MatrixColor("home/phone-msg.png", im.matrix.tint(1,1,5))
+                hover Transform("home/phone-msg.png", matrixcolor=TintMatrix((255,255,1275)))
                 action Show("screen_home_phone", None, _layer = "master")
                 focus_mask True
         else:
@@ -31,41 +31,41 @@ screen screen_home:
             else:
                 imagebutton:
                     idle "home/phone.png"
-                    hover im.MatrixColor("home/phone.png", im.matrix.tint(1,1,5))
+                    hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
                     action Show("screen_home_phone", None, _layer = "master")
                     focus_mask True
 
         imagebutton:
             idle "home/door.png"
-            hover im.MatrixColor("home/door.png", im.matrix.tint(1,1,0.7))
+            hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
             action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
             focus_mask True
             
         imagebutton:
             idle "home/bed.png"
-            hover im.MatrixColor("home/bed.png", im.matrix.tint(1,1,5))
+            hover Transform("home/bed.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_bed")
             focus_mask True
 
         imagebutton:
             idle "home/trash.png"
-            hover im.MatrixColor("home/trash.png", im.matrix.tint(1,1,5))
+            hover Transform("home/trash.png", matrixcolor=TintMatrix((255,255,1275)))
             action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="trash-static")
             focus_mask True
 
         imagebutton:
             idle "home/comp.png"
-            hover im.MatrixColor("home/comp.png", im.matrix.tint(1,1,5))
+            hover Transform("home/comp.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_comp")
             focus_mask True
         imagebutton:
             idle "home/plant.png"
-            hover im.MatrixColor("home/plant.png", im.matrix.tint(1,1,5))
+            hover Transform("home/plant.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_plant")
             focus_mask True
         imagebutton:
             idle "home/cat.png"
-            hover im.MatrixColor("home/cat.png", im.matrix.tint(1,1,5))
+            hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_cat")
             focus_mask True
 
@@ -130,7 +130,7 @@ screen screen_home_phone():
                                 default disp = "home/" + message[1]
                                 frame:
                                     padding (30, 10)
-                                    background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
+                                    background Frame(Transform("home/phone-bubble.png", matrixcolor=TintMatrix((255,230,153))))
                                     imagebutton:
                                         sensitive g.phoneProgress[1]+1 >= len(g.phoneLogs[g.phoneProgress[0]]) # if the whole log was shown
                                         hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
@@ -145,7 +145,7 @@ screen screen_home_phone():
                                     xanchor 1.0
                                     xpos 420
                                     padding (30, 10)
-                                    background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.3,1.3,0.5)))
+                                    background Frame(Transform("home/phone-bubble-me.png", matrixcolor=TintMatrix((332,332,128))))
                                     text message[1] size 33 xalign 0.5
                             elif message[0] == 3: #my photo
                                 frame:
@@ -153,7 +153,7 @@ screen screen_home_phone():
                                     xanchor 1.0
                                     xpos 420
                                     padding (30, 10)
-                                    background Frame(im.MatrixColor("home/phone-bubble-me.png", im.matrix.tint(1.65,1.0,0.95)))
+                                    background Frame(Transform("home/phone-bubble-me.png", matrixcolor=TintMatrix((421,255,242))))
                                     add "Joyce/selfie/small-" + message[1]
                                 
                         fixed:
@@ -174,6 +174,32 @@ screen screen_home_phone():
 ##
 #############################################################################
 
+label label_home():
+    if game.progress[0]*2>g.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
+        $ g.phoneProgress[0] += 1
+        $ g.phoneProgress[1] = 0
+
+    $ game.state = "living"
+    scene bg home
+    show screen screen_home onlayer master
+    show black
+    hide black with dissolve
+    hide screen screen_day
+
+    if game.progress[0] == 2 and game.progress[1] == -1 and "cat" not in done_flag:
+        $ done_flag["cat"] = 1
+        play sound "day/meow.wav"
+        "?"
+        "Seems like the cat has something in its mouth"
+        "It's a card!"
+        call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False)
+
+    label .gameLoop:
+        $ game.jeu_sensitive = True
+        call screen screen_gameloop()
+    jump .gameLoop
+
+
 label label_skip_day():
     menu:
         "Postpone date until next time?"
@@ -183,33 +209,23 @@ label label_skip_day():
             return
         
 label label_home_tutorial():
-    window hide
-    $ game.day += 1
-    $ game.state = "living"
-    $ renpy.play("day/newday.wav", channel='sound')
-    show screen screen_home onlayer master
-    show black onlayer screens
-    with dissolve
-    pause 2.0
-    # play sound "day/alarm.wav"
-    # pause 2.0
-    window auto
 
     if tutorial:
         scene bg home
         show screen screen_home onlayer master
-        show black onlayer screens
-        hide black onlayer screens with dissolve
-        show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
+        show black 
+        hide black with dissolve
         play sound "rpg/Item1.wav"
+        "This is your home, this is where you can improve your deck."
+        show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         "You will keep your stats after a successful date."
         "If you fail, they stay the way they were before."
         "{b}Lust{/b} builds up automatically after every day."
-        "This is your home, this is where you can improve your deck."
         "Try to build a stronger deck before the second date!"
         hide screen screen_tutorial
         show black onlayer screens with dissolve
         $ tutorial = False
+
     jump label_home
 
 label label_home_weirdDream():
@@ -222,26 +238,7 @@ label label_home_weirdDream():
     "You cannot remember the content though."
     jump label_home
 
-label label_home():
-    $ game.state = "living"
-    scene bg home
-    show screen screen_home onlayer master
-    show black onlayer screens
-    hide black onlayer screens with dissolve
 
-    if game.progress[0] == 2 and game.progress[1] == -1 and "cat" not in done_flag:
-        $ done_flag["cat"] = 1
-        play sound "day/meow.wav"
-        "?"
-        "Seems like the cat has something in its mouth"
-        "It's a card:"
-        call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False)
-
-
-    label .gameLoop:
-        $ game.jeu_sensitive = True
-        call screen screen_gameloop()
-    jump .gameLoop
 
 label label_home_trash_cutscene(index):
     $ g.trashbin.append( [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
@@ -275,16 +272,28 @@ label label_home_cat:
     return
 
 label label_home_comp:
-    menu:
-        "You log into discord"
-        "Post messages":
-            call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
-        "Read messages":
-            call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
-        "go to prison":
-            jump label_prison 
-        "X":
-            return
+    
+    if game.debug_flag:
+        menu:
+            "You log into discord"
+            "Post messages":
+                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
+            "Read messages":
+                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
+            "go to prison":
+                jump label_prison 
+            "X":
+                return
+        
+    else:
+        menu:
+            "You log into discord"
+            "Post messages":
+                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
+            "Read messages":
+                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
+            "X":
+                return
     return
 
 label label_home_bed:
@@ -390,6 +399,39 @@ label label_pic3_reaction:
     call label_home_phone
     return
 
+label label_pic7_reaction:
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic7.png" at truecenter
+    
+    with dissolve
+    pause
+    "It seems like she took care of your cat while you were away.."
+    "The End"
+    show screen game_complete with Dissolve(2.0)
+    return
+
+label label_pic6_reaction:
+    $ game.jeu_sensitive = False
+    show expression "#000a"
+    show expression "Joyce/selfie/pic6.png" at truecenter
+    
+    with dissolve
+    pause
+    "this picture has some effect on you.."
+    "Lust +20"
+    $ game.lust += 20
+    play sound "rpg/Lust.wav"
+    window hide 
+    pause
+    window auto
+    hide expression "Joyce/selfie/pic6.png"
+    hide expression "#000a"
+    with dissolve
+    $ game.jeu_sensitive = True
+    call label_home_phone
+    return
+
 label label_pic2_reaction:
     $ game.jeu_sensitive = False
     show expression "#000a"
@@ -486,10 +528,10 @@ label label_pic1_reaction:
                 # $ g.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
                 if answer[sudoku_pos] == str(sudokuNumber[0]):
                     $ g.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
-                    $ g.phoneLogs[3].append( [2, "+4 trust"])
+                    $ g.phoneLogs[3].append( [2, "+3 trust, +3 attraction"])
                     $ g.phoneLogs[3].append( [0, "what?"])
                     $ g.phoneLogs[3].append( [2, "dont worry about it ;-)"])
-                    $ g.phoneLogs[3].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
+                    $ g.phoneLogs[3].append( ["exe", "game.trust+=3; game.trust+=3; renpy.call('label_home_phone')"])
                 else:
                     $ g.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
             "No":

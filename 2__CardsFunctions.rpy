@@ -5,10 +5,10 @@ init python:
         # get preview of next cards to come?
         # the string 'index' is replaced with the index of the card in hand
 
-        "faster": {"txt":"go faster", "eff":"date.speedUp(True)", "value":-1,},
-        "slower": {"txt":"go slower", "eff":"date.speedDown(True)", "value":1,},
+        "faster": {"txt":"go faster", "eff":"date.speedUp(True)", "value":-1, "sort":"100"},
+        "slower": {"txt":"go slower", "eff":"date.speedDown(True)", "value":1, "sort":"101"},
 
-        "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); date.speedDown(True)", "value":1,},
+        "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); date.speedDown(True)", "value":1, "sort":"102"},
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)", "value":3,},
 
@@ -47,25 +47,23 @@ init python:
 
         "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":2,},
 
-        "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2","value2":2},
-
-        "talk": {"txt":"+1 trust", "eff":"date.increment('trust',1)","value2":1},
-        "talk2": {"txt":"+2 trust", "eff":"date.increment('trust',2)","value2":2},
-
-        # "joke": {"txt":"+4 trust", "eff":"date.increment('trust',4)",},
         
-        "peek": {"txt":"you peek..\n+1 lust", "eff":"date.increment('lust',1)", },
-        "peek2": {"txt":"you peek.. +3 lust", "eff":"date.increment('lust',3)", },
-        "peekred": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
-        "peekblue": {"txt":"get +5 lust", "eff":"date.increment('lust',5)", "value":-1,},
-        "peek4": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-2,},
+        "peek": {"txt":"you peek..\n+2 lust", "eff":"date.increment('lust',2)", },
+        "peek2": {"txt":"you peek.. +5 lust", "eff":"date.increment('lust',5)", },
+        "peekred": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-1,},
+        "peekblue": {"txt":"get +10 lust", "eff":"date.increment('lust',10)", "value":-1,},
+        "peek4": {"txt":"get +30 lust", "eff":"date.increment('lust',30)", "value":-2,},
 
-        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)","value2":1},
-        "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)","value2":2},
-        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"date.increment('attraction',4,False); date.increment('lust',4)","value2":3},
-        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2},
+        "eyecontact": {"txt":"+1 attraction, +1 lust", "eff":"date.increment('attraction',1,False); date.increment('lust',1)","value2":1, "sort":"3"},
+        "flirt": {"txt":"+2 attraction +2 lust", "eff":"date.increment('attraction',2,False); date.increment('lust',2)","value2":2, "sort":"4"},
+        "kiss" : {"txt":"+4 attraction +4 lust", "eff":"date.increment('attraction',4,False); date.increment('lust',4)","value2":3, "sort":"5"},
+        "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"6"},
 
-        "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2,},
+        "talk": {"txt":"+1 trust", "eff":"date.increment('trust',1)","value2":1, "sort":"0"},
+        "talk2": {"txt":"+2 trust", "eff":"date.increment('trust',2)","value2":2, "sort":"1"},
+        "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2","value2":2, "sort":"2"},
+
+        "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2, "sort":"7"},
     }
 
 label label_card_change:
