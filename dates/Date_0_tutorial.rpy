@@ -1,5 +1,5 @@
 label label_tutorial:
-    $ date = Date("date", objectif_trust = 5, turnLeft = 5, endTurn = "label_tutorial_endTurn")
+    $ date = Date("date", objectif_trust = 5, turnLeft = 3, endTurn = "label_tutorial_endTurn")
 
 
     scene bg park
@@ -43,8 +43,10 @@ label label_tutorial:
         j "So don't act too horny. At least not on your first dates!"
         j "This date, you need to build 5 trusts to be successful."
         show screen screen_tutorial("misc/tutorial-end-turn.png") with dissolve
-        j "The date is also over when you {b}run out of card{/b}."
         j "After every turn, you draw until you have 5 cards in hand."
+        j "You can end your turn early to keep some cards for future turns."
+        show screen screen_tutorial("misc/tutorial-turn-limit.png") with dissolve
+        j "There's a turn limit after which the date will be over."
         hide screen screen_tutorial with dissolve
         j smile base "Got it?\nLet's start the date!"
     
@@ -55,15 +57,15 @@ label label_tutorial:
             if date.isWin():
 
                 call label_after_successful_Date_common
-                show joyce smile
-                j "That was a nice date. I feel like I can trust you."
-                j "Hey... Here's my number"
+                j smile "I had a good time."
+                j "I feel like I can trust you."
                 j "Do you want to meet again in the week?"
+                j "Hey... Here's my number"
                 j "I'll text you."
                 j "See ya."
                 hide joyce with dissolve
                 
-                jump label_home_tutorial
+                call label_newDay("label_home_tutorial")
             
             show joyce 
     
@@ -74,33 +76,8 @@ label label_tutorial:
 
 
 label label_tutorial_endTurn:
-    $ game.jeu_sensitive = False
-
-    if date.isLost():
-        play sound "rpg/Fall1.wav"
-        show date-fail at truecenter with blinds
-        pause 0.3
-        hide date-fail with moveoutbottom
-
-        if date.lust > date.trust and date.lust > date.attraction:
-            show joyce null
-            hide screen screen_date_ui with dissolve
-            j armscrossed upset "um.. don't you think I can notice?"
-            j "Sorry but I'm gonna go. I'm really not in the mood today."
-            j "Let's do this another day."
-
-        elif len(deck.deck) == 0 or date.turnLeft == 0:
-            show joyce null
-            hide screen screen_date_ui with dissolve
-            j eyeside armscrossed "OH look at the time."
-            j "Sorry but I gotta go."
-            j "That kinda dragged on no?"
-            j "Maybe we can do this another day? See ya."
-
-        hide joyce with dissolve
-        jump label_home_tutorial
+    call label_date_isLost_common("label_home_tutorial")
     
-
     if game.progress[1]<=date.turn:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
