@@ -1,6 +1,5 @@
 label label_blowjob:
-    $ game.state = "sexing"
-    $ date = Date(endTurn = "label_blowjob_SexEndTurn", turnLeft=10, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_blowjob_SexEndTurn", turnLeft=10, isWin = "date.turnLeft <= 0")
 
     scene bg basement
     show blowjob talk (1) as joyce
@@ -25,7 +24,7 @@ label label_blowjob:
     $ current_speed = date.animation_speed
 
     j "ready?"
-    show blowjob talk (2) as joyce at top
+    show blowjob talk (2) as joyce
     j "I'll start moving."
 
     show joyce blowjob with dissolve
@@ -75,7 +74,7 @@ label label_blowjob_SexEndTurn:
     $ i=0
     while i < date.animation_speed:
         $ date.lust += 1
-        $ game.orgasm += 1
+        $ date.orgasm += 1
         $ i += 1
         pause(0.1)
     

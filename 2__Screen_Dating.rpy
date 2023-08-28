@@ -202,26 +202,26 @@ screen screen_date_ui():
 
 screen screen_orgasm_ui:
 
-    $ cropped_size = int( max(0,(1 - (game.orgasm/game.orgasmMax))) * (456) )
+    $ cropped_size = int( max(0,(1 - (date.orgasm/date.orgasmMax))) * (456) )
     fixed: #cum bar
         xpos 1920 - 600
         ypos 0
         image "ui/orgasm_bar.png" 
         
         # frame:
-        #     xsize int( (game.orgasm/game.orgasmMax) * (456) )
+        #     xsize int( (date.orgasm/date.orgasmMax) * (456) )
         #     ysize 120
             
-        #     xpos 456 - int( (game.orgasm/game.orgasmMax) * (456) )
+        #     xpos 456 - int( (date.orgasm/date.orgasmMax) * (456) )
         #     background Solid("#ffaaf5")
 
-        text str(game.orgasm) + "/" + str(game.orgasmMax):
+        text str(date.orgasm) + "/" + str(date.orgasmMax):
             size 50 style "outline_text" ypos 40
-            if (game.orgasm/game.orgasmMax)>0.9:
+            if (date.orgasm/date.orgasmMax)>0.9:
                 color "#ffed68"
-            if (game.orgasm/game.orgasmMax)>0.7:
+            if (date.orgasm/date.orgasmMax)>0.7:
                 color "#eb7412"
-            elif (game.orgasm/game.orgasmMax)>0.5:
+            elif (date.orgasm/date.orgasmMax)>0.5:
                 color "#c64826"
             else:
                 color "#000000"
@@ -296,6 +296,12 @@ screen screen_trust_ui(range_var = 100):
                         yalign 0.5
                         size 40 style "outline_text"
                         color textColor
+        if game.state == "living":
+            text "(+" + str(eval(game.lustPerDay)) + ")":
+                xalign 1.0
+                ypos 10
+                size 35 style "outline_text"
+                color "#cc3"
 
 
 

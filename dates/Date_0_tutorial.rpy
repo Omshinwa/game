@@ -1,6 +1,5 @@
 label label_tutorial:
-    $ game.state = "dating"
-    $ date = Date(objectif_trust = 5, turnLeft = 5, endTurn = "label_tutorial_endTurn")
+    $ date = Date("date", objectif_trust = 5, turnLeft = 5, endTurn = "label_tutorial_endTurn")
 
 
     scene bg park
@@ -93,7 +92,7 @@ label label_tutorial_endTurn:
         elif len(deck.deck) == 0 or date.turnLeft == 0:
             show joyce null
             hide screen screen_date_ui with dissolve
-            j eyesside armscrossed "OH look at the time."
+            j eyeside armscrossed "OH look at the time."
             j "Sorry but I gotta go."
             j "That kinda dragged on no?"
             j "Maybe we can do this another day? See ya."

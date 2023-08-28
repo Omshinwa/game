@@ -1,6 +1,5 @@
 label label_handjob:
-    $ game.state = "sexing"
-    $ date = Date(endTurn = "label_handjob_SexEndTurn", turnLeft=10, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_handjob_SexEndTurn", turnLeft=10, isWin = "date.turnLeft <= 0")
 
     scene bg basement
     show handjob talk as joyce
@@ -74,7 +73,7 @@ label label_handjob_SexEndTurn:
     $ i=0
     while i < date.animation_speed:
         $ date.lust += 1
-        $ game.orgasm += 1
+        $ date.orgasm += 1
         $ i += 1
         pause(0.1)
     

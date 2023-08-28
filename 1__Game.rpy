@@ -30,14 +30,11 @@ init python:
 
             self.allMultiplierOnce= 1
 
-            self.orgasmMax = 20
-            self.orgasm = 0
-
             self.state = "" #either "dating" or "deckbuilding"
 
             self.isHoverHand = False
 
-            self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
+            self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl", "start"]
             self.progress = [0,-1] # left is progress, right is numbers of turns 
 
             self.day = 3
@@ -49,15 +46,24 @@ init python:
 
             self.dateEvery = 4
 
+            self.lustPerDay = "game.progress[0]"
+
         @staticmethod
         def hasNewMessage():
-            if global_var.phoneProgress[0] not in global_var.phoneLogs:
+            if g.phoneProgress[0] not in g.phoneLogs:
                 return False
-            return global_var.phoneProgress[1]<len(global_var.phoneLogs[global_var.phoneProgress[0]])-1
+            return g.phoneProgress[1]<len(g.phoneLogs[g.phoneProgress[0]])-1
 
     class Date():
-        def __init__(self, **kwargs):
+        def __init__(self, dateOrSex, **kwargs):
             game.jeu_sensitive = False;
+
+            if dateOrSex == "date":
+                game.state = "dating"
+            elif dateOrSex == "sex":
+                game.state = "sexing"
+            else:
+                raise Exception
 
             if "turnLeft" in kwargs:
                 self._turnLeft = kwargs["turnLeft"]
@@ -197,14 +203,9 @@ init python:
 label label_null(*args):
     return
 
-define config.font_name_map["ui"] = FontGroup().add("FRADMIT.TTF", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
-
-define config.font_name_map["quirky_command"] = FontGroup().add("kindergarten.ttf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
-    
-
-default global_var.page = 0
-default global_var.card_per_line = 7
-default global_var.phoneLogs = {
+default g.page = 0
+default g.card_per_line = 7
+default g.phoneLogs = {
     1:[
         [0, "heloo~ it's joyce"],[0, "are you free in 3 days?"],[0, "let's meet up again!"],
     ],
@@ -227,8 +228,9 @@ default global_var.phoneLogs = {
     #     [0, "hello~"],[0, "today was so fun"],[0, "I hope to see you tmr"],[0, "goodnight!"], [1, "pic1.png"], ["exe", "renpy.call('label_pic1_reaction')"]
     # ],
     }
-default global_var.phoneProgress = [0,0]
-default global_var.prison_cards = []
-default global_var.dreamProgress = 0
+default g.phoneProgress = [0,0]
+default g.prison_cards = []
+default g.dreamProgress = 0
+default g.trashbin = []
 
 default phone_Scroll = ui.adjustment(range=0, value=0, step=None, page=1, changed=None, adjustable=None, ranged=None, force_step=False)

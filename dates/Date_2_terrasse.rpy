@@ -1,5 +1,5 @@
 label label_terrasse:
-    $ date = Date(objectif_trust = 10, objectif_attraction = 10, turnLeft = 6, endTurn = "label_terrasse_endTurn")
+    $ date = Date("date", objectif_trust = 10, objectif_attraction = 10, turnLeft = 6, endTurn = "label_terrasse_endTurn")
     scene bg terrasse
     show fg terrasse-table onlayer master zorder 2
     show screen screen_glass("terrasse") onlayer master zorder 2
@@ -40,7 +40,7 @@ label label_terrasse:
 
 
 label label_terrasse_endTurn:
-    call label_date_endTurn
+    call label_date_isLost_common
     
     if game.progress[1]<=date.turn:            
         if date.turn == 0:
@@ -72,6 +72,8 @@ label label_terrasse_endTurn:
             j "So where were we at?" 
             show screen screen_date_ui with dissolve
             pause 0.5
+    else:
+        call label_reaction
 
 
     call label_endTurn_common

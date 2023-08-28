@@ -1,6 +1,5 @@
 label label_sex_tutorial:
-    $ game.state = "sexing"
-    $ date = Date(endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
 
     scene bg prison-ground
     show footjob talk as joyce
@@ -71,8 +70,7 @@ label label_sex_tutorial:
     jump label_footjob_gameLoop
 
 label label_footjob:
-    $ game.state = "sexing"
-    $ date = Date(endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
     scene bg basement
     show footjob talk as joyce
     with Dissolve
@@ -159,7 +157,7 @@ label label_footjob_SexEndTurn:
     $ i=0
     while i < date.animation_speed:
         $ date.lust += 1
-        $ game.orgasm += 1
+        $ date.orgasm += 1
         $ i += 1
         pause(0.1)
     

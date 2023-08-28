@@ -1,6 +1,5 @@
 label label_bubbleTea:
-    $ game.state = "dating"
-    $ date = Date(objectif_trust = 8, objectif_attraction = 3, turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
+    $ date = Date("date", objectif_trust = 8, objectif_attraction = 3, turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
 
     scene bg bbt
     show fg bbt-table onlayer master zorder 2
@@ -53,7 +52,7 @@ label label_bubbleTea:
 
 
 label label_bubbleTea_endTurn:
-    call label_date_endTurn
+    call label_date_isLost_common
 
     if game.progress[1]<=date.turn:
         if date.turn == 0:

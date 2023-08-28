@@ -1,11 +1,13 @@
 label label_dream_0:
-    
+    if game.progress[0] >= 3 :
+        jump label_dream_1
+
     show black
     with fade
     pause 0.5
     scene bg dream
     show black
-    if global_var.dreamProgress == 0:
+    if g.dreamProgress == 0:
         hide black with Dissolve(2.0)
         "?"
         show joyce outfitdream null at depied onlayer master zorder 2
@@ -38,14 +40,14 @@ label label_dream_0:
         "be touchy":
             call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
     
-    if global_var.dreamProgress == 0:
+    if g.dreamProgress == 0:
         j "Did this give you any new ideas?"
         j "I hope you use those ideas for the next date.."
         play sound "day/alarm.wav"
         pause 1.0
         j "It seems like our time is up."
     j "See you soon cowboy."
-    $ global_var.dreamProgress = 1
+    $ g.dreamProgress = 1
     call label_newDay("label_home_weirdDream")
   
 
@@ -56,29 +58,29 @@ label label_dream_0:
 ########################################################################################################
 
 
-label label_dream_afterAddedCards(cards):
-    $ i = 0
-    while i < len(cards):
-        call label_add_card_to_deck( "list", cards[i])
-        $ deck.list.append( cards[i] )
-        $ i += 1
-    $ deck.list.sort()
+# label label_dream_afterAddedCards(cards):
+#     $ i = 0
+#     while i < len(cards):
+#         call label_add_card_to_deck( "list", cards[i])
+#         $ deck.list.append( cards[i] )
+#         $ i += 1
+#     $ deck.list.sort()
 
-    hide screen screen_dream_addCards with dissolve
-    return
+#     hide screen screen_dream_addCards with dissolve
+#     return
 
-screen screen_dream_addCards(sixCards):
-    add "#000a"
-    modal True
+# screen screen_dream_addCards(sixCards):
+#     add "#000a"
+#     modal True
     
-    fixed:
-        xpos -550
-        use screen_add_cards( sixCards[:2], "label_dream_afterAddedCards")
-    fixed:
-        xpos 0
-        use screen_add_cards( sixCards[2:4], "label_dream_afterAddedCards")
-    fixed:
-        xpos 550
-        use screen_add_cards( sixCards[4:], "label_dream_afterAddedCards")
+#     fixed:
+#         xpos -550
+#         use screen_add_cards( sixCards[:2], "label_dream_afterAddedCards")
+#     fixed:
+#         xpos 0
+#         use screen_add_cards( sixCards[2:4], "label_dream_afterAddedCards")
+#     fixed:
+#         xpos 550
+#         use screen_add_cards( sixCards[4:], "label_dream_afterAddedCards")
 
-    text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text
+#     text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text

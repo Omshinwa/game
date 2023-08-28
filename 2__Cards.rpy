@@ -1,6 +1,5 @@
 style style_card_effect:
     xalign 0.5
-    line_spacing -5
     textalign 0.5
 
 init python:
@@ -53,11 +52,12 @@ init python:
                 
 
         def updateArt(self):
+            # text_effect = Text(self.txt, xysize=(200, 130), adjust_spacing =True) 
             if len(self.txt)<30:
-                text_effect = Text(self.txt, style="style_card_effect", size=30) 
+                text_effect = Text(self.txt, style="style_card_effect", size=30, line_spacing=0) 
             else:
-                text_effect =  Text(self.txt, style="style_card_effect", size=33 - (len(self.txt)/10) ) 
-            textbox = Window(text_effect, style="empty", xalign=0.5, xsize=200, ysize=130)
+                text_effect =  Text(self.txt, style="style_card_effect", size=31 - (len(self.txt)/10), line_spacing=-5) 
+            textbox = Window(text_effect, style="empty", xalign=0.5,  xysize=(200, 130))
             self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,175), textbox)
             self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,175), textbox)
 
@@ -77,6 +77,10 @@ init python:
             for card in cards:
                 renpy.play("card/draw.mp3", channel='drawcard')
                 self.hand.append(card)
+                
+                if card.name == "darkhole":
+                    card.txt = "Discard your hand, -"+ str((len(deck.hand)-1)**2)+ " Lust."
+                    card.updateArt() 
 
         def draw(self, number, delay=0.2):
             global ydisplace
@@ -85,6 +89,13 @@ init python:
                 if len(self.deck)>0: #si y a une carte dans le deck
                     self.add_to_hand( self.deck.pop(0) )
                     renpy.pause(delay)
+
+        # @property
+        # def handSize(self):
+        #     if game.state != "living":
+        #         return len(deck.hand)**2-1
+        #     else:
+        #         return "(number of discarded cards)²"
 
         def __str__(self):
             txt = []
@@ -131,6 +142,12 @@ label playCard(card, index):
         pause 0.2
     $ game.lastPlayed = card
     $ game.cardPlaying = None
+
+    python:
+        for card in deck.hand:
+            if card.name == "darkhole":
+                card.txt = "Discard your hand, -"+ str((len(deck.hand)-1)**2)+ " Lust."
+                card.updateArt() 
     return
 
 label playCardfromHand(index):

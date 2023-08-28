@@ -4,30 +4,8 @@ init python:
         return None
 
 init python:
-    class Moaning_bubble:
-        def __init__(self):
-            self.xpos = 500
-            self.ypos = 500
-            self.last_cycle = 0
-            self.cycle = 0
-        
-        def rand_pos(self):
-            self.ypos = renpy.random.randint(300, 800)
-            self.xpos = renpy.random.randint(300, 1600)
-
-        def __call__(self, st, at):
-            if self.cycle%2:
-                img_path = "ui/bubble_01.png"
-            else:
-                img_path = "ui/bubble_02.png"
-
-            if st > (2/date.animation_speed_hash[date.animation_speed])-0.1 :
-                self.cycle += 1
-                self.rand_pos()
-
-            d = Transform(img_path, ypos=self.ypos, xpos=self.xpos)
-            return d, 0.1
     
+    #create an animation
     def generate_anim3(img_path, frames, speed=0.1):
         txt = "Animation("
         for frame in range(frames):
@@ -38,13 +16,56 @@ init python:
 
 
 image moan_bubble:
-    DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
-    alpha 0.0
-    linear 0.5/date.animation_speed_hash[date.animation_speed] alpha 1.0
-    pause 1.0/date.animation_speed_hash[date.animation_speed]
-    linear 0.5/date.animation_speed_hash[date.animation_speed] alpha 0.0
-    # pause 1.0/date.animation_speed_hash[date.animation_speed]**2
-    repeat
+    # DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
+    parallel:
+        # xalign 0.8 yalign 0.5
+        # pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        xalign renpy.random.random()/2+0.25 yalign renpy.random.random()/1.1
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        repeat
+
+    parallel:
+        linear 0.25/date.animation_speed_hash[date.animation_speed] alpha 1.0
+        pause 1.0/date.animation_speed_hash[date.animation_speed]
+        linear 0.25/date.animation_speed_hash[date.animation_speed] alpha 0.0
+        linear 0.25/date.animation_speed_hash[date.animation_speed] alpha 1.0
+        pause 1.0/date.animation_speed_hash[date.animation_speed]
+        linear 0.25/date.animation_speed_hash[date.animation_speed] alpha 0.0
+        repeat
+    
+    parallel:
+        "ui/bubble_01.png"
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        "ui/bubble_02.png"
+        pause 1.5/date.animation_speed_hash[date.animation_speed]
+        repeat
+    # block:
+    #     xalign 0.3
+    #     pause 1.5/date.animation_speed_hash[date.animation_speed]
+    #     xalign 0.8
+    #     pause 0.5/date.animation_speed_hash[date.animation_speed] alpha 0.0
+    #     repeat
+
 
 
 init python:
@@ -60,26 +81,80 @@ init python:
             if "armscrossed" in atts:
                 atts.remove("armscrossed")
 
-        if "armscrossed" in atts:
-            if "outfit1" not in renpy.get_attributes("joyce") and "outfit2" not in renpy.get_attributes("joyce"):
-                atts.remove("armscrossed")
+        # if "armscrossed" in atts:
+        #     if "outfit1" not in renpy.get_attributes("joyce") and "outfit2" not in renpy.get_attributes("joyce"):
+        #         atts.remove("armscrossed")
 
         return names[0], *atts
 
 define config.adjust_attributes["joyce"] = joyce_adjuster
 
-define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue"]
+
+label test_sprites:
+    scene bg terrasse
+    $ i = 0
+    $ outfits = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","outfitsm"]
+    $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
+
+    while i<len(outfits):
+        $ m = 0
+        while m < len(attr):
+            $ current = outfits[i] + " " + attr[m]
+            show expression "joyce " + outfits[i] + " " + attr[m] at depied
+            j "[current]"
+            hide expression "joyce " + outfits[i]
+            $ m += 1
+        $ i += 1
+
+define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4",]
 
 layeredimage joyce:
 
-    attribute outfit1 null
-    attribute outfit2 null
-    attribute outfitred null
-    attribute outfitblue null
-    attribute outfitsm null
-    attribute outfitdream null
-    attribute outfitdream2 null
-    attribute outfitdream3 null
+    group outfits:
+        attribute outfit1 null
+        attribute outfit2 null
+        attribute outfitred null
+        attribute outfitblue null
+        attribute outfitsm null
+        attribute outfitdream null
+        attribute outfitdream2 null
+        attribute outfitdream3 null
+        attribute night null
+        attribute night2 null
+        attribute night3 null
+        attribute night4 null
+
+
+    group arm variant "back":
+        attribute arm default:
+            "joyce_arm"
+        attribute arm if_any "outfit1":
+            "joyce_arm_1"
+        attribute arm if_any "night":
+            "joyce_arm_night"
+            
+        attribute reveal-1:
+            "joyce_arm_left_back"
+        attribute reveal-2:
+            "joyce_arm_left_back"
+        attribute push:
+            "joyce_arm_right_back"
+
+        attribute whip:
+            "joyce_arm_whip_back"
+        attribute key:
+            "joyce_arm_key"
+        attribute key:
+            "joyce_arm_right_back"
+
+        attribute armscrossed:
+            "joyce_arm_crossed_back"
+        attribute defend:
+            "joyce_arm_crossed_back"
+        
+        attribute hideboobs:
+            "joyce_arm_hide_back"
+
 
     group base:
         attribute base default:
@@ -96,33 +171,72 @@ layeredimage joyce:
             "joyce_dream2"
         attribute base if_any "outfitdream3":
             "joyce_dream3"
-        attribute base if_any "outfitred":
+        attribute base if_any "outfitred" if_not "reveal-2":
             "joyce_red"
+        attribute base if_all ["outfitred", "reveal-2"]:
+            "joyce_red_reveal"
         attribute base if_any "outfitblue":
             "joyce_blue"
+        attribute base if_any "night":
+            "joyce_night"
+        attribute base if_any "night2":
+            "joyce_night2"
+        attribute base if_any "night3":
+            "joyce_night3"
+        attribute base if_any "night4":
+            "joyce_night4"
 
+        # attribute armscrossed if_any "outfit2":
+        #     "joyce_2_armscrossed"
 
-        attribute armscrossed:
-            "joyce_armscrossed"
-        attribute armscrossed if_any "outfit1":
-            "joyce_armscrossed"
+        # attribute whip:
+        #     "joyce_sm_whip"
+        # attribute key:
+        #     "joyce_sm_key"
+        # attribute push:
+        #     "joyce_sm_push"
+
+    
+    
+    group arm:
+        attribute reveal-1:
+            "joyce_arm_right_reveal (1)"
+        attribute reveal-2:
+            "joyce_arm_right_reveal (2)"
+
+        attribute reveal-2 if_any "outfitblue":
+            "joyce_blue_reveal (2)"
+
+        attribute armscrossed if_not ["outfit1", "outfit2", "outfitdream", "outfitdream2", "outfitdream3","outfitblue","outfitred"]:
+            "joyce_arm_crossed"        
+        attribute armscrossed if_any ["outfit1", "outfitdream", "outfitdream2", "outfitdream3"]:
+            "joyce_arm_crossed_1"
         attribute armscrossed if_any "outfit2":
-            "joyce_2armscrossed"
-
-        attribute whip:
-            "joyce_sm_whip"
-        attribute key:
-            "joyce_sm_key"
-        attribute push:
-            "joyce_sm_push"
-
+            "joyce_2_armscrossed"
+        attribute armscrossed if_any "outfitblue":
+            "joyce_arm_crossed_blue"
+        attribute armscrossed if_any "outfitred":
+            "joyce_arm_crossed_red"
+        attribute armscrossed if_any "night":
+            "joyce_arm_crossed_night"
         attribute defend:
-            "joyce_2_defend"
+            "joyce_arm_defend"
         attribute defend if_any "outfitred":
             "joyce_red_defend"
         attribute defend if_any "outfitblue":
             "joyce_blue_defend"
-    
+        attribute defend if_any "night":
+            "joyce_arm_defend_night"
+
+        attribute hideboobs:
+            "joyce_arm_hide_front"
+
+            
+        attribute whip:
+            "joyce_arm_whip_front"
+        attribute push:
+            "joyce_arm_push"
+
     group skin:
         attribute null_skin if_any "null":
             null
@@ -135,16 +249,23 @@ layeredimage joyce:
             null
         attribute upset if_any normal_face
         attribute worried if_any normal_face
-        attribute eyesside if_any normal_face
+        attribute eyeside if_any normal_face
         attribute foxy if_any normal_face
         attribute foxy if_any "outfitsm":
             "joyce_sm_foxy"
+        attribute wink
+        attribute happy
 
     group mouth if_not "null":
         attribute null_mouth if_any "null":
             null
         attribute smile if_any normal_face
         attribute smirk if_any normal_face
+        attribute tongue
+        attribute bite
+    attribute green_hair:
+        "green_hair"
+
 
 image img_blink:
     "Joyce/joyce_blink.png"

@@ -50,7 +50,7 @@ screen screen_home:
         imagebutton:
             idle "home/trash.png"
             hover im.MatrixColor("home/trash.png", im.matrix.tint(1,1,5))
-            action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="img_toilet-static")
+            action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="trash-static")
             focus_mask True
 
         imagebutton:
@@ -89,7 +89,7 @@ screen screen_home_phone():
             action [Call("label_home_phone")]
         
         
-        if global_var.phoneProgress[0] in global_var.phoneLogs:
+        if g.phoneProgress[0] in g.phoneLogs:
             fixed:
                 
                 xsize 410
@@ -110,12 +110,12 @@ screen screen_home_phone():
                         fixed:
                             ysize 0
 
-                        for index, message in enumerate( global_var.phoneLogs[global_var.phoneProgress[0]] ):
+                        for index, message in enumerate( g.phoneLogs[g.phoneProgress[0]] ):
                             
-                            if index>global_var.phoneProgress[1]: #only display msg sent
+                            if index>g.phoneProgress[1]: #only display msg sent
                                 break
                             
-                            # elif index<=global_var.phoneProgress[1]-4:
+                            # elif index<=g.phoneProgress[1]-4:
                             #     continue
 
                             if message[0] == 0: #text msg
@@ -132,7 +132,7 @@ screen screen_home_phone():
                                     padding (30, 10)
                                     background Frame(im.MatrixColor("home/phone-bubble.png", im.matrix.tint(1.0,0.9,0.6)))
                                     imagebutton:
-                                        sensitive global_var.phoneProgress[1]+1 >= len(global_var.phoneLogs[global_var.phoneProgress[0]]) # if the whole log was shown
+                                        sensitive g.phoneProgress[1]+1 >= len(g.phoneLogs[g.phoneProgress[0]]) # if the whole log was shown
                                         hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
                                         idle "Joyce/selfie/small-" + message[1]
                                         action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
@@ -232,7 +232,9 @@ label label_home():
     if game.progress[0] == 2 and game.progress[1] == -1 and "cat" not in done_flag:
         $ done_flag["cat"] = 1
         play sound "day/meow.wav"
-        "seems like he has something in his mouth"
+        "?"
+        "Seems like the cat has something in its mouth"
+        "It's a card:"
         call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False)
 
 
@@ -242,16 +244,24 @@ label label_home():
     jump .gameLoop
 
 label label_home_trash_cutscene(index):
-    hide screen screen_prison
+    $ g.trashbin.append( [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
+
     hide screen screen_show_deck
-    show expression deck.list[index].img:
-        function trans_flush_card
-    show screen screen_flushing(deck.list[index].img) with dissolve
-    pause(1.0)
-    hide screen screen_flushing
-    hide expression deck.list[index].img
+    show screen screen_trashbin with dissolve
+    pause(0.2)
+    play sound "day/tap.wav"
+    pause(0.8)
+    hide screen screen_trashbin
     $ deck.list.pop(index)
     $ renpy.call("label_newDay","label_home")
+
+screen screen_trashbin():
+    add "trash-static"
+    for card in g.trashbin:
+        if card != g.trashbin[-1]:
+            add card[0]:
+                zoom 0.5 rotate card[1] xalign card[2] yalign card[3]
+    add g.trashbin[-1][0] at throw_away_home(g.trashbin[-1][1],g.trashbin[-1][2],g.trashbin[-1][3])
 
 label label_home_cat:
     play sound "day/meow.wav"
@@ -289,7 +299,7 @@ label label_home_bed:
             $ game.lust = -1
             call label_newDay("label_home")
         "dream":
-            call expression "label_dream_" + str(global_var.dreamProgress)
+            call expression "label_dream_0"
         "X":
             return
 
@@ -322,26 +332,26 @@ label label_home_add_cards(cardID, prompt, callback="label_home"):
 
 label label_home_phone():
 
-    if global_var.phoneProgress[0] not in global_var.phoneLogs:
+    if g.phoneProgress[0] not in g.phoneLogs:
         hide screen screen_home_phone onlayer master
         return
 
-    $ messagelog = global_var.phoneLogs[global_var.phoneProgress[0]]
+    $ messagelog = g.phoneLogs[g.phoneProgress[0]]
 
-    if len(messagelog)-1 > global_var.phoneProgress[1]:  #if the log hasnt been completed yet
+    if len(messagelog)-1 > g.phoneProgress[1]:  #if the log hasnt been completed yet
         
-        $ global_var.phoneProgress[1] += 1
+        $ g.phoneProgress[1] += 1
 
-        $ typeOfLastMsg = messagelog[global_var.phoneProgress[1]][0]
-        $ contentLastMsg = messagelog[global_var.phoneProgress[1]][1]
+        $ typeOfLastMsg = messagelog[g.phoneProgress[1]][0]
+        $ contentLastMsg = messagelog[g.phoneProgress[1]][1]
         
         if typeOfLastMsg != "exe":
             play sound "day/newmsg.wav"
 
         elif typeOfLastMsg == "exe":
             $ commands = contentLastMsg.split("; ")
-            $ global_var.phoneLogs[global_var.phoneProgress[0]].pop(global_var.phoneProgress[1])  # POP THE EXE MSGS
-            $ global_var.phoneProgress[1] -= 1
+            $ g.phoneLogs[g.phoneProgress[0]].pop(g.phoneProgress[1])  # POP THE EXE MSGS
+            $ g.phoneProgress[1] -= 1
 
             $ i = 0
             while i < len(commands):
@@ -390,9 +400,9 @@ label label_pic2_reaction:
     menu:
         "Take a picture of your cat?"
         "Yes":
-            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
+            $ g.phoneLogs[g.phoneProgress[0]] += [[3, "pic-cat.png"], [0, "omggg is it yours? so cuuute"], [2, "yuuup"]]
         "No":
-            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "cool"]]
+            $ g.phoneLogs[g.phoneProgress[0]] += [[2, "cool"]]
     window hide 
     window auto
     hide expression "Joyce/selfie/pic2.png"
@@ -412,10 +422,10 @@ label label_pic4_reaction:
     pause
     menu:
         "Red":
-            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],[0, ";-P"]]
+            $ g.phoneLogs[g.phoneProgress[0]] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],[0, ";-P"]]
             $ whichDress = "red"
         "Blue":
-            $ global_var.phoneLogs[global_var.phoneProgress[0]] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[0, "I gained so much weight since the last time I wore it."],[2, "You'll pull it off"],[0, "near the chest area"],[0, ";-P"]]
+            $ g.phoneLogs[g.phoneProgress[0]] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[0, "I gained so much weight since the last time I wore it."],[2, "You'll pull it off"],[0, "near the chest area"],[0, ";-P"]]
             $ whichDress = "blue"
     window hide 
     window auto
@@ -472,18 +482,18 @@ label label_pic1_reaction:
                 
                 define answer = """4_7_______3__7_26___2_3__75683149_5__5478___17193256_8____125_7___4_315__215_74__"""
                 $ sudoku_pos = (sudokuNumber[1]-1)*9 + (sudokuNumber[2]-1)
-                $ global_var.phoneLogs[3].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
-                # $ global_var.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
+                $ g.phoneLogs[3].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
+                # $ g.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
                 if answer[sudoku_pos] == str(sudokuNumber[0]):
-                    $ global_var.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
-                    $ global_var.phoneLogs[3].append( [2, "+4 trust"])
-                    $ global_var.phoneLogs[3].append( [0, "what?"])
-                    $ global_var.phoneLogs[3].append( [2, "dont worry about it ;-)"])
-                    $ global_var.phoneLogs[3].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
+                    $ g.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
+                    $ g.phoneLogs[3].append( [2, "+4 trust"])
+                    $ g.phoneLogs[3].append( [0, "what?"])
+                    $ g.phoneLogs[3].append( [2, "dont worry about it ;-)"])
+                    $ g.phoneLogs[3].append( ["exe", "game.trust+=4; renpy.call('label_home_phone')"])
                 else:
-                    $ global_var.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
+                    $ g.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
             "No":
-                $ global_var.phoneLogs[3].append( [2, "Good luck with that!"])
+                $ g.phoneLogs[3].append( [2, "Good luck with that!"])
                 pass
     
 

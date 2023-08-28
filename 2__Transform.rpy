@@ -1,3 +1,13 @@
+transform shaking:    
+    yoffset 0 zoom 1.0
+    linear 0.05 zoom 1.01
+    repeat
+    # yoffset 0 zoom 1.0
+    # linear 0.05 yoffset 3
+    # linear 0.05 yoffset 0 zoom 1.001
+    # linear 0.05 yoffset -3
+    # repeat
+
 transform toobig:
     yalign 0.0
     ypos -100
@@ -24,10 +34,10 @@ transform top:
     xalign 0.5
     yalign 0.0
 
-transform shock:
-    zoom 1.0
-    linear 0.1 zoom 0.98
-    linear 0.1 zoom 1.0
+transform shock(offset = 1.0):
+    zoom offset
+    linear 0.1 zoom offset-0.02
+    linear 0.1 zoom offset
 
 transform trsfm_cards_go_down:
     ypos 1080
@@ -77,3 +87,12 @@ transform switch:
     on hide:
         ypos 100 xalign 0.9
         ease 0.5 ypos -1000
+
+transform throw_away_home(a, b, c):
+    zoom 4.0 xalign 0.5 yalign 0.5 rotate 0
+    ease 1.0 zoom 0.5 rotate a xalign b yalign c
+
+transform image_qui_defile:
+    ypos 0
+    linear 30 ypos -3570 
+    repeat

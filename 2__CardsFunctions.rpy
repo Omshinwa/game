@@ -1,5 +1,6 @@
 init python:
     # default 
+    
     cardList = { 
         # get preview of next cards to come?
         # the string 'index' is replaced with the index of the card in hand
@@ -7,7 +8,7 @@ init python:
         "faster": {"txt":"go faster", "eff":"date.speedUp(True)", "value":-1,},
         "slower": {"txt":"go slower", "eff":"date.speedDown(True)", "value":1,},
 
-        "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); date.speedDown(True)", "value":2,},
+        "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); date.speedDown(True)", "value":1,},
 
         "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)", "value":3,},
 
@@ -17,8 +18,8 @@ init python:
 
         "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":2,},
 
-        "calm": {"txt":"-2 lust", "eff":"date.increment('lust',-2, allowNegative=True)", "value":1,},
-        "maxcalm":{"txt":"-5 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))", "value":1,},#card also work if you have multiple
+        "calm": {"txt":"-3 lust", "eff":"date.increment('lust',-3)", "value":1,},
+        "maxcalm":{"txt":"-8 lust, add one STOP card in your hand", "eff":"date.increment('lust',-7); deck.hand.append(Card('stop'))", "value":1,},#card also work if you have multiple
 
         "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":3,},
 
@@ -27,9 +28,9 @@ init python:
 
         "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":2,},
         
-        "discardAll": {"txt":"Discard your hand, reduce your Lust by the number of cards discarded squared.", "eff":"renpy.call('label_card_discardAll')", "value":2,},
+        "recycle": {"txt":"All the cards on the right of this card are discarded, then redraw as many.", "eff":"renpy.call('label_card_recycle', index)", "value":2,},
         
-        "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus', instruction='Choose a card to add back', background='#000a')", "value":2,},
+        "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus', instruction='Choose a card to add back', background='#000a')", "value":1,},
         # "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
         "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"date.animation_speed = 5; deck.draw(5-len(deck.hand))", "value":1,},
@@ -41,7 +42,7 @@ init python:
         "exodia1" : {"txt":"{b}ORIGIN{/b}\nConvert your\nYou need all 3\nactivate", "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare",},
 
         "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))", "value":0,},
-        "darkhole" : {"txt":"Discard your whole hand, -5 Lust for each Space Out discarded.", "eff":"renpy.call('label_card_darkhole')", "value":2,},
+        "darkhole" : {"txt":"Discard your hand, - (number of discarded cards)² Lust ", "eff":"renpy.call('label_card_recycle')", "value":2,},
         "spaceout" : {"txt":"does nothing", "eff":"", "value":0,},
 
         "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":2,},
@@ -92,27 +93,20 @@ label label_shuffle:
     $ deck.draw(i, 0.2)
     return
 
-label label_card_discardAll:
-    $ i = 0
+label label_card_darkhole:
+    $ i = len(deck.hand)
     while len(deck.hand)>0:
         $ deck.discard(0)
-        $ i+= 1
-        $ date.increment("lust", -1, False)
-    
+        $ date.increment("lust", -i, False)
     $ date.increment("lust", 0, True)
     return
 
-label label_card_darkhole:
+label label_card_recycle(index):
     $ i = 0
-    while len(deck.hand)>0:
-        if deck.hand[0].name == "spaceout":
-            $ i+=1
-        $ deck.discard(0)
-    while i > 0:
-        $ date.increment("lust", -5, False)
-        pause 0.2
-        $ i-=1
-    $ date.increment("lust", 0, True)
+    while len(deck.hand)>index:
+        $ deck.discard(-1)
+        $ i+=1
+    $ deck.draw(i)
     return
 
 label label_card_sisyphus(index):

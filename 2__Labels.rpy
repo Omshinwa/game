@@ -14,9 +14,9 @@ label label_newDay(callback):
     
     # $ game.lust += 1
 
-    if game.progress[0]*2>global_var.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
-        $ global_var.phoneProgress[0] += 1
-        $ global_var.phoneProgress[1] = 0
+    if game.progress[0]*2>g.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
+        $ g.phoneProgress[0] += 1
+        $ g.phoneProgress[1] = 0
 
     jump expression callback
 
@@ -97,10 +97,11 @@ label label_after_successful_Date_common():
     hide screen screen_date_ui with dissolve
     hide screen screen_sex_ui with dissolve
 
-    play sound "rpg/Holy5.wav"
-    show date-nice at truecenter with blinds
-    pause 0.3
-    hide date-nice with moveoutbottom
+    if game.state == "dating":
+        play sound "rpg/Holy5.wav"
+        show date-nice at truecenter with blinds
+        pause 0.3
+        hide date-nice with moveoutbottom
     
     $ game.lust = 0 #date.lust
     $ game.trust = 0 #date.trust
@@ -112,8 +113,8 @@ label label_after_successful_Date_common():
 
     $ game.progress[0] += 1
     $ game.progress[1] = -1
-    $ global_var.phoneProgress[0] += 1
-    $ global_var.phoneProgress[1] = 0
+    $ g.phoneProgress[0] += 1
+    $ g.phoneProgress[1] = 0
     return
 
 
@@ -170,7 +171,7 @@ label label_drink:
         call label_shuffle
         return
 
-label label_date_endTurn():
+label label_date_isLost_common():
     $ game.jeu_sensitive = False
 
     if date.isLost():
@@ -189,7 +190,7 @@ label label_date_endTurn():
         elif len(deck.deck) == 0 or date.turnLeft == 0:
             show joyce null
             hide screen screen_date_ui with dissolve
-            j eyesside armscrossed "OH look at the time."
+            j eyeside armscrossed "OH look at the time."
             j "Sorry but I gotta go."
             j "That kinda dragged on no?"
             j "Maybe we can do this another day? See ya."

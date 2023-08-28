@@ -69,28 +69,45 @@ label label_prison_first_time():
                 i.append(card)
     $ deck.list = i.copy()
     $ print("score: " + str(score))
-    $ global_var.prison_cards = [[],[],[]]
+    $ g.prison_cards = [[],[Card("calm"),Card("slower")],[]]
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=0 } #
+    $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=2 } #
     # $ score /= 2
     $ i = score
-    $ global_var.prison_cards[0] = [Card("universeout"),Card("universeout"),Card("spaceout"),Card("darkhole"),Card("discardAll"),Card("threeof"),Card("change")]
-    $ i = score
+    $ g.prison_cards[0] = [Card("universeout"),Card("universeout"),Card("spaceout"),Card("darkhole"),Card("recycle"),Card("threeof"),Card("change")]
+    
+    $ i = score - 2
+    while i>score/2:
+        $ g.prison_cards[1].append( Card.get_random_card(goodCards) )
+        $ i -= cardList[g.prison_cards[1][-1].name]["value"]
     while i>0:
-        $ global_var.prison_cards[1].append( Card.get_random_card(availableCards) )
-        $ i -= cardList[global_var.prison_cards[1][-1].name]["value"]
+        $ g.prison_cards[1].append( Card.get_random_card(availableCards) )
+        $ i -= cardList[g.prison_cards[1][-1].name]["value"]
         $ i -= 0.5
     $ i = score
+    while i>score/2:
+        $ g.prison_cards[2].append( Card.get_random_card(goodCards) )
+        $ i -= cardList[g.prison_cards[2][-1].name]["value"]
     while i>0:
-        $ global_var.prison_cards[2].append( Card.get_random_card(availableCards) )
-        $ i -= cardList[global_var.prison_cards[2][-1].name]["value"]
+        $ g.prison_cards[2].append( Card.get_random_card(availableCards) )
+        $ i -= cardList[g.prison_cards[2][-1].name]["value"]
         $ i -= 0.5
     
-    show screen screen_replace_deck(global_var.prison_cards)
+    $ del availableCards, goodCards
+    show screen screen_replace_deck(g.prison_cards)
 
-    label .gameLoop:
-        $ game.jeu_sensitive = True
-        call screen screen_gameloop()
-    jump .gameLoop
+    call screen screen_gameloop()
+
+    # label .gameLoop:
+    #     call screen screen_gameloop()
+    # jump .gameLoop
+
+    rat "Good choice"
+    rat "If you ever need help, I still have a lot of extra cards"
+    rat "..from past prisonners hehe."
+    rat "Just leave me some food around."
+    rat "Good luck staying alive"
+    jump label_prison
 
 label label_prison():
 
@@ -101,22 +118,23 @@ label label_prison():
     hide black onlayer screens with dissolve
 
 
-    $ global_var.prison_cards = []
+    $ g.prison_cards = []
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
 
-    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
+    $ g.prison_cards.append( Card.get_random_card(availableCards) )
 
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[global_var.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[global_var.prison_cards[0].name]["value"]}
-    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
+    $ g.prison_cards.append( Card.get_random_card(newlist) )
 
-    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[global_var.prison_cards[2].name]["value"]}
-    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+    # $ g.prison_cards.append( Card.get_random_card(availableCards) )
+    $ g.prison_cards.append( Card.get_random_card({"slower":1, "calm":1}) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[g.prison_cards[2].name]["value"]}
+    $ g.prison_cards.append( Card.get_random_card(newlist) )
 
     
-    $ global_var.prison_cards.append( Card.get_random_card(availableCards) )
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[global_var.prison_cards[4].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[global_var.prison_cards[4].name]["value"]}
-    $ global_var.prison_cards.append( Card.get_random_card(newlist) )
+    $ g.prison_cards.append( Card.get_random_card(availableCards) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[4].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[4].name]["value"]}
+    $ g.prison_cards.append( Card.get_random_card(newlist) )
 
     $ del availableCards, newlist
 
@@ -133,12 +151,11 @@ label label_prison_open_door:
 label label_prison_remove_card(index):
     hide screen screen_prison
     hide screen screen_show_deck
-    show expression deck.list[index].img:
-        function trans_flush_card
+    # show expression deck.list[index].img:
+    #     function trans_flush_card
     show screen screen_flushing(deck.list[index].img) with dissolve
     pause(1.0)
     hide screen screen_flushing
-    hide expression deck.list[index].img
     $ deck.list.pop(index)
     $ renpy.call("label_newDay", "label_prison")
 
@@ -160,13 +177,20 @@ label label_prison_add_card(cards):
     $ i = 0
     while i < len(cards):
         call label_add_card_to_deck( "list", cards[i])
-        $ deck.list.append( cards[i] )
         $ i += 1
-    $ deck.list.sort()
 
     hide screen screen_prison_food
     call label_newDay("label_prison")
 
+
+label label_prison_add_card_firstTime(cards):
+    $ i = 0
+    while i < len(cards):
+        call label_add_card_to_deck( "list", cards[i])
+        $ i += 1
+
+    hide screen screen_replace_deck
+    return
 
 
 #############################################################################
@@ -240,7 +264,7 @@ screen screen_flushing(card):
     add "img_toilet-flush" zoom 3.0
     add Transform(card, function=trans_flush_card)
 
-screen screen_prison_food(sixCards = global_var.prison_cards):
+screen screen_prison_food(sixCards = g.prison_cards):
     add "#000a"
     modal True
     
@@ -295,19 +319,13 @@ screen screen_replace_deck(threePacks):
     modal True
     
     fixed:
-        ypos -280
-        use screen_add_cards_small( threePacks[0], "label_prison_add_card")
+        ypos -260
+        use screen_add_cards_small( threePacks[0], "label_prison_add_card_firstTime")
     fixed:
-        ypos 0
-        use screen_add_cards_small( threePacks[1], "label_prison_add_card")
+        ypos 30
+        use screen_add_cards_small( threePacks[1], "label_prison_add_card_firstTime")
     fixed:
-        ypos 280
-        use screen_add_cards_small( threePacks[2], "label_prison_add_card")
+        ypos 320
+        use screen_add_cards_small( threePacks[2], "label_prison_add_card_firstTime")
 
-    imagebutton:
-        idle "ui/cancel.png"
-        hover im.MatrixColor("ui/cancel.png", im.matrix.tint(1,1,0))
-        action [Hide("screen_replace_deck"),SetVariable("game.jeu_sensitive", True)]
-        yalign 0.95
-        xalign 0.5
     text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 10 xsize 1800 at animated_text

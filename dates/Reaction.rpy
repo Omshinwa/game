@@ -16,11 +16,11 @@ label label_reaction():
     show joyce null with dissolve
 
     if value == 0:
-        j eyesside armscrossed "It's getting pretty warm these days."
+        j eyeside armscrossed "It's getting pretty warm these days."
         j "I'm not such a fan of summer to be honest."
         j "I easily get sunburns because my skin is too thin."
         show joyce null
-        j -eyesside smile "Oh well"
+        j -eyeside smile "Oh well"
         if game.progress[0] < 1:
             j "Nothing like a day at the park to stay fresh."
         elif game.progress[0] < 4: # in case we trigger it on a second date
@@ -118,10 +118,10 @@ label label_card_reaction(what = game.lastPlayed.name):
             if any("dream" in tag for tag in renpy.get_attributes("joyce")) or game.progress[0]>7:
                 pass
             else:
-                show joyce eyesside blush with dissolve
+                show joyce eyeside blush with dissolve
             pause
             j "..."
-            j eyesside "Is there something on my face?"
+            j eyeside "Is there something on my face?"
 
         elif value == 1:
             show layer master:
@@ -154,7 +154,7 @@ label label_card_reaction(what = game.lastPlayed.name):
                 zoom 3.0 xalign 0.5 yalign 0.65
             with dissolve
             pause
-            j eyesside blush "..."
+            j eyeside blush "..."
 
         elif value == 4:
             show layer master:
@@ -172,29 +172,33 @@ label label_card_reaction(what = game.lastPlayed.name):
         with dissolve
 
     elif what == "touchy":
-
+        if game.progress[0] == 4:
+            $ i = depied
+        else:
+            $ i = sitting
+        show joyce
+        
         if value == 0: #touch hair
-            
-            show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9, 0.15) at i as anim
             play sound "date/touch.wav"
             pause 0.15*9
             hide anim
-            j eyesside blush "..."
-            show joyce -eyesside -blush with dissolve
+            j eyeside blush "..."
+            show joyce -eyeside -blush with dissolve
                 
         elif value == 1:
             # show layer master:
             #     zoom 1.5 xalign 0.5 yalign 0.3
             # with dissolve
-            show expression generate_anim3("Joyce/anim/touch-shoulder/touch-shoulder (",4, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-shoulder/touch-shoulder (",4, 0.15) at i as anim
             play sound "date/caress.wav"
             pause 0.15*4
             hide anim
-            show expression generate_anim3("Joyce/anim/touch-shoulder/touch-shoulder (",4, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-shoulder/touch-shoulder (",4, 0.15) at i as anim
             pause 0.15*4
             hide anim
-            j eyesside blush "..."
-            show joyce -eyesside -blush with dissolve
+            j eyeside blush "..."
+            show joyce -eyeside -blush with dissolve
 
             # show layer master:
             #     zoom 1.0 xalign 0.5 yalign 0.5
@@ -204,15 +208,15 @@ label label_card_reaction(what = game.lastPlayed.name):
             # show layer master:
             #     zoom 1.5 xalign 0.5 yalign 0.3
             # with dissolve
-            show expression generate_anim3("Joyce/anim/touch-face/touch-face (",4, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-face/touch-face (",4, 0.15) at i as anim
             play sound "date/caress.wav"
             pause 0.15*4
             hide anim
-            show expression generate_anim3("Joyce/anim/touch-face/touch-face (",4, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-face/touch-face (",4, 0.15) at i as anim
             pause 0.15*4
             hide anim
-            j eyesside blush "..."
-            show joyce -eyesside -blush with dissolve
+            j eyeside blush "..."
+            show joyce -eyeside -blush with dissolve
 
             # show layer master:
             #     zoom 1.0 xalign 0.5 yalign 0.5
@@ -222,11 +226,11 @@ label label_card_reaction(what = game.lastPlayed.name):
             # show layer master:
             #     zoom 1.5 xalign 0.5 yalign 0.3
             # with dissolve
-            show expression generate_anim3("Joyce/anim/touch-boobs/touch-boobs (",10, 0.15) at sitting as anim
+            show expression generate_anim3("Joyce/anim/touch-boobs/touch-boobs (",10, 0.15) at i as anim
             pause 0.15*4
             play sound "date/caress2.wav"
             pause 0.15*4
-            show joyce at shock
+            show joyce at shock(renpy.get_image_bounds("joyce")[3] / 1140)
             pause 0.15*2
             hide anim
             j blush defend "hey"
@@ -237,18 +241,73 @@ label label_card_reaction(what = game.lastPlayed.name):
             show joyce -blush -defend with dissolve
 
     elif what == "flirt":
-        if value == 0 1:
+        if value == 0 or value == 1:
             menu:
-                "You have beautiful eyes":
-                    j "oh"
-                "I love your smile":
-                    j "oh"
-        elif value == 2 3:
+                "I like your dress":
+                    if game.progress[0] != 3:
+                        j blush "..."
+                        j "Thanks, I wasn't sure what to wear."
+                        j smile "Should I wear something more casual or not."
+                        j "Then I noticed there was only 30 minutes left so I just picked whatever."
+                        j "haha"
+                        show joyce -blush with dissolve
+                    else:
+                        j foxy smirk "Hehe"
+                        j "I guess I did pull it off"
+                "I like your hair":
+                    show joyce null
+                    j smile "Isn't it a bit boring?"
+                    j "I have a friend that's always bleaching their hair all the time"
+                    j "Nowadays she has green hair I think"
+                    j "Do you think it would suit me?"
+                    show joyce green_hair with dissolve
+                    pause
+                    menu:
+                        "oh yea big time":
+                            j "Green?"
+                            j "Really?"
+                            j "No way that's so bold. I could never."
+                            j "I kinda admire my friend."
+                        "hmm no":
+                            j "Yea I don't think either."
+                            j "haha."
+                            j "But I kinda admire my friend."
+                            j "Would you bleach your hair green?"
+                    show joyce -green_hair with dissolve
+        elif value == 2:
             menu:
-                "You have huge boobs":
-                    j "oh"
+                "I think you're beautiful":
+                    j eyeside blush "..."
+                    j "Don't say that"
+                    j "You're making me shy"
+                    j -eyeside "..."
+                    j eyeside bite "You're not bad looking either"
+                    show joyce -eyeside -bite with dissolve
                 "I love your smile":
-                    j "oh"
+                    j eyeside blush "..."
+                    j -blush foxy smile "Like this?"
+                    j "What do you like about it?"
+                    menu:
+                        "Your lips":
+                            pass
+                        "You teeth":
+                            pass
+                    j "Oh I see"
+                    j "What about my tongue?"
+                    j tongue "..."
+                    j -foxy smile "haha"
+        elif value == 3:
+            menu:
+                "You have nice boobs":
+                    j foxy smirk "You like them?"
+                    j "They are pretty big"
+                    j "Here's a peek"
+                    show joyce reveal-1 with dissolve
+                    pause 0.5
+                    show joyce reveal-2 with dissolve
+                    pause
+                    j wink reveal-1 "That's it"
+                    show joyce -wink -reveal-1 with dissolve
 
 
 

@@ -165,7 +165,8 @@ style say_dialogue:
     adjust_spacing False
 
 style say_thought:
-    size 60
+    size 50
+    # size gui.text_properties("dialogue") #fyn edit 60
 
 ## Input screen ################################################################
 ##
