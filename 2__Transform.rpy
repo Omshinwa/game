@@ -7,6 +7,11 @@ transform shaking:
     # linear 0.05 yoffset 0 zoom 1.001
     # linear 0.05 yoffset -3
     # repeat
+transform slowbreath:
+    yoffset 0 zoom 1.0
+    linear 0.45 zoom 1.005
+    linear 0.45 zoom 1.00
+    repeat
 
 transform toobig:
     yalign 0.0
@@ -67,8 +72,7 @@ transform trans_show_card_1(displayable, offset=0): #floating up and down card, 
         ease 1.0 xpos 1600 ypos 500
         repeat
 
-transform trans_add_card_to_deck(displayable, xfrom, yfrom, xto, yto, pauseTime=0):
-    displayable
+transform trans_anim_move_card(xfrom, yfrom, xto, yto, pauseTime=0):
     xanchor 0.5 yanchor 0.5 xpos xfrom ypos yfrom
     ease 0.4 zoom 1.5 xpos 960 ypos 350
     pause pauseTime
@@ -105,3 +109,10 @@ transform image_qui_defile:
     ypos 0
     linear 30 ypos -3570 
     repeat
+
+transform give_cards_to_rat:
+    zoom 0.7 xpos 1820 ypos 120 xanchor 0.5 yanchor 0.5
+    easein 0.5 xpos 700 ypos 800
+    function renpy.curry(play_sexsound)(filename="card/draw.mp3") #hacky
+    ease 0.1 xpos 680 ypos 820
+    alpha 0.0

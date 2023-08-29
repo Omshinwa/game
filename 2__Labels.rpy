@@ -1,5 +1,7 @@
 
 label label_newDay(callback):
+    $ renpy.set_return_stack(renpy.get_return_stack()[-1])
+
     window hide
     scene black
     $ renpy.play("day/newday.wav", channel='sound') 
@@ -36,6 +38,7 @@ label label_beginDuel_common():
     $ date.trustMultiplier = 1
     $ date.attraction = game.attraction
     $ date.attractionMultiplier = 1
+    
     $ date.animation_speed = 1
 
     $ deck.drink = 3
@@ -52,6 +55,8 @@ label label_beginDuel_common():
         show screen screen_date_ui()
     else:
         show screen screen_sex_ui()
+    hide screen screen_day
+    with dissolve
 
     $ deck.draw(5)
 
@@ -80,14 +85,24 @@ label label_endTurn_common():
     # if not renpy.get_screen("screen_date_ui"):
     #     show screen screen_date_ui with dissolve
 
+
+
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
     $ date.lustMultiplier = 1
     $ date.turn += 1
     $ game.progress[1] = max(date.turn, game.progress[1])
+
+    # $ done_flag["thisTurn"] = set()
+
     $ handSize = len(deck.hand)
-    play sound "rpg/Item1.wav"
-    pause 0.3
+
+    if game.state == "sexing" and date.lust + game.animation_lust[date.animation_speed] >= date.lustMax:
+        play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
+        pause 0.5
+    else:
+        play sound "rpg/Item1.wav"
+        pause 0.3
 
     while handSize < 5 and len(deck.deck)>0:
         $ deck.draw(1)
@@ -97,13 +112,14 @@ label label_endTurn_common():
 
     if game.state == "dating":
         show joyce null with dissolve
-    # show joyce null with dissolve
 
     return
 
 label label_after_successful_Date_common():
-    hide screen screen_date_ui with dissolve
-    hide screen screen_sex_ui with dissolve
+    hide screen screen_date_ui
+    hide screen screen_sex_ui
+    hide screen screen_dick_ui
+    with dissolve
 
     if game.state == "dating":
         play sound "rpg/Holy5.wav"
@@ -112,7 +128,7 @@ label label_after_successful_Date_common():
         hide date-nice with moveoutbottom
     
     if BALANCE["keepStat"]:
-        $ game.lust = date.lust
+        $ game.lust = max(0,date.lust)
         $ game.trust = date.trust 
         $ game.attraction = date.attraction
     else:
@@ -129,7 +145,8 @@ label label_after_successful_Date_common():
     $ g.phoneProgress[0] += 1
     $ g.phoneProgress[1] = 0
 
-    show joyce null
+    if game.state == "dating":
+        show joyce null with dissolve
     return
 
 
@@ -153,7 +170,7 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
     if fromWhere == "field":
         $ yfrom = 450
     
-    show screen screen_tutorial( trans_add_card_to_deck(card.img, xfrom, yfrom, xto, yto, pauseTime) ) 
+    show expression card.img onlayer screens at trans_anim_move_card(xfrom, yfrom, xto, yto, pauseTime)
         
     pause 0.4 + pauseTime
     play sound "card/ghost.mp3"
@@ -172,7 +189,7 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
     else:
         $ raise ValueError("deck or list not specified")
     pause 0.2
-    hide screen screen_tutorial
+    hide expression card.img onlayer screens
 
     # $ game.jeu_sensitive = True
     return
@@ -198,17 +215,29 @@ label label_date_isLost_common(label_callback = "label_home"):
         if date.lust > date.trust and date.lust > date.attraction:
             show joyce null
             hide screen screen_date_ui with dissolve
-            j armscrossed upset "um.. don't you think I can notice?"
-            j "Sorry but I'm gonna go. I'm really not in the mood today."
-            j "Let's do this another day."
+            if game.progress[0]<4:
+                j armscrossed upset "um.. don't you think I can notice?"
+                j "Sorry but I'm gonna go. I'm really not in the mood today."
+                j "Let's do this another day."
+            else:
+                j foxy armscrossed "You're getting a bit too horny no?"
+                j smile "Seems like today's not your day."
+                j tongue "hehe, try next time."
+                j smirk "My door is always open for you."
 
         elif len(deck.deck) == 0 or date.turnLeft <= 1:
             show joyce null
             hide screen screen_date_ui with dissolve
-            j eyeside armscrossed "OH look at the time."
-            j "Sorry but I gotta go."
-            j "That kinda dragged on no?"
-            j "Maybe we can do this another day? See ya."
+            if game.progress[0]<4:
+                j eyeside armscrossed "OH look at the time."
+                j "Sorry but I gotta go."
+                j "That kinda dragged on no?"
+                j "Maybe we can do this another day? See ya."
+            else:
+                j foxy armscrossed "Oh look at the time!"
+                j smile "Seems like today's not your day."
+                j tongue "hehe, try next time."
+                j smirk "My door is always open for you."
 
         hide joyce with dissolve
 

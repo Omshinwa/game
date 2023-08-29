@@ -1,9 +1,8 @@
 label label_sex_tutorial:
-    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
 
     scene bg prison-ground
     show footjob talk as joyce
-    show screen screen_lust_ui
+    show screen screen_dick_ui
     with dissolve
     pause
     j "Are you ready for your first exam?"
@@ -33,11 +32,11 @@ label label_sex_tutorial:
     show get-hard (5) as anim
     pause
     j "Wow"
-    j "You're a good boy with a nice big cock."
-    j "I did well picking you"
-    j "Let me explain how this work."
+    j "You have a nice big cock."
+    j "I did well picking you."
+    j "Let me explain how this works."
     show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
-    j "This is your dick strength."
+    j "This is your Lust."
     j "If you get too excited, you'll cum and fail."
     j "How do you get excited? Well for example..."
     hide anim
@@ -62,14 +61,16 @@ label label_sex_tutorial:
     j "There, you got a little bit excited."
     j "Depending on the speed I'm going, you'll get more and more excited."
     j "I'll start slow and go faster every turn."
-    j "Your goal is to resist for {b}[date.turnLeft] turns{/b}"
+    j "Your goal is to resist for {b}6 turns{/b}"
     j "Resist this, and you'll get to the next trial."
     j "Fail, and you'll have to do this exam again in 3 days."
     hide screen screen_tutorial with dissolve
 
     j "Ready?"
     show joyce footjob
+    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
     call label_beginDuel_common()
+    hide screen screen_dick_ui
     $ current_speed = date.animation_speed
     jump label_footjob_gameLoop
 
@@ -79,9 +80,9 @@ label label_footjob:
         jump label_sex_tutorial
 
     $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
-    scene bg basement
+    scene bg prison-ground
     show footjob talk as joyce
-    with Dissolve
+    with dissolve
 
     j "Hello my good boy"
     j "Are you getting used to your new room?"
@@ -133,26 +134,8 @@ label label_footjob_gameLoop:
             # show moan_bubble
             $ current_speed = date.animation_speed
 
-        if date.isWin():
-            
-            call label_after_successful_Date_common
-            stop sound
-            show footjob-start-talk as joyce
-            show get-hard (5) as anim
-            with dissolve
-            j "Well done."
-            j "You'll move to the next trial."
-            j "Until then..."
-            play sound "rpg/Key.wav"
-            hide anim with dissolve
-            j "Try to not bust out hehee.."
-
-            hide joyce with dissolve
-            
-            if game.progress[1] == -1:
-                call label_newDay("label_prison")
-            else:
-                call label_newDay("label_prison_first_time")
+        if len(deck.hand) == 0:
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -164,28 +147,32 @@ label label_footjob_SexEndTurn:
     $ game.jeu_sensitive = False
 
     $ i=0
-    while i < date.animation_speed:
+    while i < date.animation_lust[date.animation_speed]:
         $ date.lust += 1
         $ date.orgasm += 1
         $ i += 1
-        pause(0.1)
+        pause(0.05)
     
     $ date.speedUp()
     
     if date.isLost():
-        hide screen screen_sex_ui with dissolve
+        hide screen screen_sex_ui
+        # hide screen screen_dick_ui
+        with dissolve
 
-        "i'm gonna cum!"
+        "!"
         window hide
         window auto
         stop sound
+        
         if phase == 1:
             show footjob (1) as joyce
         else:
             show footjob v2 (1) as joyce
         pause 0.2
         play sound "sex/Poison-cum.wav"
-        show cum1 as anim
+        show joyce at shaking
+        show cum1 as anim at shaking
         pause(0.3)
         show cum2 as anim
         pause(0.3)
@@ -198,10 +185,10 @@ label label_footjob_SexEndTurn:
         else:
             show end-cummed2 as anim
         
-        while date.lust>0:
-            $ date.lust -= 1
-            pause(0)
-
+        show joyce at default
+        show anim at default
+        pause 0.4
+        
         $ game.lust = 0
         pause
         j "You naughty boy, you just couldn't resist?"
@@ -216,10 +203,7 @@ label label_footjob_SexEndTurn:
             show footjob v2 talk as joyce with dissolve
         j "Try again next time"
 
-        if game.progress[1] == -1:
-            call label_newDay("label_prison")
-        else:
-            call label_newDay("label_prison_first_time")
+        call label_newDay("label_prison")
 
     if date.turn == 5:
         $ phase = 2
@@ -231,14 +215,33 @@ label label_footjob_SexEndTurn:
         show footjob v2 (1) as joyce with dissolve
         pause
         
-        call label_add_card_to_deck("hand", Card("peek4"), pauseTime=1.0)
+        call label_add_card_to_deck("hand", Card("peek5-1"), pauseTime=1.0)
         j "ready?"
         # (add cards to deck)
 
         show joyce footjob v2 as joyce with dissolve
         pause
     elif date.turn > 5:
-        call label_add_card_to_deck("hand", Card("peek4"))
+        call label_add_card_to_deck("hand", Card("peek5-1"))
         pause 0.5
     call label_endTurn_common
+
+    if date.isWin():
+        
+        call label_after_successful_Date_common
+        stop sound
+        show footjob v2 talk as joyce
+        with dissolve
+        j "Well done."
+        j "You'll move to the next trial."
+        j "Until then..."
+        play sound "rpg/Key.wav"
+        show footjob v2 talk (2) as joyce with dissolve
+        j "Try to not burst out."
+
+        hide joyce with dissolve
+        
+        call label_newDay("label_prison")
+
+
     return

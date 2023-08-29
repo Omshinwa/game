@@ -1,7 +1,6 @@
 label label_tutorial:
     $ date = Date("date", objectif_trust = 5, turnLeft = 3, endTurn = "label_tutorial_endTurn")
 
-
     scene bg park
     show joyce outfit1 smile at depied
     with dissolve
@@ -66,9 +65,10 @@ label label_tutorial:
                 hide joyce with dissolve
                 
                 call label_newDay("label_home_tutorial")
-            
-            show joyce 
-    
+
+        if len(deck.hand) == 0:
+            call expression date.endTurn
+
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
@@ -78,7 +78,7 @@ label label_tutorial:
 label label_tutorial_endTurn:
     call label_date_isLost_common("label_home_tutorial")
     
-    if game.progress[1]<=date.turn:
+    if game.progress[1]<=0:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             show joyce null

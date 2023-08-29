@@ -1,6 +1,7 @@
 init python:
     def play_sexsound(trans, st, at, filename):
-        renpy.play(filename, channel='sexsfx')
+        # renpy.play(filename, channel='sexsfx')
+        renpy.sound.queue(filename, channel='sexsfx')
         return None
 
 init python:

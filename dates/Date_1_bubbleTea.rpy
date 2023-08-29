@@ -1,5 +1,5 @@
 label label_bubbleTea:
-    $ date = Date("date", objectif_trust = 8, objectif_attraction = 3, turnLeft = 4, endTurn = "label_bubbleTea_endTurn")
+    $ date = Date("date", objectif_trust = 10, objectif_attraction = 5, turnLeft = 4, endTurn = "label_bubbleTea_endTurn")
 
     scene bg bbt
     show fg bbt-table onlayer master zorder 2
@@ -34,7 +34,9 @@ label label_bubbleTea:
                 j "I think we should hang out outside again."
                 j worried "It is getting pretty hot! Let's drink outside next time."
                 call label_newDay("label_home")
-    
+                
+        if len(deck.hand) == 0:
+            call expression date.endTurn
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
@@ -44,7 +46,7 @@ label label_bubbleTea:
 label label_bubbleTea_endTurn:
     call label_date_isLost_common
 
-    if game.progress[1]<=date.turn:
+    if game.progress[1]<=1:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             j "I'm gonna grab a drink, I'll take you something too!"

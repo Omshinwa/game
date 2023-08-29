@@ -5,10 +5,9 @@ label label_reaction():
 
     $ value = done_flag["script"]
     
-    $ print( str((game.progress[0]+1)*2))
-    $ print( str(done_flag["script"]))
-
-    if (game.progress[0]+1) <= value:
+    if (game.progress[0]+1)*2 <= value:
+        return
+    elif value>8:
         return
 
     hide screen screen_date_ui with dissolve
@@ -42,35 +41,46 @@ label label_reaction():
                 show joyce -upset
     
     elif value == 2:
-        j smile "I loves cats sooo much"
-        j "Petting one is soo soothing"
-        j "I'm kinda wondering if I should get one"
-        j null "But it's a big responsability still."
+        j "So you play dating sims."
+        j "I used to play some on the Nintendo DS too."
+        j "What are you playing these days?"
+        "..."
+        j "What are you getting so shy about?"
+        j smile "Come on tell me!"
+        j smile "Alright you better tell me next date!"
+
     elif value == 3:
         j "How often do you meet girls like that?"
         j "I'm trying to look for the one."
         j "But I have pretty high requierements"
-        j "Will you pass the tests? I wonder heehee."
+        j foxy smile "Will you pass the tests? I wonder heehee."
+
     elif value == 4:
-        j "So you play dating sims."
-        j "That's a little funny, I didn't expect it."
-        j "I used to play some on the Nintendo DS too."
-        j "What are you playing these days?"
-        j "What are you getting so shy about?"
-        j "Come on tell me!"
+        j smile "I loves cats sooo much"
+        j "Petting one is soo soothing"
+        j "I'm kinda wondering if I should get one"
+        j null "But it's a big responsability still."
+    
     elif value == 5:
         j "Cats are also useful for pests."
         j "I've seen some rats in my basement. A cat would be a good help"
         j "My place has a pretty big basement, I could show you!"
+
     elif value == 6:
-        j "Wow you play erotic games?"
-        j "Nah I get it, I've played some crazy stuff too."
-        j "..."
-        j "But I like it more in real life."
-    elif value == 7:
         j "I feel like I want a cat because I'm so lonely at home."
-        j "But with you, maybe I won't need a cat anymore."
+        j happy smile "But with you, maybe I won't need a cat anymore."
         j "Will you cure my loneliness?"
+        show joyce -happy -smile with dissolve
+
+    elif value == 7:
+        j "Wow you play erotic games?"
+        j "No I'm not judging."
+        j smirk "I'm not too innocent either hehe."
+        j "Erotic video games are fun."
+        j -smirk "..."
+        j foxy blush "But I like it more in real life."
+        show joyce -foxy -blush with dissolve
+
     elif value == 8:
         j "Maybe you can show me what kind of erotic games you like."
         j "Show me what you like."
@@ -81,10 +91,11 @@ label label_reaction():
 return
 
 
-default done_flag = {"script":0}
+default done_flag = {"script":0, "thisTurn":set()}
 
 label label_card_reaction(what = game.lastPlayed.name):
-    
+
+
     if what == "talk2":
         call label_card_reaction("talk")
         return
@@ -94,21 +105,31 @@ label label_card_reaction(what = game.lastPlayed.name):
 
     $ value = done_flag[what]
 
-    if value > game.progress[0] :
+    if value > game.progress[0]: # or what in done_flag["thisTurn"]:
         return
     
+    #$ done_flag["thisTurn"].add(what) 
+    
     if game.state == "sexing":
-        if what == "eyecontact" or what == "touchy" or what == "flirt" or what == "smalltalk" or what == "talk" or what == "listen":
+        $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk", "listen"]
+        if what in i:
             if done_flag[what] == 99:
                 return
-            $ done_flag[what] = 99
+            $ i2 = 0 
+            while i2<len(i):
+                $ done_flag[i[i2]] = 99
+                $ i2 += 1
             j "What are you trying to do?"
             j "Building more trust and attraction?"
             j "How is that going to help now?"
-            j "Those cards are all useless now"
-            j "Hahaha"
-        
-    elif what == "eyecontact":
+            j "You should get rid of those useless cards."
+
+        return
+
+    if game.state == "dating":
+        show joyce null with dissolve
+
+    if what == "eyecontact":
         
         if value == 0:
             show layer master:
@@ -128,25 +149,25 @@ label label_card_reaction(what = game.lastPlayed.name):
 
         elif value == 2:
             show layer master:
-                zoom 2.0 xalign 0.5 yalign 0.1
+                zoom 1.5 xalign 0.5 yalign 0.1
             with dissolve
             pause 0.4
             j blush "..."
             j "Why do you stare at me so often?"
             j "I feel so shy. I'm so bad with keeping eyecontact."
-            j "Can you look elsewhere besides my eyes at least?"
+            j eyeside "Can you look elsewhere at least?"
             show layer master:
-                zoom 4.0 xalign 0.5 yalign 0.3
+                zoom 2.0 xalign 0.5 yalign 0.5
             with dissolve
-            j "..."
+            j -eyeside "..."
 
         elif value == 3:
             show layer master:
-                zoom 4.0 xalign 0.5 yalign 0.3
+                zoom 3.0 xalign 0.5 yalign 0.4
             with dissolve
             pause 0.5
             show layer master:
-                zoom 3.0 xalign 0.5 yalign 0.65
+                zoom 3.0 xalign 0.5 yalign 0.55
             with dissolve
             pause
             j eyeside blush "..."
@@ -154,15 +175,15 @@ label label_card_reaction(what = game.lastPlayed.name):
 
         elif value == 4:
             show layer master:
-                zoom 3.0 xalign 0.5 yalign 0.65
+                zoom 3.0 xalign 0.5 yalign 0.55
             with dissolve
             pause 0.4
-            j smirk foxy "You enjoy what you're seeing?"
+            j smirk foxy "You like what you're looking at?"
             show layer master:
                 zoom 1.0 xalign 0.5 yalign 0.5
             with dissolve
-            j "I bet you wanna see more.."
-
+            j bite "I bet you wanna see more.."
+            show joyce -bite with dissolve
         show layer master:
             zoom 1.0 xalign 0.5 yalign 0.5
         with dissolve
@@ -194,7 +215,8 @@ label label_card_reaction(what = game.lastPlayed.name):
             pause 0.15*4
             hide anim
             j eyeside blush "..."
-            show joyce -eyeside -blush with dissolve
+            j foxy blush "Stop, I'm ticklish"
+            show joyce -foxy -blush with dissolve
 
             # show layer master:
             #     zoom 1.0 xalign 0.5 yalign 0.5
@@ -212,6 +234,9 @@ label label_card_reaction(what = game.lastPlayed.name):
             pause 0.15*4
             hide anim
             j eyeside blush "..."
+            j "You have such warm hands."
+            show joyce bite with dissolve
+            pause
             show joyce -eyeside -blush with dissolve
 
             # show layer master:
@@ -231,9 +256,9 @@ label label_card_reaction(what = game.lastPlayed.name):
             hide anim
             j blush defend "hey"
             if game.progress[0]<4:
-                j "Not in public.."
+                j foxy smirk "Not in public.."
             else:
-                j "Not yet.."
+                j foxy smirk "Not yet.."
             show joyce -blush -defend with dissolve
 
     elif what == "flirt":
@@ -279,20 +304,25 @@ label label_card_reaction(what = game.lastPlayed.name):
                     j -eyeside "..."
                     j eyeside bite "You're not bad looking either"
                     show joyce -eyeside -bite with dissolve
-                "I love your smile":
+                "I love being with you":
                     j eyeside blush "..."
-                    j -blush foxy smile "Like this?"
-                    j "What do you like about it?"
-                    menu:
-                        "Your lips":
-                            pass
-                        "You teeth":
-                            pass
-                    j "Oh I see"
-                    j "What about my tongue?"
-                    j tongue "..."
-                    j -foxy smile "haha"
+                    j "You're so bold"
+                    j "..."
+                    j -blush happy smile "But I also do enjoy our dates together."
+                    j -eyeside "I hope that will last"
+                    j tongue -happy  "teehee"
+                    show joyce -tongue with dissolve
+
         elif value == 3:
+            python:
+                if "flirt_done" not in done_flag:
+                    done_flag["flirt_done"] = set()
+                outfits = ["outfitred","outfitblue","night","night2","night3","night4"]
+                for i in outfits:
+                    if i in renpy.get_attributes("joyce"):
+                        if i in done_flag["flirt_done"]:
+                            renpy.return_statement()
+                        done_flag["flirt_done"].add(i)
             menu:
                 "You have nice boobs":
                     j foxy smirk "You like them?"
@@ -303,8 +333,8 @@ label label_card_reaction(what = game.lastPlayed.name):
                         pause 0.5
                         show joyce reveal-2 with dissolve
                         pause
-                        j wink reveal-1 "That's it"
-                        show joyce -wink -reveal-1 with dissolve
+                        j wink tongue reveal-1 "That's it"
+                        show joyce -wink -tongue -reveal-1 with dissolve
                     else:
                         show joyce reveal-2 with dissolve
                         j "You wanna lick them?"

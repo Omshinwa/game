@@ -1,16 +1,4 @@
-﻿define BALANCE = {"keepStat":True, 
-"lustGainEveryDay":"game.progress[0]", 
-"requirements_for_each_dates": {0: {"stat":[-999,5,0], "turns":0},
-1: {"stat":[0,0,0], "turns":0},
-2: {"stat":[0,0,0], "turns":0},
-3: {"stat":[0,0,0], "turns":0},
-4: {"stat":[0,0,0], "turns":0},
-5: {"stat":[0,0,0], "turns":0},
-6: {"stat":[0,0,0], "turns":0},
-7: {"stat":[0,0,0], "turns":0},
-8: {"stat":[0,0,0], "turns":0},
-}
-}
+﻿define BALANCE = {"keepStat":True}
 
 define j = Character(None, image="joyce", kind=bubble)
 define rat = Character(None, image="rat", kind=bubble)
@@ -40,7 +28,7 @@ screen game_complete():
 
     text "Omshinwa18" yalign 0.85 xalign 0.8 size 60 style "outline_text"
     textbutton _("https://omshinwa18.itch.io/ (click me)") action OpenURL("https://omshinwa18.itch.io/") yalign 0.9 xalign 0.8 
-    textbutton _("@Omshinwa18 (click me)") action OpenURL("https://twitter.com/Omshinwa18") yalign 0.92 xalign 0.8 
+    textbutton _("@Omshinwa18 (click me)") action OpenURL("https://twitter.com/Omshinwa18") yalign 0.94 xalign 0.8 
     use screen_deck_stack
 
 screen Content_Warning():
@@ -90,10 +78,17 @@ label start2:
     # python:
     #     for card in cardList:
     #         deck.list.append(Card(card))
+    $ povname = renpy.input("What is your name?", length=32)
+    $ povname = povname.strip()
 
+    if not povname:
+        $ povname = "William"
+
+    $ game.day = 0
     show screen keybinds()
     show screen screen_debug
 
+    jump label_tutorial
     # jump label_prison_first_time
     jump label_home
     # jump test_sprites

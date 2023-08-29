@@ -1,5 +1,6 @@
 label label_welcome_prison():
-    $ game.lustPerDay = 1
+    $ game.lustPerDay = "1"
+    $ game.lust = 0
 
     $ game.state = "living"
     $ game.jeu_sensitive = False
@@ -26,12 +27,13 @@ label label_welcome_prison():
     j smile "Poor boy is confused."
     j "Let me explain it to you."
     j "You're now my bitch."
+    j "You're currenly in my basement."
     j smile "You will sleep here and I'll take care of you like the good pet you are."
     "??!!"
     menu:
         "Ask what does she want":
             j "You're my plaything now."
-            j "I will train you so you become a good slave."
+            j "I will train you to become a good slave."
             pass
         "Try and jump on her":
             show joyce whip
@@ -44,29 +46,23 @@ label label_welcome_prison():
     j smile "Every three days, I will come pick you, you will go through a physical exam."
     j "I will only free your chastity during those exams."
     j "If you manage not to cum, you'll move to the next stage."
-    j "There's 4 different examinations in total."
-    j "{b}At the last exam, we will have sex{/b}"
-    j key "If at the last exam you manage to make me cum, then you win the key to your cage."
-    j -key "Understood?"
-    j "I'll see you in 3 days."
-    j "Oh, and get rid of those Trust and Attraction cards, they're useless now."
+    j "{b}At the last stage, you will fuck my pussy{/b}"
+    j key "If then you manage to make me cum, you win the key to your cage."
+    j "Understood?"
+    j -key "I'll see you in 3 days."
+    # j "Oh, and get rid of all those Trust and Attraction cards."
+    # j "There's no point to them."
     
     play sound "day/door_opening.wav"
     hide joyce with dissolve
 
-    $ g.rat = game.day + 2
+    $ g.rat = game.day + 4
 
     jump label_prison
 
-        
+     
 label label_prison_first_time():
-    $ game.jeu_sensitive = False
-    $ game.state = "living"
-    scene bg prison
-    show screen screen_prison_sans_rat onlayer master
-    show black onlayer screens
-    hide black onlayer screens with dissolve
-    pause 1.0
+
     rat "So there's a new guy huh." with dissolve
     rat "You're not the first one she locks here."
     hide screen_prison_sans_rat
@@ -74,54 +70,69 @@ label label_prison_first_time():
     with dissolve
     
     rat "I don't think you're gonna make it"
+    rat "Plenty around died like you here."
+    rat "I pity you."
     rat "How about I trade you cards?"
     rat "Give me all your useless cards, I'll trade you new ones."
 
+    $ i = 0
+    $ goodCards = ["eyecontact", "touchy", "flirt", "talk", "talk2", "listen"]
+    $ toHide = []
     $ score = 0
-    $ i = []
+    while i < len(deck.list):
+        if deck.list[i].name in goodCards:
+            $ renpy.show("card" + str(len(toHide)), what=deck.list[i].img, at_list=[give_cards_to_rat])
+            $ toHide.append("card" + str(len(toHide)))
+            $ score += cardList[deck.list[i].name]["value2"]
+            $ deck.list.pop(i)
+            $ i -= 1
+            pause 0.1
+        $ i += 1
+    
+    pause 0.6 + len(toHide)*0.1
     python:
-        for card in deck.list:
-            if "value2" in cardList[card.name]:
-                score += cardList[card.name]["value2"]
-            else:
-                i.append(card)
-    $ deck.list = i.copy()
+        for i in toHide:
+            renpy.hide(i)
+
+    rat "Wow that's lot of shit cards"
+    rat "Let me see what I have in stock."
+
+    $ score /= 2
+
     $ print("score: " + str(score))
     $ g.prison_cards = [[],[Card("calm"),Card("slower")],[]]
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=0 } #
-    $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=2 } #
-    # $ score /= 2
+    $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=3 } #
+    
     $ i = score
-    $ g.prison_cards[0] = [Card("universeout"),Card("universeout"),Card("spaceout"),Card("darkhole"),Card("recycle"),Card("threeof"),Card("change")]
+    $ g.prison_cards[0] = [Card("universeout"),Card("universeout"),Card("spaceout"),Card("darkhole"),Card("threeof"),Card("change")]
     
     $ i = score - 2
     while i>score/2:
         $ g.prison_cards[1].append( Card.get_random_card(goodCards) )
         $ i -= cardList[g.prison_cards[1][-1].name]["value"]
-    while i>0:
+    while i>0 and len(g.prison_cards[1])<9:
         $ g.prison_cards[1].append( Card.get_random_card(availableCards) )
         $ i -= cardList[g.prison_cards[1][-1].name]["value"]
         $ i -= 0.5
+    $ g.prison_cards[1].sort()
     $ i = score
     while i>score/2:
         $ g.prison_cards[2].append( Card.get_random_card(goodCards) )
         $ i -= cardList[g.prison_cards[2][-1].name]["value"]
-    while i>0:
+    while i>0 and len(g.prison_cards[1])<9:
         $ g.prison_cards[2].append( Card.get_random_card(availableCards) )
         $ i -= cardList[g.prison_cards[2][-1].name]["value"]
         $ i -= 0.5
+    $ g.prison_cards[2].sort()
     
-    $ del availableCards, goodCards
+    $ del availableCards, goodCards, toHide
     show screen screen_replace_deck(g.prison_cards)
 
     call screen screen_gameloop()
 
-    # label .gameLoop:
-    #     call screen screen_gameloop()
-    # jump .gameLoop
-
     rat "Good choice"
-    rat "If you ever need help, I still have a lot of extra cards"
+    rat "If you ever need help, I still have a lot of extra cards."
     rat "..from past prisonners hehe."
     rat "Just leave me some food around."
     rat "Good luck staying alive"
@@ -144,6 +155,7 @@ label label_prison():
     if game.day == g.rat:
         jump label_prison_first_time
     elif game.day % game.dateEvery == 0:
+        $ game.jeu_sensitive = False
         play sound "day/door_opening.wav"
         show joyce foxy outfitsm smile whip at depied with dissolve
         j "Hello my slave."
@@ -151,26 +163,25 @@ label label_prison():
         play sound "sex/Fouet.mp3"
         show joyce push
         with vpunch
-        jump label_prison_open_door
-
+        call label_prison_open_door(open=True)
 
     $ g.prison_cards = []
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
 
-    $ g.prison_cards.append( Card.get_random_card(availableCards) )
+    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*2 + game.lust*11)%(len(availableCards)-1)] ) )
 
     $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
-    # $ g.prison_cards.append( Card.get_random_card(availableCards) )
-    $ g.prison_cards.append( Card.get_random_card({"slower":1, "calm":1}) )
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[g.prison_cards[2].name]["value"]}
+    
+    $ g.prison_cards.append( Card.get_random_card({"slower":1, "slowsteady":1,"awakening":1,"calm":1, "maxcalm":1, "newday":1, "fibonacci":1, }) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[2].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[2].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
+    # $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[g.prison_cards[2].name]["value"]}
+    # $ g.prison_cards.append( Card.get_random_card(newlist) )
+    # $ g.prison_cards.append( Card.get_random_card(availableCards) )
     
-    $ g.prison_cards.append( Card.get_random_card(availableCards) )
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[4].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[4].name]["value"]}
-    $ g.prison_cards.append( Card.get_random_card(newlist) )
 
     $ del availableCards, newlist
 
@@ -179,9 +190,16 @@ label label_prison():
         call screen screen_gameloop()
     jump .gameLoop
 
-label label_prison_open_door:
-    hide screen screen_prison
-    jump expression "label_" + game.story[game.progress[0]]
+label label_prison_open_door(open=False):
+    if game.debug_mode or open:
+        hide screen screen_prison
+        jump expression "label_" + game.story[game.progress[0]]
+    else:
+        $ game.jeu_sensitive = False
+        play sound "day/locked.wav"
+        "It's closed."
+        $ game.jeu_sensitive = True
+    return
 
 label label_prison_remove_card(index):
     hide screen screen_prison
@@ -219,22 +237,22 @@ label label_prison_bed:
     return
 
 label label_prison_add_card(cards):
+
+    hide screen screen_prison_rat_add_cards with dissolve
     $ i = 0
     while i < len(cards):
         call label_add_card_to_deck( "list", cards[i])
         $ i += 1
-
-    hide screen screen_prison_add_cards
     call label_newDay("label_prison")
 
 
 label label_prison_add_card_firstTime(cards):
+
+    hide screen screen_replace_deck with dissolve
     $ i = 0
     while i < len(cards):
         call label_add_card_to_deck( "list", cards[i])
         $ i += 1
-
-    hide screen screen_replace_deck
     return
 
 
@@ -251,7 +269,7 @@ label label_prison_add_card_firstTime(cards):
 #############################################################################
 
 screen screen_prison_sans_rat:
-    use screen_lust_ui
+    use screen_dick_ui
     use screen_day
     use screen_deck_stack
     sensitive game.jeu_sensitive
@@ -271,7 +289,7 @@ screen screen_prison_sans_rat:
     imagebutton:
         idle "prison/metal-door.png"
         hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((255,255,1275)))
-        action Jump("label_prison_open_door")
+        action Call("label_prison_open_door")
         focus_mask True
 
     imagebutton:
@@ -281,7 +299,7 @@ screen screen_prison_sans_rat:
         focus_mask True
 
 screen screen_prison:
-    use screen_lust_ui
+    use screen_dick_ui
     use screen_day
     use screen_deck_stack
     sensitive game.jeu_sensitive
@@ -289,7 +307,7 @@ screen screen_prison:
     imagebutton:  
         idle "prison/rat.png"
         hover Transform("prison/rat.png", matrixcolor=TintMatrix((255,255,1275)))
-        action Show("screen_prison_add_cards")
+        action Show("screen_prison_rat_add_cards")
         focus_mask True
 
     use screen_prison_sans_rat
@@ -299,24 +317,31 @@ screen screen_flushing(card):
     add "img_toilet-flush" zoom 3.0
     add card at trans_flush_card
 
-screen screen_prison_add_cards(sixCards = g.prison_cards):
+screen screen_prison_rat_add_cards(sixCards = g.prison_cards):
     add "#000a"
     modal True
     
+    # fixed:
+    #     xpos -550
+    #     use screen_add_cards( sixCards[:2], "label_prison_add_card")
+    # fixed:
+    #     xpos 0
+    #     use screen_add_cards( sixCards[2:4], "label_prison_add_card")
+    # # fixed:
+    # #     xpos 550
+    # #     use screen_add_cards( sixCards[4:], "label_prison_add_card")
+
     fixed:
-        xpos -550
+        xpos -400
         use screen_add_cards( sixCards[:2], "label_prison_add_card")
     fixed:
-        xpos 0
+        xpos 400
         use screen_add_cards( sixCards[2:4], "label_prison_add_card")
-    fixed:
-        xpos 550
-        use screen_add_cards( sixCards[4:], "label_prison_add_card")
 
     imagebutton:
         idle "ui/cancel.png"
         hover Transform("ui/cancel.png", matrixcolor=TintMatrix((255,255,0)))
-        action [Hide("screen_prison_add_cards"),SetVariable("game.jeu_sensitive", True)]
+        action [Hide("screen_prison_rat_add_cards"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.95
         xalign 0.5
     text "Choose which set of cards to add" xalign 0.5 style "quirky_command" ypos 150 xsize 1800 at animated_text

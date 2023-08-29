@@ -43,7 +43,7 @@ screen screen_deck_stack():
 
 screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
 
-    # sensitive game.jeu_sensitive
+    sensitive game.jeu_sensitive # sisphys needs this
     
     modal True
     $ card_per_line = g.card_per_line

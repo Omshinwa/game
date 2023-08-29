@@ -44,11 +44,11 @@ init python:
             self.lastPlayed = None
             self.cardPlaying = None
 
-            self.debug_mode = 1
+            self.debug_mode = 0
 
             self.dateEvery = 4
 
-            self.lustPerDay = "game.progress[0]"
+            self.lustPerDay = "game.progress[0] + 1"
 
         @staticmethod
         def hasNewMessage():
@@ -98,7 +98,7 @@ init python:
                 if game.state == "dating":
                     self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
                 else:
-                    self.config["isLost"] = "len(deck.deck) == 0 or date.lust >= date.lustMax"
+                    self.config["isLost"] = "date.lust >= date.lustMax"
 
             if "isWin" in kwargs:
                 self.config["isWin"] = kwargs["isWin"]
@@ -127,11 +127,12 @@ init python:
 
             self.allMultiplierOnce= 1
 
-            self.orgasmMax = 20
+            self.orgasmMax = 30
             self.orgasm = 0
 
-            self.animation_speed = 3
-            self.animation_speed_hash = { 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6,}
+            self.animation_speed = 1
+            self.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6}
+            self.animation_lust = [1,4,8,12,16,20,max(24,self.lustMax-1)]
 
         @property
         def turnLeft(self):
@@ -141,22 +142,22 @@ init python:
             if useMultiplier:
                 i = 1
                 while date.lustMultiplier >= i:
-                    if self.animation_speed < 5:
+                    if self.animation_speed < len(date.animation_speed_hash) - 1:
                         self.animation_speed += 1
-                        if self.animation_speed < 5:
+                        if self.animation_speed < len(date.animation_speed_hash) - 1:
                             renpy.pause(0.3)
                     i += 1
             else:
-                if self.animation_speed < 5:
+                if self.animation_speed < len(date.animation_speed_hash) - 1:
                     self.animation_speed += 1
 
         def speedDown(self, useMultiplier=False):
             if useMultiplier:
                 i = 1
                 while date.lustMultiplier >= i:
-                    if self.animation_speed > 1:
+                    if self.animation_speed > 0:
                         self.animation_speed -= 1
-                        if self.animation_speed > 1:
+                        if self.animation_speed > 0:
                             renpy.pause(0.3)
                     i += 1
             else:
@@ -177,31 +178,25 @@ init python:
             
             return self.ydisplace
 
-        def increment(self, which, value, resetAllMultiplier = True, allowNegative=True): #allowNegative=False
-            if which == "trust":
-                if not allowNegative:
-                    temp = self.trust + value * self.trustMultiplier * self.allMultiplierOnce
-                    self.trust = max(0, temp)
-                else:
+        def increment(self, which, value, resetAllMultiplier = True, useMultiplier=True, negative=False): #allow
+            if useMultiplier:
+                if which == "trust":
                     self.trust += value * self.trustMultiplier * self.allMultiplierOnce
-            elif which == "attraction":
-                if not allowNegative:
-                    temp = self.attraction + value * self.attractionMultiplier * self.allMultiplierOnce
-                    self.attraction = max(0, temp)
-                else:
+                elif which == "attraction":
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
-            elif which == "lust":
-                if not allowNegative:
-                    temp = self.lust + value * self.lustMultiplier * self.allMultiplierOnce
-                    self.lust = max(0, temp)
+                elif which == "lust":
+                    if negative or self.lust<0:
+                        self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    else:
+                        self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                        self.lust = max(0, self.lust)
                 else:
-                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    raise Exception("no valid specified argument: which") 
+                if resetAllMultiplier:
+                    self.allMultiplierOnce = 1
             else:
-                raise Exception("no valid specified argument: which") 
-            
-            if resetAllMultiplier:
-                self.allMultiplierOnce = 1
-
+                setattr(self, which, getattr(self,which) + value )
+                
             if value<0:
                 renpy.with_statement(ImageDissolve("gui/transition.png", 0.3))
             else:
@@ -227,18 +222,21 @@ default g.phoneLogs = {
         [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
     ],
     5:[
-        [0, "next time, let's go to a fancy bar!"], [0, "im so tiired now"],[0, "im gonna go to sleep now"],[0, "good niight"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
+        [0, "I know where to go next time!"],[0, "let's go to a fancy bar!"], [0, "how about it"], [2, "Good idea!"], [2, "Let's try and dress a bit fancy haha"], [0, "ooh good idea!"], [0, "Alright that's a plan then."],[0, "im gonna go to sleep now"],[0, "good niight <3"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
     ],
     6:[
         [0, "about the fancy bar"],[0, "I don't know what to wear for tomorrow"],[0, "which dress do you think looks better?"],[1, "pic4.png"], ["exe", "renpy.call('label_pic4_reaction')"]
     ],
     7:[
-        [0, "I looved this bar"],[0, "I felt like such a lady, thanks for helping me choose the dress."],[2, "No problem, you were such a sight! I love spending time with you."],[0, "haha"],[0, "hey.. about next time"],[0, "How about coming to my house?"],[2, "sure! I'd love to."],[0, "nice I can't wait <3"]
+        [1, "pic5-red.png"],[0, "By the way, I came here without wearing any panties"],["exe", "renpy.call('label_pic5_reaction')"],[0, "Did you notice? ;-P"],
     ],
     8:[
-        [1, "pic6.png"],["exe", "renpy.call('label_pic6_reaction')"], [0, "Oh no I didn't mean to send this pic!"],[2, "Really?"],[0, ":-P"],[0, "It's an appetize for tomorrow"],[2, "Wow, i'm excited"],[0, "<3"]
+        [0, "I looved this bar"],[0, "I felt like such a lady, thanks for helping me choose the dress."],[2, "No problem, you were such a sight! I love spending time with you."],[0, "same <3"],[0, "hey.. about next time"],[0, "How about coming to my house?"],[2, "sure! I'd love to."],[0, "nice I'll send you the address"],[0, "See you <3"]
     ],
     9:[
+        [1, "pic6.png"],["exe", "renpy.call('label_pic6_reaction')"], [0, "Oh no I didn't mean to send this pic!"],[2, "Really?"],[0, ":-P"],[0, "It's an appetizer for tomorrow"],[2, "Wow, i'm excited"],[0, "<3"]
+    ],
+    10:[
         [1, "pic7.png"],["exe", "renpy.call('label_pic7_reaction')"]
     ],
     }

@@ -1,10 +1,21 @@
 label label_stripPoker:
-    
+    if game.progress[1] == -1:
+        scene black
+        with dissolve
+        "You go to the address Joyce sent you"
     scene bg flat close
-    pause
-    play sound "day/doorbell.mp3"
-    pause 0.4
-    "You ring the bell"
+    with dissolve
+    
+    if game.progress[1] == -1:
+        pause
+    play sound "day/doorbell.wav"
+    pause 0.8
+    
+    if game.progress[1] == -1:
+        "You ring the bell"
+    else:
+        pause 1.0
+
     play sound "day/door_opening.wav"
     pause 0.2
     scene bg flat open with dissolve
@@ -12,29 +23,40 @@ label label_stripPoker:
     show joyce night at depied onlayer master zorder 2
     with dissolve
     pause
-    j smile "Hey I've been waiting for you"
-    j "Come inside."
+    
+    if game.progress[1] == -1:
+        j smile "Hey I've been waiting for you"
+        j "Come inside."
+    else:
+        j foxy smile "Who could it be?"
+        j "Put yourself at home, you must know the place now."
     $ date = Date("date", objectif_trust = 50, turnLeft = 7, endTurn = "label_stripPoker_endTurn")
     scene bg bedroom
     show joyce smile night at depied
     show fg bedroom-table onlayer master zorder 2
     with blinds
-    pause
-    j "Do you want a drink?"
-    j wink tongue "Of course you do."
-    hide joyce
-    with dissolve
-    pause
-    show joyce smile night at depied 
+    
+    if game.progress[1] == -1:
+        pause
+        j "Do you want a drink?"
+        j wink tongue "Of course you do."
+        hide joyce
+        with dissolve
+        pause
+        show joyce smile night at depied 
     with dissolve
     j foxy "Here"
     play sound "day/put_on_table.wav"
     show screen screen_glass("house") onlayer master zorder 2
     with dissolve
     
-    j "Let's get comfy"
-    j "How about we make it a strip game?"
-    j "Everytime you succeed, I'll drop a piece of clothing."
+    if game.progress[1] == -1:
+        j "Let's get comfy"
+        j "How about we make it a strip game?"
+        j "Everytime you succeed, I'll drop a piece of clothing."
+    else:
+        j "Let's get straight into the strip game"
+        j -smile eyeside "That's what you're here for no?"
 
     # hide joyce with dissolve
     # show expression "joyce " + " outfit"+whichDress at sitting
@@ -81,7 +103,7 @@ label label_stripPoker:
 
                     j foxy -night4 night5 "Did you drink too much?"
                     "..."
-                    "You feel like something was wrong in the drink."
+                    "You feel like something was wrong in your drink."
                     "You need to go home NOW."
                     window hide
                     window auto
@@ -101,31 +123,37 @@ label label_stripPoker:
                     pause
                     j "Everything will be just fine."
                     pause
-                    jump label_welcome_prison
+                    call label_newDay("label_welcome_prison")
 
                 elif "night" in renpy.get_attributes("joyce"):
                     j foxy smile "Is it hot or it's just me?"
                     play sound "sex/undress.wav"
                     show joyce night2 with Dissolve(1.0)
-                    $ date.objectives["attraction"] = date.attraction + 20
+                    $ date.objectives["attraction"] = 55
                 elif "night2" in renpy.get_attributes("joyce"):
                     j foxy smile "Off another layer."
                     play sound "sex/undress.wav"
                     show joyce night3 with Dissolve(1.0)
-                    $ date.objectives["attraction"] = date.attraction + 20
-                    $ date.objectives["trust"] = date.trust + 20
+                    $ date.objectives["attraction"] = 60
+                    $ date.objectives["trust"] = 60
                 elif "night3" in renpy.get_attributes("joyce"):
                     j foxy smile "Ooh, last one.."
                     play sound "sex/undress.wav"
                     show joyce night4 with Dissolve(1.0)
                     $ date.objectives["lust"] = 100
+                    $ date.config["isLost"] = "len(deck.deck) == 0 or date.turnLeft == 1"
 
 
                 show screen screen_date_ui with dissolve
             
             show joyce 
-    
+
+        
+        if len(deck.hand) == 0:
+            call expression date.endTurn
+
         $ game.jeu_sensitive = True
+
         call screen screen_gameloop()
         
     jump .gameLoop
@@ -135,15 +163,14 @@ label label_stripPoker:
 label label_stripPoker_endTurn:
     call label_date_isLost_common
     
-    if game.progress[1]<=date.turn:            
-        if date.turn == 0:
-            pass
-    else:
-        call label_reaction
+    call label_reaction
 
     call label_endTurn_common
-
-    call label_add_card_to_deck("deck", Card("peek2"))
-    # pause 0.5
+    if "night2" in renpy.get_attributes("joyce"):
+        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5)
+    if "night3" in renpy.get_attributes("joyce"):
+        call label_add_card_to_deck("hand", Card("peek4"), pauseTime = 0.5)
+    if "night4" in renpy.get_attributes("joyce"):
+        call label_add_card_to_deck("hand", Card("peek5"), pauseTime = 0.5)
 
     return

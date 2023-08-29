@@ -148,7 +148,7 @@ screen screen_debug:
                     action Jump("label_welcome_prison")
                     idle "#00f"
 
-screen screen_lust_ui:
+screen screen_dick_ui:
 
     if game.state == "dating" or game.state == "sexing":
         $ gameOrDate = date
@@ -163,14 +163,23 @@ screen screen_lust_ui:
         ypos 20
         xpos 220
         xsize 122 + shaft_size + 152
-        image "ui/lust_bar1.png"
-        image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
-        image "ui/lust_bar3.png" xpos 122+shaft_size
+        if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
+            image Transform("ui/lust_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") )
+            image Transform("ui/lust_bar2.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Transform("ui/lust_bar3.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
+        else:
+            image "ui/lust_bar1.png"
+            image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image "ui/lust_bar3.png" xpos 122+shaft_size
 
-        
-        image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
-        image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
-        image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
+        if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
+            image Crop( (0, 0, croppedSize, 120), Transform("ui/lust_full_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) ) 
+            image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), Transform("ui/lust_full_bar2.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), Transform("ui/lust_full_bar3.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122+shaft_size
+        else:
+            image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
+            image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
 
         # fixed: #cum bar
         #     frame:
@@ -190,16 +199,24 @@ screen screen_lust_ui:
                 color "#000000"
         
         if game.state == "sexing":
-            text "( next turn: +" +str(date.animation_speed)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+            text "( next turn: +" +str(date.animation_lust[date.animation_speed])+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+
+            if getattr(date,"lustMultiplier") !=1:
+                text "x" + str( getattr(date,"lustMultiplier")   ):
+                    size 20+5*getattr(date,"lustMultiplier") style "outline_text" xpos 60 xanchor 0.5 yanchor 0.5 ypos 55 color "#ffed68"
+
         elif game.state == "living":
             text "( next day: +" +str(eval(game.lustPerDay))+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
 screen screen_sex_ui():
     use screen_date_bottom_ui()
-    use screen_lust_ui()
-    use screen_orgasm_ui()
+    use screen_dick_ui()
+    if game.progress[0]==8:
+        use screen_orgasm_ui()
     use screen_buttons_ui()
-    use screen_turn_counter()
+    
+    if game.progress[0]!=8:
+        use screen_turn_counter()
 
 screen screen_date_ui():
     use screen_date_bottom_ui()
@@ -211,19 +228,17 @@ screen screen_orgasm_ui:
 
     $ cropped_size = int( max(0,(1 - (date.orgasm/date.orgasmMax))) * (456) )
     fixed: #cum bar
-        xpos 1920 - 600
+        xpos 1920 - 700
         ypos 0
-        image "ui/orgasm_bar.png" 
         
-        # frame:
-        #     xsize int( (date.orgasm/date.orgasmMax) * (456) )
-        #     ysize 120
-            
-        #     xpos 456 - int( (date.orgasm/date.orgasmMax) * (456) )
-        #     background Solid("#ffaaf5")
+        if game.state == "sexing" and date.orgasm + date.animation_lust[date.animation_speed] >= date.orgasmMax:
+            image Transform("ui/orgasm_bar.png", matrixcolor=ColorizeMatrix("#822", "#fcc"))
+        else:
+            image "ui/orgasm_bar.png" 
+        
 
         text str(date.orgasm) + "/" + str(date.orgasmMax):
-            size 50 style "outline_text" ypos 40
+            size 50 style "outline_text" ypos 60 xpos 160
             if (date.orgasm/date.orgasmMax)>0.9:
                 color "#ffed68"
             if (date.orgasm/date.orgasmMax)>0.7:
@@ -233,7 +248,15 @@ screen screen_orgasm_ui:
             else:
                 color "#000000"
 
-        image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
+
+        if game.state == "sexing" and date.orgasm + date.animation_lust[date.animation_speed] >= date.orgasmMax:
+            image Crop( (cropped_size, 0, 456, 120), Transform("ui/orgasm_full_bar.png",matrixcolor=ColorizeMatrix("#822", "#fcc"))) xpos cropped_size 
+        else:
+            image Crop( (cropped_size, 0, 456, 120), "ui/orgasm_full_bar.png") xpos cropped_size
+
+        if game.state == "sexing":
+            text "( next turn: +" +str(date.animation_lust[date.animation_speed])+ ")" size 30 xpos 120 ypos 120 color "#e970d2" style "outline_text"
+
 
 screen screen_trust_ui(range_var = 100):
     default textStat = ""
@@ -297,6 +320,11 @@ screen screen_trust_ui(range_var = 100):
                                 color "#f00"
                             else:
                                 color "#00ffae"
+                    
+                    if game.state == "dating":
+                        if getattr(date,stat+"Multiplier") !=1:
+                            text "x" + str( getattr(date,stat+"Multiplier")   ):
+                                size 15*getattr(date,stat+"Multiplier") style "outline_text" xpos 1.1 xanchor 0.5 yalign 0.5 color textColor
         
                     text textStat:
                         xalign 0.1
@@ -322,7 +350,7 @@ screen screen_turn_counter:
             size 200 style "outline_text" xalign 0 yalign 0.5
             if (date.turnLeft)==1:
                 color "#ffed68"
-            if (date.turnLeft)<3:
+            elif (date.turnLeft)<3:
                 color "#eb7412"
             elif (date.turnLeft)<5:
                 color "#c64826"

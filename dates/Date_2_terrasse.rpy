@@ -1,5 +1,5 @@
 label label_terrasse:
-    $ date = Date("date", objectif_trust = 25, objectif_attraction = 15, turnLeft = 5, endTurn = "label_terrasse_endTurn")
+    $ date = Date("date", objectif_trust = 25, objectif_attraction = 20, turnLeft = 5, endTurn = "label_terrasse_endTurn")
     scene bg terrasse
     show fg terrasse-table onlayer master zorder 2
     show screen screen_glass("terrasse") onlayer master zorder 2
@@ -7,7 +7,7 @@ label label_terrasse:
     if game.progress[1]>=1:
         show joyce outfit2 smile at sitting
         with dissolve
-        j "I remembered to come lighter this time."
+        j "I remembered to dress lighter this time."
     else:
         show joyce outfit1 smile at sitting
         with dissolve
@@ -21,18 +21,18 @@ label label_terrasse:
 
         label .winCondition:
             if date.isWin():
-                hide screen screen_date_ui with dissolve
-
-                show date-nice at truecenter with blinds
-                hide date-nice with moveoutbottom
-
-                j "t'es trop forte bewbew"
-
                 call label_after_successful_Date_common
-                jump label_prison
-            
-            show joyce 
-    
+
+                j smile "Fiou I feel like I drank too much."
+                j "I think I'll go home now, it was nice."
+                j "We should go somewhere special next time"
+                j "I'll think about something."
+                j "See ya!"
+                call label_newDay("label_home")
+
+        if len(deck.hand) == 0:
+            call expression date.endTurn
+
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
@@ -43,7 +43,7 @@ label label_terrasse:
 label label_terrasse_endTurn:
     call label_date_isLost_common
     
-    if game.progress[1]<=date.turn:            
+    if game.progress[1]<=0:            
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             j null "Oh man it's really too hot"
@@ -53,8 +53,8 @@ label label_terrasse_endTurn:
             hide joyce with dissolve
             pause
             show joyce outfit2 at standing as joyce with dissolve
-            j "hey" 
-            j "sorry it was just too hot"
+            j smile "hey" 
+            j "Sorry it was just too hot."
             show joyce outfit2
             j "I had to remove a few layers"
             # show boob-shoot at truecenter with moveinright
@@ -69,7 +69,7 @@ label label_terrasse_endTurn:
             show layer master:
                 zoom 1.0
             with dissolve
-            show joyce smile at sitting
+            show joyce smile at sitting with dissolve
             j "So where were we at?" 
             show screen screen_date_ui with dissolve
             pause 0.5
@@ -80,6 +80,6 @@ label label_terrasse_endTurn:
     call label_endTurn_common
 
     if "outfit2" in renpy.get_attributes("joyce"):
-        call label_add_card_to_deck("hand", Card("peek2"))
+        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5)
 
     return

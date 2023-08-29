@@ -179,7 +179,4 @@ label playCardfromHand(index):
     
     $ game.jeu_sensitive = True
 
-    if len(deck.hand) == 0:
-        call expression date.endTurn
-
     return

@@ -69,16 +69,49 @@ screen screen_home:
             action Call("label_home_cat")
             focus_mask True
 
-screen screen_home_phone():
+screen screen_home_end:
+    use screen_day
+    use screen_deck_stack
+
+    # sensitive not renpy.get_screen("say")
+    sensitive game.jeu_sensitive
+
+    if game.hasNewMessage():
+        imagebutton:
+            idle "home/phone-msg.png"
+            hover Transform("home/phone-msg.png", matrixcolor=TintMatrix((255,255,1275)))
+            action Show("screen_home_phone", None, _layer = "master")
+            focus_mask True
+    else:
+        imagebutton:
+            idle "home/phone.png"
+            hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
+            action Show("screen_home_phone", None, _layer = "master")
+            focus_mask True
+
+    imagebutton:
+        idle "home/cat.png"
+        hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
+        action Play("sound", "day/meow.wav")
+        focus_mask True
+
+screen screen_home_phone(hidePhone = True):
     
     modal True #break pauses?
 
     sensitive game.jeu_sensitive
-            
-    button:
-        xsize 1.0
-        ysize 1.0
-        action Hide("screen_home_phone", None, _layer="master")
+    
+    if hidePhone:
+        button:
+            xsize 1.0
+            ysize 1.0
+            action Hide("screen_home_phone", None, _layer="master")
+    else:
+        button:
+            xsize 1.0
+            ysize 1.0
+            action Call("label_home_phone")
+
 
     fixed at switch:
         xsize 523
@@ -199,6 +232,19 @@ label label_home():
         call screen screen_gameloop()
     jump .gameLoop
 
+label label_home_end():
+
+    $ game.state = "living"
+    scene bg home
+    show screen screen_home_end onlayer master
+    show black
+    hide black with dissolve
+    hide screen screen_day
+
+    label .gameLoop:
+        $ game.jeu_sensitive = True
+        call screen screen_gameloop()
+    jump .gameLoop
 
 label label_skip_day():
     menu:
@@ -239,7 +285,6 @@ label label_home_weirdDream():
     jump label_home
 
 
-
 label label_home_trash_cutscene(index):
     $ g.trashbin.append( [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
 
@@ -262,14 +307,28 @@ screen screen_trashbin():
 
 label label_home_cat:
     play sound "day/meow.wav"
-    menu:
-        "talk to it":
-            call label_home_add_cards("talk", "Add a Small Talk to your deck?")
-        "stare it":
-            call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
-        "X":
-            return
+    
+    if game.progress[0]<2:
+        menu:
+            "talk to it":
+                call label_home_add_cards("talk", "Add a Small Talk to your deck?")
+            "stare it":
+                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
+            "X":
+                return
+
+    else:
+        menu:
+            "talk to it":
+                call label_home_add_cards("talk", "Add a Small Talk to your deck?")
+            "stare it":
+                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
+            "look what it found":
+                call label_home_add_cards("drink", "Add a Drink! to your deck?")
+            "X":
+                return
     return
+
 
 label label_home_comp:
     
@@ -304,8 +363,8 @@ label label_home_bed:
             queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
             pause 2.0
             queue sound ["sex/Poison-cum.wav"]
-            "Lust reset to 0"
-            $ game.lust = -1
+            "Lust reset to zero"
+            $ game.lust = -1 * eval(game.lustPerDay)
             call label_newDay("label_home")
         "dream":
             call expression "label_dream_0"
@@ -318,8 +377,14 @@ label label_home_plant():
     menu:
         "water it":
             call label_home_add_cards("calm", "Add a Calm to your deck?")
-        # "meditate":
-        #     call label_home_add_cards("awakening", "Add an Awakening to your deck?")
+        "recycle":
+            call label_home_add_cards("recycle", "Add a Recycle to your deck?")
+        "meditate":
+            call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?")
+        # "water it":
+        #     call label_home_add_cards("newday", "Add a NewDay to your deck?")
+        # "fibonacci":
+        #     call label_home_add_cards("fibonacci", "Add a NewDay to your deck?")
         "X":
             return
     return
@@ -406,8 +471,10 @@ label label_pic7_reaction:
     
     with dissolve
     pause
-    "It seems like she took care of your cat while you were away.."
+    "It seems like she took care of your cat while you were away."
+    "Maybe she's not so bad."
     "The End"
+    window hide
     show screen game_complete with Dissolve(2.0)
     return
 
@@ -464,7 +531,7 @@ label label_pic4_reaction:
     pause
     menu:
         "Red":
-            $ g.phoneLogs[g.phoneProgress[0]] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy it."],[0, ";-P"]]
+            $ g.phoneLogs[g.phoneProgress[0]] += [[2, "I like the red dress"], [0, "the cleavage is so biiig though"],[2, "You'll pull it off"],[0, "yea I'm sure you're gonna enjoy the view."],[0, ";-P"]]
             $ whichDress = "red"
         "Blue":
             $ g.phoneLogs[g.phoneProgress[0]] += [[2, "I like the blue dress"], [0, "i might not fit in anymore, "],[0, "I gained so much weight since the last time I wore it."],[2, "You'll pull it off"],[0, "near the chest area"],[0, ";-P"]]

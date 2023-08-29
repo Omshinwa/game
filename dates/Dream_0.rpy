@@ -1,5 +1,5 @@
 label label_dream_0:
-    if game.progress[0] >= 3 :
+    if game.progress[0] >= 3 or game.progress[0] >= 2 and game.progress[1]>0:
         jump label_dream_1
 
     show black
