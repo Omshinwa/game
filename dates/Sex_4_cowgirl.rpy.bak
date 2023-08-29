@@ -56,7 +56,7 @@ label label_cowgirl:
     show cowgirl (2) as joyce with dissolve
     j "fuck me daddy"
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_9
+    call label_beginDuel_common()
     $ current_speed = date.animation_speed
     show joyce cowgirl with dissolve
     show moan_bubble
@@ -104,7 +104,7 @@ label label_cowgirl:
                 show joyce cowgirl
                 $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
             else:
-                call label_after_successful_Date_common from _call_label_after_successful_Date_common_8
+                call label_after_successful_Date_common
                 $ renpy.music.play("sex/moans3.wav", channel="sexvoice", loop=True)
                 $ date.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6, 5:2.0, 6:2.2, 7:2.5}
                 j "I'm gonna"
@@ -171,12 +171,12 @@ label label_cowgirl:
             show screen screen_sex_ui with dissolve
 
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_9
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
-    call .gameLoop from _call_label_cowgirl_gameLoop
+    call .gameLoop
 
     # This ends the game.
 
@@ -237,7 +237,7 @@ label label_cowgirl_SexEndTurn:
         j "But I'll let you try as many times as you want daddy."
         $ date.lust = 0
         $ game.lust = 0
-        call label_newDay("label_prison") from _call_label_newDay_22
+        call label_newDay("label_prison")
 
-    call label_endTurn_common from _call_label_endTurn_common_8
+    call label_endTurn_common
     return

@@ -69,7 +69,7 @@ label label_sex_tutorial:
     j "Ready?"
     show joyce footjob
     $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
-    call label_beginDuel_common() from _call_label_beginDuel_common_5
+    call label_beginDuel_common()
     hide screen screen_dick_ui
     $ current_speed = date.animation_speed
     jump label_footjob_gameLoop
@@ -111,14 +111,14 @@ label label_footjob:
     with dissolve
     j "Are you ready?"
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_6
+    call label_beginDuel_common()
     $ current_speed = date.animation_speed
 
     j "I'll start moving."
     
     show joyce footjob
 
-    call label_footjob_gameLoop from _call_label_footjob_gameLoop
+    call label_footjob_gameLoop
     return
 
 label label_footjob_gameLoop:
@@ -135,7 +135,7 @@ label label_footjob_gameLoop:
             $ current_speed = date.animation_speed
 
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_6
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -203,7 +203,7 @@ label label_footjob_SexEndTurn:
             show footjob v2 talk as joyce with dissolve
         j "Try again next time"
 
-        call label_newDay("label_prison") from _call_label_newDay_16
+        call label_newDay("label_prison")
 
     if date.turn == 5:
         $ phase = 2
@@ -215,20 +215,20 @@ label label_footjob_SexEndTurn:
         show footjob v2 (1) as joyce with dissolve
         pause
         
-        call label_add_card_to_deck("hand", Card("peek5-1"), pauseTime=1.0) from _call_label_add_card_to_deck_11
+        call label_add_card_to_deck("hand", Card("peek5-1"), pauseTime=1.0)
         j "ready?"
         # (add cards to deck)
 
         show joyce footjob v2 as joyce with dissolve
         pause
     elif date.turn > 5:
-        call label_add_card_to_deck("hand", Card("peek5-1")) from _call_label_add_card_to_deck_12
+        call label_add_card_to_deck("hand", Card("peek5-1"))
         pause 0.5
-    call label_endTurn_common from _call_label_endTurn_common_5
+    call label_endTurn_common
 
     if date.isWin():
         
-        call label_after_successful_Date_common from _call_label_after_successful_Date_common_5
+        call label_after_successful_Date_common
         stop sound
         show footjob v2 talk as joyce
         with dissolve
@@ -241,7 +241,7 @@ label label_footjob_SexEndTurn:
 
         hide joyce with dissolve
         
-        call label_newDay("label_prison") from _call_label_newDay_17
+        call label_newDay("label_prison")
 
 
     return

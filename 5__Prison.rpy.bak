@@ -163,7 +163,7 @@ label label_prison():
         play sound "sex/Fouet.mp3"
         show joyce push
         with vpunch
-        call label_prison_open_door(open=True) from _call_label_prison_open_door
+        call label_prison_open_door(open=True)
 
     $ g.prison_cards = []
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
@@ -221,7 +221,7 @@ label label_prison_food:
         "Eat and get stronger? (+1 dick size)"
         "Yes":
             $ game.lustMax += 1
-            call label_newDay("label_prison") from _call_label_newDay_5
+            call label_newDay("label_prison")
         "No":
             pass
     return
@@ -231,7 +231,7 @@ label label_prison_bed:
         "Try to calm down (Cut your lust by 2)"
         "Yes":
             $ game.lust = int(game.lust/2)
-            call label_newDay("label_prison") from _call_label_newDay_6
+            call label_newDay("label_prison")
         "No":
             pass
     return
@@ -241,9 +241,9 @@ label label_prison_add_card(cards):
     hide screen screen_prison_rat_add_cards with dissolve
     $ i = 0
     while i < len(cards):
-        call label_add_card_to_deck( "list", cards[i]) from _call_label_add_card_to_deck_3
+        call label_add_card_to_deck( "list", cards[i])
         $ i += 1
-    call label_newDay("label_prison") from _call_label_newDay_7
+    call label_newDay("label_prison")
 
 
 label label_prison_add_card_firstTime(cards):
@@ -251,7 +251,7 @@ label label_prison_add_card_firstTime(cards):
     hide screen screen_replace_deck with dissolve
     $ i = 0
     while i < len(cards):
-        call label_add_card_to_deck( "list", cards[i]) from _call_label_add_card_to_deck_4
+        call label_add_card_to_deck( "list", cards[i])
         $ i += 1
     return
 

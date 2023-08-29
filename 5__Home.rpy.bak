@@ -225,7 +225,7 @@ label label_home():
         "?"
         "Seems like the cat has something in its mouth"
         "It's a card!"
-        call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False) from _call_label_home_add_cards
+        call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False)
 
     label .gameLoop:
         $ game.jeu_sensitive = True
@@ -250,7 +250,7 @@ label label_skip_day():
     menu:
         "Postpone date until next time?"
         "Yes":
-            call label_newDay("label_home") from _call_label_newDay_2
+            call label_newDay("label_home")
         "No":
             return
         
@@ -311,20 +311,20 @@ label label_home_cat:
     if game.progress[0]<2:
         menu:
             "talk to it":
-                call label_home_add_cards("talk", "Add a Small Talk to your deck?") from _call_label_home_add_cards_1
+                call label_home_add_cards("talk", "Add a Small Talk to your deck?")
             "stare it":
-                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?") from _call_label_home_add_cards_2
+                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
             "X":
                 return
 
     else:
         menu:
             "talk to it":
-                call label_home_add_cards("talk", "Add a Small Talk to your deck?") from _call_label_home_add_cards_3
+                call label_home_add_cards("talk", "Add a Small Talk to your deck?")
             "stare it":
-                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?") from _call_label_home_add_cards_4
+                call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?")
             "look what it found":
-                call label_home_add_cards("drink", "Add a Drink! to your deck?") from _call_label_home_add_cards_5
+                call label_home_add_cards("drink", "Add a Drink! to your deck?")
             "X":
                 return
     return
@@ -336,9 +336,9 @@ label label_home_comp:
         menu:
             "You log into discord"
             "Post messages":
-                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home") from _call_label_transform_card
+                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
             "Read messages":
-                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home") from _call_label_transform_card_1
+                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
             "go to prison":
                 jump label_prison 
             "X":
@@ -348,9 +348,9 @@ label label_home_comp:
         menu:
             "You log into discord"
             "Post messages":
-                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home") from _call_label_transform_card_2
+                call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home")
             "Read messages":
-                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home") from _call_label_transform_card_3
+                call label_transform_card("talk", "listen", "Transform 1 Small Talk card into Listen?", "label_home")
             "X":
                 return
     return
@@ -365,9 +365,9 @@ label label_home_bed:
             queue sound ["sex/Poison-cum.wav"]
             "Lust reset to zero"
             $ game.lust = -1 * eval(game.lustPerDay)
-            call label_newDay("label_home") from _call_label_newDay_3
+            call label_newDay("label_home")
         "dream":
-            call expression "label_dream_0" from _call_expression
+            call expression "label_dream_0"
         "X":
             return
 
@@ -376,11 +376,11 @@ label label_home_bed:
 label label_home_plant():
     menu:
         "water it":
-            call label_home_add_cards("calm", "Add a Calm to your deck?") from _call_label_home_add_cards_6
+            call label_home_add_cards("calm", "Add a Calm to your deck?")
         "recycle":
-            call label_home_add_cards("recycle", "Add a Recycle to your deck?") from _call_label_home_add_cards_7
+            call label_home_add_cards("recycle", "Add a Recycle to your deck?")
         "meditate":
-            call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_8
+            call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?")
         # "water it":
         #     call label_home_add_cards("newday", "Add a NewDay to your deck?")
         # "fibonacci":
@@ -396,9 +396,9 @@ label label_home_add_cards(cardID, prompt, callback="label_home"):
         "yes":
             hide card
             hide screen screen_tutorial
-            call label_add_card_to_deck("list", Card(cardID), 300, 500) from _call_label_add_card_to_deck_2
+            call label_add_card_to_deck("list", Card(cardID), 300, 500)
             if callback:
-                call label_newDay(callback) from _call_label_newDay_4
+                call label_newDay(callback)
         "no":
             hide card
             hide screen screen_tutorial
@@ -461,7 +461,7 @@ label label_pic3_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
-    call label_home_phone from _call_label_home_phone
+    call label_home_phone
     return
 
 label label_pic7_reaction:
@@ -496,7 +496,7 @@ label label_pic6_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
-    call label_home_phone from _call_label_home_phone_1
+    call label_home_phone
     return
 
 label label_pic2_reaction:
@@ -518,7 +518,7 @@ label label_pic2_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
-    call label_home_phone from _call_label_home_phone_2
+    call label_home_phone
     return
 
 label label_pic4_reaction:
@@ -542,7 +542,7 @@ label label_pic4_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
-    call label_home_phone from _call_label_home_phone_3
+    call label_home_phone
     return
 
 label label_pic1_reaction:
@@ -616,5 +616,5 @@ label label_pic1_reaction:
     pause 0.5
     $ game.jeu_sensitive = True
     # $ del answer
-    call label_home_phone from _call_label_home_phone_4
+    call label_home_phone
     return

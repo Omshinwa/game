@@ -43,7 +43,7 @@ label label_handjob:
         j "Seems like it feels good"
         j "I'll make you feel even better.."
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_7
+    call label_beginDuel_common()
     $ current_speed = date.animation_speed
 
     hide anim
@@ -62,12 +62,12 @@ label label_handjob:
             $ current_speed = date.animation_speed
     
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_7
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
-    call .gameLoop from _call_label_handjob_gameLoop
+    call .gameLoop
 
     # This ends the game.
 
@@ -147,7 +147,7 @@ label label_handjob_SexEndTurn:
             with dissolve
         j "Build more sperm for me honey."
 
-        call label_newDay("label_prison") from _call_label_newDay_18
+        call label_newDay("label_prison")
 
     if date.turn == 4:
         show handjob (3) as joyce with dissolve
@@ -175,11 +175,11 @@ label label_handjob_SexEndTurn:
     # elif date.turn > 5:
     #     call label_add_card_to_deck("hand", Card("peek4"))
     #     pause 0.5
-    call label_endTurn_common from _call_label_endTurn_common_6
+    call label_endTurn_common
 
     if date.isWin():
             
-            call label_after_successful_Date_common from _call_label_after_successful_Date_common_6
+            call label_after_successful_Date_common
             stop sound
             show handjob talk as joyce
             show handjob get-hard (3) as anim
@@ -193,6 +193,6 @@ label label_handjob_SexEndTurn:
 
             hide joyce with dissolve
                 
-            call label_newDay("label_prison") from _call_label_newDay_19
+            call label_newDay("label_prison")
 
     return

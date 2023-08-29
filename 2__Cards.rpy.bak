@@ -171,11 +171,11 @@ label playCardfromHand(index):
         # $ renpy.pause(0.5)
         $ renpy.hide('cardPlayed', layer="screens")
 
-        call playCard(card, index) from _call_playCard
+        call playCard(card, index)
     else:
         $ raise Exception("playCardfromHand cond invalid")
     
-    call label_card_reaction from _call_label_card_reaction
+    call label_card_reaction
     
     $ game.jeu_sensitive = True
 

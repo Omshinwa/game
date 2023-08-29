@@ -200,7 +200,7 @@ label label_drink:
         play sound "day/gulp.wav"
         $ date.drink -= 1
         pause 1.0
-        call label_shuffle from _call_label_shuffle
+        call label_shuffle
         return
 
 label label_date_isLost_common(label_callback = "label_home"):
@@ -245,7 +245,7 @@ label label_date_isLost_common(label_callback = "label_home"):
             $ date.lust = 0
             $ date.trust = 0
             $ date.attraction = 0
-        call label_newDay(label_callback) from _call_label_newDay
+        call label_newDay(label_callback)
 
     return
 
@@ -263,9 +263,9 @@ label label_transform_card(cardID, cardID2, prompt, callback=None):
                         if card.name == cardID:
                             deck.list.pop(index)
                             break
-                call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5) from _call_label_add_card_to_deck_1
+                call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5)
                 if callback != None:
-                    call label_newDay(callback) from _call_label_newDay_1
+                    call label_newDay(callback)
             "no":
                 hide card onlayer screens
                 hide card2 onlayer screens

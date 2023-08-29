@@ -24,11 +24,11 @@ label label_dream_1:
     "You can transform an Eye Contact card."
     menu:
         "flirt":
-            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_6
+            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
         "be touchy":
-            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_7
+            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
         "devil":
-            call label_transform_card("eyecontact", "devil", "Transform 1 Eye Contact card into DevilPact?") from _call_label_transform_card_8
+            call label_transform_card("eyecontact", "devil", "Transform 1 Eye Contact card into DevilPact?")
     
     if g.dreamProgress == 1:
         j "Maybe you'll get to suck on these tits"
@@ -37,7 +37,7 @@ label label_dream_1:
     pause 1.0
     j "Goodbye"
     $ g.dreamProgress += 1
-    call label_newDay("label_home_weirdDream") from _call_label_newDay_14
+    call label_newDay("label_home_weirdDream")
     
     
 

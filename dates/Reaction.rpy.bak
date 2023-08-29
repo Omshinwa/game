@@ -97,7 +97,7 @@ label label_card_reaction(what = game.lastPlayed.name):
 
 
     if what == "talk2":
-        call label_card_reaction("talk") from _call_label_card_reaction_1
+        call label_card_reaction("talk")
         return
 
     if what not in done_flag:

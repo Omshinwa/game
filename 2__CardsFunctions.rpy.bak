@@ -186,7 +186,7 @@ label label_card_exodia(index):
             $ deck.discard(index)
             jump .effect
 
-    call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field") from _call_label_add_card_to_deck
+    call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
     return
 
     label .effect:

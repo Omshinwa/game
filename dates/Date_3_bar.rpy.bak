@@ -46,24 +46,24 @@ label label_barDate:
         zoom 1.0 xalign 0.5 yalign 0.5
     with dissolve
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_3
+    call label_beginDuel_common()
 
     label .gameLoop:
         $ game.jeu_sensitive = False
 
         label .winCondition:
             if date.isWin():
-                call label_after_successful_Date_common from _call_label_after_successful_Date_common_3
+                call label_after_successful_Date_common
 
                 j smile "That was a beautiful evening"
                 j "I'll think about you tonight."
                 j "See you soon."
-                call label_newDay("label_home") from _call_label_newDay_11
+                call label_newDay("label_home")
             
             show joyce 
     
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_4
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -73,7 +73,7 @@ label label_barDate:
 
 
 label label_barDate_endTurn:
-    call label_date_isLost_common from _call_label_date_isLost_common_3
+    call label_date_isLost_common
     
     if date.turn == 1 and game.progress[1]<=1:
         hide screen screen_date_ui with dissolve
@@ -110,11 +110,11 @@ label label_barDate_endTurn:
         j "No peeking under the table hehe!"
         show screen screen_date_ui with dissolve
     else:
-        call label_reaction from _call_label_reaction_3
+        call label_reaction
 
-    call label_endTurn_common from _call_label_endTurn_common_3
+    call label_endTurn_common
 
-    call label_add_card_to_deck("hand", Card("peek"+whichDress),pauseTime = 0.5) from _call_label_add_card_to_deck_7
+    call label_add_card_to_deck("hand", Card("peek"+whichDress),pauseTime = 0.5)
 
     return
 
@@ -135,5 +135,5 @@ label label_pic5_reaction:
     hide expression "#000a"
     with dissolve
     $ game.jeu_sensitive = True
-    call label_home_phone from _call_label_home_phone_5
+    call label_home_phone
     return

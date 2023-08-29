@@ -34,10 +34,10 @@ label label_dream_0:
     "You can transform an Eye Contact card."
     menu:
         "flirt":
-            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_4
+            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
 
         "be touchy":
-            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_5
+            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
     
     if g.dreamProgress == 0:
         j "Did this give you any new ideas?"
@@ -47,7 +47,7 @@ label label_dream_0:
         j "It seems like our time is up."
     j "See you soon cowboy."
     $ g.dreamProgress = 1
-    call label_newDay("label_home_weirdDream") from _call_label_newDay_13
+    call label_newDay("label_home_weirdDream")
   
 
 

@@ -14,24 +14,24 @@ label label_terrasse:
         j "Hey!"
         j "You found me, come sit there."
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_2
+    call label_beginDuel_common()
 
     label .gameLoop:
         $ game.jeu_sensitive = False
 
         label .winCondition:
             if date.isWin():
-                call label_after_successful_Date_common from _call_label_after_successful_Date_common_2
+                call label_after_successful_Date_common
 
                 j smile "Fiou I feel like I drank too much."
                 j "I think I'll go home now, it was nice."
                 j "We should go somewhere special next time"
                 j "I'll think about something."
                 j "See ya!"
-                call label_newDay("label_home") from _call_label_newDay_10
+                call label_newDay("label_home")
 
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_3
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
@@ -41,7 +41,7 @@ label label_terrasse:
 
 
 label label_terrasse_endTurn:
-    call label_date_isLost_common from _call_label_date_isLost_common_2
+    call label_date_isLost_common
     
     if game.progress[1]<=0:            
         if date.turn == 0:
@@ -74,12 +74,12 @@ label label_terrasse_endTurn:
             show screen screen_date_ui with dissolve
             pause 0.5
     else:
-        call label_reaction from _call_label_reaction_2
+        call label_reaction
 
 
-    call label_endTurn_common from _call_label_endTurn_common_2
+    call label_endTurn_common
 
     if "outfit2" in renpy.get_attributes("joyce"):
-        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5) from _call_label_add_card_to_deck_6
+        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5)
 
     return

@@ -63,7 +63,7 @@ label label_stripPoker:
 
     show joyce night at depied onlayer master zorder 0 with dissolve
 
-    call label_beginDuel_common() from _call_label_beginDuel_common_4
+    call label_beginDuel_common()
 
     label .gameLoop:
         $ game.jeu_sensitive = False
@@ -75,7 +75,7 @@ label label_stripPoker:
                 
                 if "night4" in renpy.get_attributes("joyce"):
                     $ date.lust = 0
-                    call label_after_successful_Date_common from _call_label_after_successful_Date_common_4
+                    call label_after_successful_Date_common
                     
                     j foxy smile "This is so sexy."
                     j foxy smile "I think you're a good candidate."     
@@ -123,7 +123,7 @@ label label_stripPoker:
                     pause
                     j "Everything will be just fine."
                     pause
-                    call label_newDay("label_welcome_prison") from _call_label_newDay_12
+                    call label_newDay("label_welcome_prison")
 
                 elif "night" in renpy.get_attributes("joyce"):
                     j foxy smile "Is it hot or it's just me?"
@@ -150,7 +150,7 @@ label label_stripPoker:
 
         
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_5
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
 
@@ -161,16 +161,16 @@ label label_stripPoker:
 
 
 label label_stripPoker_endTurn:
-    call label_date_isLost_common from _call_label_date_isLost_common_4
+    call label_date_isLost_common
     
-    call label_reaction from _call_label_reaction_4
+    call label_reaction
 
-    call label_endTurn_common from _call_label_endTurn_common_4
+    call label_endTurn_common
     if "night2" in renpy.get_attributes("joyce"):
-        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5) from _call_label_add_card_to_deck_8
+        call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5)
     if "night3" in renpy.get_attributes("joyce"):
-        call label_add_card_to_deck("hand", Card("peek4"), pauseTime = 0.5) from _call_label_add_card_to_deck_9
+        call label_add_card_to_deck("hand", Card("peek4"), pauseTime = 0.5)
     if "night4" in renpy.get_attributes("joyce"):
-        call label_add_card_to_deck("hand", Card("peek5"), pauseTime = 0.5) from _call_label_add_card_to_deck_10
+        call label_add_card_to_deck("hand", Card("peek5"), pauseTime = 0.5)
 
     return

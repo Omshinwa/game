@@ -18,19 +18,19 @@ label label_dream_2:
     "You can transform an Eye Contact card."
     menu:
         "flirt":
-            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_9
+            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?")
         "be touchy":
-            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_10
+            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?")
         "devil":
-            call label_home_add_cards("devil", "Add a Devil's Pact to your deck?") from _call_label_home_add_cards_9
+            call label_home_add_cards("devil", "Add a Devil's Pact to your deck?")
         "pair":
-            call label_home_add_cards("pair", "Transform 1 Eye Contact card into Pair?") from _call_label_home_add_cards_10
+            call label_home_add_cards("pair", "Transform 1 Eye Contact card into Pair?")
 
     play sound "day/alarm.wav"
     pause 1.0
     j "Good luck"
     $ g.dreamProgress += 1
-    call label_newDay("label_home_weirdDream") from _call_label_newDay_15
+    call label_newDay("label_home_weirdDream")
     
     
 

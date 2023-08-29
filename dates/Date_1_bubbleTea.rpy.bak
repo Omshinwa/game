@@ -20,7 +20,7 @@ label label_bubbleTea:
         if game.progress[1]>=1:
             j "I got us drinks already."
     
-    call label_beginDuel_common() from _call_label_beginDuel_common_1
+    call label_beginDuel_common()
     
     
     label .gameLoop:
@@ -28,15 +28,15 @@ label label_bubbleTea:
 
         label .winCondition:
             if date.isWin():
-                call label_after_successful_Date_common from _call_label_after_successful_Date_common_1
+                call label_after_successful_Date_common
 
                 j smile "So did you like the cafe?"
                 j "I think we should hang out outside again."
                 j worried "It is getting pretty hot! Let's drink outside next time."
-                call label_newDay("label_home") from _call_label_newDay_9
+                call label_newDay("label_home")
                 
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_2
+            call expression date.endTurn
         $ game.jeu_sensitive = True
         call screen screen_gameloop()
         
@@ -44,7 +44,7 @@ label label_bubbleTea:
 
 
 label label_bubbleTea_endTurn:
-    call label_date_isLost_common from _call_label_date_isLost_common_1
+    call label_date_isLost_common
 
     if game.progress[1]<=1:
         if date.turn == 0:
@@ -113,14 +113,14 @@ label label_bubbleTea_endTurn:
                     window hide
                     window auto
     else:
-        call label_reaction from _call_label_reaction_1
+        call label_reaction
         
     show screen screen_date_ui with dissolve
             
 
-    call label_endTurn_common from _call_label_endTurn_common_1
+    call label_endTurn_common
     
     if game.progress[1]>=2 and g.bubbleTea_share_drink:
-        call label_add_card_to_deck("hand", Card("peek"),pauseTime=0.5) from _call_label_add_card_to_deck_5
+        call label_add_card_to_deck("hand", Card("peek"),pauseTime=0.5)
 
     return
