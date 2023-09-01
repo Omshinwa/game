@@ -21,15 +21,25 @@ label label_dream_1:
         j "Did you miss me?"
         j "Or you missed those huge tits?"
 
-    "You can transform an Eye Contact card."
-    menu:
-        "flirt":
-            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_6
-        "be touchy":
-            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_7
-        "devil":
-            call label_transform_card("eyecontact", "devil", "Transform 1 Eye Contact card into DevilPact?") from _call_label_transform_card_8
-    
+    "You can transform an Eye Contact card or get a special card."
+    label .chooseOption:
+        menu:
+            "flirt":
+                $ i = len([item for item in deck.list if item.name == "eyecontact"])
+                call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_6
+                if len([item for item in deck.list if item.name == "eyecontact"]) == i:
+                    jump .chooseOption
+            "be touchy":
+                $ i = len([item for item in deck.list if item.name == "eyecontact"])
+                call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_7
+                if len([item for item in deck.list if item.name == "eyecontact"]) == i:
+                    jump .chooseOption
+            "sisyphus":
+                $ i = len(deck.list)
+                call label_home_add_cards("sisyphus", "Add Sisyphus to your deck?", False) from _call_label_home_add_cards_9
+                if len(deck.list) == i:
+                    jump .chooseOption
+
     if g.dreamProgress == 1:
         j "Maybe you'll get to suck on these tits"
         j "In real life that is."

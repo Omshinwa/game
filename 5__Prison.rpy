@@ -1,4 +1,6 @@
 label label_welcome_prison():
+    # $ game.dateEvery = 7
+    
     $ game.lustPerDay = "1"
     $ game.lust = 0
 
@@ -43,15 +45,15 @@ label label_welcome_prison():
             j "Do you still not understand who's in control?"
     j "See that chastity belt I've attached to you?"
     j "I have its key, and the key to your new room."
-    j smile "Every three days, I will come pick you, you will go through a physical exam."
+    j smile "Every week, I will come pick you, you will go through a physical examination."
     j "I will only free your chastity during those exams."
     j "If you manage not to cum, you'll move to the next stage."
     j "{b}At the last stage, you will fuck my pussy{/b}"
     j key "If then you manage to make me cum, you win the key to your cage."
     j "Understood?"
     j -key "I'll see you in 3 days."
-    # j "Oh, and get rid of all those Trust and Attraction cards."
-    # j "There's no point to them."
+
+    
     
     play sound "day/door_opening.wav"
     hide joyce with dissolve
@@ -62,7 +64,7 @@ label label_welcome_prison():
 
      
 label label_prison_first_time():
-
+    $ game.jeu_sensitive = False
     rat "So there's a new guy huh." with dissolve
     rat "You're not the first one she locks here."
     hide screen_prison_sans_rat
@@ -105,7 +107,7 @@ label label_prison_first_time():
     $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=3 } #
     
     $ i = score
-    $ g.prison_cards[0] = [Card("universeout"),Card("universeout"),Card("spaceout"),Card("darkhole"),Card("threeof"),Card("change")]
+    $ g.prison_cards[0] = [Card("spaceout"),Card("universeout"),Card("darkhole"),Card("nova"),Card("pair"),Card("change")]
     
     $ i = score - 2
     while i>score/2:
@@ -137,6 +139,7 @@ label label_prison_first_time():
     rat "Just leave me some food around."
     rat "Good luck staying alive"
     $ g.rat -= 1
+    $ game.jeu_sensitive = True
     jump label_prison
 
 label label_prison():
@@ -173,14 +176,26 @@ label label_prison():
     $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
-    
     $ g.prison_cards.append( Card.get_random_card({"slower":1, "slowsteady":1,"awakening":1,"calm":1, "maxcalm":1, "newday":1, "fibonacci":1, }) )
     $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[2].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[2].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
-    # $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] == 2 - availableCards[g.prison_cards[2].name]["value"]}
-    # $ g.prison_cards.append( Card.get_random_card(newlist) )
-    # $ g.prison_cards.append( Card.get_random_card(availableCards) )
+
+    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*2 + game.lust*11)%(len(availableCards)-1)] ) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
+    $ g.prison_cards.append( Card.get_random_card(newlist) )
+
+    # make it more likely to gather all pieces of exodia
+    python:
+        availableCards = ["exodia1", "exodia2", "exodia3"]
+
+        for index, card in enumerate(g.prison_cards):
+            if card.name in availableCards: #if there is an exodia card in prison
+                if card.name in [card2.name for card2 in deck.list]: #si la carte est déjà présente dans le deck
+                    for exodiaCard in availableCards: # on teste pour chaque carte exodia si elles sont dans le deck ou pas
+                        if exodiaCard not in [card2.name for card2 in deck.list]:
+                            g.prison_cards[index] = Card(exodiaCard)
+
     
 
     $ del availableCards, newlist
@@ -321,22 +336,22 @@ screen screen_prison_rat_add_cards(sixCards = g.prison_cards):
     add "#000a"
     modal True
     
-    # fixed:
-    #     xpos -550
-    #     use screen_add_cards( sixCards[:2], "label_prison_add_card")
-    # fixed:
-    #     xpos 0
-    #     use screen_add_cards( sixCards[2:4], "label_prison_add_card")
-    # # fixed:
-    # #     xpos 550
-    # #     use screen_add_cards( sixCards[4:], "label_prison_add_card")
-
     fixed:
-        xpos -400
+        xpos -550
         use screen_add_cards( sixCards[:2], "label_prison_add_card")
     fixed:
-        xpos 400
+        xpos 0
         use screen_add_cards( sixCards[2:4], "label_prison_add_card")
+    fixed:
+        xpos 550
+        use screen_add_cards( sixCards[4:], "label_prison_add_card")
+
+    # fixed:
+    #     xpos -400
+    #     use screen_add_cards( sixCards[:2], "label_prison_add_card")
+    # fixed:
+    #     xpos 400
+    #     use screen_add_cards( sixCards[2:4], "label_prison_add_card")
 
     imagebutton:
         idle "ui/cancel.png"

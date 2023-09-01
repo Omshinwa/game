@@ -1,10 +1,10 @@
 label label_terrasse:
-    $ date = Date("date", objectif_trust = 25, objectif_attraction = 20, turnLeft = 5, endTurn = "label_terrasse_endTurn")
+    $ date = Date("date", objectif_trust = 20, objectif_attraction = 16, turnLeft = 6, endTurn = "label_terrasse_endTurn")
     scene bg terrasse
     show fg terrasse-table onlayer master zorder 2
-    show screen screen_glass("terrasse") onlayer master zorder 2
 
     if game.progress[1]>=1:
+        show screen screen_glass("terrasse") onlayer master zorder 2
         show joyce outfit2 smile at sitting
         with dissolve
         j "I remembered to dress lighter this time."
@@ -13,6 +13,9 @@ label label_terrasse:
         with dissolve
         j "Hey!"
         j "You found me, come sit there."
+        show screen screen_glass("terrasse") onlayer master zorder 2
+        play sound "day/put_on_table.wav"
+        j "Ahh nothing like a beer on a terrace."
 
     call label_beginDuel_common() from _call_label_beginDuel_common_2
 
@@ -47,9 +50,10 @@ label label_terrasse_endTurn:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             j null "Oh man it's really too hot"
-            j "Hold on I'll go to the bathroom."
-            show joyce at standing 
-            pause
+            j "Hold on I have an idea."
+            j "Be right back."
+            show joyce at standing with dissolve
+            pause 0.5
             hide joyce with dissolve
             pause
             show joyce outfit2 at standing as joyce with dissolve

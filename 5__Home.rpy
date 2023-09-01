@@ -1,12 +1,12 @@
 screen screen_home:
-    use screen_trust_ui()
-    use screen_day
-    use screen_deck_stack
-
     # sensitive not renpy.get_screen("say")
     sensitive game.jeu_sensitive
 
     if game.day % game.dateEvery == 0:
+        
+        add "home/comp.png"
+        add "home/bed.png"
+
         imagebutton:
             idle "home/door.png"
             hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
@@ -18,6 +18,14 @@ screen screen_home:
             hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_skip_day")
             focus_mask True
+
+        if g.plant < 4:
+            add "home/plant-"+str(g.plant)+".png"
+        else:
+            add "home/plant-3.png"
+
+        add "home/trash.png"
+
     else:
         if game.hasNewMessage():
             imagebutton:
@@ -35,11 +43,13 @@ screen screen_home:
                     action Show("screen_home_phone", None, _layer = "master")
                     focus_mask True
 
-        imagebutton:
-            idle "home/door.png"
-            hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
-            action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
-            focus_mask True
+        add "home/door.png"     
+        
+        # imagebutton:
+        #     idle "home/door.png"
+        #     hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
+        #     action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+        #     focus_mask True
             
         imagebutton:
             idle "home/bed.png"
@@ -50,7 +60,7 @@ screen screen_home:
         imagebutton:
             idle "home/trash.png"
             hover Transform("home/trash.png", matrixcolor=TintMatrix((255,255,1275)))
-            action Show("screen_show_deck",label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="trash-static")
+            action Call("label_home_trash")
             focus_mask True
 
         imagebutton:
@@ -58,16 +68,29 @@ screen screen_home:
             hover Transform("home/comp.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_comp")
             focus_mask True
-        imagebutton:
-            idle "home/plant.png"
-            hover Transform("home/plant.png", matrixcolor=TintMatrix((255,255,1275)))
-            action Call("label_home_plant")
-            focus_mask True
+
+        if g.plant < 4:
+            imagebutton:
+                idle "home/plant-"+str(g.plant)+".png"
+                hover Transform("home/plant-"+str(g.plant)+".png", matrixcolor=TintMatrix((255,255,1275)))
+                action Call("label_home_plant")
+                focus_mask True
+        else:
+            imagebutton:
+                idle "home/plant-3.png"
+                hover Transform("home/plant-3.png", matrixcolor=TintMatrix((255,255,1275)))
+                action Call("label_home_plant")
+                focus_mask True
+
         imagebutton:
             idle "home/cat.png"
             hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_cat")
             focus_mask True
+
+    use screen_trust_ui()
+    use screen_day
+    use screen_deck_stack
 
 screen screen_home_end:
     use screen_day
@@ -94,6 +117,18 @@ screen screen_home_end:
         hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
         action Play("sound", "day/meow.wav")
         focus_mask True
+
+    if g.plant >= 4:
+        imagebutton:
+            idle "home/plant-5.png"
+            hover Transform("home/plant-5.png", matrixcolor=TintMatrix((255,255,1275)))
+            action Jump("label_big_tree_thank_you")
+            focus_mask True
+    else:
+        add "home/plant-"+str(g.plant)+".png"
+
+    add "home/trash.png"
+
 
 screen screen_home_phone(hidePhone = True):
     
@@ -208,6 +243,10 @@ screen screen_home_phone(hidePhone = True):
 #############################################################################
 
 label label_home():
+    if g.water:
+        $ g.water = False
+        $ g.plant += 1
+
     if game.progress[0]*2>g.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
         $ g.phoneProgress[0] += 1
         $ g.phoneProgress[1] = 0
@@ -216,7 +255,9 @@ label label_home():
     scene bg home
     show screen screen_home onlayer master
     show black
-    hide black with dissolve
+    hide black
+    hide black onlayer screens
+    with dissolve
     hide screen screen_day
 
     if game.progress[0] == 2 and game.progress[1] == -1 and "cat" not in done_flag:
@@ -226,6 +267,14 @@ label label_home():
         "Seems like the cat has something in its mouth"
         "It's a card!"
         call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False) from _call_label_home_add_cards
+
+    elif game.progress[0] == 4 and game.progress[1] == -1 and done_flag["cat"] == 1:
+        $ done_flag["cat"] = 2
+        play sound "day/meow.wav"
+        "?"
+        "Seems like the cat has something in its mouth"
+        "It's a card!"
+        call label_home_add_cards("devil", "Add a Devil to your deck?", callback=False) from _call_label_home_add_cards_6
 
     label .gameLoop:
         $ game.jeu_sensitive = True
@@ -284,8 +333,22 @@ label label_home_weirdDream():
     "You cannot remember the content though."
     jump label_home
 
+label label_home_trash():
+
+    if len(g.trashbin) == 3 and g.findFromTrash:
+        $ g.findFromTrash = False
+        $ game.jeu_sensitive = False
+        "?"
+        "You find something in the midst of all the trash."
+        call label_home_add_cards("recycle", "Add a Recycle to your deck?", False) from _call_label_home_add_cards_7
+        return
+    else:
+        show screen screen_show_deck(label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="trash-static")
+        call screen screen_gameloop()
+
 
 label label_home_trash_cutscene(index):
+
     $ g.trashbin.append( [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
 
     hide screen screen_show_deck
@@ -332,7 +395,7 @@ label label_home_cat:
 
 label label_home_comp:
     
-    if game.debug_flag:
+    if game.debug_mode:
         menu:
             "You log into discord"
             "Post messages":
@@ -358,7 +421,7 @@ label label_home_comp:
 label label_home_bed:
     $ game.jeu_sensitive = False
     menu:
-        "rub a quickie":
+        "take care of your lust":
             show black with dissolve
             queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
             pause 2.0
@@ -373,23 +436,70 @@ label label_home_bed:
 
     return
 
-label label_home_plant():
-    menu:
-        "water it":
-            call label_home_add_cards("calm", "Add a Calm to your deck?") from _call_label_home_add_cards_6
-        "recycle":
-            call label_home_add_cards("recycle", "Add a Recycle to your deck?") from _call_label_home_add_cards_7
-        "meditate":
-            call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_8
-        # "water it":
-        #     call label_home_add_cards("newday", "Add a NewDay to your deck?")
-        # "fibonacci":
-        #     call label_home_add_cards("fibonacci", "Add a NewDay to your deck?")
-        "X":
-            return
+label label_big_tree_thank_you():
+    if 10 > g.plant >= 4:
+        "'thank you'"
+        "?!"
+        "You felt like you just heard a voice."
+        $ g.plant = 99
+    call screen screen_gameloop()
     return
 
-label label_home_add_cards(cardID, prompt, callback="label_home"):
+label label_water_the_plant():
+    if g.plant == 0:
+        "You feel like the plant is already growing."
+    elif g.plant == 1:
+        "You feel like the plant is getting bigger."
+    elif g.plant == 2:
+        "You feel like the plant is gonna be massive."
+    elif g.plant == 3:
+        "You feel like the plant is gonna take over the world."
+    elif g.plant == 4:
+        `It's gonna take some more time for it to grow.`
+    if g.plant<5:
+        $ g.water = True
+    call label_newDay('label_home') from _call_label_newDay_4
+
+label label_home_plant():
+    if g.plant <= 0:
+        menu:
+            "water it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_8
+            "X":
+                return
+    elif g.plant <= 1:
+        menu:
+            "water it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_12
+            "meditate":
+                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_13
+            "X":
+                return    
+    elif g.plant <= 2:
+        menu:
+            "water it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_14
+            "meditate":
+                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_15
+            "admire it":
+                call label_home_add_cards("newday", "Add a NewDay to your deck?") from _call_label_home_add_cards_16
+            "X":
+                return
+    else:
+        menu:
+            "water it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_17
+            "meditate":
+                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_18
+            "admire it":
+                call label_home_add_cards("newday", "Add a NewDay to your deck?") from _call_label_home_add_cards_19
+            "study it":
+                call label_home_add_cards("fibonacci", "Add a Fibonacci to your deck?") from _call_label_home_add_cards_20
+            "X":
+                return
+    return
+
+label label_home_add_cards(cardID, prompt, callback=True):
     show expression trans_show_card_2(Card(cardID).img) as card
     menu:
         "[prompt]"
@@ -398,7 +508,10 @@ label label_home_add_cards(cardID, prompt, callback="label_home"):
             hide screen screen_tutorial
             call label_add_card_to_deck("list", Card(cardID), 300, 500) from _call_label_add_card_to_deck_2
             if callback:
-                call label_newDay(callback) from _call_label_newDay_4
+                if callback == True:
+                    call label_newDay('label_home') from _call_label_newDay_23
+                else:
+                    call expression callback from _call_expression_10
         "no":
             hide card
             hide screen screen_tutorial
@@ -598,7 +711,7 @@ label label_pic1_reaction:
                     $ g.phoneLogs[3].append( [2, "+3 trust, +3 attraction"])
                     $ g.phoneLogs[3].append( [0, "what?"])
                     $ g.phoneLogs[3].append( [2, "dont worry about it ;-)"])
-                    $ g.phoneLogs[3].append( ["exe", "game.trust+=3; game.trust+=3; renpy.call('label_home_phone')"])
+                    $ g.phoneLogs[3].append( ["exe", "game.trust+=3; game.attraction+=3; renpy.call('label_home_phone')"])
                 else:
                     $ g.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
             "No":

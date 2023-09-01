@@ -12,7 +12,7 @@ label label_reaction():
 
     hide screen screen_date_ui with dissolve
 
-    show joyce null with dissolve
+    show joyce null
 
     if value == 0:
         j eyeside armscrossed "It's getting pretty warm these days."
@@ -64,24 +64,63 @@ label label_reaction():
     elif value == 5:
         j "Cats are also useful for pests."
         j "I've seen some rats in my basement. A cat would be a good help"
-        j "My place has a pretty big basement, I could show you!"
+        j smile "My place has a pretty big basement, I could show you!"
 
     elif value == 6:
+        play sound "day/gulp.wav"
+        j smile "*slurp*"
+        j "Ah! Nothing like alcohol after a rough day!"
+        j "I drink occasionally."
+        j "And when I mean occasionally, I mean you're my excuse to drink!"
+
+    elif value == 7:
         j "I feel like I want a cat because I'm so lonely at home."
         j happy smile "But with you, maybe I won't need a cat anymore."
         j "Will you cure my loneliness?"
         show joyce -happy -smile with dissolve
 
-    elif value == 7:
+    elif value == 8:
+        j blush smile "Come on drink!"
+        j "*hic*"
+        j "My friends say I'm bad with alcohol."
+        j "Fudge them! I can totally drink my own!"
+        j "Cheeeers!"
+        menu:
+            "Drink with her":
+                if date.drink>0:
+                    play sound "day/gulp.wav"
+                    $ date.drink -= 1
+                    j "NICE NICE!"
+                    j "You're a jolly fellow!"
+                    "+4 attraction"
+                    $ date.attraction += 4
+                    with dissolve
+                else:
+                    j "HEY WAIT A MINUTE"
+                    j "Your glass is empty!"
+                    j "GARCON! BRING THIS BOY ANOTHER!"
+                    play sound "day/pour-drink.wav"
+                    while date.drink<3:
+                        $ date.drink += 1
+                        with wipeup
+                    j "That's better"
+                    j "NOW DRINK!!"
+            "Maybe you should calm down":
+                j "Booo"
+                j "You're such a *hic* Joy killer"
+                j "Joyce killer?"
+                j "HAHAHA"
+
+    elif value == 9:
         j "Wow you play erotic games?"
         j "No I'm not judging."
         j smirk "I'm not too innocent either hehe."
         j "Erotic video games are fun."
         j -smirk "..."
-        j foxy blush "But I like it more in real life."
+        j foxy blush "But I like more human contact."
         show joyce -foxy -blush with dissolve
 
-    elif value == 8:
+    elif value == 10:
         j "Maybe you can show me what kind of erotic games you like."
         j "Show me what you like."
 
@@ -94,7 +133,6 @@ return
 default done_flag = {"script":0, "thisTurn":set()}
 
 label label_card_reaction(what = game.lastPlayed.name):
-
 
     if what == "talk2":
         call label_card_reaction("talk") from _call_label_card_reaction_1
@@ -127,10 +165,13 @@ label label_card_reaction(what = game.lastPlayed.name):
         return
 
     if game.state == "dating":
-        show joyce null with dissolve
+        show joyce null
 
     if what == "eyecontact":
-        
+
+        if value <= 4:
+            hide screen screen_date_ui with dissolve
+
         if value == 0:
             show layer master:
                 zoom 1.5 xalign 0.5 yalign 0.1
@@ -189,6 +230,9 @@ label label_card_reaction(what = game.lastPlayed.name):
         with dissolve
 
     elif what == "touchy":
+        if value <= 4:
+            hide screen screen_date_ui with dissolve
+
         if renpy.get_image_bounds("joyce")[1]<55:
             $ i = depied
         else:
@@ -262,7 +306,9 @@ label label_card_reaction(what = game.lastPlayed.name):
             show joyce -blush -defend with dissolve
 
     elif what == "flirt":
+
         if value == 0 or value == 1:
+            hide screen screen_date_ui with dissolve
             menu:
                 "I like your dress":
                     if game.progress[0] != 3:
@@ -296,6 +342,7 @@ label label_card_reaction(what = game.lastPlayed.name):
                             j "Would you bleach your hair green?"
                     show joyce -green_hair with dissolve
         elif value == 2:
+            hide screen screen_date_ui with dissolve
             menu:
                 "I think you're beautiful":
                     j eyeside blush "..."
@@ -321,8 +368,12 @@ label label_card_reaction(what = game.lastPlayed.name):
                 for i in outfits:
                     if i in renpy.get_attributes("joyce"):
                         if i in done_flag["flirt_done"]:
+                            renpy.show_screen("screen_date_ui")
+                            renpy.with_statement(dissolve)
                             renpy.return_statement()
                         done_flag["flirt_done"].add(i)
+            
+            hide screen screen_date_ui with dissolve
             menu:
                 "You have nice boobs":
                     j foxy smirk "You like them?"
@@ -343,9 +394,7 @@ label label_card_reaction(what = game.lastPlayed.name):
                         show joyce -reveal-2 -smile with dissolve
             $ done_flag[what] -= 1
 
-
-
-
+    show screen screen_date_ui with dissolve
     $ done_flag[what] += 1
         
     return

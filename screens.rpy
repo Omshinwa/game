@@ -365,7 +365,7 @@ screen main_menu():
 
     add gui.main_menu_background
 
-    ## This empty frame darkens the main menu.
+    # # This empty frame darkens the main menu.
     # frame:
     #     style "main_menu_frame"
 
@@ -373,7 +373,7 @@ screen main_menu():
     ## contents of the main menu are in the navigation screen.
     
     fixed:
-        xpos 1000
+        xpos 200
         use navigation
 
     if gui.show_name:
@@ -406,6 +406,7 @@ style main_menu_vbox:
     xmaximum 1200
     yalign 1.0
     yoffset -30
+    background "#fff"
 
 style main_menu_text:
     properties gui.text_properties("main_menu", accent=True)

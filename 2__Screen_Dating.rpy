@@ -58,8 +58,8 @@ screen screen_card_hand():
 
 screen screen_date_bottom_ui():
 
-    add "card_zone_bg" yalign 1.0
-    #     cards at the bottom
+    # add "card_zone_bg" yalign 1.0
+
     button:
         hovered SetVariable("game.isHoverHand", True)
         unhovered SetVariable("game.isHoverHand", False)
@@ -145,7 +145,7 @@ screen screen_debug:
                 imagebutton:
                     xsize 100
                     ysize 100
-                    action Jump("label_welcome_prison")
+                    action Show("_console")
                     idle "#00f"
 
 screen screen_dick_ui:
@@ -155,7 +155,8 @@ screen screen_dick_ui:
     else:
         $ gameOrDate = game
 
-    $ shaft_size = int( 196*(getattr(gameOrDate, "lustMax") / 20) )
+    $ sizeMultiplier = 1/50
+    $ shaft_size = int( 196*(getattr(gameOrDate, "lustMax") * sizeMultiplier) )
     $ fullSizeDick = 122 + shaft_size + 152
     $ croppedSize = int ( fullSizeDick * getattr(gameOrDate, "lust")/getattr(gameOrDate, "lustMax") )
     fixed:
@@ -165,20 +166,20 @@ screen screen_dick_ui:
         xsize 122 + shaft_size + 152
         if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
             image Transform("ui/lust_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") )
-            image Transform("ui/lust_bar2.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Transform("ui/lust_bar2.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
             image Transform("ui/lust_bar3.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
         else:
             image "ui/lust_bar1.png"
-            image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
             image "ui/lust_bar3.png" xpos 122+shaft_size
 
         if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
             image Crop( (0, 0, croppedSize, 120), Transform("ui/lust_full_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) ) 
-            image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), Transform("ui/lust_full_bar2.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), Transform("ui/lust_full_bar2.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
             image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), Transform("ui/lust_full_bar3.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122+shaft_size
         else:
             image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
-            image Crop( (0, 0, int( (croppedSize - 122) * 20 / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  / 20
+            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
             image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
 
         # fixed: #cum bar
@@ -338,29 +339,25 @@ screen screen_trust_ui(range_var = 100):
                 size 35 style "outline_text"
                 color "#cc3"
 
+define logTable = [0, 0, 0.01, 0.05, 0.12, 0.18, 0.28, 0.4, 0.53, 0.68, 0.85, 1.1, 1.18, 1.40, 1.85, 2.4, 3.0]
         
 screen screen_turn_counter:
     fixed:
-        add "#00f"
+        if game.state == "dating" or game.state == "sexing":
+            add Color((255/(date.turnLeft*0.05 + 0.95), 228/(1+logTable[date.turnLeft]), 147))
         xsize 200
         ysize 200
-        xpos 1900 ypos 20 xanchor 1.0
+        xpos 20 ypos 20
 
         text "{b}{i}{k=-25.0}"+str(date.turnLeft)+"{/k}{/i}{/b}":
-            size 200 style "outline_text" xalign 0 yalign 0.5
-            if (date.turnLeft)==1:
-                color "#ffed68"
-            elif (date.turnLeft)<3:
-                color "#eb7412"
-            elif (date.turnLeft)<5:
-                color "#c64826"
-            else:
-                color "#000000"
+            size 190 style "outline_text" xalign 0.4 yalign 0.5 color "#000000"
             if date.turnLeft>9:
-                size 180 xpos -80
+                size 180  xalign 0.7
+            elif date.turnLeft == 1:
+                color "#f00"
 
         text "turn(s) left":
-            size 25 style "outline_text" xalign 1.0 yalign 0.85
+            size 25 style "outline_text" xalign 1.0 yalign 0.95
             
 screen screen_gameloop():
     pass
@@ -369,7 +366,10 @@ screen screen_gameloop():
 screen screen_buttons_ui():
     imagebutton:
         xpos 20
-        ypos 20
+        if game.state == "sexing":
+            ypos 700
+        else:
+            ypos 740
         idle "ui/hide_ui.png"
         hover "ui/hide_ui_hover.png"
         action HideInterface()

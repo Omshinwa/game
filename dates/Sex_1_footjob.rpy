@@ -123,6 +123,7 @@ label label_footjob:
 
 label label_footjob_gameLoop:
     $ phase = 1
+    $ date.animation_speed = 1
     label .gameLoop:
         $ game.jeu_sensitive = False
 
@@ -154,6 +155,16 @@ label label_footjob_SexEndTurn:
         pause(0.05)
     
     $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce footjob v2
+    else:
+        show joyce footjob
+    pause 0.5
+    $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce footjob v2
+    else:
+        show joyce footjob
     
     if date.isLost():
         hide screen screen_sex_ui
@@ -171,7 +182,10 @@ label label_footjob_SexEndTurn:
             show footjob v2 (1) as joyce
         pause 0.2
         play sound "sex/Poison-cum.wav"
-        show joyce at shaking
+        if phase == 1:
+            show footjob (1) as joyce at shaking
+        else:
+            show footjob v2 (1) as joyce at shaking
         show cum1 as anim at shaking
         pause(0.3)
         show cum2 as anim
@@ -181,12 +195,14 @@ label label_footjob_SexEndTurn:
         show cum4 as anim
         pause(0.3)
         if phase == 1:
-            show end-cummed as anim
+            show end-cummed as anim at default
         else:
-            show end-cummed2 as anim
+            show end-cummed2 as anim at default
         
-        show joyce at default
-        show anim at default
+        if phase == 1:
+            show footjob (1) as joyce at default
+        else:
+            show footjob v2 (1) as joyce at default
         pause 0.4
         
         $ game.lust = 0
@@ -197,7 +213,7 @@ label label_footjob_SexEndTurn:
         j "You failed this exam."
         j "Time to lock you up again"
         play sound "rpg/Key.wav"
-        if date.turn<=5:
+        if phase == 1:
             show footjob talk as joyce with dissolve
         else:
             show footjob v2 talk as joyce with dissolve
@@ -205,7 +221,7 @@ label label_footjob_SexEndTurn:
 
         call label_newDay("label_prison") from _call_label_newDay_16
 
-    if date.turn == 5:
+    if date.turn == 2:
         $ phase = 2
         show footjob (1) as joyce with dissolve
         j "You're holding out well"
@@ -215,14 +231,22 @@ label label_footjob_SexEndTurn:
         show footjob v2 (1) as joyce with dissolve
         pause
         
-        call label_add_card_to_deck("hand", Card("peek5-1"), pauseTime=1.0) from _call_label_add_card_to_deck_11
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_11
         j "ready?"
-        # (add cards to deck)
+
+        $ date.animation_speed_hash[10] = 2.0
 
         show joyce footjob v2 as joyce with dissolve
+
+        $ date.speedUp()
+        show joyce footjob v2
+        pause 0.5
+        $ date.speedUp()
+        show joyce footjob v2
+
         pause
-    elif date.turn > 5:
-        call label_add_card_to_deck("hand", Card("peek5-1")) from _call_label_add_card_to_deck_12
+    elif date.turn > 2:
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.5) from _call_label_add_card_to_deck_12
         pause 0.5
     call label_endTurn_common from _call_label_endTurn_common_5
 

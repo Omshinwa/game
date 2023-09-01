@@ -1,6 +1,6 @@
 
 label label_barDate:
-    $ date = Date("date", objectif_trust = 40, objectif_attraction = 40, turnLeft = 6, endTurn = "label_barDate_endTurn")
+    $ date = Date("date", objectif_trust = 32, objectif_attraction = 32, turnLeft = 7, endTurn = "label_barDate_endTurn")
     scene bg bar
     show fg bar-table onlayer master zorder 2
 
@@ -10,6 +10,7 @@ label label_barDate:
             show joyce outfitred at depied onlayer master zorder 2
         else:
             show joyce outfitblue at depied onlayer master zorder 2
+            $ g.phoneLogs[7][0] = [1, "pic5-blue.png"]
         with dissolve
     
         j smile "Heey [povname]"
@@ -79,9 +80,9 @@ label label_barDate_endTurn:
         hide screen screen_date_ui with dissolve
         j "I'll go to the bathroom a bit"
         show joyce at standing with dissolve
-        pause 0.2
+        pause 0.5
         hide joyce with dissolve
-        pause
+        pause 
         play sound "day/newmsg.wav"
         pause
         "?"
@@ -125,8 +126,8 @@ label label_pic5_reaction:
     with dissolve
     pause
     "this picture has some effect on you.."
-    "Lust +20"
-    $ date.lust += 20
+    "Lust +10"
+    $ date.lust += 10
     play sound "rpg/Lust.wav"
     window hide 
     pause

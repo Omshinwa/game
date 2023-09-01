@@ -95,18 +95,26 @@ label label_cowgirl:
                 j "huff.."
                 j "t-that doesn't count"
                 j "w-we keep going.."
-                $ date.animation_speed = 0
+                $ date.animation_speed = 3
                 $ date.orgasm = 0
-                $ date.orgasmMax = 50
+                $ date.orgasmMax = 100
                 $ phase = 2
                 
-                $ date.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6, 5:2.0}
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=1.0) from _call_label_add_card_to_deck_23
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_24
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_25
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_26
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_27
+                call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_28
+                
+                $ date.animation_speed_hash[10] = 2.0
                 show joyce cowgirl
                 $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
             else:
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_8
                 $ renpy.music.play("sex/moans3.wav", channel="sexvoice", loop=True)
-                $ date.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6, 5:2.0, 6:2.2, 7:2.5}
+                $ date.animation_speed_hash[11] = 2.2
+                $ date.animation_speed_hash[12] = 2.5
                 j "I'm gonna"
                 $ date.speedUp()
                 show joyce
@@ -163,7 +171,7 @@ label label_cowgirl:
                 $ game.state = "living"
                 $ game.jeu_sensitive = False
 
-                $ g.phoneProgress[0] = 9
+                $ g.phoneProgress[0] = 10
                 $ g.phoneProgress[1] = 0
 
                 jump label_home_end
@@ -195,6 +203,10 @@ label label_cowgirl_SexEndTurn:
         pause(1.0/ date.animation_lust[date.animation_speed])
     
     $ date.speedUp()
+    show joyce cowgirl
+    pause 0.5
+    $ date.speedUp()
+    show joyce cowgirl
     
     if date.isLost():
         hide screen screen_sex_ui with dissolve
@@ -229,11 +241,13 @@ label label_cowgirl_SexEndTurn:
         pause 0.4
         show cowgirl cum-out (3) as joyce with dissolve
         pause
-        j "Thanks you daddy, now go back to jail."
+        j "Thank you [povname], my belly is so warm now."
+        j "Now that I'm finished using you..."
         play sound "rpg/Key.wav"
         show cowgirl lock as joyce with dissolve
         pause
-        j "Hehe I don't think you'll make me cum ever."
+        j "I'll put your back."
+        j "I don't think you'll ever make me cum before you."
         j "But I'll let you try as many times as you want daddy."
         $ date.lust = 0
         $ game.lust = 0

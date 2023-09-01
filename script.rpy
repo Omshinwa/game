@@ -70,14 +70,18 @@ label start2:
 
     default deck = Deck()
 
-    # $ deck.list = [Card("drink"),Card("drink"),Card("drink"),Card("devil"),Card("devil"),Card("fibonacci"),Card("fibonacci"),Card("fibonacci"),Card("fibonacci"),Card("peek"),Card("peek"),]
-    
-    $ deck.list = [Card("talk"),Card("talk"),Card("talk"),Card("calm"),Card("spaceout"),Card("spaceout"),Card("spaceout"),Card("spaceout"),
+    python:
+        CARD_IMG_DICT = {}
+        for card in cardList:
+            CARD_IMG_DICT[card] = Image("cards/" + card + ".png")
+
+    $ deck.list = [Card("talk"),Card("talk"),Card("talk"),Card("calm"),Card("spaceout"),Card("spaceout"),Card("spaceout"),
     Card("spaceout"),Card("listen"),Card("eyecontact"),Card("draw2"),Card("touchy"),Card("pair"),Card("recycle")]
 
     # python:
     #     for card in cardList:
     #         deck.list.append(Card(card))
+    
     $ povname = renpy.input("What is your name?", length=32)
     $ povname = povname.strip()
 
@@ -89,8 +93,8 @@ label start2:
     show screen screen_debug
 
     jump label_tutorial
-    # jump label_prison_first_time
-    jump label_home
+
+    # jump label_home
     # jump test_sprites
 
     return

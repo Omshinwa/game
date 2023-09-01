@@ -9,10 +9,10 @@ label label_newDay(callback):
     if game.day % game.dateEvery == 0:
         show screen screen_day
     with dissolve
-    pause 1.5
     window auto
 
     if game.day % game.dateEvery == 0:
+        pause 1.5
         # show layer screens:
         #     zoom 2.0 xalign 0.0 yalign 0.0
         #     ease 1.0 zoom 1.0
@@ -20,6 +20,7 @@ label label_newDay(callback):
         $ game.day += 1
         with blinds
     else:
+        pause 1.0
         $ game.day += 1
     
     $ game.state = "living"
@@ -39,7 +40,7 @@ label label_beginDuel_common():
     $ date.attraction = game.attraction
     $ date.attractionMultiplier = 1
     
-    $ date.animation_speed = 1
+    $ date.animation_speed = 3
 
     $ deck.drink = 3
 
@@ -97,7 +98,7 @@ label label_endTurn_common():
 
     $ handSize = len(deck.hand)
 
-    if game.state == "sexing" and date.lust + game.animation_lust[date.animation_speed] >= date.lustMax:
+    if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
         play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
         pause 0.5
     else:
@@ -123,9 +124,9 @@ label label_after_successful_Date_common():
 
     if game.state == "dating":
         play sound "rpg/Holy5.wav"
-        show date-nice at truecenter with blinds
+        show date-nice at truecenter onlayer screens with blinds
         pause 0.3
-        hide date-nice with moveoutbottom
+        hide date-nice onlayer screens with moveoutbottom
     
     if BALANCE["keepStat"]:
         $ game.lust = max(0,date.lust)

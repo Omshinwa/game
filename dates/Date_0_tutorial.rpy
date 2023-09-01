@@ -1,5 +1,5 @@
 label label_tutorial:
-    $ date = Date("date", objectif_trust = 5, turnLeft = 3, endTurn = "label_tutorial_endTurn")
+    $ date = Date("date", objectif_trust = 5, turnLeft = 4, endTurn = "label_tutorial_endTurn")
 
     scene bg park
     show joyce outfit1 smile at depied
@@ -37,7 +37,7 @@ label label_tutorial:
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         j "The aim of a date is to build {b}{color=#55f}{u}trust{/u}{/color}{/b} and {b}{color=#f3a}{u}attraction{/u}{/color}{/b}."
         j "{b}{color=#cc3}{u}Lust{/u}{/color}{/b} is a negative trait."
-        j "If {b}Lust is your highest stat{/b}, the girl will notive you're being too horny."
+        j "If {b}Lust is your highest stat{/b}, the girl will notice you're being too horny."
         j "They will be upset and the date will be over."
         j "So don't act too horny. At least not on your first dates!"
         j "This date, you need to build 5 trusts to be successful."
@@ -86,8 +86,8 @@ label label_tutorial_endTurn:
             j "I was a bit worried before coming here, but you seem nice."
             j "Do you often meet girls like that?"
             show screen screen_date_ui with dissolve
-        else:
-            call label_reaction from _call_label_reaction
+    else:
+        call label_reaction from _call_label_reaction
         
     call label_endTurn_common from _call_label_endTurn_common
     return

@@ -1,8 +1,9 @@
 init python:
+    config.developer = True
+    config.console = True
+    
     def debugmode():
         game.debug_mode = 1 - game.debug_mode
-        config.developer = True
-        config.console = True
 
     def nullfunction(*args):
         return
@@ -20,7 +21,7 @@ init python:
             self.card_xsize = 230
             self.card_ysize = 330
 
-            self.lustMax = 10
+            self.lustMax = 30
             self.lust = 0
 
             self.trust = 0
@@ -115,11 +116,10 @@ init python:
 
             self.drink = 3
 
-            self.lustMax = 10
-            self.lust = 0
-
-            self.trust = 0
-            self.attraction = 0
+            self.lustMax = -99
+            self.lust = -99
+            self.trust = -99
+            self.attraction = -99
 
             self.trustMultiplier = 1
             self.attractionMultiplier= 1
@@ -127,12 +127,14 @@ init python:
 
             self.allMultiplierOnce= 1
 
-            self.orgasmMax = 30
+            self.orgasmMax = 60
             self.orgasm = 0
 
-            self.animation_speed = 1
-            self.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6}
-            self.animation_lust = [1,4,8,12,16,20,max(24,self.lustMax-1)]
+            self.animation_speed = -99
+            # self.animation_speed_hash = { 0:0.3, 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6}
+            self.animation_speed_hash = { 0:0.3, 1:0.4, 2:0.55, 3:0.7, 4:0.85, 5:1.0, 6:1.125, 7:1.25, 8:1.4, 9:1.6}
+            # self.animation_lust = [1,5,10,15,20,25,30]
+            self.animation_lust = [1,2,4,8,12,16,20,24,28,32,36,40,44]
 
         @property
         def turnLeft(self):
@@ -185,11 +187,15 @@ init python:
                 elif which == "attraction":
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
-                    if negative or self.lust<0:
+                    if negative:
                         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
                     else:
-                        self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                        self.lust = max(0, self.lust)
+                        if self.lust<0 and value<0:
+                            pass
+                        else:
+                            self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                            if value < 0:
+                                self.lust = max(0, self.lust)
                 else:
                     raise Exception("no valid specified argument: which") 
                 if resetAllMultiplier:
@@ -198,15 +204,16 @@ init python:
                 setattr(self, which, getattr(self,which) + value )
                 
             if value<0:
-                renpy.with_statement(ImageDissolve("gui/transition.png", 0.3))
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2))
             else:
-                renpy.with_statement(ImageDissolve("gui/transition.png", 0.3, reverse=True) )
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
 
 label label_null(*args):
     return
 
 default g.page = 0
 default g.rat = 0 #when does the rat appear
+default g.findFromTrash = True #get a Recycle card when you threw away enough cards
 default g.card_per_line = 7
 default g.phoneLogs = {
     1:[
@@ -245,5 +252,7 @@ default g.prison_cards = []
 default g.dreamProgress = 0
 default g.trashbin = []
 default g.bubbleTea_share_drink = False
+default g.plant = 0
+default g.water = False
 
 default phone_Scroll = ui.adjustment(range=0, value=0, step=None, page=1, changed=None, adjustable=None, ranged=None, force_step=False)

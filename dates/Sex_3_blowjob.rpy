@@ -82,6 +82,16 @@ label label_blowjob_SexEndTurn:
         pause(1.0/ date.animation_lust[date.animation_speed])
     
     $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce blowjob v2
+    else:
+        show joyce blowjob
+    pause 0.5
+    $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce blowjob v2
+    else:
+        show joyce blowjob
     
     if date.isLost():
         hide screen screen_sex_ui with dissolve
@@ -144,11 +154,13 @@ label label_blowjob_SexEndTurn:
         $ game.lust = 0
         call label_newDay("label_prison") from _call_label_newDay_20
 
-    if date.turn == 4:
+    if date.turn == 3:
         show blowjob (3) as joyce with dissolve
         j "You're getting better at this huh"
         j "Then it's time..."
         j "Your dick is so salty and musty now"
+        j "I'm gonna squeeze all your cum."
+        j "I'm your cum dumpster after all."
         play sound "sex/kiss-dick.wav"
         pause 2.0
         show blowjob v2 (1) as joyce with dissolve
@@ -166,11 +178,23 @@ label label_blowjob_SexEndTurn:
         show blowjob v2 (1) as joyce with dissolve
         j "MHHHH"
         show joyce blowjob v2 as joyce with dissolve
+        $ date.animation_speed_hash[10] = 2.0
+
+        $ date.speedUp()
+        show joyce blowjob v2
         pause 0.5
         $ date.speedUp()
-        pause 0.5
-        $ date.speedUp()
-        $ date.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6, 5:2.0}
+        show joyce blowjob v2
+        
+        call label_add_card_to_deck("deck", Card("peek4"), pauseTime=1.0) from _call_label_add_card_to_deck_18
+        call label_add_card_to_deck("deck", Card("peek4"), pauseTime=0.3) from _call_label_add_card_to_deck_19
+        call label_add_card_to_deck("deck", Card("peek4"), pauseTime=0.3) from _call_label_add_card_to_deck_20
+        call label_add_card_to_deck("deck", Card("peek4"), pauseTime=0.3) from _call_label_add_card_to_deck_21
+
+    elif date.turn >3:
+        call label_add_card_to_deck("deck", Card("peek4"), pauseTime=0.5) from _call_label_add_card_to_deck_22
+        
+
         
     call label_endTurn_common from _call_label_endTurn_common_7
 

@@ -28,7 +28,7 @@ label label_handjob:
         j "Do you want me to rape you more?"
         j "What a disgusting pervert."
         j "Someone like you.."
-        j "needs to be punished."
+        j "deserves to be punished."
     else:
         j "There you are my little slut."
         play sound "rpg/Key.wav"
@@ -84,6 +84,16 @@ label label_handjob_SexEndTurn:
         pause(1.0/ date.animation_lust[date.animation_speed])
     
     $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce handjob v2
+    else:
+        show joyce handjob
+    pause 0.5
+    $ date.speedUp()
+    if "v2" in renpy.get_attributes("joyce"):
+        show joyce handjob v2
+    else:
+        show joyce handjob
     
     if date.isLost():
         hide screen screen_sex_ui with dissolve
@@ -105,24 +115,18 @@ label label_handjob_SexEndTurn:
             $ phase = 2
             show handjob v2 (1) as joyce at shaking
             show handjob v2 cum (1) as anim at shaking
-            pause 1.0
-            # show handjob v2 (4) as joyce
-            show handjob v2 cum (2) as anim
-            with dissolve
-            pause 1.0
-            show handjob v2 talk as joyce
-            show handjob v2 cum (2) as anim
+            pause 1.5
+            show handjob v2 talk as joyce at default
+            show handjob v2 cum (2) as anim at default
             with dissolve
         else:
             $ phase = 1
             show handjob cum (1) as joyce at shaking
-            pause 1.0
-            show handjob (4) as joyce
-            show handjob cum (2) as anim at shaking
+            pause 1.5
+            show handjob (4) as joyce at default
+            show handjob cum (2) as anim at default
             with dissolve
             pause
-            show joyce at default
-            show anim at default
             with dissolve
             # show handjob talk as joyce with dissolve
             # show handjob cum (2) as anim
@@ -149,9 +153,9 @@ label label_handjob_SexEndTurn:
 
         call label_newDay("label_prison") from _call_label_newDay_18
 
-    if date.turn == 4:
+    if date.turn == 3:
         show handjob (3) as joyce with dissolve
-        j "You're holding out well"
+        j "Are you getting used to this?"
         j "How about this?"
         # play sound "sex/undress.wav"
         show handjob v2 (1) as joyce with dissolve
@@ -165,16 +169,22 @@ label label_handjob_SexEndTurn:
         j "Mhh Delicious"
         show joyce handjob v2 as joyce with dissolve
         # pause
-        # call label_add_card_to_deck("hand", Card("peek4"), pauseTime=1.0)
-        $ date.speedUp()
-        $ date.speedUp()
-        $ date.animation_speed_hash = { 0:0.5, 1:0.75, 2:1.0, 3:1.3, 4:1.6, 5:2.0}
-    
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_13   
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_14   
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_15 
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_16 
 
+        $ date.animation_speed_hash[10] = 2.0
+
+        $ date.speedUp()
+        show joyce handjob v2
         pause 0.5
-    # elif date.turn > 5:
-    #     call label_add_card_to_deck("hand", Card("peek4"))
-    #     pause 0.5
+        $ date.speedUp()
+        show joyce handjob v2
+
+    elif date.turn > 3:
+        call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_17   
+        pause 0.5
     call label_endTurn_common from _call_label_endTurn_common_6
 
     if date.isWin():

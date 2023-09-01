@@ -32,12 +32,20 @@ label label_dream_0:
         j "Did you come here to get a card."
         j "Or did you come here to eye on my body?"
     "You can transform an Eye Contact card."
-    menu:
-        "flirt":
-            call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_4
-
-        "be touchy":
-            call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_5
+    label .chooseOption:
+        menu:
+            "flirt":
+                $ i = len([item for item in deck.list if item.name == "eyecontact"])
+                call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_4
+                if len([item for item in deck.list if item.name == "eyecontact"]) == i:
+                    jump .chooseOption
+            "be touchy":
+                $ i = len([item for item in deck.list if item.name == "eyecontact"])
+                call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_5
+                if len([item for item in deck.list if item.name == "eyecontact"]) == i:
+                    jump .chooseOption
+            "X":
+                pass
     
     if g.dreamProgress == 0:
         j "Did this give you any new ideas?"

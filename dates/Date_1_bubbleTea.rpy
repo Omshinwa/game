@@ -1,5 +1,5 @@
 label label_bubbleTea:
-    $ date = Date("date", objectif_trust = 10, objectif_attraction = 5, turnLeft = 4, endTurn = "label_bubbleTea_endTurn")
+    $ date = Date("date", objectif_trust = 10, objectif_attraction = 5, turnLeft = 5, endTurn = "label_bubbleTea_endTurn")
 
     scene bg bbt
     show fg bbt-table onlayer master zorder 2
@@ -63,6 +63,7 @@ label label_bubbleTea_endTurn:
             show joyce smile
             j "Isn't it nice to be able to drink something sweet?"
             show screen screen_tutorial("misc/tutorial-drink.png") with dissolve
+            play sound "rpg/Item1.wav"
             j "When you take a sip, you'll shuffle back all your cards in hand into the deck"
             j "Then you'll redraw as many! Do this when you feel like you're stuck."
             j "Here, try it:"

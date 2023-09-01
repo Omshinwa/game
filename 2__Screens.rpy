@@ -17,8 +17,10 @@ screen screen_day():
         text "day":
             size 50 style "outline_text"  xalign 0.5 yalign 0.0
 
-        text "{b}{k=0.0}"+str(game.day)+"{/k}{/b}":
+        text "{b}"+str(game.day)+"{/b}":
             size 145 style "outline_text"  xalign 0.5 yalign 0.55
+            if game.day >= 100:
+                kerning len(str(game.day))*-10 xalign 0.8
     
         if game.state == "living":
             if game.day % game.dateEvery==0:

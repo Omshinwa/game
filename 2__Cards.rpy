@@ -14,12 +14,12 @@ init python:
             else:
                 self.sort = self.name
 
-            chemin = "cards/" + str(self.name) + ".png"
+            # if renpy.exists("images/" + "cards/" + str(self.name) + ".png"):
+            #     self.illustration = Image("cards/" + str(self.name) + ".png")
+            # else:
+            #     self.illustration = Image("cards/default.png")
 
-            if renpy.exists("images/" + chemin):
-                self.img_path = chemin
-            else:
-                self.img_path = "cards/default.png"
+            self.illustration = CARD_IMG_DICT[hash]
 
             self.txt = cardList[hash]["txt"]
             
@@ -65,8 +65,8 @@ init python:
             else:
                 text_effect =  Text(self.txt, style="style_card_effect", size=31 - (len(self.txt)/10), line_spacing=-5) 
             textbox = Window(text_effect, style="empty", xalign=0.5,  xysize=(200, 130))
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.img_path, (15,175), textbox)
-            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.img_path, (15,175), textbox)
+            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.illustration, (15,175), textbox)
+            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.illustration, (15,175), textbox)
 
         # #this is a getter 
         # def update_x_in_hand(self, index, cards_in_hand):
@@ -85,6 +85,7 @@ init python:
                 renpy.play("card/draw.mp3", channel='drawcard')
                 self.hand.append(card)
                 
+            for card in deck.hand:
                 if card.name == "darkhole":
                     card.txt = "Discard your hand, -"+ str((len(deck.hand)-1)**2)+ " Lust."
                     card.updateArt() 

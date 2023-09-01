@@ -1,72 +1,156 @@
+label label_card_calm:
+    $ date.increment('lust',-3, negative=True)
+    return
+label label_card_maxcalm:
+    $ date.increment('lust',-10)
+    $ deck.hand.append(Card('stop'))
+    return
+label label_card_slower:
+    $ date.speedDown(True)
+    return
+label label_card_slowsteady:
+    $ date.speedDown(True)
+    $ date.speedDown(True)
+    return
+label label_card_faster:
+    $ date.speedUp(True)
+    return
+label label_card_draw2:
+    $ deck.draw(2)
+    return
+label label_card_devil:
+    $ deck.draw(2)
+    $ date.increment('lust',date.lust, useMultiplier=False)
+    return
+label label_card_pair:
+    $ deck.draw(2)
+    return
+label label_card_universeout:
+    $ deck.add_to_hand(Card('spaceout'));
+    pause 0.2
+    $ deck.add_to_hand(Card('spaceout'));
+    return
+label label_card_peek:
+    $ date.increment('lust',2)
+    return
+label label_card_peek2:
+    $ date.increment('lust',5)
+    return
+label label_card_peekred:
+    $ date.increment('lust',10)
+    return
+label label_card_peekblue:
+    $ date.increment('lust',10)
+    return
+label label_card_peek4:
+    $ date.increment('lust',15)
+    return
+label label_card_peek5:
+    $ date.increment('lust',30)
+    return
+label label_card_eyecontact:
+    $ date.increment('attraction',1,False);
+    return
+label label_card_flirt:
+    $ date.increment('attraction',2,False);
+    return
+label label_card_talk:
+    $ date.increment('trust',1)
+    return
+label label_card_talk2:
+    $ date.increment('trust',2)
+    return
+
 define cardList = { 
 
-    "calm": {"txt":"-3 lust, can get into negatives", "eff":"date.increment('lust',-3, negative=True)", "value":1, "sort":"20"},
-    "maxcalm":{"txt":"-10 lust, add one STOP card in your hand", "eff":"date.increment('lust',-10); deck.hand.append(Card('stop'))", "value":1, "sort":"201"},#card also work if you have multiple
+    "calm": {"txt":"-3 lust, can get into negatives", "eff":"renpy.call('label_card_calm')", "value":1, "sort":"20"},
+    "maxcalm":{"txt":"-10 lust, add one STOP card in your hand", "eff":"renpy.call('label_card_maxcalm')", "value":1, "sort":"201"},#card also work if you have multiple
 
-    "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":3,"sort":"202"},
+    "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":2,"sort":"202"},
     
-    "newday": {"txt":"Change your current Lust with a random number.", "eff":"date.lust = renpy.random.randint(0, date.lustMax)", "value":2,"sort":"203"},
+    "newday": {"txt":"Change your current Lust with a random number.", "eff":"renpy.call('label_card_newday')", "value":0,"sort":"203"},
 
-    "slower": {"txt":"go slower", "eff":"date.speedDown(True)", "value":1, "sort":"21"},
-    "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"date.speedDown(True); date.speedDown(True)", "value":1, "sort":"22"},
-    "faster": {"txt":"go faster", "eff":"date.speedUp(True)", "value":-1, "sort":"24"},
+    "slower": {"txt":"go slower", "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
+    "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
+    "faster": {"txt":"go faster", "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
     "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":2,"sort":"30"},
 
-    "draw2": {"txt":"draw 2 cards", "eff":"deck.draw(2)", "value":4,"sort":"42"},
-    "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"deck.draw(2); date.increment('lust',date.lust, useMultiplier=False)", "value":1,"sort":"43"},
-    "pair": {"txt":"IF you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"deck.draw(2)", "value":2,"sort":"44"},
-    "threeof": {"txt":"IF you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)", "value":1,"sort":"45"},
-
-    "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"date.animation_speed = len(date.animation_speed_hash)-1; deck.draw(5-len(deck.hand))", "value":1,"sort":"48"},
+    "draw2": {"txt":"draw 2 cards", "eff":"renpy.call('label_card_draw2')", "value":4,"sort":"42"},
+    "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
+    "pair": {"txt":"IF you have a pair in your hand: draw 2 cards", "cond":"deck.hasPair()>1", "eff":"renpy.call('label_card_pair')", "value":3,"sort":"44"},
+    # "threeof": {"txt":"IF you have three of a kind in your hand: draw 3 cards", "cond":"deck.hasPair()>2", "eff":"deck.draw(3)", "value":0,"sort":"45"},
+    # "draw5": {"txt":"Get to max speed, draw until you have 5 cards in hand.", "eff":"date.animation_speed = len(date.animation_speed_hash)-1; deck.draw(5-len(deck.hand))", "value":1,"sort":"48"},
 
     "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2, "sort":"40"},
 
-    "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":2,"sort":"50"},
+    "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":0,"sort":"50"},
     
-    "recycle": {"txt":"All the cards on the right of this card are discarded, then redraw as many.", "eff":"renpy.call('label_card_recycle', index)", "value":2,"sort":"41"},
+    "recycle": {"txt":"All the cards right to this card are discarded, then redraw as many + 1.", "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"41"},
     
-    "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus', instruction='Choose a card to add back', background='#000a')", "value":1,"sort":"61"},
-    "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload')", "value":2, "sort":"62"},
+    "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.call('label_card_sisyphus', index)", "value":2,"sort":"61"},
+    "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"62"},
     # "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
     "exodia3" : {"txt":"{b}WORLD{/b}\ninto Power.\nright order to\neffect.", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"93"},
     "exodia2" : {"txt":"{b}OF THE{/b}\ncurrent Lust\npieces in the\nthis", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"92"},
     "exodia1" : {"txt":"{b}ORIGIN{/b}\nConvert your\nYou need all 3\nactivate", "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare", "sort":"91"},
 
-    "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"deck.add_to_hand(Card('spaceout')); deck.add_to_hand(Card('spaceout'))", "value":0, "sort":"63"},
+    "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"renpy.call('label_card_universeout')", "value":0, "sort":"63"},
     "darkhole" : {"txt":"Discard your hand, - (number of discarded cards)² Lust ", "eff":"renpy.call('label_card_darkhole')", "value":2, "sort":"64"},
-    "spaceout" : {"txt":"does nothing", "eff":"", "value":0, "sort":"65"},
+    "spaceout" : {"txt":"does nothing", "eff":"", "value":-1, "sort":"65"},
+    "nova" : {"txt":"-5 lust for every Space Out left in your deck.", "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
 
 
-    "peek": {"txt":"you peek..\n+2 lust", "eff":"date.increment('lust',2)", },
-    "peek2": {"txt":"you peek.. +5 lust", "eff":"date.increment('lust',5)", },
-    "peekred": {"txt":"get +10 lust", "eff":"date.increment('lust',10)"},
-    "peekblue": {"txt":"get +10 lust", "eff":"date.increment('lust',10)",},
-    "peek4": {"txt":"get +15 lust", "eff":"date.increment('lust',20)",},
-    "peek5": {"txt":"get +30 lust", "eff":"date.increment('lust',30)",},
+    "peek": {"txt":"you peek..\n+2 lust", "eff":"renpy.call('label_card_peek')", },
+    "peek2": {"txt":"you peek.. +5 lust", "eff":"renpy.call('label_card_peek2')", "value":-1},
+    "peekred": {"txt":"get +10 lust", "eff":"renpy.call('label_card_peekred')"},
+    "peekblue": {"txt":"get +10 lust", "eff":"renpy.call('label_card_peekblue')",},
+    "peek4": {"txt":"get +15 lust", "eff":"renpy.call('label_card_peek4')", "value":-2,},
+    "peek5": {"txt":"get +30 lust", "eff":"renpy.call('label_card_peek5')", "value":-3},
 
-    "peek5-1": {"txt":"get +5 lust", "eff":"date.increment('lust',20)", "value":-1,},
-    "peek5-2": {"txt":"get +10 lust", "eff":"date.increment('lust',20)", "value":-2,},
-    "feelgood": {"txt":"get +20 lust", "eff":"date.increment('lust',20)", "value":-3,},
+    # "peek5-1": {"txt":"get +5 lust", "eff":"date.increment('lust',20)", "value":-1,},
+    # "peek5-2": {"txt":"get +10 lust", "eff":"date.increment('lust',20)", "value":-2,},
+    # "feelgood": {"txt":"get +20 lust", "eff":"date.increment('lust',20)", "value":-3,},
     
 
     "stop": {"txt":"Can't be played", "cond":"False", "eff":"", "value":-2,"sort":"zzz"},
 
-    "eyecontact": {"txt":"+1 attraction", "eff":"date.increment('attraction',1,False);","value2":1, "sort":"03"},
-    "flirt": {"txt":"+2 attraction", "eff":"date.increment('attraction',2,False);","value2":2, "sort":"04"},
-    "kiss" : {"txt":"+4 attraction", "eff":"date.increment('attraction',4,False);","value2":3, "sort":"05"},
-    "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"6"},
+    "eyecontact": {"txt":"+1 attraction", "eff":"renpy.call('label_card_eyecontact')","value2":1, "sort":"03"},
+    "flirt": {"txt":"+2 attraction", "eff":"renpy.call('label_card_flirt')","value2":2, "sort":"04"},
+    # "kiss" : {"txt":"+4 attraction", "eff":"date.increment('attraction',4,False);","value2":3, "sort":"05"},
+    "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"06"},
 
-    "talk": {"txt":"+1 trust", "eff":"date.increment('trust',1)","value2":1, "sort":"00"},
-    "talk2": {"txt":"+2 trust", "eff":"date.increment('trust',2)","value2":2, "sort":"01"},
+    "talk": {"txt":"+1 trust", "eff":"renpy.call('label_card_talk')","value2":1, "sort":"00"},
+    "talk2": {"txt":"+2 trust", "eff":"renpy.call('label_card_talk2')","value2":2, "sort":"01"},
     "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2","value2":2, "sort":"02"},
         }
+
+
+label label_card_nova:
+    python:
+        i = 0
+        for card in deck.deck:
+            if card.name == "spaceout":
+                date.increment("lust",-5)
+    return
+
+label label_card_newday:
+    if game.state == "sexing":
+        python:
+            i = renpy.random.randint(0, date.lustMax)
+            while i == date.lust:
+                i = renpy.random.randint(0, date.lustMax)
+            date.lust = i
+    else:
+        python:
+            date.lust = renpy.random.randint(0, max(date.trust, date.attraction))
+    return
 
 label label_card_change:
     $ i = 0
     while i < len(deck.hand):
-        $ deck.hand[i] = Card.get_random_card()
+        $ deck.hand[i] = Card.get_random_card({ key: item for (key, item) in cardList.items() if "value" in cardList[key] })
         $ renpy.pause(0.2, hard=True)
         $ i+=1
     return
@@ -107,10 +191,16 @@ label label_card_recycle(index):
     while len(deck.hand)>index:
         $ deck.discard(-1)
         $ i+=1
-    $ deck.draw(i)
+    $ deck.draw(i+1)
     return
 
 label label_card_sisyphus(index):
+    $ game.jeu_sensitive = True
+    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus2', instruction='Choose a card to add back', background='#000a')
+    call screen screen_gameloop()
+    return
+
+label label_card_sisyphus2(index):
     $ renpy.call('label_add_card_to_deck','deck', deck.discard_pile.pop(index), xfrom=150, yfrom=850, pauseTime=0.2, index=0)
     hide screen screen_show_deck with dissolve
     return
@@ -124,7 +214,7 @@ label label_card_ouroboros:
     $ deck.shuffle()
     return
 
-label label_card_reload():
+label label_card_reload(index):
     $ i = 2
     while i<=len(deck.discard_pile) and deck.discard_pile[-i].name == "reload":
         $ i += 1
@@ -135,7 +225,7 @@ label label_card_reload():
 
     while i>2:
         $ renpy.play("card/activate.mp3", channel='activatecard')
-        $ renpy.show('cardPlayed', what=Card("reload").img, at_list=[trans_card_played(xfrom=150, yfrom=850, xto=540)], zorder=2, layer="screens")
+        $ renpy.show('cardPlayed', what=Card("reload").img, at_list=[trans_card_played(xfrom=150, yfrom=850, xto=960)], zorder=2, layer="screens")
         $ renpy.pause(0.5)
         $ renpy.hide('cardPlayed', layer="screens")
         $ i -= 1
@@ -146,29 +236,10 @@ label label_card_reload():
         $ renpy.show('cardPlayed', what=card.img, at_list=[trans_card_played(xfrom=150, yfrom=850, xto=960)], zorder=2, layer="screens")
         $ renpy.pause(0.5)
         $ renpy.hide('cardPlayed', layer="screens")
-        if "index" not in card.eff:
-            $ renpy.call('playCard',card, -1)
+        $ renpy.call('playCard',card, index)
     return
 
 label label_card_exodia(index):
-    # if len(deck.hand) >= 2 and deck.discard_pile[-1].name == 'exodia3': # its annoying that to get the card being played you need to do this
-    #     if deck.hand[index-2].name == 'exodia1' and deck.hand[index-1].name == 'exodia2':
-    #         call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index-1), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index-2), pauseTime=0, fromWhere="field")
-    #         jump .effect
-    # elif len(deck.hand) >= 2 and deck.discard_pile[-1].name =='exodia2':
-    #     if deck.hand[index-1].name == 'exodia1' and deck.hand[index].name == 'exodia3':
-    #         call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index-1), pauseTime=0, fromWhere="field")
-    #         jump .effect
-    # elif len(deck.hand) >= index+2 and deck.discard_pile[-1].name == 'exodia1':
-    #     if deck.hand[index].name == 'exodia2' and deck.hand[index+1].name == 'exodia3':
-    #         call label_add_card_to_deck("deck", deck.discard_pile.pop(len(deck.discard_pile)-1), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index+1), pauseTime=0, fromWhere="field")
-    #         call label_add_card_to_deck("deck", deck.hand.pop(index), pauseTime=0, fromWhere="field")
-    #         jump .effect
 
     if len(deck.hand) >= 2 and deck.discard_pile[-1].name == 'exodia3': # its annoying that to get the card being played you need to do this
         if deck.hand[index-2].name == 'exodia1' and deck.hand[index-1].name == 'exodia2':
@@ -196,6 +267,7 @@ label label_card_exodia(index):
         while date.lust >= 2:
             $ date.lust -= 2
             $ date.lustMax += 2
+            $ game.lustMax += 2
             $ renpy.pause(0.1, hard=True)
         
         $ date.lustMax += date.lust

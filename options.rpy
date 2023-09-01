@@ -10,7 +10,7 @@
 
 define config.name = _("Dating Joyce")
 
-define build.itch_project = "https://omshinwa18.itch.io/dating-joyce"
+define build.itch_project = "omshinwa18/dating-joyce"
 
 ## Determines if the title given above is shown on the main menu screen. Set
 ## this to False to hide the title.
@@ -181,10 +181,8 @@ init python:
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
 
-    ## To archive files, classify them as 'archive'.
 
-    # build.classify('game/**.png', 'archive')
-    # build.classify('game/**.jpg', 'archive')
+    # build.classify("game/**", "archive")
 
     ## Files matching documentation patterns are duplicated in a mac app build,
     ## so they appear in both the app and the zip file.
@@ -199,8 +197,3 @@ init python:
 
 # define build.google_play_key = "..."
 
-
-## The username and project name associated with an itch.io project, separated
-## by a slash.
-
-# define build.itch_project = "renpytom/test-project"

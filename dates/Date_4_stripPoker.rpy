@@ -30,7 +30,7 @@ label label_stripPoker:
     else:
         j foxy smile "Who could it be?"
         j "Put yourself at home, you must know the place now."
-    $ date = Date("date", objectif_trust = 50, turnLeft = 7, endTurn = "label_stripPoker_endTurn")
+    $ date = Date("date", objectif_trust = game.trust + 5, turnLeft = 8, endTurn = "label_stripPoker_endTurn")
     scene bg bedroom
     show joyce smile night at depied
     show fg bedroom-table onlayer master zorder 2
@@ -51,7 +51,8 @@ label label_stripPoker:
     with dissolve
     
     if game.progress[1] == -1:
-        j "Let's get comfy"
+        j "You'll take a bit of red wine?"
+        j "I have a fun idea."
         j "How about we make it a strip game?"
         j "Everytime you succeed, I'll drop a piece of clothing."
     else:
@@ -129,16 +130,18 @@ label label_stripPoker:
                     j foxy smile "Is it hot or it's just me?"
                     play sound "sex/undress.wav"
                     show joyce night2 with Dissolve(1.0)
-                    $ date.objectives["attraction"] = 55
+                    $ date.objectives["attraction"] = date.attraction + 5
                 elif "night2" in renpy.get_attributes("joyce"):
                     j foxy smile "Off another layer."
                     play sound "sex/undress.wav"
                     show joyce night3 with Dissolve(1.0)
-                    $ date.objectives["attraction"] = 60
-                    $ date.objectives["trust"] = 60
+                    $ date.objectives["attraction"] = date.attraction + 8
+                    $ date.objectives["trust"] = date.trust + 8
                 elif "night3" in renpy.get_attributes("joyce"):
                     j foxy smile "Ooh, last one.."
                     play sound "sex/undress.wav"
+                    j "For this last one, let's make it..."
+                    j "A special requirement."
                     show joyce night4 with Dissolve(1.0)
                     $ date.objectives["lust"] = 100
                     $ date.config["isLost"] = "len(deck.deck) == 0 or date.turnLeft == 1"
