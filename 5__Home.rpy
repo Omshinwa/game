@@ -43,7 +43,14 @@ screen screen_home:
                     action Show("screen_home_phone", None, _layer = "master")
                     focus_mask True
 
-        add "home/door.png"     
+        if game.debug_mode:
+            imagebutton:
+                idle "home/door.png"
+                hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
+                action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+                focus_mask True
+        else:
+            add "home/door.png"     
         
         # imagebutton:
         #     idle "home/door.png"

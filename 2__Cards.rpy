@@ -84,11 +84,6 @@ init python:
             for card in cards:
                 renpy.play("card/draw.mp3", channel='drawcard')
                 self.hand.append(card)
-                
-            for card in deck.hand:
-                if card.name == "darkhole":
-                    card.txt = "Discard your hand, -"+ str((len(deck.hand)-1)**2)+ " Lust."
-                    card.updateArt() 
 
         def draw(self, number, delay=0.2):
             global ydisplace
@@ -151,11 +146,6 @@ label playCard(card, index):
     $ game.lastPlayed = card
     $ game.cardPlaying = None
 
-    python:
-        for card in deck.hand:
-            if card.name == "darkhole":
-                card.txt = "Discard your hand, -"+ str((len(deck.hand)-1)**2)+ " Lust."
-                card.updateArt() 
     return
 
 label playCardfromHand(index):

@@ -12,6 +12,10 @@ label label_card_slowsteady:
     $ date.speedDown(True)
     $ date.speedDown(True)
     return
+label label_card_fool:
+    $ date.speedDown(True)
+    $ date.speedDown(True)
+    return
 label label_card_faster:
     $ date.speedUp(True)
     return
@@ -20,7 +24,10 @@ label label_card_draw2:
     return
 label label_card_devil:
     $ deck.draw(2)
-    $ date.increment('lust',date.lust, useMultiplier=False)
+    $ temp = date.lust
+    $ date.lust = 0
+    $ date.increment('lust', temp*2, negative=True)
+    $ del temp
     return
 label label_card_pair:
     $ deck.draw(2)
@@ -66,15 +73,16 @@ define cardList = {
     "calm": {"txt":"-3 lust, can get into negatives", "eff":"renpy.call('label_card_calm')", "value":1, "sort":"20"},
     "maxcalm":{"txt":"-10 lust, add one STOP card in your hand", "eff":"renpy.call('label_card_maxcalm')", "value":1, "sort":"201"},#card also work if you have multiple
 
-    "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":2,"sort":"202"},
+    "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":1,"sort":"202"},
     
-    "newday": {"txt":"Change your current Lust with a random number.", "eff":"renpy.call('label_card_newday')", "value":0,"sort":"203"},
+    "newday": {"txt":"Change your current Lust with a random number.", "eff":"renpy.call('label_card_newday')", "value":1,"sort":"203"},
 
     "slower": {"txt":"go slower", "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
     "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
+    "fool": {"txt": "IF you have 3 cards or less in hand: \nGo much slower.", "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":23 },
     "faster": {"txt":"go faster", "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
-    "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":2,"sort":"30"},
+    "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
 
     "draw2": {"txt":"draw 2 cards", "eff":"renpy.call('label_card_draw2')", "value":4,"sort":"42"},
     "devil": {"txt":"Draw 2 cards, Double your current lust.", "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
@@ -84,21 +92,21 @@ define cardList = {
 
     "drink" : {"txt":"Fully refill your glass.", "eff":"renpy.call('label_card_drink')", "value":2, "sort":"40"},
 
-    "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":0,"sort":"50"},
+    "change": {"txt":"Change all the cards in your hand with random cards.", "eff":"renpy.call('label_card_change')", "value":1,"sort":"50"},
     
     "recycle": {"txt":"All the cards right to this card are discarded, then redraw as many + 1.", "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"41"},
     
     "sisyphus": {"txt":"Choose a card played, put it back on top of your deck.", "eff":"renpy.call('label_card_sisyphus', index)", "value":2,"sort":"61"},
-    "reload": {"txt":"The top card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"62"},
+    "reload": {"txt":"The most recent card in the discard pile is played again.", "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"62"},
     # "ouroboros": {"txt":"Shuffle back all the cards played into the deck.", "eff":"renpy.call('label_card_ouroboros')", "value":3,},
 
     "exodia3" : {"txt":"{b}WORLD{/b}\ninto Power.\nright order to\neffect.", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"93"},
     "exodia2" : {"txt":"{b}OF THE{/b}\ncurrent Lust\npieces in the\nthis", "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"92"},
     "exodia1" : {"txt":"{b}ORIGIN{/b}\nConvert your\nYou need all 3\nactivate", "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare", "sort":"91"},
 
-    "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"renpy.call('label_card_universeout')", "value":0, "sort":"63"},
-    "darkhole" : {"txt":"Discard your hand, - (number of discarded cards)² Lust ", "eff":"renpy.call('label_card_darkhole')", "value":2, "sort":"64"},
-    "spaceout" : {"txt":"does nothing", "eff":"", "value":-1, "sort":"65"},
+    "universeout" : {"txt":"Add 2 Space Out cards in your hand.", "eff":"renpy.call('label_card_universeout')", "value":1, "sort":"63"},
+    "darkhole" : {"txt":"Discard your hand, -5 lust per discarded card.", "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
+    "spaceout" : {"txt":"does nothing", "eff":"", "value":0, "sort":"65"},
     "nova" : {"txt":"-5 lust for every Space Out left in your deck.", "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
 
 
@@ -182,7 +190,7 @@ label label_card_darkhole:
     $ i = len(deck.hand)
     while len(deck.hand)>0:
         $ deck.discard(0)
-        $ date.increment("lust", -i, False)
+        $ date.increment("lust", -5, False)
     $ date.increment("lust", 0, True)
     return
 

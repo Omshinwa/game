@@ -1,6 +1,6 @@
 init python:
-    config.developer = True
     config.console = True
+    preferences.skip_unseen = False
     
     def debugmode():
         game.debug_mode = 1 - game.debug_mode
