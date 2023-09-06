@@ -7,8 +7,8 @@ label label_handjob:
 
     if game.progress[1] == -1:
         j "Hehe"
-        j "Let's get somewhere more cushy for the exams."
-        j "I wouldn't want you to catch a cold on the hard ground."
+        j "Let's go somewhere a bit more comfortable for this exam."
+        j "I don't want my slave to catch a cold lying on the concrete here."
 
         j "What do you think the test will be this time?"
         j "Let's free you."
@@ -17,7 +17,7 @@ label label_handjob:
         show handjob get-hard (1) as anim with dissolve
         pause
         j "You must have felt cramped in there."
-        j "With your big juicy dick."
+        j "With that big juicy dick."
         pause 0.4
         show handjob get-hard (2) as anim
         pause 0.4
@@ -30,7 +30,7 @@ label label_handjob:
         j "Someone like you.."
         j "deserves to be punished."
     else:
-        j "There you are my little slut."
+        j "There you are, my little slut."
         play sound "rpg/Key.wav"
         show handjob get-hard (1) as anim with dissolve
         pause

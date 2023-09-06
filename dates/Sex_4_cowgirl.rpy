@@ -5,20 +5,20 @@ label label_cowgirl:
     show cowgirl talk as joyce
     with dissolve
 
-    j "Are you ready?"
+    j "Ready?"
 
     play sound "rpg/Key.wav"
     show cowgirl get-hard (1) as joyce with dissolve
 
     if game.progress[1] == -1:
         pause
-        j "This time there's not time limit."
+        j "This time there's no time limit."
         j "Whoever cums first, loses."
         j "[povname]..."
-        j "Lemme see your big juicy dick again"
-        j "Get hard so I can slide your dick into my pussy"
+        j "Let me see that big juicy dick again"
+        j "Get hard for me so I can slide it into my pussy"
         j "I'm already wet for you baby."
-        j "Don't you want to feel the walls of my pussy?"
+        j "Don't you want to feel my pussy throb?"
     pause 0.4
     show cowgirl get-hard (2) as joyce
     pause 0.4
@@ -27,25 +27,25 @@ label label_cowgirl:
 
     if game.progress[1] == -1:
         j "Thank you daddy"
-        j "Say [povname]."
+        j "[povname],"
         j "Do you still like me?"
         j "Do you forgive me for raping you?"
         menu:
             "Fuck me already":
                 j "Yes daddy."
-                j "Everything for you."
+                j "Anything for you."
                 show cowgirl insert as joyce with dissolve
                 j "Please fuck me."
             "You're a bitch":
                 j "Oh yes I'm a bitch."
-                j "But I'm your only bitch daddy."
-                j "Please only fuck my pussy."
+                j "But I'm your bitch, daddy."
+                j "Forget any other pussy."
                 show cowgirl insert as joyce with dissolve
-        j "My pussy is only yours."
-        j "Do you feel how wet I am?"
+        j "My pussy is yours only."
+        j "Can you feel how wet I am?"
     else:
         j "Sorry if I get loud."
-        j "I've waited so long for this."
+        j "I've been waiting so long for this."
     show cowgirl (6) as joyce 
     pause 0.4
     play sound "sex/sloppy.wav"
@@ -242,11 +242,11 @@ label label_cowgirl_SexEndTurn:
         show cowgirl cum-out (3) as joyce with dissolve
         pause
         j "Thank you [povname], my belly is so warm now."
-        j "Now that I'm finished using you..."
+        j "Now that I'm done using you..."
         play sound "rpg/Key.wav"
         show cowgirl lock as joyce with dissolve
         pause
-        j "I'll put your back."
+        j "You're going back to your kennel."
         j "I don't think you'll ever make me cum before you."
         j "But I'll let you try as many times as you want daddy."
         $ date.lust = 0

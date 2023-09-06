@@ -14,42 +14,42 @@ label label_welcome_prison():
     window hide
     window auto
     pause
-    "You wake up, your body hurts."
+    "You feel sore."
     "You're in a strange place."
     show naked-mugshot at truecenter with Dissolve(1.0)
-    "You're naked, your hands are tied."
-    "An appartus is attached to your penis."
+    "You're naked. Your hands are tied."
+    "A device is attached to your penis."
     hide naked-mugshot with dissolve
-    j "Oh you woke up."
+    j "Oh, you're awake."
     play sound "day/door_opening.wav"
     pause 0.4
     show joyce smirk foxy outfitsm at depied with dissolve
     j "Did you sleep well?"
     "?!"
-    j smile "Poor boy is confused."
-    j "Let me explain it to you."
-    j "You're now my bitch."
-    j "You're currenly in my basement."
+    j smile "Aww, the poor thing is confused."
+    j "I'll explain the situation."
+    j "You are now my bitch."
+    j "This is my basement."
     j smile "You will sleep here and I'll take care of you like the good pet you are."
     "??!!"
     menu:
         "Ask what does she want":
-            j "You're my plaything now."
-            j "I will train you to become a good slave."
+            j "From now on, you're my plaything."
+            j "I'll train you to become a good little slave."
             pass
         "Try and jump on her":
             show joyce whip
             play sound "sex/whip.mp3"
-            j -smile "Wowo"
+            j -smile "Hey now…"
             j "Did you sleep on the wrong side?"
             j "Do you still not understand who's in control?"
-    j "See that chastity belt I've attached to you?"
-    j "I have its key, and the key to your new room."
-    j smile "Every week, I will come pick you, you will go through a physical examination."
-    j "I will only free your chastity during those exams."
-    j "If you manage not to cum, you'll move to the next stage."
-    j "{b}At the last stage, you will fuck my pussy{/b}"
-    j key "If then you manage to make me cum, you win the key to your cage."
+    j "See that chastity belt I've put on you?"
+    j "I've got the key for it as well as the key to your cage."
+    j smile "Twice a week, I will conduct a physical examination on you."
+    j "I will only free your cock during those exams."
+    j "If you manage not to cum, you'll move on to the next stage."
+    j "{b}At the last stage, you will fuck my pussy.{/b}"
+    j key "If you can make me cum, you win the key to your cage."
     j "Understood?"
     j -key "I'll see you in 3 days."
 
@@ -65,17 +65,17 @@ label label_welcome_prison():
      
 label label_prison_first_time():
     $ game.jeu_sensitive = False
-    rat "So there's a new guy huh." with dissolve
-    rat "You're not the first one she locks here."
+    rat "So she caught another one, huh." with dissolve
+    rat "You're not the first one to get trapped here."
     hide screen_prison_sans_rat
     show screen screen_prison onlayer master
     with dissolve
     
-    rat "I don't think you're gonna make it"
-    rat "Plenty around died like you here."
-    rat "I pity you."
-    rat "How about I trade you cards?"
-    rat "Give me all your useless cards, I'll trade you new ones."
+    rat "Doesn't seem like you've got what it takes, either."
+    rat "Many men stronger than you have lost their lives here before."
+    rat "Heh. How unfortunate."
+    rat "How about I trade you some cards?"
+    rat "Give me all your useless cards and I'll trade you new ones."
 
     $ i = 0
     $ goodCards = ["eyecontact", "touchy", "flirt", "talk", "talk2", "listen"]
@@ -133,10 +133,10 @@ label label_prison_first_time():
 
     call screen screen_gameloop()
 
-    rat "Good choice"
+    rat "Good choice."
     rat "If you ever need help, I still have a lot of extra cards."
-    rat "..from past prisonners hehe."
-    rat "Just leave me some food around."
+    rat "…from past prisoners, hehe."
+    rat "Just leave some food for me."
     rat "Good luck staying alive"
     $ g.rat -= 1
     $ game.jeu_sensitive = True
@@ -161,7 +161,7 @@ label label_prison():
         $ game.jeu_sensitive = False
         play sound "day/door_opening.wav"
         show joyce foxy outfitsm smile whip at depied with dissolve
-        j "Hello my slave."
+        j "Hello, slave."
         j "The milking starts now."
         play sound "sex/Fouet.mp3"
         show joyce push

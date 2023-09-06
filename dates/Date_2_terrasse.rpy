@@ -15,7 +15,7 @@ label label_terrasse:
         j "You found me, come sit there."
         show screen screen_glass("terrasse") onlayer master zorder 2
         play sound "day/put_on_table.wav"
-        j "Ahh nothing like a beer on a terrace."
+        j "Ahhh... Nothing beats a cold beer on a terrace."
 
     call label_beginDuel_common() from _call_label_beginDuel_common_2
 
@@ -26,8 +26,8 @@ label label_terrasse:
             if date.isWin():
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_2
 
-                j smile "Fiou I feel like I drank too much."
-                j "I think I'll go home now, it was nice."
+                j smile "Phew! I'm getting a bit too tipsy."
+                j "I think I'll go home now. This was nice."
                 j "We should go somewhere special next time"
                 j "I'll think about something."
                 j "See ya!"
@@ -49,8 +49,8 @@ label label_terrasse_endTurn:
     if game.progress[1]<=0:            
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
-            j null "Oh man it's really too hot"
-            j "Hold on I have an idea."
+            j null "Geez, it's way too hot outside."
+            j "Hold on, I've got an idea."
             j "Be right back."
             show joyce at standing with dissolve
             pause 0.5
@@ -58,7 +58,7 @@ label label_terrasse_endTurn:
             pause
             show joyce outfit2 at standing as joyce with dissolve
             j smile "hey" 
-            j "Sorry it was just too hot."
+            j "Sorry, it was just too hot."
             show joyce outfit2
             j "I had to remove a few layers"
             # show boob-shoot at truecenter with moveinright
@@ -66,10 +66,10 @@ label label_terrasse_endTurn:
                 zoom 2.0 xalign 0.5 yalign 0.5
             with dissolve
             pause
-            j "what's wrong?"
+            j "What's wrong?"
             "n-nothing"
-            j "hm okay"
-            j "Let's keep going shall we?"
+            j "hmm Okay"
+            j "Let's keep going, shall we?"
             show layer master:
                 zoom 1.0
             with dissolve

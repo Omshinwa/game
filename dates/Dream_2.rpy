@@ -12,7 +12,7 @@ label label_dream_2:
         j "Hey sweety"
         j "What's wrong? Something different about me?"
         j "Oh no, I'm wet!"
-        j "What will I do?"
+        j "What will I do?..."
     else:
         pass
     "You can transform an Eye Contact card or get a special card."
@@ -41,7 +41,7 @@ label label_dream_2:
 
     play sound "day/alarm.wav"
     pause 1.0
-    j "Good luck"
+    j "Good luck."
     $ g.dreamProgress += 1
     call label_newDay("label_home_weirdDream") from _call_label_newDay_15
     

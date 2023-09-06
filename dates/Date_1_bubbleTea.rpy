@@ -12,11 +12,11 @@ label label_bubbleTea:
     with dissolve
 
     if game.progress[1] == -1:
-        j "Hey how have you been?"
+        j "Hey! How have you been?"
         j "I really like this cafe."
-        j "I hope you like it too."
+        j "I hope you'll like it too."
     else:
-        j "Hello again"
+        j "Hello again!"
         if game.progress[1]>=1:
             j "I got us drinks already."
     
@@ -30,9 +30,9 @@ label label_bubbleTea:
             if date.isWin():
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_1
 
-                j smile "So did you like the cafe?"
+                j smile "So, did you like the cafe?"
                 j "I think we should hang out outside again."
-                j worried "It is getting pretty hot! Let's drink outside next time."
+                j worried "It's getting pretty hot! Let's drink outside next time."
                 call label_newDay("label_home") from _call_label_newDay_9
                 
         if len(deck.hand) == 0:
@@ -49,7 +49,7 @@ label label_bubbleTea_endTurn:
     if game.progress[1]<=1:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
-            j "I'm gonna grab a drink, I'll take you something too!"
+            j "I'm gonna grab a drink, I'll get something for you too!"
             show joyce at standing with dissolve
             pause 0.5
             hide joyce with dissolve
@@ -61,11 +61,11 @@ label label_bubbleTea_endTurn:
             show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
             pause
             show joyce smile
-            j "Isn't it nice to be able to drink something sweet?"
+            j "Isn't it nice to have something sweet to drink?"
             show screen screen_tutorial("misc/tutorial-drink.png") with dissolve
             play sound "rpg/Item1.wav"
-            j "When you take a sip, you'll shuffle back all your cards in hand into the deck"
-            j "Then you'll redraw as many! Do this when you feel like you're stuck."
+            j "When you take a sip, you'll shuffle back all the cards in your hand into the deck"
+            j "Then you'll redraw as many! Try this when you feel stuck."
             j "Here, try it:"
             hide screen screen_tutorial with dissolve 
 
@@ -82,14 +82,14 @@ label label_bubbleTea_endTurn:
                     show screen screen_tutorial("Joyce/cut-in_drink.png", {"xalign":0.5, "yalign":0.3, "zoom":1.5}) onlayer master zorder 5 with moveinleft
                     
                     play sound "day/gulp.wav"
-                    j "mhh it tastes so good"
-                    j "Maybe I drink too much bubble teas though haha"
+                    j "Mhh, it tastes so good"
+                    j "Maybe I drink too much bubble tea though haha"
                     play sound "day/gulp.wav"
                     show layer master:
                         zoom 2.0 xalign 0.5 yalign 0.4
                     with dissolve
                     pause
-                    j "huh, what's wrong?"
+                    j "Huh, what's wrong?"
                     j "Is there something wrong with my face?"
                     pause
                     show layer master:
@@ -105,7 +105,7 @@ label label_bubbleTea_endTurn:
                     window hide
                     window auto
                 "no":
-                    j "oh, ok.."
+                    j "Oh, ok.."
                     $ date.attraction -= 2
                     $ date.trust -= 2
                     $ game.attraction -= 2

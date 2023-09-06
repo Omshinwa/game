@@ -144,7 +144,7 @@ label label_blowjob_SexEndTurn:
             show blowjob cum (2) as joyce at default with dissolve
             with dissolve
             pause
-            j "Oh you god my ass all sticky."
+            j "Oh, you got my ass all sticky."
             j "Bad pet."
             play sound "rpg/Key.wav"
             show blowjob lock with dissolve
@@ -156,7 +156,7 @@ label label_blowjob_SexEndTurn:
 
     if date.turn == 3:
         show blowjob (3) as joyce with dissolve
-        j "You're getting better at this huh"
+        j "You're getting better at this, aren't you?"
         j "Then it's time..."
         j "Your dick is so salty and musty now"
         j "I'm gonna squeeze all your cum."
@@ -203,16 +203,16 @@ label label_blowjob_SexEndTurn:
         call label_after_successful_Date_common from _call_label_after_successful_Date_common_7
         show blowjob v2 talk as joyce
         with dissolve
-        j "Aw no cum for me?"
+        j "Aww... No cum for mommy?"
         j "Alright"
         play sound "rpg/Key.wav"
         show blowjob v2 lock as joyce
         with dissolve
         j "Next is the last trial."
-        j "You waited for this a long time no?"
-        j "You'll fuck my nice little pussy."
+        j "You've been waiting for this, haven't you?"
+        j "You'll fuck my tight little pussy."
         j "Does this excite you?"
-        j "If you make me cum before you, you're free."
+        j "Make me cum first and you're free."
         call label_newDay("label_prison") from _call_label_newDay_21
 
     return

@@ -271,7 +271,7 @@ label label_home():
         $ done_flag["cat"] = 1
         play sound "day/meow.wav"
         "?"
-        "Seems like the cat has something in its mouth"
+        "Seems like the cat has something in its mouth.."
         "It's a card!"
         call label_home_add_cards("drink", "Add a Drink to your deck?", callback=False) from _call_label_home_add_cards
 
@@ -318,10 +318,10 @@ label label_home_tutorial():
         show black 
         hide black with dissolve
         play sound "rpg/Item1.wav"
-        "This is your home, this is where you can improve your deck."
+        "This is your home. You can improve your deck here."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         "You will keep your stats after a successful date."
-        "If you fail, they stay the way they were before."
+        "If you fail, your stats will stay as they were before."
         "{b}Lust{/b} builds up automatically after every day."
         "Try to build a stronger deck before the second date!"
         hide screen screen_tutorial
@@ -336,8 +336,8 @@ label label_home_weirdDream():
     show screen screen_home onlayer master
     show black onlayer screens
     hide black onlayer screens with dissolve
-    "You felt like you had a weird dream"
-    "You cannot remember the content though."
+    "You feel like you had a weird dream…"
+    "But you can't remember what it was about."
     jump label_home
 
 label label_home_trash():
@@ -346,7 +346,7 @@ label label_home_trash():
         $ g.findFromTrash = False
         $ game.jeu_sensitive = False
         "?"
-        "You find something in the midst of all the trash."
+        "There's something inside the trash…"
         call label_home_add_cards("recycle", "Add a Recycle to your deck?", False) from _call_label_home_add_cards_7
         return
     else:
@@ -445,9 +445,9 @@ label label_home_bed:
 
 label label_big_tree_thank_you():
     if 10 > g.plant >= 4:
-        "'thank you'"
+        "'Thank you'"
         "?!"
-        "You felt like you just heard a voice."
+        "You feel like you just heard a voice."
         $ g.plant = 99
     call screen screen_gameloop()
     return
@@ -458,11 +458,11 @@ label label_water_the_plant():
     elif g.plant == 1:
         "You feel like the plant is getting bigger."
     elif g.plant == 2:
-        "You feel like the plant is gonna be massive."
+        "You feel like the plant is going to be massive."
     elif g.plant == 3:
-        "You feel like the plant is gonna take over the world."
+        "You feel like the plant is going to take over the world."
     elif g.plant == 4:
-        `It's gonna take some more time for it to grow.`
+        `It will take some more time for it to grow.`
     if g.plant<5:
         $ g.water = True
     call label_newDay('label_home') from _call_label_newDay_4
@@ -570,7 +570,7 @@ label label_pic3_reaction:
     
     with dissolve
     pause
-    "this picture has some effect on you.."
+    "This picture is turning you on…"
     "Lust +5"
     $ game.lust += 5
     play sound "rpg/Lust.wav"
@@ -605,7 +605,7 @@ label label_pic6_reaction:
     
     with dissolve
     pause
-    "this picture has some effect on you.."
+    "This picture is turning you on…"
     "Lust +20"
     $ game.lust += 20
     play sound "rpg/Lust.wav"

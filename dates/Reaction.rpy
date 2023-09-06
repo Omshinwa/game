@@ -17,23 +17,23 @@ label label_reaction():
     if value == 0:
         j eyeside armscrossed "It's getting pretty warm these days."
         j "I'm not such a fan of summer to be honest."
-        j "I easily get sunburns because my skin is too thin."
+        j "I burn easily because my skin is so thin."
         show joyce null
         j -eyeside smile "Oh well"
         if game.progress[0] < 1:
             j "Nothing like a day at the park to stay fresh."
         elif game.progress[0] < 4: # in case we trigger it on a second date
-            j "That's why I enjoy coming here to get a drink."
+            j "That's why I like to come here for an afternoon drink."
         j -armscrossed "Though I regret wearing so many layers today."
 
     if value == 1:
-        j "These days I have picked sudoku again."
-        j "I play it during my offtime."
-        j "That seems like such a boring activity no?"
+        j "These days I've picked up sudoku again."
+        j "I solve puzzle books to pass the time on my morning commute."
+        j "That sounds like such a boring hobby, doesn't it?"
         j "What about you, do you like playing games?"
         menu:
             "yes":
-                j smile "Oh you do? That's nice!"
+                j smile "Oh, you do? That's nice!"
                 j "What kind of games do you play?"
             "no":
                 j "..."
@@ -41,30 +41,30 @@ label label_reaction():
                 show joyce -upset
     
     elif value == 2:
-        j "So you play dating sims."
-        j "I used to play some on the Nintendo DS too."
+        j "So you play dating sims…"
+        j "I used to play thoser on the Nintendo DS too."
         j "What are you playing these days?"
         "..."
         j "What are you getting so shy about?"
-        j smile "Come on tell me!"
-        j smile "Alright you better tell me next date!"
+        j smile "Come, on tell me!"
+        j smile "Alright, but you have to tell me on our next date!"
 
     elif value == 3:
-        j "How often do you meet girls like that?"
-        j "I'm trying to look for the one."
-        j "But I have pretty high requierements"
-        j foxy smile "Will you pass the tests? I wonder heehee."
+        j "How often do you meet girls like this?"
+        j "I'm looking for the one…"
+        j "But I have pretty high requirements."
+        j foxy smile "Will you pass the test? Hehe, just kidding."
 
     elif value == 4:
-        j smile "I loves cats sooo much"
+        j smile "I love cats sooo much"
         j "Petting one is soo soothing"
         j "I'm kinda wondering if I should get one"
-        j null "But it's a big responsability still."
+        j null "But it's a huge responsibility."
     
     elif value == 5:
-        j "Cats are also useful for pests."
-        j "I've seen some rats in my basement. A cat would be a good help"
-        j smile "My place has a pretty big basement, I could show you!"
+        j "Cats are also useful against pests."
+        j "I've seen some rats in my basement. A cat would be helpful…"
+        j smile "Oh yeah, my place has a really huge basement, I'll show you next time!"
 
     elif value == 6:
         play sound "day/gulp.wav"
@@ -80,7 +80,7 @@ label label_reaction():
         show joyce -happy -smile with dissolve
 
     elif value == 8:
-        j blush smile "Come on drink!"
+        j blush smile "Come on, drink!"
         j "*hic*"
         j "My friends say I'm bad with alcohol."
         j "Fudge them! I can totally drink my own!"
@@ -90,7 +90,7 @@ label label_reaction():
                 if date.drink>0:
                     play sound "day/gulp.wav"
                     $ date.drink -= 1
-                    j "NICE NICE!"
+                    j "Nice, NICE!"
                     j "You're a jolly fellow!"
                     "+4 attraction"
                     $ date.attraction += 4
@@ -98,13 +98,13 @@ label label_reaction():
                 else:
                     j "HEY WAIT A MINUTE"
                     j "Your glass is empty!"
-                    j "GARCON! BRING THIS BOY ANOTHER!"
+                    j "GARCON! BRING THE BOY ANOTHER!"
                     play sound "day/pour-drink.wav"
                     while date.drink<3:
                         $ date.drink += 1
                         with wipeup
-                    j "That's better"
-                    j "NOW DRINK!!"
+                    j "Much better!"
+                    j "BOTTOMS UP!!"
             "Maybe you should calm down":
                 j "Booo"
                 j "You're such a *hic* Joy killer"
@@ -112,9 +112,9 @@ label label_reaction():
                 j "HAHAHA"
 
     elif value == 9:
-        j "Wow you play erotic games?"
-        j "No I'm not judging."
-        j smirk "I'm not too innocent either hehe."
+        j "Wow you play porn games?"
+        j "Oh, I'm not judging."
+        j smirk "I'm not so innocent either, hehe."
         j "Erotic video games are fun."
         j -smirk "..."
         j foxy blush "But I like more human contact."
@@ -195,8 +195,8 @@ label label_card_reaction(what = game.lastPlayed.name):
             pause 0.4
             j blush "..."
             j "Why do you stare at me so often?"
-            j "I feel so shy. I'm so bad with keeping eyecontact."
-            j eyeside "Can you look elsewhere at least?"
+            j "I feel so shy. I'm so bad at keeping eye contact."
+            j eyeside "Please, can you look elsewhere?"
             show layer master:
                 zoom 2.0 xalign 0.5 yalign 0.5
             with dissolve
@@ -219,7 +219,7 @@ label label_card_reaction(what = game.lastPlayed.name):
                 zoom 3.0 xalign 0.5 yalign 0.55
             with dissolve
             pause 0.4
-            j smirk foxy "You like what you're looking at?"
+            j smirk foxy "You like what you see?"
             show layer master:
                 zoom 1.0 xalign 0.5 yalign 0.5
             with dissolve
@@ -259,7 +259,7 @@ label label_card_reaction(what = game.lastPlayed.name):
             pause 0.15*4
             hide anim
             j eyeside blush "..."
-            j foxy blush "Stop, I'm ticklish"
+            j foxy blush "Stop, I'm ticklish…!"
             show joyce -foxy -blush with dissolve
 
             # show layer master:
@@ -300,9 +300,9 @@ label label_card_reaction(what = game.lastPlayed.name):
             hide anim
             j blush defend "hey"
             if game.progress[0]<4:
-                j foxy smirk "Not in public.."
+                j foxy smirk "Not in public…"
             else:
-                j foxy smirk "Not yet.."
+                j foxy smirk "Not yet…"
             show joyce -blush -defend with dissolve
 
     elif what == "flirt":
@@ -314,18 +314,18 @@ label label_card_reaction(what = game.lastPlayed.name):
                     if game.progress[0] != 3:
                         j blush "..."
                         j "Thanks, I wasn't sure what to wear."
-                        j smile "Should I wear something more casual or not."
-                        j "Then I noticed there was only 30 minutes left so I just picked whatever."
+                        j smile "I thought maybe I should wear something more elegant…"
+                        j "Then I realized I was running late, so I just put on whatever."
                         j "haha"
                         show joyce -blush with dissolve
                     else:
                         j foxy smirk "Hehe"
-                        j "I guess I did pull it off"
+                        j "I guess I did pull it off…"
                 "I like your hair":
                     show joyce null
                     j smile "Isn't it a bit boring?"
-                    j "I have a friend that's always bleaching their hair all the time"
-                    j "Nowadays she has green hair I think"
+                    j "I have a friend who's always bleaching her hair all the time"
+                    j "These days she's doing green hair I think"
                     j "Do you think it would suit me?"
                     show joyce green_hair with dissolve
                     pause
@@ -333,10 +333,10 @@ label label_card_reaction(what = game.lastPlayed.name):
                         "oh yea big time":
                             j "Green?"
                             j "Really?"
-                            j "No way that's so bold. I could never."
-                            j "I kinda admire my friend."
+                            j "No way! That's so bold. I could never."
+                            j "I kinda admire her for that."
                         "hmm no":
-                            j "Yea I don't think either."
+                            j "Yeah, I didn't think so either."
                             j "haha."
                             j "But I kinda admire my friend."
                             j "Would you bleach your hair green?"
@@ -346,7 +346,7 @@ label label_card_reaction(what = game.lastPlayed.name):
             menu:
                 "I think you're beautiful":
                     j eyeside blush "..."
-                    j "Don't say that"
+                    j "Don't say that…"
                     j "You're making me shy"
                     j -eyeside "..."
                     j eyeside bite "You're not bad looking either"
@@ -356,8 +356,8 @@ label label_card_reaction(what = game.lastPlayed.name):
                     j "You're so bold"
                     j "..."
                     j -blush happy smile "But I also do enjoy our dates together."
-                    j -eyeside "I hope that will last"
-                    j tongue -happy  "teehee"
+                    j -eyeside "I hope this will last"
+                    j tongue -happy  "teehee ~"
                     show joyce -tongue with dissolve
 
         elif value == 3:
@@ -377,9 +377,9 @@ label label_card_reaction(what = game.lastPlayed.name):
             menu:
                 "You have nice boobs":
                     j foxy smirk "You like them?"
-                    j "They are pretty big"
+                    j "They're pretty big, right?"
                     if "night3" not in renpy.get_attributes("joyce") and "night4" not in renpy.get_attributes("joyce"):
-                        j "Here's a peek"
+                        j "Here's a peek…"
                         show joyce reveal-1 with dissolve
                         pause 0.5
                         show joyce reveal-2 with dissolve
@@ -390,7 +390,7 @@ label label_card_reaction(what = game.lastPlayed.name):
                         show joyce reveal-2 with dissolve
                         j "You wanna lick them?"
                         j wink tongue "Slurp slurp"
-                        j -wink -reveal-2 -tongue smile "Not yet hehe."
+                        j -wink -reveal-2 -tongue smile "Not yet, hehe…"
                         show joyce -reveal-2 -smile with dissolve
             $ done_flag[what] -= 1
 

@@ -14,8 +14,8 @@ label label_barDate:
         with dissolve
     
         j smile "Heey [povname]"
-        j eyeside "Wow what a nice place"
-        j -eyeside "Come on, let's get some seats and drinks haha!"
+        j eyeside "Wow… This place is so nice!"
+        j -eyeside "Come on, let's get some seats and something to drink haha!"
 
         if whichDress == "red":
             show joyce outfitred at sitting onlayer master zorder 0 
@@ -25,7 +25,7 @@ label label_barDate:
         
         show screen screen_glass("bar") onlayer master zorder 2
         play sound "day/put_on_table.wav"
-        j "A nice gin tonic"
+        j "A nice gin and tonic"
         with dissolve
     else:
         show screen screen_glass("bar") onlayer master zorder 2
@@ -57,7 +57,7 @@ label label_barDate:
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_3
 
                 j smile "That was a beautiful evening"
-                j "I'll think about you tonight."
+                j "I'll be thinking about you tonight."
                 j "See you soon."
                 call label_newDay("label_home") from _call_label_newDay_11
             
@@ -78,7 +78,7 @@ label label_barDate_endTurn:
     
     if date.turn == 1 and game.progress[1]<=1:
         hide screen screen_date_ui with dissolve
-        j "I'll go to the bathroom a bit"
+        j "Sorry, I have to use the restroom…"
         show joyce at standing with dissolve
         pause 0.5
         hide joyce with dissolve
@@ -105,9 +105,9 @@ label label_barDate_endTurn:
             show joyce outfitblue at standing onlayer master zorder 0 
         with dissolve
 
-        j smile "Hello I'm back."
+        j smile "Hey! Hope I didn't keep you waiting."
         show joyce at sitting with dissolve
-        j foxy "Did you receive my photo?"
+        j foxy "Did you get my picture?"
         j "No peeking under the table hehe!"
         show screen screen_date_ui with dissolve
     else:
@@ -125,7 +125,7 @@ label label_pic5_reaction:
     show expression "Joyce/selfie/pic5-"+whichDress+".png"  at truecenter onlayer master zorder 2
     with dissolve
     pause
-    "this picture has some effect on you.."
+    "This picture is turning you on…"
     "Lust +10"
     $ date.lust += 10
     play sound "rpg/Lust.wav"

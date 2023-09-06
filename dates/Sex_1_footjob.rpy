@@ -21,7 +21,7 @@ label label_sex_tutorial:
     play sound "rpg/Key.wav"
     show get-hard (1) as anim with dissolve
     j "Can you get hard for me baby?"
-    j "I'll make you feel really good."
+    j "I'll make you feel so good."
     pause 0.4
     show get-hard (2) as anim
     pause 0.4
@@ -63,7 +63,7 @@ label label_sex_tutorial:
     j "I'll start slow and go faster every turn."
     j "Your goal is to resist for {b}6 turns{/b}"
     j "Resist this, and you'll get to the next trial."
-    j "Fail, and you'll have to do this exam again in 3 days."
+    j "Fail, and you'll have to take this exam again in 3 days."
     hide screen screen_tutorial with dissolve
 
     j "Ready?"
@@ -84,10 +84,10 @@ label label_footjob:
     show footjob talk as joyce
     with dissolve
 
-    j "Hello my good boy"
+    j "Hello, my slave. "
     j "Are you getting used to your new room?"
     j "You did good holding it in so far."
-    j "Are you in pain?"
+    j "Does it hurt?"
     j "First, let's release this bad boy."
     play sound "rpg/Key.wav"
     show get-hard (1) as anim with dissolve
@@ -103,7 +103,7 @@ label label_footjob:
     show get-hard (5) as anim
     pause
     j "Good boy."
-    j "You're a good boy with a nice big cock."
+    j "You're a good boy with a nice, big cock."
     j "Resist this, and you'll get to the next trial."
     j "Fail, and you'll have to start this again."
     hide anim
@@ -207,7 +207,7 @@ label label_footjob_SexEndTurn:
         
         $ game.lust = 0
         pause
-        j "You naughty boy, you just couldn't resist?"
+        j "You naughty boy, you just couldn't resist, could you?"
         j "You just came all over me ew"
         j "I'm all sticky."
         j "You failed this exam."
@@ -261,7 +261,7 @@ label label_footjob_SexEndTurn:
         j "Until then..."
         play sound "rpg/Key.wav"
         show footjob v2 talk (2) as joyce with dissolve
-        j "Try to not burst out."
+        j "Try not to burst."
 
         hide joyce with dissolve
         

@@ -13,24 +13,24 @@ label label_dream_0:
         show joyce outfitdream null at depied onlayer master zorder 2
         with Dissolve(1.0)
         pause
-        j "Hello [povname]"
+        j "Hello, [povname]."
         j "Did you miss me that much?"
         menu:
             "yes":
-                j "hehe"
-                j "Good, I like honest boys"
-                j "I'll give you a reward"
+                j "hehe."
+                j "Good, I like honest boys."
+                j "I'll give you a reward…"
             "no":
-                j "Aw I'm hurt"
-                j "You sure you have nothing in your mind?"
-        j "What would you like to do to me?"
+                j "Oh, how cold hearted…"
+                j "Don't I make you feel some way?"
+        j "What do you want to do to me?"
     else:
         hide black
         show joyce outfitdream null at depied onlayer master zorder 2
         with Dissolve(0.5)
-        j "So quick to come back"
-        j "Did you come here to get a card."
-        j "Or did you come here to eye on my body?"
+        j "Back already?"
+        j "Did you come here to get a card…"
+        j "Or did you want to get a good look at me?"
     "You can transform an Eye Contact card."
     label .chooseOption:
         menu:
@@ -49,11 +49,11 @@ label label_dream_0:
     
     if g.dreamProgress == 0:
         j "Did this give you any new ideas?"
-        j "I hope you use those ideas for the next date.."
+        j "I hope you use those ideas for our next date…"
         play sound "day/alarm.wav"
         pause 1.0
-        j "It seems like our time is up."
-    j "See you soon cowboy."
+        j "It seems our time is up."
+    j "See you soon, cowboy."
     $ g.dreamProgress = 1
     call label_newDay("label_home_weirdDream") from _call_label_newDay_13
   

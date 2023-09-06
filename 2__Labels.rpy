@@ -217,27 +217,27 @@ label label_date_isLost_common(label_callback = "label_home"):
             show joyce null
             hide screen screen_date_ui with dissolve
             if game.progress[0]<4:
-                j armscrossed upset "um.. don't you think I can notice?"
+                j armscrossed upset "Um... don't you think I can notice?"
                 j "Sorry but I'm gonna go. I'm really not in the mood today."
                 j "Let's do this another day."
             else:
-                j foxy armscrossed "You're getting a bit too horny no?"
+                j foxy armscrossed "You're getting a bit too horny, aren't you?"
                 j smile "Seems like today's not your day."
-                j tongue "hehe, try next time."
+                j tongue "Hehe, try next time. "
                 j smirk "My door is always open for you."
 
         elif len(deck.deck) == 0 or date.turnLeft <= 1:
             show joyce null
             hide screen screen_date_ui with dissolve
             if game.progress[0]<4:
-                j eyeside armscrossed "OH look at the time."
-                j "Sorry but I gotta go."
-                j "That kinda dragged on no?"
+                j eyeside armscrossed "Oh, look at the time!"
+                j "Sorry, I gotta go."
+                j "That kinda dragged on anyway, right?"
                 j "Maybe we can do this another day? See ya."
             else:
-                j foxy armscrossed "Oh look at the time!"
+                j foxy armscrossed "Oh, look at the time!"
                 j smile "Seems like today's not your day."
-                j tongue "hehe, try next time."
+                j tongue "Hehe, try next time."
                 j smirk "My door is always open for you."
 
         hide joyce with dissolve

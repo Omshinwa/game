@@ -13,13 +13,13 @@ label label_dream_1:
     pause 0.5
     
     if g.dreamProgress == 1:
-        j "Hey sweety"
+        j "Hey, sweetie…"
         j "What's wrong? Something different about me?"
-        j "Did you think I didn't notice during the date?"
-        j "You were oogling at those tits."
+        j "Did you think I didn't notice during our date?"
+        j "You were drooling over those tits."
     else:
-        j "Did you miss me?"
-        j "Or you missed those huge tits?"
+        j "Did you miss me…"
+        j "Or did you miss those huge tits?"
 
     "You can transform an Eye Contact card or get a special card."
     label .chooseOption:
@@ -41,11 +41,11 @@ label label_dream_1:
                     jump .chooseOption
 
     if g.dreamProgress == 1:
-        j "Maybe you'll get to suck on these tits"
+        j "Maybe you'll get to suck on these tits…"
         j "In real life that is."
     play sound "day/alarm.wav"
     pause 1.0
-    j "Goodbye"
+    j "Goodbye."
     $ g.dreamProgress += 1
     call label_newDay("label_home_weirdDream") from _call_label_newDay_14
     
