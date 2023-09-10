@@ -68,7 +68,7 @@ label label_sex_tutorial:
 
     j "Ready?"
     show joyce footjob
-    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
     call label_beginDuel_common() from _call_label_beginDuel_common_5
     hide screen screen_dick_ui
     $ current_speed = date.animation_speed
@@ -79,7 +79,7 @@ label label_footjob:
     if game.progress[1] == -1:
         jump label_sex_tutorial
 
-    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=6, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
     scene bg prison-ground
     show footjob talk as joyce
     with dissolve
@@ -155,12 +155,16 @@ label label_footjob_SexEndTurn:
         pause(0.05)
     
     $ date.speedUp()
+    
     if "v2" in renpy.get_attributes("joyce"):
         show joyce footjob v2
     else:
         show joyce footjob
+
     pause 0.5
     $ date.speedUp()
+    #only get +2 speed later
+        
     if "v2" in renpy.get_attributes("joyce"):
         show joyce footjob v2
     else:
@@ -221,7 +225,7 @@ label label_footjob_SexEndTurn:
 
         call label_newDay("label_prison") from _call_label_newDay_16
 
-    if date.turn == 2:
+    if date.turn == 3:
         $ phase = 2
         show footjob (1) as joyce with dissolve
         j "You're holding out well"
@@ -244,7 +248,7 @@ label label_footjob_SexEndTurn:
         $ date.speedUp()
         show joyce footjob v2
 
-        pause
+        pause 0.5
     elif date.turn > 2:
         call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.5) from _call_label_add_card_to_deck_12
         pause 0.5

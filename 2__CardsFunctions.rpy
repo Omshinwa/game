@@ -73,13 +73,13 @@ define cardList = {
     "calm": {"txt":"-3 lust, can get into negatives", "eff":"renpy.call('label_card_calm')", "value":1, "sort":"20"},
     "maxcalm":{"txt":"-10 lust, add one STOP card in your hand", "eff":"renpy.call('label_card_maxcalm')", "value":1, "sort":"201"},#card also work if you have multiple
 
-    "fibonacci": {"txt": "-1 Lust, increases every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":1,"sort":"202"},
+    "fibonacci": {"txt": "-1 Lust, this permanently increases by 1 every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":1,"sort":"202"},
     
     "newday": {"txt":"Change your current Lust with a random number.", "eff":"renpy.call('label_card_newday')", "value":1,"sort":"203"},
 
     "slower": {"txt":"go slower", "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
     "slowsteady": {"txt":"IF this is your leftmost card: \nGo much slower. ", "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
-    "fool": {"txt": "IF you have 3 cards or less in hand: \nGo much slower.", "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":23 },
+    "fool": {"txt": "IF you have 3 cards or less in hand: \nGo much slower.", "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":"23" },
     "faster": {"txt":"go faster", "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
     "awakening": {"txt":"This turn: double Lust and Speed changes.", "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
@@ -127,11 +127,11 @@ define cardList = {
     "eyecontact": {"txt":"+1 attraction", "eff":"renpy.call('label_card_eyecontact')","value2":1, "sort":"03"},
     "flirt": {"txt":"+2 attraction", "eff":"renpy.call('label_card_flirt')","value2":2, "sort":"04"},
     # "kiss" : {"txt":"+4 attraction", "eff":"date.increment('attraction',4,False);","value2":3, "sort":"05"},
-    "touchy" : {"txt":"This turn, Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"06"},
+    "touchy" : {"txt":"For the rest of this turn: Attraction gains are doubled.", "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"06"},
 
     "talk": {"txt":"+1 trust", "eff":"renpy.call('label_card_talk')","value2":1, "sort":"00"},
     "talk2": {"txt":"+2 trust", "eff":"renpy.call('label_card_talk2')","value2":2, "sort":"01"},
-    "listen": {"txt":"This turn: double Trust gains.", "eff":"date.trustMultiplier *= 2","value2":2, "sort":"02"},
+    "listen": {"txt":"For the rest of this turn: Trusts gains are doubled.", "eff":"date.trustMultiplier *= 2","value2":2, "sort":"02"},
         }
 
 

@@ -1,7 +1,7 @@
 label label_welcome_prison():
     # $ game.dateEvery = 7
     
-    $ game.lustPerDay = "1"
+    # $ game.lustPerDay = "5"
     $ game.lust = 0
 
     $ game.state = "living"
@@ -45,8 +45,8 @@ label label_welcome_prison():
             j "Do you still not understand who's in control?"
     j "See that chastity belt I've put on you?"
     j "I've got the key for it as well as the key to your cage."
-    j smile "Twice a week, I will conduct a physical examination on you."
-    j "I will only free your cock during those exams."
+    j smile "I'll come to check on you twice a week. You'll undergo a physical check-up."
+    j "This is the only occasion your cock will be free."
     j "If you manage not to cum, you'll move on to the next stage."
     j "{b}At the last stage, you will fuck my pussy.{/b}"
     j key "If you can make me cum, you win the key to your cage."
@@ -58,12 +58,12 @@ label label_welcome_prison():
     play sound "day/door_opening.wav"
     hide joyce with dissolve
 
-    $ g.rat = game.day + 4
+    $ g.day_rat_appears = game.day + 4
 
     jump label_prison
 
      
-label label_prison_first_time():
+label label_prison_rat_introduction():
     $ game.jeu_sensitive = False
     rat "So she caught another one, huh." with dissolve
     rat "You're not the first one to get trapped here."
@@ -107,7 +107,7 @@ label label_prison_first_time():
     $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=3 } #
     
     $ i = score
-    $ g.prison_cards[0] = [Card("spaceout"),Card("universeout"),Card("darkhole"),Card("nova"),Card("pair"),Card("change")]
+    $ g.prison_cards[0] = [Card("slowsteady"),Card("spaceout"),Card("universeout"),Card("nova"),Card("pair"),Card("change")]
     
     $ i = score - 2
     while i>score/2:
@@ -138,7 +138,7 @@ label label_prison_first_time():
     rat "…from past prisoners, hehe."
     rat "Just leave some food for me."
     rat "Good luck staying alive"
-    $ g.rat -= 1
+    $ g.day_rat_appears -= 1
     $ game.jeu_sensitive = True
     jump label_prison
 
@@ -147,7 +147,7 @@ label label_prison():
     $ game.state = "living"
     scene bg prison
 
-    if game.day <= g.rat:
+    if game.day <= g.day_rat_appears:
         show screen screen_prison_sans_rat onlayer master 
     else:
         show screen screen_prison onlayer master
@@ -155,19 +155,9 @@ label label_prison():
     show black onlayer screens
     hide black onlayer screens with dissolve
 
-    if game.day == g.rat:
-        jump label_prison_first_time
-    elif game.day % game.dateEvery == 0:
-        $ game.jeu_sensitive = False
-        play sound "day/door_opening.wav"
-        show joyce foxy outfitsm smile whip at depied with dissolve
-        j "Hello, slave."
-        j "The milking starts now."
-        play sound "sex/Fouet.mp3"
-        show joyce push
-        with vpunch
-        call label_prison_open_door(open=True) from _call_label_prison_open_door
-
+    if game.day == g.day_rat_appears:
+        jump label_prison_rat_introduction
+    
     $ g.prison_cards = []
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
 
@@ -196,9 +186,25 @@ label label_prison():
                         if exodiaCard not in [card2.name for card2 in deck.list]:
                             g.prison_cards[index] = Card(exodiaCard)
 
-    
-
     $ del availableCards, newlist
+
+    #sex time
+    if game.day % game.dateEvery == 0:
+        if game.debug_mode:
+            menu:
+                "Let Joyce enter":
+                    pass
+                "Close the door":
+                    jump .gameLoop
+        $ game.jeu_sensitive = False
+        play sound "day/door_opening.wav"
+        show joyce foxy outfitsm smile whip at depied with dissolve
+        j "Hello, slave."
+        j "The milking starts now."
+        play sound "sex/Fouet.mp3"
+        show joyce push
+        with vpunch
+        call label_prison_open_door(open=True) from _call_label_prison_open_door
 
     label .gameLoop:
         $ game.jeu_sensitive = True
@@ -208,6 +214,7 @@ label label_prison():
 label label_prison_open_door(open=False):
     if game.debug_mode or open:
         hide screen screen_prison
+        $ renpy.pop_call()
         jump expression "label_" + game.story[game.progress[0]]
     else:
         $ game.jeu_sensitive = False

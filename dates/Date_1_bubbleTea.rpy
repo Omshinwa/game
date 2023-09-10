@@ -32,7 +32,7 @@ label label_bubbleTea:
 
                 j smile "So, did you like the cafe?"
                 j "I think we should hang out outside again."
-                j worried "It's getting pretty hot! Let's drink outside next time."
+                j worried "It's getting quite warm! How about we enjoy our drinks outdoors next time?"
                 call label_newDay("label_home") from _call_label_newDay_9
                 
         if len(deck.hand) == 0:
@@ -82,8 +82,8 @@ label label_bubbleTea_endTurn:
                     show screen screen_tutorial("Joyce/cut-in_drink.png", {"xalign":0.5, "yalign":0.3, "zoom":1.5}) onlayer master zorder 5 with moveinleft
                     
                     play sound "day/gulp.wav"
-                    j "Mhh, it tastes so good"
-                    j "Maybe I drink too much bubble tea though haha"
+                    j "Mhh, it tastes so good."
+                    j "Maybe I drink too much bubble tea though haha."
                     play sound "day/gulp.wav"
                     show layer master:
                         zoom 2.0 xalign 0.5 yalign 0.4

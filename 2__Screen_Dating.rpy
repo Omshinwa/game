@@ -12,28 +12,22 @@ init python:
 
 screen screen_card_hand():
     $ paddingPerCard = getCardPadding(len(deck.hand))
-    
+
+    # if renpy.variant("pc"):
+    # if renpy.variant("touch"):
+
     fixed at date.updateYdisplace():
         xsize 1800
         ysize game.card_ysize
         yanchor 1.0
-        # ypos 1220 + date.ydisplace
 
         fixed:
             xsize int( len(deck.hand)* game.card_xsize + (paddingPerCard*(len(deck.hand)-1)) )
             xalign 0.5
             for index, card in enumerate(deck.hand):
-                if index != focus_card_index:
-                    fixed:
-                        xpos int((index)* game.card_xsize + paddingPerCard*index)
-                        xsize game.card_xsize
-                        ysize game.card_ysize
-                        add card.img
-
-            if -1<focus_card_index<len(deck.hand):                    
-                $ card = deck.hand[focus_card_index]
+                # if index != focus_card_index:
                 fixed:
-                    xpos int((focus_card_index)* game.card_xsize + paddingPerCard*focus_card_index)
+                    xpos int((index)* game.card_xsize + paddingPerCard*index)
                     xsize game.card_xsize
                     ysize game.card_ysize
                     add card.img
@@ -47,31 +41,54 @@ screen screen_card_hand():
                     
                     imagebutton:
                         sensitive game.jeu_sensitive
-                        idle "cards/button.png"
-                        if card.cond(index):
-                            hover "cards/button-hover.png"
-                            action [Call('playCardfromHand', index)]
-                        else:
-                            action NullAction()
-                        hovered [SetVariable("game.isHoverHand", True), SetVariable("focus_card_index", index)]
-                        unhovered [SetVariable("game.isHoverHand", False), SetVariable("focus_card_index", -1)]
+
+                        if renpy.variant("pc"):
+                            idle "cards/button.png"
+                            hovered [SetVariable("game.isHoverHand", True)]
+                            unhovered [SetVariable("game.isHoverHand", False)]
+                            if card.cond(index):
+                                hover card.img_hover
+                                # hover Transform(card.img, matrixcolor=TintMatrix((200,350,250)))
+                                action [Call('playCardfromHand', index)]
+                            else:
+                                action SetVariable("game.isHoverHand", True)
+
+                        elif renpy.variant("touch"):
+                            if card.cond(index):
+                                hover card.img_hover
+                            else:
+                                idle "cards/button.png"
+
+                            if not game.isHoverHand:
+                                action SetVariable("game.isHoverHand", True)
+                            elif card.cond(index):
+                                action [Call('playCardfromHand', index)]
+
 
 screen screen_date_bottom_ui():
 
     # add "card_zone_bg" yalign 1.0
-
-    button:
-        hovered SetVariable("game.isHoverHand", True)
-        unhovered SetVariable("game.isHoverHand", False)
-        action Return()
-        # action NullAction()
-        xsize 1700
-        if game.isHoverHand:
-            ysize game.card_ysize
-        else:
-            ysize 200
-        yalign 1.0
-        xalign 0.35
+    if renpy.variant("pc"):
+        button:
+            hovered SetVariable("game.isHoverHand", True)
+            unhovered SetVariable("game.isHoverHand", False)
+            action Return()
+            # action NullAction()
+            xsize 1700
+            if game.isHoverHand:
+                ysize game.card_ysize
+            else:
+                ysize 200
+            yalign 1.0
+            xalign 0.35
+    
+    elif renpy.variant("touch"):
+        button:
+            action SetVariable("game.isHoverHand", False)
+            xsize 1920
+            ysize 1080
+            yalign 1.0
+            xalign 0.35
 
     use screen_card_hand()
 
@@ -160,9 +177,8 @@ screen screen_dick_ui:
     $ fullSizeDick = 122 + shaft_size + 152
     $ croppedSize = int ( fullSizeDick * getattr(gameOrDate, "lust")/getattr(gameOrDate, "lustMax") )
     fixed:
-        # xpos 1920 - 500 - shaft_size
         ypos 20
-        xpos 220
+        xpos 240
         xsize 122 + shaft_size + 152
         if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
             image Transform("ui/lust_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") )
@@ -218,6 +234,8 @@ screen screen_sex_ui():
     
     if game.progress[0]!=8:
         use screen_turn_counter()
+    
+    use speed_indicator()
 
 screen screen_date_ui():
     use screen_date_bottom_ui()
@@ -386,8 +404,37 @@ screen screen_glass(id):
         imagebutton:
             idle "bg/" + id + "-glass-" + str(date.drink) + ".png"
             focus_mask True
-            hover im.MatrixColor("bg/" + id + "-glass-" + str(date.drink) + ".png", im.matrix.tint(1.5,1.5,1))
+            hover Transform("bg/" + id + "-glass-" + str(date.drink) + ".png", matrixcolor=TintMatrix(1.5,1.5,1))
             action Call("label_drink")
             sensitive game.jeu_sensitive
     else:
         add "bg/" + id + "-glass-0.png"
+
+screen speed_indicator():
+    fixed:
+
+        ypos 600
+        xalign 1.0
+        xysize 100,50*len(date.animation_speed_hash)
+        fixed:
+            
+            text "SPEED" style "outline_text" ypos -300 xalign 1.0 vertical True
+
+            for i in range(len(date.animation_speed_hash)):
+                frame:
+                    if i == date.animation_speed:
+                        background "#f00"
+                    else:
+                        background Color((25.5*i,15.5*i,20.5*i))
+                    xysize 40,50
+                    ypos -50*i
+                    text str(date.animation_lust[i]) font "font_quirky" align 0.5,0.5 color "#fff"
+
+                    if i == date.animation_speed:
+                        frame:
+                            background "#ff0"
+                            xysize 20,20
+                            yalign 0.5
+                            xpos -70
+
+

@@ -12,7 +12,7 @@ label label_blowjob:
         play sound "rpg/Key.wav"
         show blowjob get-hard (1) as joyce with dissolve
         pause
-        j "My little slut"
+        j "My little slut."
         j "Now be a good boy and get hard for me."
         j "So I can rape you nice and tight."
         pause 0.4
@@ -23,7 +23,7 @@ label label_blowjob:
         j "It smells so good"
         j "First let's do the balls nice and wet."
         show blowjob (1) as joyce with dissolve
-        j "Mhhh"
+        j "Mhhh..."
     else:
         j "I missed this"
         play sound "rpg/Key.wav"
@@ -86,8 +86,9 @@ label label_blowjob_SexEndTurn:
         show joyce blowjob v2
     else:
         show joyce blowjob
-    pause 0.5
+    pause 0.3
     $ date.speedUp()
+    pause 0.3
     if "v2" in renpy.get_attributes("joyce"):
         show joyce blowjob v2
     else:

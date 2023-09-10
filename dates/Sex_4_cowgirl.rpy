@@ -125,6 +125,8 @@ label label_cowgirl:
                 $ date.speedUp()
                 show joyce
                 j "yOU'RE gonna bREAK my PUssy [povname]"
+                # j "[povname] you're too thick!"
+                # j "You're gonna break me!!"
                 $ date.speedUp()
                 show joyce
                 j "it'sh sho GOOOOOD"

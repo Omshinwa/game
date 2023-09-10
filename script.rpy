@@ -49,7 +49,7 @@ By clicking play you agree that you are at least 18 years old and consent to see
             """  color "#ffffff" xsize 1300 xalign 0.5 yalign 0.2 size 40 justify True textalign 0.5
             button:
                 text _("Play") size 50 align (0.5,0.5)
-                action Jump("start2")
+                action Return()
                 yalign 0.85 xalign 0.2 xysize (200,200) background "#fff"
                 hover_background "#8080ff"
             button:
@@ -59,13 +59,9 @@ By clicking play you agree that you are at least 18 years old and consent to see
                 hover_background "#8080ff"
 
 label start:
-    show screen Content_Warning()
-    label .gameLoop:
-        call screen screen_gameloop()
-    jump .gameLoop
+    call screen Content_Warning()
 
-label start2:
-    hide screen Content_Warning
+    # hide screen Content_Warning
     #set up the deck and keybinds
 
     default deck = Deck()
@@ -76,7 +72,7 @@ label start2:
             CARD_IMG_DICT[card] = Image("cards/" + card + ".png")
 
     $ deck.list = [Card("talk"),Card("talk"),Card("talk"),Card("calm"),Card("spaceout"),Card("spaceout"),Card("spaceout"),
-    Card("spaceout"),Card("listen"),Card("eyecontact"),Card("draw2"),Card("touchy"),Card("pair"),Card("recycle")]
+    Card("spaceout"),Card("listen"),Card("eyecontact"),Card("draw2"),Card("flirt"),Card("pair"),Card("recycle")]
 
     # python:
     #     for card in cardList:
@@ -92,9 +88,9 @@ label start2:
     show screen keybinds()
     show screen screen_debug
 
-    jump label_tutorial
+    # jump label_tutorial
 
-    # jump label_home
+    jump label_prison_rat_introduction
     # jump test_sprites
 
     return

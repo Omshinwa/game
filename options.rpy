@@ -10,7 +10,8 @@
 
 define config.name = _("Dating Joyce")
 
-define build.itch_project = "omshinwa18/dating-joyce"
+# define build.itch_project = "omshinwa18/dating-joyce"
+define build.itch_project = "omshinwa18/test-joyce"
 
 ## Determines if the title given above is shown on the main menu screen. Set
 ## this to False to hide the title.

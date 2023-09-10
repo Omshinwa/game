@@ -121,8 +121,11 @@ label label_reaction():
         show joyce -foxy -blush with dissolve
 
     elif value == 10:
-        j "Maybe you can show me what kind of erotic games you like."
-        j "Show me what you like."
+        j "*hic* You know."
+        j "I'm a *hic* pretty dangerous person."
+        j "I may seem frail, or weak."
+        j "But don't underestimate me!"
+        j "*hic*"
 
     show screen screen_date_ui with dissolve
     $ done_flag["script"] += 1

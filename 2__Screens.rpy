@@ -2,7 +2,6 @@ screen keybinds():
     key 'K_F2' action Function(debugmode)
     # ... etc.
 
-
 screen screen_tutorial(disp, properties={}):
     add disp:
         properties properties
@@ -48,17 +47,14 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
     sensitive game.jeu_sensitive # sisphys needs this
     
     modal True
+
+    default page = 0
+    
     $ card_per_line = g.card_per_line
-
-    # $ card_per_line = int( (len(deck.list))/2 + 0.5)
     $ zoom = 1800/(game.card_xsize * card_per_line)
-    
-    # $ zoom = 1800/(game.card_xsize * 7)
-    
     $ line_per_page = int(780 / game.card_ysize / zoom)
+    $ offset = card_per_line * line_per_page * page
 
-    $ offset = card_per_line * line_per_page * g.page
-    
     add background
     fixed:
         xsize 1800
@@ -84,30 +80,35 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
                             imagebutton:
                                 idle card.img
                                 hover card.img_hover
-                                action [SetVariable("g.page", 0), SetVariable("game.jeu_sensitive", False), Call(label_callback, index)]
+                                action [SetVariable("game.jeu_sensitive", False), Call(label_callback, index)]
                                 at Transform(zoom=zoom)
         
+
+        text str(page):
+            size 80
+            color "#f700ff"
+
     imagebutton:
         insensitive im.Grayscale("ui/next.png")
-        sensitive g.page+1 < len(what)/(card_per_line * line_per_page)
+        sensitive page+1 < len(what)/(card_per_line * line_per_page)
         hover Transform("ui/next.png", matrixcolor=TintMatrix((255,255,0)))
-        action SetVariable("g.page", g.page+1)
+        action SetScreenVariable("page", page+1)
         idle "ui/next.png"
         yalign 0.97
         xalign 0.6
     imagebutton:
-        sensitive g.page>0
+        sensitive page>0
         idle "ui/prev.png"
         insensitive im.Grayscale("ui/prev.png")
         hover Transform("ui/prev.png", matrixcolor=TintMatrix((255,255,0)))
-        action SetVariable("g.page", g.page-1)
+        action SetScreenVariable("page", page-1)
         yalign 0.97
         xalign 0.4
     
     imagebutton:
         idle "ui/cancel.png"
         hover Transform("ui/cancel.png", matrixcolor=TintMatrix((255,255,0)))
-        action [SetVariable("g.page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
+        action [SetScreenVariable("page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
         yalign 0.97
         xalign 0.5
 
@@ -119,11 +120,11 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
             imagebutton:
                 idle "ui/zoom-in.png"
                 hover Transform("ui/zoom-in.png", matrixcolor=TintMatrix((255,255,0)))
-                action SetVariable("g.card_per_line", g.card_per_line-1)
+                action SetVariable("g.card_per_line", g.card_per_line-3)
         imagebutton:
             idle "ui/zoom-out.png"
             hover Transform("ui/zoom-out.png", matrixcolor=TintMatrix((255,255,0)))
-            action SetVariable("g.card_per_line", g.card_per_line+1)
+            action SetVariable("g.card_per_line", g.card_per_line+3)
             xpos 100
 
     text instruction xalign 0.5 style "quirky_command" ypos 790 xsize 1600 at animated_text

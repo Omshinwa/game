@@ -136,10 +136,10 @@ label label_handjob_SexEndTurn:
             pause(0)
 
         $ game.lust = 0
-        j "Such a big load"
+        j "Such a big load."
         j "Wasted here."
         j "You should have saved it for my pussy."
-        j "Oh well"
+        j "Oh well."
         play sound "rpg/Key.wav"
         if phase == 1:
             hide anim
@@ -166,7 +166,7 @@ label label_handjob_SexEndTurn:
         pause 0.1
         show handjob v2 (4) as joyce
         pause 0.1
-        j "Mhh Delicious"
+        j "Mhh Delicious."
         show joyce handjob v2 as joyce with dissolve
         # pause
         call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_13   

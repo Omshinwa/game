@@ -1,5 +1,6 @@
 style style_card_effect:
     xalign 0.5
+    adjust_spacing True
     textalign 0.5
 
 init python:
@@ -59,14 +60,14 @@ init python:
                 
 
         def updateArt(self):
-            # text_effect = Text(self.txt, xysize=(200, 130), adjust_spacing =True) 
+            # text_effect = Text(self.txt, xysize=(200, 130)) 
             if len(self.txt)<30:
                 text_effect = Text(self.txt, style="style_card_effect", size=30, line_spacing=0) 
             else:
                 text_effect =  Text(self.txt, style="style_card_effect", size=31 - (len(self.txt)/10), line_spacing=-5) 
-            textbox = Window(text_effect, style="empty", xalign=0.5,  xysize=(200, 130))
+            textbox = Window(text_effect, style="empty",  xysize=(200, 130))
             self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.illustration, (15,175), textbox)
-            self.img_hover =  Composite((230, 330), (0, 0), "cards/card_bg-hover.png", (15,15), self.illustration, (15,175), textbox)
+            self.img_hover =  Composite((230, 330), (0, 0), Transform(self.img, matrixcolor=ColorizeMatrix("#009f5d","#dfd")), (15,15), self.illustration, (15,175), textbox)
 
         # #this is a getter 
         # def update_x_in_hand(self, index, cards_in_hand):
@@ -137,15 +138,16 @@ label playCard(card, index):
     $ commands = card.eff
     $ commands.replace("index", str(index))
     $ commands = commands.split("; ")
-    $ i = 0
-    while i < len(commands):
-        $ exec(commands[i])
-        $ i+=1
+    $ playCardindex = 0
+    while playCardindex < len(commands):
+        $ exec(commands[playCardindex])
+        $ playCardindex+=1
         # if i < len(commands):
         pause 0.2
     $ game.lastPlayed = card
     $ game.cardPlaying = None
-
+    
+    $ del playCardindex
     return
 
 label playCardfromHand(index):

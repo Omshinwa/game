@@ -1,6 +1,6 @@
 init python:
     config.console = True
-    preferences.skip_unseen = False
+    preferences.skip_unseen = True
     
     def debugmode():
         game.debug_mode = 1 - game.debug_mode
@@ -130,7 +130,7 @@ init python:
             self.orgasmMax = 60
             self.orgasm = 0
 
-            self.animation_speed = -99
+            self.animation_speed = 0
             # self.animation_speed_hash = { 0:0.3, 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6}
             self.animation_speed_hash = { 0:0.3, 1:0.4, 2:0.55, 3:0.7, 4:0.85, 5:1.0, 6:1.125, 7:1.25, 8:1.4, 9:1.6}
             # self.animation_lust = [1,5,10,15,20,25,30]
@@ -211,8 +211,11 @@ init python:
 label label_null(*args):
     return
 
-default g.page = 0
-default g.rat = 0 #when does the rat appear
+#######################################################
+
+##            global var g:
+
+default g.day_rat_appears = 0 #when does the rat appear
 default g.findFromTrash = True #get a Recycle card when you threw away enough cards
 default g.card_per_line = 7
 default g.phoneLogs = {

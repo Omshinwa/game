@@ -1,3 +1,15 @@
+#############################################################################
+##                                                                                     
+##
+##     #######    #####  ######    #######  #######  ###   ##   #######
+##     ##       ###      ##   ##   ##       ##       ####  ##   ##
+##     #######  ##       ######    #####    #####    ## ## ##   #######
+##          ##  ###      ##  ##    ##       ##       ##  ####        ##
+##     #######    #####  ##   ##   #######  #######  ##   ###   #######
+##
+##
+#############################################################################
+
 screen screen_home:
     # sensitive not renpy.get_screen("say")
     sensitive game.jeu_sensitive
@@ -8,8 +20,8 @@ screen screen_home:
         add "home/bed.png"
 
         imagebutton:
-            idle "home/door.png"
-            hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
+            idle "home/door-open.png"
+            hover Transform("home/door-open.png", matrixcolor=TintMatrix((255,255,178)))
             action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
             focus_mask True
 
@@ -240,14 +252,15 @@ screen screen_home_phone(hidePhone = True):
 #############################################################################
 ##                                                                                     
 ##
-##     #######    #####  ######    #######  #######  ###   ##   #######
-##     ##       ###      ##   ##   ##       ##       ####  ##   ##
-##     #######  ##       ######    #####    #####    ## ## ##   #######
-##          ##  ###      ##  ##    ##       ##       ##  ####        ##
-##     #######    #####  ##   ##   #######  #######  ##   ###   #######
+##          ██       █████  ██████  ███████ ██      ███████ 
+##          ██      ██   ██ ██   ██ ██      ██      ██      
+##          ██      ███████ ██████  █████   ██      ███████ 
+##          ██      ██   ██ ██   ██ ██      ██           ██ 
+##          ███████ ██   ██ ██████  ███████ ███████ ███████ 
 ##
 ##
 #############################################################################
+
 
 label label_home():
     if g.water:
@@ -713,7 +726,7 @@ label label_pic1_reaction:
                 $ sudoku_pos = (sudokuNumber[1]-1)*9 + (sudokuNumber[2]-1)
                 $ g.phoneLogs[3].append( [2, "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"])
                 # $ g.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
-                if answer[sudoku_pos] == str(sudokuNumber[0]):
+                if len(answer) <= sudoku_pos and answer[sudoku_pos] == str(sudokuNumber[0]):
                     $ g.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
                     $ g.phoneLogs[3].append( [2, "+3 trust, +3 attraction"])
                     $ g.phoneLogs[3].append( [0, "what?"])
