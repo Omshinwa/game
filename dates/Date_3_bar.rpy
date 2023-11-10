@@ -86,7 +86,7 @@ label label_barDate_endTurn:
         play sound "day/newmsg.wav"
         pause
         "?"
-        show screen screen_home_phone(False) onlayer master zorder 2
+        show screen screen_home_phone onlayer master zorder 2
         $ g.phoneProgress[0] += 1
         $ g.phoneProgress[1] = 0
         
@@ -97,6 +97,7 @@ label label_barDate_endTurn:
             jump .gameLoop
 
         pause
+        $ game.jeu_sensitive = False
         pause
 
         if whichDress == "red":

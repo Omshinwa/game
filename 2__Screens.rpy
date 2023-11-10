@@ -1,7 +1,3 @@
-screen keybinds():
-    key 'K_F2' action Function(debugmode)
-    # ... etc.
-
 screen screen_tutorial(disp, properties={}):
     add disp:
         properties properties
@@ -17,20 +13,21 @@ screen screen_day():
             size 50 style "outline_text"  xalign 0.5 yalign 0.0
 
         text "{b}"+str(game.day)+"{/b}":
-            size 145 style "outline_text"  xalign 0.5 yalign 0.55
+            size 150 style "outline_text"  xalign 0.5 yalign 0.8
             if game.day >= 100:
                 kerning len(str(game.day))*-10 xalign 0.8
     
         if game.state == "living":
             if game.day % game.dateEvery==0:
-                text "today!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+                text "today!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
             elif game.day % game.dateEvery==game.dateEvery-1:
-                text "tomorrow!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+                text "tomorrow!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
             else:
-                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 155 color "#e970d2" style "outline_text"
+                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
 
 screen screen_deck_stack():
     imagebutton:
+        xalign 1.0
         idle "ui/exploring-deck_stack.png"
         hover Transform("ui/exploring-deck_stack.png", matrixcolor=TintMatrix((204,204,255)))
         action Show("screen_show_deck", dissolve, deck.list, "label_null")
@@ -38,11 +35,11 @@ screen screen_deck_stack():
 
     fixed:
         xpos 1780
-        ypos 70
+        ypos 80
         xsize 30
         text str(len(deck.list)) size 60 xalign 0.5 style "outline_text"
 
-screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a"):
+screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a", cancel=NullAction()):
 
     sensitive game.jeu_sensitive # sisphys needs this
     
@@ -84,9 +81,9 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
                                 at Transform(zoom=zoom)
         
 
-        text str(page):
-            size 80
-            color "#f700ff"
+        # text str(page):
+        #     size 80
+        #     color "#f700ff"
 
     imagebutton:
         insensitive im.Grayscale("ui/next.png")
@@ -108,7 +105,7 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
     imagebutton:
         idle "ui/cancel.png"
         hover Transform("ui/cancel.png", matrixcolor=TintMatrix((255,255,0)))
-        action [SetScreenVariable("page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True)]
+        action [SetScreenVariable("page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True),cancel,Return()]
         yalign 0.97
         xalign 0.5
 

@@ -135,7 +135,11 @@ return
 
 default done_flag = {"script":0, "thisTurn":set()}
 
-label label_card_reaction(what = game.lastPlayed.name):
+label label_card_reaction(what = None):
+
+    if what == None:
+        if hasattr(game.lastPlayed, "name"):
+            $ what = game.lastPlayed.name
 
     if what == "talk2":
         call label_card_reaction("talk") from _call_label_card_reaction_1
@@ -167,8 +171,8 @@ label label_card_reaction(what = game.lastPlayed.name):
 
         return
 
-    if game.state == "dating":
-        show joyce null
+    elif game.state == "dating":
+        show joyce null with dissolve
 
     if what == "eyecontact":
 

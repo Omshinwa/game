@@ -14,10 +14,10 @@ screen screen_home:
     # sensitive not renpy.get_screen("say")
     sensitive game.jeu_sensitive
 
-    if game.day % game.dateEvery == 0:
+    if game.day % game.dateEvery == 0: # today theres a date
         
-        add "home/comp.png"
-        add "home/bed.png"
+        add bwImg("home/comp.png")
+        add bwImg("home/bed.png")
 
         imagebutton:
             idle "home/door-open.png"
@@ -39,21 +39,6 @@ screen screen_home:
         add "home/trash.png"
 
     else:
-        if game.hasNewMessage():
-            imagebutton:
-                idle "home/phone-msg.png"
-                hover Transform("home/phone-msg.png", matrixcolor=TintMatrix((255,255,1275)))
-                action Show("screen_home_phone", None, _layer = "master")
-                focus_mask True
-        else:
-            if game.progress[0]==0:
-                add "home/phone.png"
-            else:
-                imagebutton:
-                    idle "home/phone.png"
-                    hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
-                    action Show("screen_home_phone", None, _layer = "master")
-                    focus_mask True
 
         if game.debug_mode:
             imagebutton:
@@ -63,22 +48,18 @@ screen screen_home:
                 focus_mask True
         else:
             add "home/door.png"     
-        
-        # imagebutton:
-        #     idle "home/door.png"
-        #     hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
-        #     action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
-        #     focus_mask True
             
         imagebutton:
-            idle "home/bed.png"
-            hover Transform("home/bed.png", matrixcolor=TintMatrix((255,255,1275)))
+            idle tintImg("home/bed.png",(255,255,1275))
+            hover "home/bed.png"
             action Call("label_home_bed")
             focus_mask True
 
         imagebutton:
-            idle "home/trash.png"
-            hover Transform("home/trash.png", matrixcolor=TintMatrix((255,255,1275)))
+            # idle colorizeImg("home/trash.png",("#000","#ffd")) 
+            # idle tintImg("home/trash.png","#ffd") 
+            idle tintImg("home/trash.png",(255,255,1275))
+            hover "home/trash.png"
             action Call("label_home_trash")
             focus_mask True
 
@@ -106,6 +87,23 @@ screen screen_home:
             hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_cat")
             focus_mask True
+
+        if game.hasNewMessage():
+            imagebutton:
+                idle "home/phone-msg.png"
+                hover Transform("home/phone-msg.png", matrixcolor=TintMatrix((255,255,1275)))
+                action Show("screen_home_phone", None, _layer = "master")
+                focus_mask None
+
+        else:
+            if game.progress[0]==0:
+                add "home/phone.png"
+            else:
+                imagebutton:
+                    idle "home/phone.png"
+                    hover Transform("home/phone.png", matrixcolor=TintMatrix((255,255,1275)))
+                    action Show("screen_home_phone", None, _layer = "master")
+                    focus_mask True
 
     use screen_trust_ui()
     use screen_day
@@ -147,106 +145,6 @@ screen screen_home_end:
         add "home/plant-"+str(g.plant)+".png"
 
     add "home/trash.png"
-
-
-screen screen_home_phone(hidePhone = True):
-    
-    modal True #break pauses?
-
-    sensitive game.jeu_sensitive
-    
-    if hidePhone:
-        button:
-            xsize 1.0
-            ysize 1.0
-            action Hide("screen_home_phone", None, _layer="master")
-    else:
-        button:
-            xsize 1.0
-            ysize 1.0
-            action Call("label_home_phone")
-
-
-    fixed at switch:
-        xsize 523
-        ysize 918
-    
-        imagebutton:
-            idle "home/phone-big.png"
-            action [Call("label_home_phone")]
-        
-        
-        if g.phoneProgress[0] in g.phoneLogs:
-            fixed:
-                
-                xsize 410
-                ysize 637
-                xpos 40
-                ypos 130
-
-                
-                viewport id "id_phonescreen":
-
-                    yinitial 1.0
-                    if not game.hasNewMessage():
-                        mousewheel True
-
-                    yadjustment phone_Scroll
-                    vbox:
-                        spacing 10
-                        fixed:
-                            ysize 0
-
-                        for index, message in enumerate( g.phoneLogs[g.phoneProgress[0]] ):
-                            
-                            if index>g.phoneProgress[1]: #only display msg sent
-                                break
-                            
-                            # elif index<=g.phoneProgress[1]-4:
-                            #     continue
-
-                            if message[0] == 0: #text msg
-                                frame:
-                                    padding (30, 10)
-                                    background Frame("home/phone-bubble.png")
-                                    text message[1] size 33 xalign 0.5
-                                    
-                                    xmaximum 300
-
-                            elif message[0] == 1: #picture
-                                default disp = "home/" + message[1]
-                                frame:
-                                    padding (30, 10)
-                                    background Frame(Transform("home/phone-bubble.png", matrixcolor=TintMatrix((255,230,153))))
-                                    imagebutton:
-                                        sensitive g.phoneProgress[1]+1 >= len(g.phoneLogs[g.phoneProgress[0]]) # if the whole log was shown
-                                        hover im.MatrixColor("Joyce/selfie/small-" + message[1], im.matrix.tint(1.3,1.3,1.3))
-                                        idle "Joyce/selfie/small-" + message[1]
-                                        action Show("screen_fullscreen", dissolve, "Joyce/selfie/" + message[1])
-                                        xsize 200
-                                        ysize 200
-
-                            elif message[0] == 2: #my text msg
-                                frame:
-                                    xmaximum 300
-                                    xanchor 1.0
-                                    xpos 420
-                                    padding (30, 10)
-                                    background Frame(Transform("home/phone-bubble-me.png", matrixcolor=TintMatrix((332,332,128))))
-                                    text message[1] size 33 xalign 0.5
-                            elif message[0] == 3: #my photo
-                                frame:
-                                    xmaximum 300
-                                    xanchor 1.0
-                                    xpos 420
-                                    padding (30, 10)
-                                    background Frame(Transform("home/phone-bubble-me.png", matrixcolor=TintMatrix((421,255,242))))
-                                    add "Joyce/selfie/small-" + message[1]
-                                
-                        fixed:
-                            ysize 0
-
-                vbar adjustment phone_Scroll xalign 1.08 ysize 600 yalign 0.5 xsize 20 bar_invert True base_bar "#fff" thumb "#aaa"#unscrollable "hide" 
 
 
 #############################################################################
@@ -363,30 +261,34 @@ label label_home_trash():
         call label_home_add_cards("recycle", "Add a Recycle to your deck?", False) from _call_label_home_add_cards_7
         return
     else:
-        show screen screen_show_deck(label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="trash-static")
-        call screen screen_gameloop()
+        show screen screen_trashbin
+        call screen screen_show_deck(label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="#0000")
+        hide screen screen_trashbin
+        return
 
 
 label label_home_trash_cutscene(index):
-
-    $ g.trashbin.append( [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
-
     hide screen screen_show_deck
-    show screen screen_trashbin with dissolve
-    pause(0.2)
+    $ temp = [deck.list[index].img, renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550]
+    show expression temp[0] at throw_away_home(temp[1],temp[2],temp[3]) onlayer screens
+    pause(0.6)
     play sound "day/tap.wav"
-    pause(0.8)
-    hide screen screen_trashbin
+    pause(0.4)
+    $ g.trashbin.append( temp )
     $ deck.list.pop(index)
+    $ del temp
+    hide screen screen_trashbin
+    hide expression temp[0] onlayer screens
     $ renpy.call("label_newDay","label_home")
+    return
 
 screen screen_trashbin():
     add "trash-static"
-    for card in g.trashbin:
-        if card != g.trashbin[-1]:
-            add card[0]:
-                zoom 0.5 rotate card[1] xalign card[2] yalign card[3]
-    add g.trashbin[-1][0] at throw_away_home(g.trashbin[-1][1],g.trashbin[-1][2],g.trashbin[-1][3])
+    for trash in g.trashbin:
+        # if trash != g.trashbin[-1]: #dont count the last one
+        add trash[0]:
+            zoom 0.5 rotate trash[1] xalign trash[2] yalign trash[3]
+    # add g.trashbin[-1][0] at throw_away_home(g.trashbin[-1][1],g.trashbin[-1][2],g.trashbin[-1][3])
 
 label label_home_cat:
     play sound "day/meow.wav"
@@ -448,6 +350,7 @@ label label_home_bed:
             queue sound ["sex/Poison-cum.wav"]
             "Lust reset to zero"
             $ game.lust = -1 * eval(game.lustPerDay)
+            $ g.trashbin.append( [Image("home/tissue.png"), renpy.random.randint(-150, 150), renpy.random.random()/5+0.4, renpy.random.random()/4+0.550] )
             call label_newDay("label_home") from _call_label_newDay_3
         "dream":
             call expression "label_dream_0" from _call_expression
@@ -535,44 +438,6 @@ label label_home_add_cards(cardID, prompt, callback=True):
         "no":
             hide card
             hide screen screen_tutorial
-    return
-
-label label_home_phone():
-
-    if g.phoneProgress[0] not in g.phoneLogs:
-        hide screen screen_home_phone onlayer master
-        return
-
-    $ messagelog = g.phoneLogs[g.phoneProgress[0]]
-
-    if len(messagelog)-1 > g.phoneProgress[1]:  #if the log hasnt been completed yet
-        
-        $ g.phoneProgress[1] += 1
-
-        $ typeOfLastMsg = messagelog[g.phoneProgress[1]][0]
-        $ contentLastMsg = messagelog[g.phoneProgress[1]][1]
-        
-        if typeOfLastMsg != "exe":
-            play sound "day/newmsg.wav"
-
-        elif typeOfLastMsg == "exe":
-            $ commands = contentLastMsg.split("; ")
-            $ g.phoneLogs[g.phoneProgress[0]].pop(g.phoneProgress[1])  # POP THE EXE MSGS
-            $ g.phoneProgress[1] -= 1
-
-            $ i = 0
-            while i < len(commands):
-                $ print(commands[i])
-                $ exec(commands[i])
-                $ i += 1
-            
-        
-        with Dissolve(0.2)
-        $ phone_Scroll.change(phone_Scroll.range)
-
-    else:
-        hide screen screen_home_phone onlayer master
-
     return
 
 

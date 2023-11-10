@@ -1,6 +1,7 @@
 
-label label_newDay(callback):
+label label_newDay(label_callback):
     $ renpy.set_return_stack(renpy.get_return_stack()[-1])
+    # $ renpy.pop_call()
 
     window hide
     scene black
@@ -13,9 +14,6 @@ label label_newDay(callback):
 
     if game.day % game.dateEvery == 0:
         pause 1.5
-        # show layer screens:
-        #     zoom 2.0 xalign 0.0 yalign 0.0
-        #     ease 1.0 zoom 1.0
         play music "music/clock-tick.mp3" noloop
         $ game.day += 1
         with blinds
@@ -27,7 +25,9 @@ label label_newDay(callback):
     with dissolve
     $ game.lust += eval(game.lustPerDay)
     
-    jump expression callback
+    # pause
+    # jump expression "label_home_tutorial"
+    jump expression label_callback
 
 label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, fromWhere=None, index=None,):
     $ game.jeu_sensitive = False

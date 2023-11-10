@@ -107,7 +107,7 @@ label label_prison_rat_introduction():
     $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=3 } #
     
     $ i = score
-    $ g.prison_cards[0] = [Card("slowsteady"),Card("spaceout"),Card("universeout"),Card("nova"),Card("pair"),Card("change")]
+    $ g.prison_cards[0] = [Card("slowsteady"),Card("spaceout"),Card("universeout"),Card("darkhole"),Card("pair"),Card("change")]
     
     $ i = score - 2
     while i>score/2:
@@ -161,7 +161,7 @@ label label_prison():
     $ g.prison_cards = []
     $ availableCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] }
 
-    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*2 + game.lust*11)%(len(availableCards)-1)] ) )
+    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*3 + game.lust*11-7)%(len(availableCards)-1)] ) )
 
     $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
@@ -171,8 +171,8 @@ label label_prison():
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
 
-    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*2 + game.lust*11)%(len(availableCards)-1)] ) )
-    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[0].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[0].name]["value"]}
+    $ g.prison_cards.append( Card( list(availableCards.keys())[ (game.day*11 + game.lust*3+7)%(len(availableCards)-1)] ) )
+    $ newlist = { key: item for (key, item) in availableCards.items() if availableCards[key]["value"] >= 1 - availableCards[g.prison_cards[4].name]["value"] and availableCards[key]["value"] <= 3 - availableCards[g.prison_cards[4].name]["value"]}
     $ g.prison_cards.append( Card.get_random_card(newlist) )
 
     # make it more likely to gather all pieces of exodia
@@ -228,6 +228,7 @@ label label_prison_remove_card(index):
     hide screen screen_show_deck
     # show expression deck.list[index].img:
     #     function trans_flush_card
+    # $ renpy.movie_cutscene("images/prison/flush.avi", delay=None, loops=0, stop_music=True)
     show screen screen_flushing(deck.list[index].img) with dissolve
     pause(1.0)
     hide screen screen_flushing

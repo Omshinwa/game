@@ -1,7 +1,3 @@
-style style_card_effect:
-    xalign 0.5
-    adjust_spacing True
-    textalign 0.5
 
 init python:
 
@@ -10,15 +6,10 @@ init python:
 
             self.name = hash
 
-            if "sort" in cardList[hash]:
-                self.sort = cardList[hash]["sort"]
-            else:
-                self.sort = self.name
-
-            # if renpy.exists("images/" + "cards/" + str(self.name) + ".png"):
-            #     self.illustration = Image("cards/" + str(self.name) + ".png")
+            # if "sort" in cardList[hash]:
+            #     self.sort = cardList[hash]["sort"]
             # else:
-            #     self.illustration = Image("cards/default.png")
+            #     self.sort = self.name
 
             self.illustration = CARD_IMG_DICT[hash]
 
@@ -31,7 +22,10 @@ init python:
             else:
                 self.condition = "True"
 
-            self.eff = cardList[hash]["eff"]
+            if "eff" in cardList[hash]:
+                self.eff = cardList[hash]["eff"]
+            else:
+                self.eff = "renpy.call('label_card_" + hash +"')"
 
 
         def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
@@ -60,14 +54,41 @@ init python:
                 
 
         def updateArt(self):
-            # text_effect = Text(self.txt, xysize=(200, 130)) 
-            if len(self.txt)<30:
-                text_effect = Text(self.txt, style="style_card_effect", size=30, line_spacing=0) 
+
+            if len(self.txt)<32:
+                text_effect = Text(self.txt, style="style_card_effect", size=32, line_spacing=0) 
             else:
-                text_effect =  Text(self.txt, style="style_card_effect", size=31 - (len(self.txt)/10), line_spacing=-5) 
-            textbox = Window(text_effect, style="empty",  xysize=(200, 130))
-            self.img = Composite((230, 330), (0, 0), "cards/card_bg.png", (15,15), self.illustration, (15,175), textbox)
-            self.img_hover =  Composite((230, 330), (0, 0), Transform(self.img, matrixcolor=ColorizeMatrix("#009f5d","#dfd")), (15,15), self.illustration, (15,175), textbox)
+                text_effect = Text(self.txt, style="style_card_effect", size=35 - (len(self.txt)/8), line_spacing=0, layout="greedy") 
+
+            # open dyslexic
+            # if len(self.txt)<32:
+            #     text_effect = Text(self.txt, style="style_card_effect", size=29, line_spacing=0) 
+            # else:
+            #     text_effect = Text(self.txt, style="style_card_effect", size=33 - (len(self.txt)/8), line_spacing=max((30-len(self.txt))/2,-8) ) 
+            
+            # line_spacing=max((30-len(self.txt))/2,-8)) 
+            textbox = Window(text_effect, style="empty",  xysize=(200, 135), background=Color("#f9f5d4"), padding=(3,2))
+
+            if "color" in cardList[self.name]:
+                if cardList[self.name]["color"] == "bad":
+                    text_effect.color = "#fff"
+
+            if "color" not in cardList[self.name]:
+                card_bg = Transform("cards/card_bg.png", matrixcolor=TintMatrix("#e1ddd4"))
+            else:
+                if cardList[self.name]["color"] == "trust":
+                    card_bg = Transform("cards/card_bg.png", matrixcolor=TintMatrix("#93efff"))
+                elif cardList[self.name]["color"] == "lust":
+                    card_bg = Transform("cards/card_bg.png", matrixcolor=TintMatrix("#ebef73"))
+                elif cardList[self.name]["color"] == "attraction":
+                    card_bg = Transform("cards/card_bg.png", matrixcolor=TintMatrix("#ffa4e4"))
+                elif cardList[self.name]["color"] == "bad":
+                    card_bg = Transform("cards/card_bg.png", matrixcolor=ColorizeMatrix("#bdc4c9","#131513"))
+
+            self.img = Composite((230, 330), (0, 0), card_bg, (15,15), self.illustration, (15,174), textbox)
+            self.img_hover =  Transform(self.img, matrixcolor=ColorizeMatrix("#009f5d","#dfd"))
+
+            del text_effect, card_bg
 
         # #this is a getter 
         # def update_x_in_hand(self, index, cards_in_hand):
@@ -146,8 +167,8 @@ label playCard(card, index):
         pause 0.2
     $ game.lastPlayed = card
     $ game.cardPlaying = None
+    # $ del playCardindex 
     
-    $ del playCardindex
     return
 
 label playCardfromHand(index):
@@ -167,8 +188,6 @@ label playCardfromHand(index):
         call playCard(card, index) from _call_playCard
     else:
         $ raise Exception("playCardfromHand cond invalid")
-    
-    call label_card_reaction from _call_label_card_reaction
     
     $ game.jeu_sensitive = True
 

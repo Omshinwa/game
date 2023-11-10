@@ -55,6 +55,7 @@ label label_dream_0:
         j "It seems our time is up."
     j "See you soon, cowboy."
     $ g.dreamProgress = 1
+    
     call label_newDay("label_home_weirdDream") from _call_label_newDay_13
   
 

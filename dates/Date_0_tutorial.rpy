@@ -65,19 +65,21 @@ label label_tutorial:
                 j "See ya."
                 hide joyce with dissolve
                 
-                call label_newDay("label_home_tutorial") from _call_label_newDay_8
+                call label_newDay("label_home_tutorial")
 
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_1
 
         $ game.jeu_sensitive = True
+        
+        call label_card_reaction
         call screen screen_gameloop()
         
     jump .gameLoop
 
 
 label label_tutorial_endTurn:
-    call label_date_isLost_common("label_home_tutorial") from _call_label_date_isLost_common
+    call label_date_isLost_common("label_home_tutorial")
     
     if game.progress[1]<=0:
         if date.turn == 0:

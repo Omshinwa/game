@@ -67,7 +67,8 @@ label label_endTurn_common():
 
     $ handSize = len(deck.hand)
 
-    if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
+    # if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
+    if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
         play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
         pause 0.5
     else:
@@ -148,8 +149,16 @@ label label_date_isLost_common(label_callback = "label_home"):
                     j "Just focus on each step, one at a time."
                     j wink tongue "Big boy."
 
-
-        elif len(deck.deck) == 0 or date.turnLeft <= 1:
+        elif len(deck.deck) == 0:
+            show joyce null
+            hide screen screen_date_ui with dissolve
+            if game.progress[0]<4:
+                j eyeside armscrossed "..."
+                j "Seems like you've run out of things to say."
+                j "I guess the date's over then..."
+                j "Next time, think about other topics to talk about."
+                
+        elif date.turnLeft <= 1:
             show joyce null
             hide screen screen_date_ui with dissolve
             if game.progress[0]<4:
@@ -176,6 +185,6 @@ label label_date_isLost_common(label_callback = "label_home"):
             $ date.lust = 0
             $ date.trust = 0
             $ date.attraction = 0
-        call label_newDay(label_callback) from _call_label_newDay
+        call label_newDay(label_callback)
 
     return

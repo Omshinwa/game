@@ -685,7 +685,7 @@ screen file_slots(title):
                         textbutton _("{#quick_page}Q") action FilePage("quick")
 
                     ## range(1, 10) gives the numbers from 1 to 9.
-                    for page in range(1, 10):
+                    for page in range(1, 6):
                         textbutton "[page]" action FilePage(page)
 
                     textbutton _(">") action FilePageNext()
@@ -761,12 +761,18 @@ screen preferences():
                         textbutton _("Window") action Preference("display", "window")
                         textbutton _("Fullscreen") action Preference("display", "fullscreen")
 
+                # vbox:
+                #     style_prefix "check"
+                #     label _("Skip")
+                #     textbutton _("Unseen Text") action Preference("skip", "toggle")
+                #     textbutton _("After Choices") action Preference("after choices", "toggle")
+                #     textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+
                 vbox:
-                    style_prefix "check"
-                    label _("Skip")
-                    textbutton _("Unseen Text") action Preference("skip", "toggle")
-                    textbutton _("After Choices") action Preference("after choices", "toggle")
-                    textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+                    style_prefix "radio"
+                    label _("Input Mode")
+                    textbutton _("Mouse") action ToggleTouchMode(0)
+                    textbutton _("Touchscreen") action ToggleTouchMode(1)
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.

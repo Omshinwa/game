@@ -49,5 +49,21 @@
             640,
             270
         ]
+    },
+    "label_prison_rat_introduction_5ae29d0e": {
+        "area": [
+            800,
+            495,
+            640,
+            180
+        ]
+    },
+    "label_tutorial_e0e70394": {
+        "area": [
+            1200,
+            45,
+            640,
+            225
+        ]
     }
 }

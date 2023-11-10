@@ -2,7 +2,7 @@ init python:
     config.console = True
     preferences.skip_unseen = True
     
-    def debugmode():
+    def debug_mode():
         game.debug_mode = 1 - game.debug_mode
 
     def nullfunction(*args):
@@ -10,9 +10,8 @@ init python:
 
     renpy.music.register_channel("sexsfx", "voice")
     renpy.music.register_channel("sexvoice", "voice")
-
     renpy.music.register_channel("drawcard", "sfx")
-    renpy.music.register_channel("activatecard", "sfx")
+    renpy.music.register_channel("activatecard", "sfx", loop=False)
 
 
     class Game():
@@ -131,10 +130,15 @@ init python:
             self.orgasm = 0
 
             self.animation_speed = 0
-            # self.animation_speed_hash = { 0:0.3, 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6}
-            self.animation_speed_hash = { 0:0.3, 1:0.4, 2:0.55, 3:0.7, 4:0.85, 5:1.0, 6:1.125, 7:1.25, 8:1.4, 9:1.6}
+            self.animation_speed_hash = { 0:0.3, 1:0.5, 2:0.75, 3:1.0, 4:1.3, 5:1.6}
+            # self.animation_speed_hash = { 0:0.3, 1:0.4, 2:0.55, 3:0.7, 4:0.85, 5:1.0, 6:1.125, 7:1.25, 8:1.4, 9:1.6}
             # self.animation_lust = [1,5,10,15,20,25,30]
-            self.animation_lust = [1,2,4,8,12,16,20,24,28,32,36,40,44]
+            # self.animation_lust = [1,2,4,8,12,16,20,24,28,32,36,40,44]
+            
+            if "lustPerTurn" in kwargs:
+                self.lustPerTurn = kwargs["lustPerTurn"]
+            else:
+                self.lustPerTurn = 0
 
         @property
         def turnLeft(self):
@@ -187,15 +191,16 @@ init python:
                 elif which == "attraction":
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
-                    if negative:
-                        self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                    else:
-                        if self.lust<0 and value<0:
-                            pass
-                        else:
-                            self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                            if value < 0:
-                                self.lust = max(0, self.lust)
+                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    # if negative:
+                    #     self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    # else:
+                    #     if self.lust<0 and value<0:
+                    #         pass
+                    #     else:
+                    #         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    #         if value < 0:
+                    #             self.lust = max(0, self.lust)
                 else:
                     raise Exception("no valid specified argument: which") 
                 if resetAllMultiplier:
@@ -250,12 +255,14 @@ default g.phoneLogs = {
         [1, "pic7.png"],["exe", "renpy.call('label_pic7_reaction')"]
     ],
     }
-default g.phoneProgress = [0,0]
+default g.phoneProgress = [0,0] # first number is "day" second is tracking which msg
 default g.prison_cards = []
 default g.dreamProgress = 0
 default g.trashbin = []
 default g.bubbleTea_share_drink = False
 default g.plant = 0
 default g.water = False
+
+default persistent.displayContentWarning = True
 
 default phone_Scroll = ui.adjustment(range=0, value=0, step=None, page=1, changed=None, adjustable=None, ranged=None, force_step=False)
