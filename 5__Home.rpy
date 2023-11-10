@@ -50,28 +50,28 @@ screen screen_home:
             add "home/door.png"     
             
         imagebutton:
-            idle tintImg("home/bed.png",(255,255,1275))
-            hover "home/bed.png"
+            idle showInteractible("home/bed.png", (0.99,0.6))
+            hover tintImg("home/bed.png",(255,255,1275))
             action Call("label_home_bed")
             focus_mask True
 
         imagebutton:
             # idle colorizeImg("home/trash.png",("#000","#ffd")) 
             # idle tintImg("home/trash.png","#ffd") 
-            idle tintImg("home/trash.png",(255,255,1275))
-            hover "home/trash.png"
+            idle showInteractible("home/trash.png", (0.08,0.95))
+            hover tintImg("home/trash.png",(255,255,1275))
             action Call("label_home_trash")
             focus_mask True
 
         imagebutton:
-            idle "home/comp.png"
-            hover Transform("home/comp.png", matrixcolor=TintMatrix((255,255,1275)))
+            idle showInteractible("home/comp.png",(0.25,0.3))
+            hover tintImg("home/comp.png", (255,255,1275))
             action Call("label_home_comp")
             focus_mask True
 
         if g.plant < 4:
             imagebutton:
-                idle "home/plant-"+str(g.plant)+".png"
+                idle showInteractible("home/plant-"+str(g.plant)+".png",(0.05,0.5))
                 hover Transform("home/plant-"+str(g.plant)+".png", matrixcolor=TintMatrix((255,255,1275)))
                 action Call("label_home_plant")
                 focus_mask True
@@ -83,7 +83,7 @@ screen screen_home:
                 focus_mask True
 
         imagebutton:
-            idle "home/cat.png"
+            idle showInteractible("home/cat.png",(0.45,0.85))
             hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
             action Call("label_home_cat")
             focus_mask True

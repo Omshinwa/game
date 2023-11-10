@@ -154,9 +154,12 @@ define cardList = {
     "prefs" : {"txt":_("Open Preferences Menu"), "eff":"renpy.run(ShowMenu('preferences'))","sort":"___", },
     "lang" : {"txt":_("Change Languages"), "eff":"renpy.jump('start')","sort":"___", },
     "discord" : {"txt":_("Go see our Discord!"), "eff":"renpy.jump('start')","sort":"___", },
-    "achievement" : {"txt":_("Check Achivements")}
+    "achievement" : {"txt":_("Check Achievements")}
         }
 label label_card_achievement:
+    "bite"
+    # show screen screen_achievement
+    # pause
     call screen screen_achievement
     return
 

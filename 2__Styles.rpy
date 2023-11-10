@@ -50,11 +50,31 @@ style quirky_command:
 
 
 init python:
-    def tintImg(img, color):
-        return Transform(img, matrixcolor=TintMatrix(color))
+    # def tintImg(img, color):
+    #     return Transform(img, matrixcolor=TintMatrix(color))
 
     def colorizeImg(img, color):
         return Transform(img, matrixcolor=ColorizeMatrix(color[0],color[1]))
 
     def bwImg(img, value=0.0):
         return Transform(img, matrixcolor=SaturationMatrix(value))
+
+transform tintImg(child, color):
+    contains:
+        child
+        matrixcolor TintMatrix(color)
+
+transform showInteractible(child, xyalign=(0.5,0.5)):
+    contains:
+        child
+    contains:
+        "ui/click-me.png"
+        align xyalign
+        parallel:
+            rotate 0.0
+            pause 0.2
+            rotate 10
+            pause 0.2
+            rotate 20
+            pause 0.2
+            repeat
