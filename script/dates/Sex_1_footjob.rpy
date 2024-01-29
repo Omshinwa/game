@@ -68,7 +68,7 @@ label label_sex_tutorial:
 
     j "Ready?"
     show joyce footjob
-    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
+    $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
     call label_beginDuel_common() from _call_label_beginDuel_common_5
     hide screen screen_dick_ui
     $ current_speed = date.animation_speed
@@ -76,10 +76,10 @@ label label_sex_tutorial:
 
 label label_footjob:
 
-    if game.progress[1] == -1:
+    if game.progress[1] == -1 and not (_in_replay or game.debug_mode):
         jump label_sex_tutorial
 
-    $ date = Date("sex", endTurn = "label_footjob_SexEndTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
+    $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
     scene bg prison-ground
     show footjob talk as joyce
     with dissolve
@@ -112,11 +112,11 @@ label label_footjob:
     j "Are you ready?"
 
     call label_beginDuel_common() from _call_label_beginDuel_common_6
-    $ current_speed = date.animation_speed
+    # $ current_speed = date.animation_speed
 
     j "I'll start moving."
     
-    show joyce footjob
+    show joyce footjob 
 
     call label_footjob_gameLoop from _call_label_footjob_gameLoop
     return
@@ -127,14 +127,6 @@ label label_footjob_gameLoop:
     label .gameLoop:
         $ game.jeu_sensitive = False
 
-        if current_speed != date.animation_speed:
-            if "v2" in renpy.get_attributes("joyce"):
-                show joyce footjob v2
-            else:
-                show joyce footjob
-            # show moan_bubble
-            $ current_speed = date.animation_speed
-
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_6
 
@@ -143,8 +135,7 @@ label label_footjob_gameLoop:
         jump .gameLoop
 
 
-
-label label_footjob_SexEndTurn:
+label label_footjob_endTurn:
     $ game.jeu_sensitive = False
 
     $ i=0
@@ -163,80 +154,12 @@ label label_footjob_SexEndTurn:
     pause 0.2
     
     if date.isLost():
-        hide screen screen_sex_ui with dissolve
-
-        
-        $ date.animation_speed_hash[0] = 2.2
-        $ date.animation_speed = 0
-        with dissolve
-
-        "!"
-        window hide
-        window auto
-        stop sound
-        
-        if phase == 1:
-            show footjob (1) as joyce
-        else:
-            show footjob v2 (1) as joyce
-        pause 0.2
-        play sound "sex/Poison-cum.wav"
-        if phase == 1:
-            show footjob (1) as joyce at shaking
-        else:
-            show footjob v2 (1) as joyce at shaking
-        show cum1 as anim at shaking
-        pause(0.3)
-        show cum2 as anim
-        pause(0.3)
-        show cum3 as anim
-        pause(0.3)
-        show cum4 as anim
-        pause(0.3)
-        if phase == 1:
-            show end-cummed as anim at default
-        else:
-            show end-cummed2 as anim at default
-        
-        if phase == 1:
-            show footjob (1) as joyce at default
-        else:
-            show footjob v2 (1) as joyce at default
-        pause 0.4
-        
-        $ game.lust = 0
-        pause
-        j "You naughty boy, you just couldn't resist, could you?"
-        j "You just came all over me ew"
-        j "I'm all sticky."
-        j "You failed this exam."
-        j "Time to lock you up again"
-        play sound "rpg/Key.wav"
-        if phase == 1:
-            show footjob talk as joyce with dissolve
-        else:
-            show footjob v2 talk as joyce with dissolve
-        j "Try again next time"
-
+        call label_footjob_isLost
         call label_newDay("label_prison") from _call_label_newDay_16
 
     if date.turn == 1:
-        $ phase = 2
-        show footjob (1) as joyce with dissolve
-        j "You're holding out well"
-        j "How about I make it a bit more challenging?"
-        j "Let me get more comfy"
-        play sound "sex/undress.wav"
-        show footjob v2 (1) as joyce with dissolve
-        pause
+        call label_footjob_v2
 
-        show joyce footjob v2 as joyce with dissolve
-
-        $ date.speedUp()
-        $ date.lustPerTurn += 10
-        show joyce footjob v2
-
-        pause 0.5
     call label_endTurn_common from _call_label_endTurn_common_5
 
     if date.turn >= 2:
@@ -246,19 +169,99 @@ label label_footjob_SexEndTurn:
     if date.isWin():
         
         call label_after_successful_Date_common from _call_label_after_successful_Date_common_5
-        stop sound
-        show footjob v2 talk as joyce
-        with dissolve
-        j "Well done."
-        j "You'll move to the next trial."
-        j "Until then..."
-        play sound "rpg/Key.wav"
-        show footjob v2 talk (2) as joyce with dissolve
-        j "Try not to burst."
-
-        hide joyce with dissolve
+        call label_footjob_isWin
         
         call label_newDay("label_prison") from _call_label_newDay_17
 
 
+    return
+
+label label_footjob_isLost:
+    hide screen screen_sex_ui with dissolve
+
+    $ update_animationSpeed(0.045)
+    with dissolve
+
+    pause 0.5
+
+    "!"
+    window hide
+    window auto
+    stop sound
+    
+    if phase == 1:
+        show footjob (1) as joyce
+    else:
+        show footjob v2 (1) as joyce
+    pause 0.2
+    play sound "sex/Poison-cum.wav"
+    if phase == 1:
+        show footjob (1) as joyce at shaking
+    else:
+        show footjob v2 (1) as joyce at shaking
+    show cum1 as anim at shaking
+    pause(0.15)
+    show cum2 as anim
+    pause(0.15)
+    show cum3 as anim
+    pause(0.5)
+    show cum4 as anim
+    pause(0.3)
+    if phase == 1:
+        show end-cummed as anim at default
+    else:
+        show end-cummed2 as anim at default
+    
+    if phase == 1:
+        show footjob (1) as joyce at default
+    else:
+        show footjob v2 (1) as joyce at default
+    pause 0.4
+    
+    $ game.lust = 0
+    pause
+    j "You naughty boy, you just couldn't resist, could you?"
+    j "You just came all over me ew"
+    j "I'm all sticky."
+    j "You failed this exam."
+    j "Time to lock you up again"
+    play sound "rpg/Key.wav"
+    if phase == 1:
+        show footjob talk as joyce with dissolve
+    else:
+        show footjob v2 talk as joyce with dissolve
+    j "Try again next time"
+    return
+
+label label_footjob_v2:
+    $ phase = 2
+    show footjob (1) as joyce with dissolve
+    j "You're holding out well"
+    j "How about I make it a bit more challenging?"
+    j "Let me get more comfy"
+    play sound "sex/undress.wav"
+    show footjob v2 (1) as joyce with dissolve
+    pause
+
+    show joyce footjob v2 as joyce with dissolve
+
+    $ date.speedUp()
+    $ date.lustPerTurn += 10
+    show joyce footjob v2
+
+    pause 0.5
+    return
+
+label label_footjob_isWin:
+    stop sound
+    show footjob v2 talk as joyce
+    with dissolve
+    j "Well done."
+    j "You'll move to the next trial."
+    j "Until then..."
+    play sound "rpg/Key.wav"
+    show footjob v2 talk (2) as joyce with dissolve
+    j "Try not to burst."
+
+    hide joyce with dissolve
     return

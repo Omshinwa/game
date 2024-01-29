@@ -64,7 +64,7 @@ This is the custom main menu with joyce in the casino
 """
 label custom_main_menu:
 
-    jump test_sprites
+    # jump test_sprites
     
     $ renpy.set_return_stack([])
 

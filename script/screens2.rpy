@@ -66,29 +66,40 @@ style choice_button_text is default:
     font "fonts/Venus+Carrare.otf"
 
 screen quick_menu():
+    
+    key 'K_F2' action [Show("screen_debug"),ToggleVariable("game.debug_mode",1,0)]
+    
     zorder 100
 
-    if quick_menu:
+    if _in_replay:
+        textbutton _("end replay") action EndReplay(False) xalign 1.0 yalign 1.0
+    else:
+        if quick_menu:
 
-        hbox:
-            style_prefix "quick"
+            hbox:
+                style_prefix "quick"
 
-            xalign 1.0
-            yalign 1.0
-            textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color gui.hover_color
+                xalign 1.0
+                yalign 1.0
+                textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color gui.hover_color
 
+style style_debug_text:
+    size 40 color "#FF0" ypos 0 outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]
 screen screen_debug:
     zorder 100
-    key 'K_F2' action ToggleVariable("game.debug_mode",1,0)
 
     if game.debug_mode:
         
         text " ".join(config.variants[:-1]) align (1.0, 0.05) color "#fff"
         
         drag:
-            fixed:
-                xsize 500
-                ysize 200
+            vbox:
                 xalign 0.0 yalign 0.3
-                text "debug_mode\ngame.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]):
-                    size 40 color "#FF0" ypos 0 outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]
+                text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]) style "style_debug_text"
+                text "animation_speed: " + str(animation_speed) style "style_debug_text"
+                text "date.lust: " + str(date.lust) style "style_debug_text"
+                text "date.turn: " + str(date.turn) style "style_debug_text"
+                text "label:" + (current_label) style "style_debug_text"
+                if renpy.get_attributes("joyce"):
+                    text "joyce " + " ".join(renpy.get_attributes("joyce")) style "style_debug_text"
+                    

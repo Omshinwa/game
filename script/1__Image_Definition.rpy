@@ -1,7 +1,6 @@
 init python:
     def play_sexsound(trans, st, at, filename):
-        # renpy.play(filename, channel='sexsfx')
-        renpy.sound.queue(filename, channel='sexsfx')
+        renpy.sound.play(filename, channel='sexsfx')
         return None
 
 init python:
@@ -15,6 +14,10 @@ init python:
         txt += "'#0000', 2.0)"
         return eval(txt)
 
+# image test:
+#     contains:
+#         "cut-in_drink"
+#         shaking
 
 image moan_bubble:
     # DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
@@ -91,8 +94,10 @@ label test_sprites:
     scene bg terrasse
     $ i = 0
     $ outfits = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","outfitsm"]
-    $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
-    $ third_switch = ["", "hair_braids"]
+    # $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
+    $ attr = ["", "foxy", "happy", "upset", "wink", "worried", "bite", "smile", "smirk", "tongue", "blush", "eyeside"]
+    # $ third_switch = ["", "hair_braids"]
+    $ third_switch = [""]
 
     while i<len(outfits):
         $ m = 0
@@ -265,8 +270,8 @@ layeredimage joyce:
             "joyce_eyes_closed"
 
     group mouth if_not "null":
-        attribute null_mouth if_any "null":
-            null
+        attribute null_mouth default:
+            "joyce_mouth_normal"
         attribute smile if_any normal_face
         attribute smirk if_any normal_face
         attribute tongue
@@ -331,121 +336,158 @@ image img_blink:
     pause(2.0)
     repeat
 
+default animation_speed = 0.1
+
+init python:
+    def update_animationSpeed(speed = None):
+        global animation_speed
+        if speed is None:
+            speed = 0.1 / date.animation_speed_hash[date.animation_speed]
+        animation_speed = speed
+
+        # temp = renpy.get_attributes("joyce")
+        # renpy.show("joyce " + " ".join(temp), what="joyce " + " ".join(temp))
+
+        if "v2" in renpy.get_attributes("joyce"):
+            renpy.show("joyce " + date.name.split("_")[1] + " v2", what="joyce " + date.name.split("_")[1] + " v2")
+        else:
+            renpy.show("joyce " + date.name.split("_")[1], what="joyce " + date.name.split("_")[1])
+        return
+
+
+# init python:
+
+#     def dynamic_anim(trans, st, at):
+#         global animation_speed, anim_current_frame
+
+#         trans.set_child("Joyce/sex/footjob/footjob ({}).png".format(anim_current_frame))
+
+#         anim_current_frame += 1
+
+#         if anim_current_frame == 4: # aka the last frame
+#             anim_current_frame = 1
+
+#         return animation_speed
+
+# image joyce footjob:
+#     function dynamic_anim
+
+
 image joyce cowgirl:
     "Joyce/sex/cowgirl/cowgirl (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
 
     function renpy.curry(play_sexsound)(filename="sex/slap.wav") #hacky
 
     "Joyce/sex/cowgirl/cowgirl (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/cowgirl/cowgirl (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/cowgirl/cowgirl (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/cowgirl/cowgirl (5).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/cowgirl/cowgirl (6).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce footjob:
     "Joyce/sex/footjob/footjob (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
 
     "Joyce/sex/footjob/footjob (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
 
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/footjob/footjob (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce footjob v2:
     "Joyce/sex/footjob/footjob v2 (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob v2 (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob v2 (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
 
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/footjob/footjob v2 (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob v2 (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/footjob/footjob v2 (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce handjob:
     "Joyce/sex/handjob/handjob (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/handjob/handjob (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce handjob v2:
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/handjob/handjob v2 (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob v2 (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob v2 (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob v2 (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob v2 (5).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/handjob/handjob v2 (6).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce blowjob:
     function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
     "Joyce/sex/blowjob/blowjob (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob (5).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob (6).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image joyce blowjob v2:
     function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
     "Joyce/sex/blowjob/blowjob v2 (1).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob v2 (2).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob v2 (3).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob v2 (4).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob v2 (5).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     "Joyce/sex/blowjob/blowjob v2 (6).png"
-    pause(0.1 / date.animation_speed_hash[date.animation_speed])
+    pause(animation_speed)
     repeat
 
 image card_zone_bg:

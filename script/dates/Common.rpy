@@ -1,4 +1,189 @@
+init python:
+    class Date():
+        def __init__(self, dateOrSex, **kwargs):
+
+            self.name = current_label #get the name of current label to set the name of this date
+            game.jeu_sensitive = False;
+
+            if dateOrSex == "date":
+                game.state = "dating"
+            elif dateOrSex == "sex":
+                game.state = "sexing"
+            else:
+                raise Exception
+
+            if "turnLeft" in kwargs:
+                self._turnLeft = kwargs["turnLeft"]
+            else:
+                self._turnLeft = 0
+
+            self.turn = 0
+
+            self.config = {}
+
+            self.objectives = {}
+            if "objectif_trust" in kwargs:
+                self.objectives["trust"] = kwargs["objectif_trust"]
+            else:
+                self.objectives["trust"] = -999
+            
+            if "objectif_attraction" in kwargs:
+                self.objectives["attraction"] = kwargs["objectif_attraction"]
+            else:
+                self.objectives["attraction"] = -999
+            
+            if "objectif_lust" in kwargs:
+                self.objectives["lust"] = kwargs["objectif_lust"]
+            else:
+                self.objectives["lust"] = -999
+
+            if "isLost" in kwargs:
+                self.config["isLost"] = kwargs["isLost"]
+            else:
+                if game.state == "dating":
+                    self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
+                else:
+                    self.config["isLost"] = "date.lust >= date.lustMax"
+
+            if "isWin" in kwargs:
+                self.config["isWin"] = kwargs["isWin"]
+            else:
+                self.config["isWin"] = "date.lust >= date.objectives['lust'] and date.attraction >= date.objectives['attraction'] and date.trust >= date.objectives['trust']"
+
+            # label to call at the end of every turn
+            if "endTurn" in kwargs:
+                self.endTurn = kwargs["endTurn"]
+            else:
+                self.endTurn = ""
+
+            self.ydisplace = Transform( ypos=1080 )
+
+            self.drink = 3
+
+            self.lustMax = -99
+            self.lust = -99
+            self.trust = -99
+            self.attraction = -99
+
+            self.trustMultiplier = 1
+            self.attractionMultiplier= 1
+            self.lustMultiplier = 1
+
+            self.allMultiplierOnce= 1
+
+            self.orgasmMax = 60
+            self.orgasm = 0
+
+            self.animation_speed = 0
+            self.animation_speed_hash = [0.3, 0.5, 0.75, 1.0, 1.3, 1.6]
+            self.animation_lust = [1,5,10,15,20,25,30]
+            
+            if "lustPerTurn" in kwargs:
+                self.lustPerTurn = kwargs["lustPerTurn"]
+            else:
+                self.lustPerTurn = 0
+
+            if _in_replay or game.debug_mode:
+                self.replay_mode()
+
+        @property
+        def turnLeft(self):
+            return self._turnLeft - self.turn
+
+        def speedUp(self, useMultiplier=False):    
+            global animation_speed        
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed < len(date.animation_speed_hash) - 1:
+                        self.animation_speed += 1
+                        update_animationSpeed()
+                        if self.animation_speed < len(date.animation_speed_hash) - 1:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed < len(date.animation_speed_hash) - 1:
+                    self.animation_speed += 1
+                    update_animationSpeed()
+
+        def speedDown(self, useMultiplier=False):
+            global animation_speed        
+            if useMultiplier:
+                i = 1
+                while date.lustMultiplier >= i:
+                    if self.animation_speed > 0:
+                        self.animation_speed -= 1
+                        update_animationSpeed()
+                        if self.animation_speed > 0:
+                            renpy.pause(0.3)
+                    i += 1
+            else:
+                if self.animation_speed > 1:
+                    self.animation_speed -= 1
+                    update_animationSpeed()
+
+        def isLost(self):
+            return eval(self.config["isLost"])
+        def isWin(self):
+            return eval(self.config["isWin"])
+
+        def updateYdisplace(self):
+            # game.jeu_sensitive and 
+            if game.isHoverHand:
+                self.ydisplace = trsfm_cards_go_up
+            else:
+                self.ydisplace = trsfm_cards_go_down
+            
+            return self.ydisplace
+
+        def increment(self, which, value, resetAllMultiplier = True, useMultiplier=True, negative=False): #allow
+            if useMultiplier:
+                if which == "trust":
+                    self.trust += value * self.trustMultiplier * self.allMultiplierOnce
+                elif which == "attraction":
+                    self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
+                elif which == "lust":
+                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    # if negative:
+                    #     self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    # else:
+                    #     if self.lust<0 and value<0:
+                    #         pass
+                    #     else:
+                    #         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    #         if value < 0:
+                    #             self.lust = max(0, self.lust)
+                else:
+                    raise Exception("no valid specified argument: which") 
+                if resetAllMultiplier:
+                    self.allMultiplierOnce = 1
+            else:
+                setattr(self, which, getattr(self,which) + value )
+                
+            if value<0:
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2))
+            else:
+                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
+                
+        def replay_mode(self):
+            game.progress[1] == -1
+            self.config["isLost"] = "False"
+            self.config["isWin"] = "False"
+
+#############################################################################
+##                                                                                     
+##
+##          ██       █████  ██████  ███████ ██      ███████ 
+##          ██      ██   ██ ██   ██ ██      ██      ██      
+##          ██      ███████ ██████  █████   ██      ███████ 
+##          ██      ██   ██ ██   ██ ██      ██           ██ 
+##          ███████ ██   ██ ██████  ███████ ███████ ███████ 
+##
+##
+#############################################################################                
+                
 label label_beginDuel_common():
+
     $ game.jeu_sensitive = False;
 
     $ date.lust = game.lust
@@ -12,6 +197,11 @@ label label_beginDuel_common():
     $ date.animation_speed = 3
 
     $ deck.drink = 3
+
+    if _in_replay or game.debug_mode:
+        show screen screen_replay(date.name)
+        $ deck.hand = [""]
+        return
 
     if game.progress[1] == -1:
         $ game.progress[1] = 0
@@ -60,7 +250,6 @@ label label_endTurn_common():
 
     $ handSize = len(deck.hand)
 
-    # if game.state == "sexing" and date.lust + date.animation_lust[date.animation_speed] >= date.lustMax:
     if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
         play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
         pause 0.5
@@ -80,6 +269,10 @@ label label_endTurn_common():
     return
 
 label label_after_successful_Date_common():
+
+    if _in_replay or game.debug_mode :
+        $ renpy.end_replay()
+
     hide screen screen_date_ui
     hide screen screen_sex_ui
     hide screen screen_dick_ui
@@ -117,6 +310,11 @@ label label_date_isLost_common(label_callback = "label_home"):
     $ game.jeu_sensitive = False
 
     if date.isLost():
+
+        if _in_replay or game.debug_mode :
+            $ renpy.end_replay()
+
+
         play sound "rpg/Fall1.wav"
         show date-fail onlayer screens at truecenter with blinds
         pause 0.3

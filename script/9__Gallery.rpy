@@ -1,12 +1,36 @@
+define config.enter_replay_transition = pixellate
+define config.exit_replay_transition = pixellate
+
 init python:
+    class customGallery(Gallery):
+        def make_button(self, name, unlocked, locked=None, hover_border=None, idle_border=None, style=None, **properties):
+        
+            action = self.Action(name)
+
+            if locked is None:
+                locked = self.locked_button
+
+            if hover_border is None:
+                hover_border = self.hover_border
+
+            if idle_border is None:
+                idle_border = self.idle_border
+
+            if style is None:
+
+                if (config.script_version is not None) and (config.script_version <= (7, 0, 0)):
+                    style = "button"
+                else:
+                    style = "empty"
+            return Button(action=action, child=unlocked, insensitive_child=Transform(unlocked, matrixcolor=OpacityMatrix(0.2) ), hover_foreground=hover_border, idle_foreground=idle_border, style=style, **properties)
 
     # Step 1. Create the gallery object.
-    gallery = Gallery()
-    # gallery.locked_button = Solid("#0005")
-    gallery.hover_border = Solid("#0ff1")
-    gallery.idle_border = Solid("#ff05")
+    gallery = customGallery()
+    gallery.locked_button = Solid("#0005")
+    gallery.hover_border = Solid("#ff83")
+    gallery.idle_border = Solid("#0000")
     
-    #SELFIES
+    #DEFINING SELFIES
     gallery.button("01")
     gallery.unlock_image("Joyce/selfie/pic1.png")
 
@@ -35,31 +59,38 @@ init python:
 
 screen screen_gallery:
 
+    default mode = "cg"
+
     # Ensure this replaces the main menu.
     tag menu
 
     modal True
-    add "#222"
 
-    # A grid of buttons.
-    grid 4 3:
-
+    
+    grid 2 1:
         xfill True
         yfill True
+        align (0.5, 0.0) xysize (0.9, 0.15)
+        button:
+            action SetScreenVariable("mode","cg") 
+            if mode == "cg":
+                add "#be4242" 
+            else:
+                add "#929292" 
 
-        # Call make_button to show a particular button.
-        add gallery.make_button("01", "small-pic1", xalign=0.5, yalign=0.5)
-        add gallery.make_button("02", "small-pic2", xalign=0.5, yalign=0.5)
-        add gallery.make_button("03", "small-pic3", xalign=0.5, yalign=0.5)
-        add gallery.make_button("04", "small-pic4", xalign=0.5, yalign=0.5)
-        add gallery.make_button("05", "small-pic5-blue", xalign=0.5, yalign=0.5)
-        add gallery.make_button("06", "small-pic6", xalign=0.5, yalign=0.5)
-        add gallery.make_button("07", "small-pic7", xalign=0.5, yalign=0.5)
+            text _("CGs") color "#fff"  hover_color gui.hover_color align (0.5, 0.5)
+        button:
+            action SetScreenVariable("mode","replay") 
+            if mode == "replay":
+                add "#be4242" 
+            else:
+                add "#929292" 
+            text _("REPLAY")  color "#fff"  hover_color gui.hover_color align (0.5, 0.5)
 
-
-        # The screen is responsible for returning to the main menu. It could also
-        # navigate to other gallery screens.
-        textbutton "Return" action MainMenu(confirm=False,save=False) text_color "#fff" text_hover_color gui.hover_color xalign 0.5 yalign 0.5
+    if mode == "cg":
+        use screen_gallery_cg
+    else:
+        use screen_gallery_replay
 
 
     # Displays a set of images in the gallery, or indicates that the images
@@ -75,6 +106,59 @@ screen screen_gallery:
     #     The number of images attached to the current button.
     # gallery
     #     The image gallery object.
+
+style style_text_button:
+    
+    color "#fff"
+    hover_color gui.hover_color
+    xalign 0.5
+    yalign 0.5
+
+screen screen_gallery_replay:
+    fixed:
+        align (0.5, 0.7) xysize (0.9, 0.8)
+        add "#222" 
+
+        # A grid of buttons.
+        grid 4 3:
+            align (0.5, 0.5)
+            xfill True
+            yfill True
+
+            # Call make_button to show a particular button.
+            textbutton "footjob" action Replay("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "handjob" action Replay("label_handjob") style "style_text_button"
+
+
+            # The screen is responsible for returning to the main menu. It could also
+            # navigate to other gallery screens.
+            textbutton "Return" action MainMenu(confirm=False,save=False) text_color "#fff" text_hover_color gui.hover_color xalign 0.5 yalign 0.5
+
+screen screen_gallery_cg:
+    fixed:
+        align (0.5, 0.7) xysize (0.9, 0.8)
+        add "#222" 
+
+        # A grid of buttons.
+        grid 4 3:
+            align (0.5, 0.5)
+            xfill True
+            yfill True
+
+            # Call make_button to show a particular button.
+            add gallery.make_button("01", "small-pic1", xalign=0.5, yalign=0.5)
+            add gallery.make_button("02", "small-pic2", xalign=0.5, yalign=0.5)
+            add gallery.make_button("03", "small-pic3", xalign=0.5, yalign=0.5)
+            add gallery.make_button("04", "small-pic4", xalign=0.5, yalign=0.5)
+            add gallery.make_button("05", "small-pic5-blue", xalign=0.5, yalign=0.5)
+            add gallery.make_button("06", "small-pic6", xalign=0.5, yalign=0.5)
+            add gallery.make_button("07", "small-pic7", xalign=0.5, yalign=0.5)
+
+
+            # The screen is responsible for returning to the main menu. It could also
+            # navigate to other gallery screens.
+            textbutton "Return" action MainMenu(confirm=False,save=False) text_color "#fff" text_hover_color gui.hover_color xalign 0.5 yalign 0.5
 
 screen _gallery(locked, displayables, index, count, gallery, **properties):
         tag menu
@@ -97,22 +181,29 @@ screen _gallery(locked, displayables, index, count, gallery, **properties):
         use gallery_navigation(gallery=gallery)
 
 screen gallery_navigation(gallery):
-        tag menu
-        hbox:
-            spacing 20
+    tag menu
+    hbox:
+        spacing 20
 
-            style_group "gallery"
-            align (.98, .98)
+        style_group "gallery"
+        align (.98, .98)
 
-            textbutton _("prev") action gallery.Previous(unlocked=gallery.unlocked_advance)
-            textbutton _("next") action gallery.Next(unlocked=gallery.unlocked_advance)
-            textbutton _("slideshow") action gallery.ToggleSlideshow()
-            textbutton _("return") action gallery.Return()
+        textbutton _("prev") action gallery.Previous(unlocked=gallery.unlocked_advance)
+        textbutton _("next") action gallery.Next(unlocked=gallery.unlocked_advance)
+        textbutton _("slideshow") action gallery.ToggleSlideshow()
+        textbutton _("return") action gallery.Return()
 
-python:
-        style.gallery = Style(style.default)
-        style.gallery_button.background = None
-        style.gallery_button_text.color = "#666"
-        style.gallery_button_text.hover_color = "#fff"
-        style.gallery_button_text.selected_color = "#fff"
-        style.gallery_button_text.size = 16
+init python:
+    def label_callback(name, abnormal):
+        store.current_label = name
+
+    config.label_callback = label_callback
+
+screen screen_replay(label):
+    vbox:
+        textbutton _("speed up") action [SetVariable("game.jeu_sensitive", False), Function(date.speedUp),Pause(0.3)]
+        textbutton _("speed down") action [SetVariable("game.jeu_sensitive", False), Function(date.speedDown),Pause(0.3)]
+        textbutton _("V2") action [SetVariable("game.jeu_sensitive", False), Call(label + "_v2")]
+        textbutton _("CUM") action [SetVariable("game.jeu_sensitive", False), Call(label + "_isLost")]
+        textbutton _("Win") action [SetVariable("game.jeu_sensitive", False), Call(label + "_isWin")]
+        textbutton _("update") action [SetVariable("game.jeu_sensitive", False), Function(update_animationSpeed)]

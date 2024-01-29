@@ -88,7 +88,8 @@ label label_card_achievement:
     return
 
 label label_card_memory:
-    call screen screen_gallery
+    scene
+    call screen screen_gallery with dissolve
     return
 
 init python:

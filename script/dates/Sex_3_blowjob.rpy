@@ -179,7 +179,7 @@ label label_blowjob_SexEndTurn:
         show blowjob v2 (1) as joyce with dissolve
         j "MHHHH"
         show joyce blowjob v2 as joyce with dissolve
-        $ date.animation_speed_hash[10] = 2.0
+        $ date.animation_speed_hash.append(2.0)
 
         $ date.speedUp()
         show joyce blowjob v2
