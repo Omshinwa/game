@@ -1,0 +1,16 @@
+{
+    // This is a *task* to run in VS Code (CTRL SHIFT P), it will mirror everything from "D:/games im making/Dating Joyce/" to "//Freebox_Server/Disque dur/JOYCE/Dating Joyce" making a backup! it's pretty fast
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Upload changes to Freebox HDD",
+        "type": "shell",
+        "command": "robocopy",
+        "args": ["/mir", "/z", "/np", "/ndl", "/xo", "D:/games im making/Dating Joyce/", "//Freebox_Server/Disque dur/JOYCE/Dating Joyce"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
