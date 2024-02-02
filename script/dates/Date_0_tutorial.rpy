@@ -68,11 +68,12 @@ label label_tutorial:
                 call label_newDay("label_home_tutorial")
 
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_1
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
         call label_card_reaction
-        call screen screen_gameloop()
+        # call screen screen_gameloop()
+        pause
         
     jump .gameLoop
 

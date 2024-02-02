@@ -17,8 +17,7 @@ init python:
             else:
                 self._turnLeft = 0
 
-            self.turn = 0
-
+            
             self.config = {}
 
             self.objectives = {}
@@ -38,17 +37,17 @@ init python:
                 self.objectives["lust"] = -999
 
             if "isLost" in kwargs:
-                self.config["isLost"] = kwargs["isLost"]
+                self._isLost = kwargs["isLost"]
             else:
                 if game.state == "dating":
-                    self.config["isLost"] = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
+                    self._isLost = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
                 else:
-                    self.config["isLost"] = "date.lust >= date.lustMax"
+                    self._isLost = "date.lust >= date.lustMax"
 
             if "isWin" in kwargs:
-                self.config["isWin"] = kwargs["isWin"]
+                self._isWin = kwargs["isWin"]
             else:
-                self.config["isWin"] = "date.lust >= date.objectives['lust'] and date.attraction >= date.objectives['attraction'] and date.trust >= date.objectives['trust']"
+                self._isWin = "date.lust >= date.objectives['lust'] and date.attraction >= date.objectives['attraction'] and date.trust >= date.objectives['trust']"
 
             # label to call at the end of every turn
             if "endTurn" in kwargs:
@@ -59,7 +58,8 @@ init python:
             self.ydisplace = Transform( ypos=1080 )
 
             self.drink = 3
-
+            self.turn = 0
+            self.naked = False
             self.lustMax = -99
             self.lust = -99
             self.trust = -99
@@ -75,7 +75,7 @@ init python:
             self.orgasm = 0
 
             self.animation_speed = 0
-            self.animation_speed_hash = [0.3, 0.5, 0.75, 1.0, 1.3, 1.6]
+            self.animation_speed_hash = [10, 0.3, 0.22, 0.15, 0.1, 0.067]
             self.animation_lust = [1,5,10,15,20,25,30]
             
             if "lustPerTurn" in kwargs:
@@ -86,46 +86,48 @@ init python:
             if _in_replay or game.debug_mode:
                 self.replay_mode()
 
+            # reaction is a dictionary of    card : label
+            # you play a card X, it will lead you to label Y after.
+            self.reaction = {}
+
         @property
         def turnLeft(self):
             return self._turnLeft - self.turn
 
         def speedUp(self, useMultiplier=False):    
-            global animation_speed        
+            global animation_speed
+            
+            if self.animation_speed < len(self.animation_speed_hash) - 1:
+                self.animation_speed += 1
+                update_animationSpeed()
+
             if useMultiplier:
                 i = 1
-                while date.lustMultiplier >= i:
-                    if self.animation_speed < len(date.animation_speed_hash) - 1:
-                        self.animation_speed += 1
-                        update_animationSpeed()
-                        if self.animation_speed < len(date.animation_speed_hash) - 1:
-                            renpy.pause(0.3)
-                    i += 1
-            else:
-                if self.animation_speed < len(date.animation_speed_hash) - 1:
+                while i < self.lustMultiplier and self.animation_speed < len(self.animation_speed_hash) - 1:
+                    renpy.pause(0.3)
                     self.animation_speed += 1
                     update_animationSpeed()
+                i += 1
 
         def speedDown(self, useMultiplier=False):
-            global animation_speed        
+            global animation_speed   
+            
+            if self.animation_speed > 1:
+                self.animation_speed -= 1
+                update_animationSpeed()
+
             if useMultiplier:
                 i = 1
-                while date.lustMultiplier >= i:
-                    if self.animation_speed > 0:
-                        self.animation_speed -= 1
-                        update_animationSpeed()
-                        if self.animation_speed > 0:
-                            renpy.pause(0.3)
-                    i += 1
-            else:
-                if self.animation_speed > 1:
-                    self.animation_speed -= 1
+                while i < self.lustMultiplier and self.animation_speed > 1:
+                    renpy.pause(0.3)
+                    self.animation_speed += 1
                     update_animationSpeed()
+                i += 1
 
         def isLost(self):
-            return eval(self.config["isLost"])
+            return eval(self._isLost)
         def isWin(self):
-            return eval(self.config["isWin"])
+            return eval(self._isWin)
 
         def updateYdisplace(self):
             # game.jeu_sensitive and 
@@ -166,9 +168,10 @@ init python:
                 renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
                 
         def replay_mode(self):
+            renpy.say("","debug mode is on")
             game.progress[1] == -1
-            self.config["isLost"] = "False"
-            self.config["isWin"] = "False"
+            self._isLost = "False"
+            self._isWin = "False"
 
 #############################################################################
 ##                                                                                     
@@ -200,7 +203,7 @@ label label_beginDuel_common():
 
     if _in_replay or game.debug_mode:
         show screen screen_replay(date.name)
-        $ deck.hand = [""]
+        $ deck.hand = [Card("undress")]
         return
 
     if game.progress[1] == -1:
@@ -240,6 +243,23 @@ label label_beginDuel_common():
             hide screen screen_tutorial with dissolve
     return
 
+label label_sex_endTurn():
+    $ i=0
+    # while i < date.animation_lust[date.animation_speed]:
+    #     $ date.lust += 1
+    #     $ date.orgasm += 1
+    #     $ i += 1
+    #     pause(1.0/ date.animation_lust[date.animation_speed])
+
+    play sound "card/switch.mp3"
+    
+    while i < date.lustPerTurn:
+        $ date.lust += 1
+        $ date.orgasm += 1
+        $ i += 1
+        pause(1.0/ date.lustPerTurn)
+    return
+
 label label_endTurn_common():
 
     $ date.attractionMultiplier = 1
@@ -270,9 +290,6 @@ label label_endTurn_common():
 
 label label_after_successful_Date_common():
 
-    if _in_replay or game.debug_mode :
-        $ renpy.end_replay()
-
     hide screen screen_date_ui
     hide screen screen_sex_ui
     hide screen screen_dick_ui
@@ -302,11 +319,17 @@ label label_after_successful_Date_common():
     $ g.phoneProgress[0] += 1
     $ g.phoneProgress[1] = 0
 
+    $ game.animation_speed = 0
+
     if game.state == "dating":
         show joyce null with dissolve
     return
 
 label label_date_isLost_common(label_callback = "label_home"):
+    """
+    this label is called after every turn
+    """
+    play sound "card/switch.mp3"
     $ game.jeu_sensitive = False
 
     if date.isLost():

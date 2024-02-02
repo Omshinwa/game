@@ -1,34 +1,33 @@
 define cardList = { 
     # calling a method of game or date in a string doesnt work in browser
 
-    "calm": {"txt":_("-3 lust."), "eff":"renpy.call('label_card_calm')", "value":1, "sort":"20"},
-    "maxcalm":{"txt":_("-10 lust, add one STOP card in your hand"), "eff":"renpy.call('label_card_maxcalm')", "value":1, "sort":"201"},#card also work if you have multiple
+    "calm": {"txt":_("-3 Lust."), "eff":"renpy.call('label_card_calm')", "value":1, "sort":"20"},
+    "maxcalm":{"txt":_("-10 Lust, add one STOP card in your hand"), "eff":"renpy.call('label_card_maxcalm')", "value":1, "sort":"201"},#card also work if you have multiple
 
     "fibonacci": {"txt": "-1 Lust, this permanently increases by 1 every time it's played.", "eff":"renpy.call('label_card_fibonacci')", "value":1,"sort":"202"},
     
     "newday": {"txt":_("Change your current Lust with a random number"), "eff":"renpy.call('label_card_newday')", "value":1,"sort":"203"},
 
-    # "slower": {"txt":_("go slower"), "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
-    # "slowsteady": {"txt":_("IF this is your leftmost card: \nGo much slower. "), "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
-    # "fool": {"txt": "IF you have 3 cards or less in hand: \nGo much slower.", "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":"23" },
-    # "faster": {"txt":_("go faster"), "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
     "slower": {"txt":_("Go slower, -3 Lust per turn."), "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
     "slowsteady": {"txt":_("IF this is your leftmost card: \nGo much slower, -5 Lust per turn"), "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
     "fool": {"txt": "IF you have 3 cards or less in hand: \nGo much slower, -5 Lust per turn", "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":"23" },
     "faster": {"txt":_("Go faster, +3 Lust per turn."), "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
+    "stop": {"txt":_("Can't be played"), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
+
     "awakening": {"txt":_("This turn: double Lust and Speed changes."), "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
 
     "draw2": {"txt":_("draw 2 cards"), "eff":"renpy.call('label_card_draw2')", "value":4,"sort":"42"},
     "devil": {"txt":_("Draw 2 cards, Gain 10 Lust."), "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
     "pair": {"txt":_("IF you have a pair in your hand: draw 2 cards"), "cond":"deck.hasPair()>1", "eff":"renpy.call('label_card_pair')", "value":3,"sort":"44"},
+    "recycle": {"txt":_("Discard all the cards on the right of this card, then redraw as many +1"), "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"45"},
+
 
     "drink" : {"txt":_("Fully refill your glass."), "eff":"renpy.call('label_card_drink')", "value":2, "sort":"40"},
 
     "change": {"txt":_("Change all the cards in your hand with random cards."), "eff":"renpy.call('label_card_change')", "value":1,"sort":"50"},
     
-    "recycle": {"txt":_("Discard all the cards on the right of this card, then redraw as many +1"), "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"41"},
     
     "sisyphus": {"txt":_("Choose a card played, put it back on top of your deck."), "eff":"renpy.call('label_card_sisyphus', index)", "value":2,"sort":"61"},
     "reload": {"txt":_("The most recent card in the discard pile is played again."), "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"62"},
@@ -39,26 +38,19 @@ define cardList = {
     "exodia1" : {"txt":_("{b}ORIGIN{/b}\nConvert your\nYou need all\n order to"), "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare", "sort":"91"},
 
     "universeout" : {"txt":_("Add 2 Space Out cards in your hand."), "eff":"renpy.call('label_card_universeout')", "value":1, "sort":"63"},
-    "darkhole" : {"txt":_("Discard your hand, -5 lust per discarded card."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
+    "darkhole" : {"txt":_("Discard your hand, -5 Lust per discarded card."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
     "spaceout" : {"txt":_("does nothing"), "value":0, "sort":"65"},
-    "nova" : {"txt":_("-5 lust for every Space Out left in your deck."), "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
+    "nova" : {"txt":_("-X² Lust, where X is the number of Space Out cards in the discard pile."), "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
+    #alternatively it could be every space out in deck hand and graveyard
 
 
-    "peek": {"txt":_("you peek..\n+2 lust"), "eff":"renpy.call('label_card_peek')", "color":"lust"},
-    "peek2": {"txt":_("you peek.. +5 lust"), "eff":"renpy.call('label_card_peek2')", "value":-1, "color":"lust"},
-    "peekred": {"txt":_("get +10 lust"), "eff":"renpy.call('label_card_peekred')", "color":"lust"},
-    "peekblue": {"txt":_("get +10 lust"), "eff":"renpy.call('label_card_peekblue')", "color":"lust"},
-    "peek4": {"txt":_("get +15 lust"), "eff":"renpy.call('label_card_peek4')", "value":-2, "color":"lust"},
-    "peek5": {"txt":_("get +30 lust"), "eff":"renpy.call('label_card_peek5')", "value":-3, "color":"lust"},
+    "peek": {"txt":_("you peek..\n+2 Lust"), "eff":"renpy.call('label_card_peek')", "color":"lust"},
+    "peek2": {"txt":_("you peek.. +5 Lust"), "eff":"renpy.call('label_card_peek2')", "value":-1, "color":"lust"},
+    "peekred": {"txt":_("get +10 Lust"), "eff":"renpy.call('label_card_peekred')", "color":"lust"},
+    "peekblue": {"txt":_("get +10 Lust"), "eff":"renpy.call('label_card_peekblue')", "color":"lust"},
+    "peek4": {"txt":_("get +15 Lust"), "eff":"renpy.call('label_card_peek4')", "value":-2, "color":"lust"},
+    "peek5": {"txt":_("get +30 Lust"), "eff":"renpy.call('label_card_peek5')", "value":-3, "color":"lust"},
 
-    # "peek5-1": {"txt":_("get +5 lust"), "eff":"date.increment('lust',20)", "value":-1,},
-    # "peek5-2": {"txt":_("get +10 lust"), "eff":"date.increment('lust',20)", "value":-2,},
-    # "feelgood": {"txt":_("get +20 lust"), "eff":"date.increment('lust',20)", "value":-3,},
-    
-
-    "slowdown": {"txt":_("Can't be played except IF this is your leftmost card."), "cond":"index == 0", "eff":"", "value":-2, "color":"bad", "sort":"zz1"},
-    "jester": {"txt": "Can't be played except IF you have 3 cards or less in hand.", "cond":"len(deck.hand)<=3", "eff":"", "value":-2, "sort":"zz2" , "color":"bad"},
-    "stop": {"txt":_("Can't be played"), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
 
     "eyecontact": {"txt":_("+1 attraction"), "eff":"renpy.call('label_card_eyecontact')","value2":1, "sort":"03", "color":"attraction"},
     "flirt": {"txt":_("+2 attraction"), "eff":"renpy.call('label_card_flirt')","value2":2, "sort":"04", "color":"attraction"},
@@ -79,6 +71,8 @@ define cardList = {
     "discord" : {"txt":_("Go see our Discord!"), "eff":"renpy.jump('start')","sort":"___", },
     "achievement" : {"txt":_("Check Achievements")},
     "memory" : {"txt":_("Check Memories")},
+
+    "undress" : {"txt":_("Remove the clothes.")}
         }
 label label_card_achievement:
     "bite"
@@ -99,10 +93,11 @@ init python:
 
 label label_card_nova:
     python:
-        i = 0
-        for card in deck.deck:
+        i = 1
+        for card in deck.discard_pile:
             if card.name == "spaceout":
-                date.increment("lust",-5)
+                date.increment("lust",-i)
+                i += 1
     return
 
 label label_card_newday:

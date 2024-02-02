@@ -75,3 +75,9 @@ label label_card_talk2:
     return
 label label_card_spaceout:
     return
+
+label label_card_undress:
+    if "undress" in date.reaction:
+        $ renpy.call(date.reaction["undress"]) 
+    else:
+        call label_reaction_undress

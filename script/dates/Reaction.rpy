@@ -415,3 +415,22 @@ label label_card_reaction(what = None):
     $ done_flag[what] += 1
         
     return
+
+label label_reaction_undress():
+    #default reaction to UNDRESS
+    show joyce 1 with dissolve
+    j "You want to see my body?"
+    j "I'm a bit shy, how about you close your eyes?"
+
+    show black onlayer screens with dissolve
+    $ date.naked = True
+    
+    show joyce naked
+    pause 0.2
+    play sound "sex/undress.wav"
+    pause 1.0
+    hide black onlayer screens with dissolve
+    j "How do you like it?"
+    show joyce -1
+    pause
+    return

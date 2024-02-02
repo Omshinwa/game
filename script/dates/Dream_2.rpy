@@ -45,5 +45,3 @@ label label_dream_2:
     $ g.dreamProgress += 1
     call label_newDay("label_home_weirdDream") from _call_label_newDay_15
     
-    
-

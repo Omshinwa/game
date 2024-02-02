@@ -5,11 +5,6 @@ init python:
 
             self.name = hash
 
-            # if "sort" in cardList[hash]:
-            #     self.sort = cardList[hash]["sort"]
-            # else:
-            #     self.sort = self.name
-
             self.illustration = CARD_IMG_DICT[hash]
 
             self.txt = cardList[hash]["txt"]
@@ -85,7 +80,7 @@ init python:
                     card_bg = Transform("cards/card_bg.png", matrixcolor=ColorizeMatrix("#bdc4c9","#131513"))
 
             self.img = Composite((230, 330), (0, 0), card_bg, (15,15), self.illustration, (15,174), textbox)
-            self.img_hover =  Transform(self.img, matrixcolor=ColorizeMatrix("#009f5d","#dfd"))
+            self.img_hover =  Transform(self.img, matrixcolor=ColorizeMatrix("#005d36","#eeffee"))
 
             del text_effect, card_bg
 

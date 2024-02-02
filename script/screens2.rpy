@@ -1,7 +1,3 @@
-define config.modal_blocks_pause = False # setting modal on screen made pausing with time not work
-define config.say_attribute_transition_layer = "master"
-define config.say_attribute_transition = Dissolve(.2)
-
 init python:
     
     class ToggleTouchMode(Action): # custom action
@@ -67,7 +63,7 @@ style choice_button_text is default:
 
 screen quick_menu():
     
-    key 'K_F2' action [Show("screen_debug"),ToggleVariable("game.debug_mode",1,0)]
+    key 'K_F2' action [Show("screen_debug"),ToggleVariable("game.debug_mode")]
     
     zorder 100
 
@@ -94,9 +90,9 @@ screen screen_debug:
         
         drag:
             vbox:
-                xalign 0.0 yalign 0.3
+                xalign 0.0 yalign 1.0
                 text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]) style "style_debug_text"
-                text "animation_speed: " + str(animation_speed) style "style_debug_text"
+                text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
                 text "date.lust: " + str(date.lust) style "style_debug_text"
                 text "date.turn: " + str(date.turn) style "style_debug_text"
                 text "label:" + (current_label) style "style_debug_text"

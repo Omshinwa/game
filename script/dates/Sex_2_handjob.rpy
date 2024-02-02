@@ -10,7 +10,7 @@ label label_handjob:
     $ date = Date("sex", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
 
     scene bg basement
-    show handjob talk as joyce
+    show joyce handjob talk
     with dissolve
 
     if game.progress[1] == -1:
@@ -22,14 +22,14 @@ label label_handjob:
         j "Let's free you."
 
         play sound "rpg/Key.wav"
-        show handjob get-hard (1) as anim with dissolve
+        show handjob get-hard 1 as anim with dissolve
         pause
         j "You must have felt cramped in there."
         j "With that big juicy dick."
         pause 0.4
-        show handjob get-hard (2) as anim
+        show handjob get-hard 2 as anim
         pause 0.4
-        show handjob get-hard (3) as anim
+        show handjob get-hard 3 as anim
         pause
         j "How come you got hard on your own?"
         j "Do you enjoy being raped?"
@@ -40,13 +40,13 @@ label label_handjob:
     else:
         j "There you are, my little slut."
         play sound "rpg/Key.wav"
-        show handjob get-hard (1) as anim with dissolve
+        show handjob get-hard 1 as anim with dissolve
         pause
         j "How does it feel?"
         pause 0.4
-        show handjob get-hard (2) as anim
+        show handjob get-hard 2 as anim
         pause 0.4
-        show handjob get-hard (3) as anim
+        show handjob get-hard 3 as anim
         pause
         j "Seems like it feels good"
         j "I'll make you feel even better.."
@@ -55,34 +55,43 @@ label label_handjob:
     $ current_speed = date.animation_speed
 
     hide anim
-    show joyce handjob
+    show joyce -talk
     with dissolve
+
+    # "this works somehow"
+
+    # hide joyce
+    # pause
+    # show joyce handjob
+    # "a"
+    # hide joyce
+    # show joyce handjob talk
+    # "b"
+    # show joyce -talk
+
     
     label .gameLoop:
         $ game.jeu_sensitive = False
     
         if len(deck.hand) == 0:
-            call expression date.endTurn from _call_expression_7
+            call expression date.endTurn
 
         $ game.jeu_sensitive = True
-        call screen screen_gameloop()
+        # call screen screen_gameloop()
+        pause
         
     call .gameLoop from _call_label_handjob_gameLoop
 
     return
 
+
 label label_handjob_endTurn:
     $ game.jeu_sensitive = False
 
-    $ i=0
-    while i < date.animation_lust[date.animation_speed]:
-        $ date.lust += 1
-        $ date.orgasm += 1
-        $ i += 1
-        pause(1.0/ date.animation_lust[date.animation_speed])
-    
+    call label_sex_endTurn()
+
     $ date.speedUp()
-    pause 0.5
+    pause(0.5)
     $ date.speedUp()
     
     if date.isLost():
@@ -105,42 +114,36 @@ label label_handjob_endTurn:
 
     return
 
+
 label label_handjob_v2:
-    show handjob (3) as joyce with dissolve
+    show joyce 3 with dissolve
     j "Are you getting used to this?"
     j "How about this?"
-    # play sound "sex/undress.wav"
-    show handjob v2 (1) as joyce with dissolve
+    show joyce v2 1 with dissolve
     pause
-    show handjob v2 (2) as joyce
+    show joyce 2
     pause 0.1
-    show handjob v2 (3) as joyce
+    show joyce 3
     pause 0.1
-    show handjob v2 (4) as joyce
+    show joyce 4
     pause 0.1
     j "Mhh Delicious."
-    show joyce handjob v2 as joyce with dissolve
+    show joyce -4 with dissolve
     # pause
     call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_13   
     call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_14   
     call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_15 
     call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_16 
 
-    $ date.animation_speed_hash.append(2.0)
-
     $ date.speedUp()
-    show joyce handjob v2
     pause 0.5
     $ date.speedUp()
-    show joyce handjob v2
     return
 
 label label_handjob_isLost:
 
-    hide screen screen_sex_ui with dissolve
-
-    $ date.animation_speed_hash[0] = 2.2
-    $ date.animation_speed = 0
+    hide screen screen_sex_ui
+    $ update_animationSpeed(0.045)
     with dissolve
     
     "!"
@@ -148,24 +151,25 @@ label label_handjob_isLost:
     window auto
     stop sound
     
-    $ date.animation_speed = 1
+    $ date.animation_speed = 0
     pause 0.5
     
     play sound "sex/Poison-cum.wav"
     if "v2" in renpy.get_attributes("joyce"):
         $ phase = 2
-        show handjob v2 (1) as joyce at shaking
-        show handjob v2 cum (1) as anim at shaking
+        show joyce handjob v2 1 at shaking
+        show handjob v2 cum 1 as anim at shaking
         pause 1.5
-        show handjob v2 talk as joyce at default
-        show handjob v2 cum (2) as anim at default
+        show joyce handjob v2 talk at default
+        show handjob v2 cum 2 as anim at default
         with dissolve
     else:
         $ phase = 1
-        show handjob cum (1) as joyce at shaking
+        show handjob cum 1 as anim at shaking
+        show joyce handjob 4 at shaking
         pause 1.5
-        show handjob (4) as joyce at default
-        show handjob cum (2) as anim at default
+        show joyce handjob 4 at default
+        show handjob cum 2
         with dissolve
         pause
         with dissolve
@@ -177,21 +181,20 @@ label label_handjob_isLost:
     $ game.lust = 0
     
     if phase == 1:
-        show handjob eyes v1 down with dissolve
+        show handjob eyeside v1 with dissolve
     j "Such a big load."
     j "Wasted here."
     j "You should have saved it for my pussy."
     j "Oh well."
     play sound "rpg/Key.wav"
     if phase == 1:
-        hide handjob eyes v1 down
+        hide handjob eyeside v1
 
-        hide anim
-        show handjob lock as joyce
+        show joyce talk
+        show handjob cum talk
         with dissolve
     else:
-        hide anim
-        show handjob v2 lock as joyce
+        show joyce v2 lock
         with dissolve
         
     j "Build more sperm for me honey."
@@ -199,9 +202,10 @@ label label_handjob_isLost:
     return
 
 label label_handjob_isWin:
+    $ date.animation_speed = 0
     stop sound
-    show handjob talk as joyce
-    show handjob get-hard (3) as anim
+    show joyce handjob talk
+    show handjob get-hard 3 as anim
     with dissolve
     j "Well done."
     j "You'll move to the next trial."
@@ -209,6 +213,6 @@ label label_handjob_isWin:
     play sound "rpg/Key.wav"
     hide anim with dissolve
     j "Take care of him."
-
-    hide joyce with dissolve
+    
+    # hide joyce with dissolve
     return

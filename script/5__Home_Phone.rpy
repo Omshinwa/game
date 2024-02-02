@@ -34,7 +34,7 @@ screen screen_home_phone:
         action Call("label_home_phone")
 
 
-    fixed at switch:
+    fixed at trs_phone:
         xsize 523
         ysize 918
     

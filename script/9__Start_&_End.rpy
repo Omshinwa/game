@@ -121,3 +121,6 @@ screen game_complete():
     textbutton _("https://omshinwa18.itch.io/ (click me)") action OpenURL("https://omshinwa18.itch.io/") yalign 0.9 xalign 0.8 
     textbutton _("@Omshinwa18 (click me)") action OpenURL("https://twitter.com/Omshinwa18") yalign 0.94 xalign 0.8 
     use screen_deck_stack
+
+# credits: people in the renpy server:
+# Junior @juniorthejunior Pinky!

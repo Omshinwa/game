@@ -3,7 +3,7 @@ define config.font_name_map["font_dyslexic"] = FontGroup().add("Venus+Cormier.ot
 # Acier < Plomb < Carrare < Martre < Cormier
 define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 
-define config.font_name_map["font_venus_acier"] = FontGroup().add("Venus+Plomb.otf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+define config.font_name_map["font_venus_acier"] = FontGroup().add("Venus+Plomb.otf", 0x0020, 0x007f).add("DejaVuSans.ttf", 0x00A0,0x00B2).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
     
 
 style default:
@@ -36,6 +36,7 @@ style style_card_effect:
     adjust_spacing True
     textalign 0.5
     font "font_venus_acier"
+    # font "_OpenDyslexic3-Regular.ttf"
 
 style quirky_command:
     color "#ffffff"

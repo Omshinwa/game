@@ -321,45 +321,48 @@ screen screen_turn_counter:
 screen screen_gameloop():
     pass
 
+image img_end_turn:
+    contains:
+        "ui/end_turn.png"
+    contains:
+        Text(_("END{size=60}\nTURN"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, align=(0.5, 1.1), font="font_carrare")
+        rotate -90
+
+image button_img_end_turn:
+    on idle:
+        Transform("img_end_turn",alpha=0.7)
+    on hover:
+        "img_end_turn"
+    on selected_insensitive: #selected_hover, selected_idle, 
+        crop (0, 0, 200, 290)
+        contains:
+            "img_end_turn"
+            ypos 0
+            linear 0.3 ypos -1.0
+        contains:
+            "img_end_turn"
+            ypos 1.0
+            linear 0.3 ypos 0.0
+    on insensitive:
+        Transform("img_end_turn",alpha=0.7)
+
+    
+        
+        
 
 screen screen_buttons_ui():
-    # imagebutton:
-    #     xpos 20
-    #     ypos 700
-    #     # if game.state == "sexing":
-    #     #     ypos 700
-    #     # else:
-    #     #     ypos 740
-    #     idle "ui/hide_ui.png"
-    #     hover "ui/hide_ui_hover.png"
-    #     action HideInterface()
 
-    button at Transform(None,alpha=0.7):
-        idle_background "ui/end_turn.png"
-        hover_background Transform("ui/end_turn.png", matrixcolor=TintMatrix("#25d7ff"))
-        insensitive_background "ui/end_turn.png"
+    #END TURN
+    button: # at Transform(None,alpha=0.7)
+        add "button_img_end_turn"
         align (0, 1.00)
         xsize 200
         ysize 290
-        action Call(date.endTurn)
+        action [SelectedIf(Play('sound',"card/switch.mp3", selected=True)), Call(date.endTurn)]
         sensitive game.jeu_sensitive
-
-        text _("END{size=60}\nTURN") at Transform(None,rotate=-90):
-            color "#ffffff"
-            hover_color "#25d7ff"
-            align (0.5, 1.30)
-            size 80
-            
-            font "font_carrare"
-            adjust_spacing True
-
-            kerning -5
-            
-            outlines [ (5, "#00000055", 0, 0) ]
-            # text_hover_outlines [ (8, "#181d2899", 10, 0), (10, "#000", 0, 0), (5, "#ff0", 0, 0) ]
             
     
-    # if game.state == "sexing" or game.progress[0]>=2:
+    # DEBUG if game.state == "sexing" or game.progress[0]>=2:
     fixed:
         xpos 1800
         ypos 610
@@ -379,8 +382,6 @@ screen screen_buttons_ui():
         
     # TRASHCAN
     fixed:
-        # xpos 5
-        # ypos 950
         xpos 1780
         ypos 730
         imagebutton:

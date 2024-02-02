@@ -81,7 +81,7 @@ transform animated_text:
     yoffset -100
     ease 0.7 crop (0,0,1.0,1.0) yoffset 0 zoom 1.0
 
-transform switch:
+transform trs_phone:
     on show:
         ypos -1000 xalign 0.9
         ease 0.5 ypos 100

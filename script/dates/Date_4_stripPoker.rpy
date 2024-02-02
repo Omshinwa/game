@@ -144,7 +144,7 @@ label label_stripPoker:
                     j "A special requirement."
                     show joyce night4 with Dissolve(1.0)
                     $ date.objectives["lust"] = 100
-                    $ date.config["isLost"] = "len(deck.deck) == 0 or date.turnLeft == 1"
+                    $ date._isLost = "len(deck.deck) == 0 or date.turnLeft == 1"
 
 
                 show screen screen_date_ui with dissolve

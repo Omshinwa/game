@@ -107,32 +107,30 @@ label label_cowgirl:
                 call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_27
                 call label_add_card_to_deck("deck", Card("stop"), pauseTime=0.3) from _call_label_add_card_to_deck_28
                 
-                $ date.animation_speed_hash.append(2.0)
                 show joyce cowgirl
                 $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
             else:
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_8
                 $ renpy.music.play("sex/moans3.wav", channel="sexvoice", loop=True)
-                $ date.animation_speed_hash.append(2.2)
-                $ date.animation_speed_hash.append(2.5)
+                
+                $ date.animation_speed = 0
                 j "I'm gonna"
-                $ date.speedUp()
+                $ update_animationSpeed(0.1 / 1.8)
                 show joyce
                 j "mHHHnhh"
-                $ date.speedUp()
+                $ update_animationSpeed(0.1 / 2.0)
                 show joyce
                 j "go inSANE"
-                $ date.speedUp()
+                $ update_animationSpeed(0.1 / 2.2)
                 show joyce
                 j "yOU'RE gonna bREAK my PUssy [povname]"
                 # j "[povname] you're too thick!"
                 # j "You're gonna break me!!"
-                $ date.speedUp()
+                $ update_animationSpeed(0.1 / 2.5)
                 show joyce
                 j "it'sh sho GOOOOOD"
                 j "i'm coMING"
                 
-                $ date.animation_speed = 0
                 show joyce
                 pause 0.5
 
