@@ -89,8 +89,8 @@ screen screen_debug:
         text " ".join(config.variants[:-1]) align (1.0, 0.05) color "#fff"
         
         drag:
+            xalign 0.0 yalign 1.0
             vbox:
-                xalign 0.0 yalign 1.0
                 text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]) style "style_debug_text"
                 text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
                 text "date.lust: " + str(date.lust) style "style_debug_text"

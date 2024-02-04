@@ -434,3 +434,78 @@ label label_reaction_undress():
     show joyce -1
     pause
     return
+
+label label_date_isLost:
+    
+    j armscrossed upset "Um... don't you think I can notice?"
+    j "Sorry but I'm gonna go. I'm really not in the mood today."
+    j "Let's do this another day."
+
+    j "Em.."
+    j "The way you're looking at me... with those eyes..."
+    j "At my body..."
+    j "You thought I didn't notice?"
+    j "It's flattering but..."
+    j "Let's do this another time when you have cooled off?"
+
+
+    j "What's wrong [povname]?"
+    j "You look like you're having such a hard time."
+    j "I see it in your expression, you're barely holding it."
+    j "Actually..."
+    j "I can just see it in your pants also."
+    j "Maybe we should, um.."
+    j "Do this another day? Even I'm flustered..."
+    j "When I see your bulge..."
+
+
+    j "Oh my god, are you getting horny again?"
+    j "What is this bulge in your pants?"
+    j "Are you getting hard just from talking with me?"
+    j "It's amazing somehow."
+    j "Maybe you should go to the bathroom."
+    j "Release your tension, or something..."
+    j "Masturbate."
+    j "Em forget it..."
+    j "Let's come back again next time ok?"
+    
+
+    j "Aw [povname], you're so cute trying so hard."
+    j "But you've already lost control."
+    j "You want to jump on me so bad, I can feel your gaze."
+    j "Kyaa I'm so scared, you're going to devour me."
+    j "I want to run awaaay."
+    j "Heehee, [povname], you should be more gentleman-ly."
+    j "Let's stop here for now shall we?"
+    j "We can try again another time... [povname]..."
+
+
+    j "What's in your mind?"
+    j "What have you been thinking?"
+    j "Hmm let me guess..."
+    j "You just wanna rip off my clothes and see what's under, right?"
+    j "Heehee, you're so transparent [povname]."
+    j "But not yet... you're not there yet."
+    j "I'll need you to try just a little bit harder."
+
+    j "You're being a bit... too pushy [povname]."
+    j "I love dating you [povname]."
+    j "But it's not fun if it's too easy."
+    j "Bear it a little more, I know you can do it."
+    j "You'll get your reward eventually."
+    "(zoom master layer)"
+    j "whisper (my body)"
+    j "See you next time."
+
+
+    
+
+# Pretend my hand is a pussy for now
+# Just imagine your cock entering my body
+# And trusting deep into my pussy
+# It just feels like youre messing with my actual pussy doesnt it?
+# It’s so warm
+# It’s so hot
+# Do they feel good?
+
+

@@ -130,6 +130,7 @@ screen screen_gallery_replay:
             # textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "handjob" action Call("label_handjob") style "style_text_button"
+            textbutton "blowjob" action Call("label_blowjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
 
 
             # The screen is responsible for returning to the main menu. It could also
@@ -204,33 +205,32 @@ screen screen_replay(label):
     sensitive game.jeu_sensitive
     vbox:
         textbutton _("speed up") action Call("label_screen_replay_btn_speed_up")
-        textbutton _("speed down") action [SetVariable("game.jeu_sensitive", False), Function(date.speedDown)]
-        textbutton _("V1") action Call("label_screen_replay_btn_V1")
-        textbutton _("V2") action [SetVariable("game.jeu_sensitive", False), Call(label + "_v2")]
-        textbutton _("CUM") action [SetVariable("game.jeu_sensitive", False), Call(label + "_isLost")]
-        textbutton _("Win") action [SetVariable("game.jeu_sensitive", False), Call(label + "_isWin")]
+        textbutton _("speed down") action [Function(date.speedDown)]
+        textbutton _("V1") action [Function(renpy.show,"joyce -v2"), Call("label_replay_btn_goto")]
+        textbutton _("V2") action [Function(renpy.show,"joyce -v2"), Call("label_replay_btn_goto", label + "_v2")]
+        textbutton _("CUM") action Call("label_replay_btn_goto", label + "_isLost")
+        textbutton _("Win") action Call("label_replay_btn_goto", label + "_isWin")
         textbutton _("update") action [SetVariable("game.jeu_sensitive", False), Function(update_animationSpeed)]
-        textbutton _("undress") action [SetVariable("game.jeu_sensitive", False), Call("label_card_undress")]
+        textbutton _("undress") action [Function(renpy.show,"joyce -naked"), Call("label_replay_btn_goto", "label_card_undress")]
+        textbutton _("redress") action Function(renpy.show,"joyce -naked")
 
-label label_replay_restart_anim:
+#everytime we click on a label, we want to hide CUM (handjob) and set the speed to 1 if it was 0.
+
+label label_replay_btn_goto(label=None):
     $ game.jeu_sensitive = False
+    hide handjob #hide cum
+    $ date.speedUp()
+    $ date.speedDown()
 
-    # REPLAY MODE restart the sex animation if speed is at 0
-    if date.animation_speed == 0:
-        hide handjob #hide cum
-        $ keywords = [renpy.get_attributes("joyce")[0], "naked", "v2"]
-        $ temp = tuple(element for element in renpy.get_attributes("joyce") if element not in keywords)
-        $ renpy.show("joyce -" + " -".join(temp))
-
-    return
+    if label is None:
+        return
+    $ renpy.jump(label)
     
 label label_screen_replay_btn_speed_up:
-    call label_replay_restart_anim
+    # $ game.jeu_sensitive = False
+    if date.animation_speed == 0:
+        hide handjob #hide cum
     $ date.speedUp()
     return
 
-label label_screen_replay_btn_V1:
-    call label_replay_restart_anim
-    show joyce -v2
-    return
 

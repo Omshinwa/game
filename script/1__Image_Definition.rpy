@@ -338,7 +338,7 @@ image img_blink:
     pause(2.0)
     repeat
 
-default animation_speed = 0.1
+default animation_speed = 0.15
 
 init python:
     def update_animationSpeed(speed:float = None) :
@@ -349,7 +349,12 @@ init python:
         if speed is None:
             speed = date.animation_speed_hash[date.animation_speed]
         animation_speed = speed
-        renpy.show("joyce")
+
+        # if joyce isnt in animation mode, this remake her animated by removing superfluous tags
+        keywords = [renpy.get_attributes("joyce")[0], "naked", "v2"]
+        temp = tuple(element for element in renpy.get_attributes("joyce") if element not in keywords)
+        renpy.show("joyce -" + " -".join(temp))
+        # renpy.show("joyce")
         return
 
 
@@ -449,7 +454,6 @@ image img_joyce_handjob:
     "Joyce/sex/handjob/joyce handjob 4.png"
     skip_frame_if_slow(2)
     repeat
-
 image img_joyce_handjob_naked:
     "Joyce/sex/handjob/joyce handjob 3 naked.png"
     skip_frame_if_slow(2)
@@ -465,7 +469,6 @@ image img_joyce_handjob_naked:
     "Joyce/sex/handjob/joyce handjob 4 naked.png"
     skip_frame_if_slow(2)
     repeat
-
 image img_joyce_handjob_v2:
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob v2 1.png"
@@ -481,7 +484,6 @@ image img_joyce_handjob_v2:
     "Joyce/sex/handjob/joyce handjob v2 6.png"
     pause(animation_speed)
     repeat
-
 image img_joyce_handjob_v2_naked:
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob v2 1 naked.png"
@@ -509,37 +511,79 @@ layeredimage joyce handjob:
         attribute v2 if_all "naked":
             "img_joyce_handjob_v2_naked"
 
-image joyce blowjob:
+
+image img_joyce_blowjob:
     function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
-    "Joyce/sex/blowjob/blowjob (1).png"
+    "Joyce/sex/blowjob/joyce blowjob 1.png"
     pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob (2).png"
+    "Joyce/sex/blowjob/joyce blowjob 2.png"
     pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob (3).png"
+    "Joyce/sex/blowjob/joyce blowjob 3.png"
     pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob (4).png"
+    "Joyce/sex/blowjob/joyce blowjob 4.png"
+    skip_frame_if_slow(3)
+    "Joyce/sex/blowjob/joyce blowjob 5.png"
+    skip_frame_if_slow(3)
+    "Joyce/sex/blowjob/joyce blowjob 6.png"
     pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob (5).png"
+    repeat
+image img_joyce_blowjob_naked:
+    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
+    "Joyce/sex/blowjob/joyce blowjob 1 naked.png"
     pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob (6).png"
+    "Joyce/sex/blowjob/joyce blowjob 2 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob 3 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob 4 naked.png"
+    skip_frame_if_slow(3)
+    "Joyce/sex/blowjob/joyce blowjob 5 naked.png"
+    skip_frame_if_slow(3)
+    "Joyce/sex/blowjob/joyce blowjob 6 naked.png"
+    pause(animation_speed)
+    repeat
+image img_joyce_blowjob_v2:
+    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
+    "Joyce/sex/blowjob/joyce blowjob v2 1.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 2.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 3.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 4.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 5.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 6.png"
+    pause(animation_speed)
+    repeat
+image img_joyce_blowjob_v2_naked:
+    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
+    "Joyce/sex/blowjob/joyce blowjob v2 1 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 2 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 3 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 4 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 5 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/blowjob/joyce blowjob v2 6 naked.png"
     pause(animation_speed)
     repeat
 
-image joyce blowjob v2:
-    function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky
-    "Joyce/sex/blowjob/blowjob v2 (1).png"
-    pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob v2 (2).png"
-    pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob v2 (3).png"
-    pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob v2 (4).png"
-    pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob v2 (5).png"
-    pause(animation_speed)
-    "Joyce/sex/blowjob/blowjob v2 (6).png"
-    pause(animation_speed)
-    repeat
+
+layeredimage joyce blowjob:
+    group blowjob:
+        attribute v1 default:
+            "img_joyce_blowjob"
+        attribute naked if_not "v2":
+            "img_joyce_blowjob_naked"
+        attribute v2 if_not "naked":
+            "img_joyce_blowjob_v2"
+        attribute v2 if_all "naked":
+            "img_joyce_blowjob_v2_naked"
 
 image card_zone_bg:
     xalign 1.0 
