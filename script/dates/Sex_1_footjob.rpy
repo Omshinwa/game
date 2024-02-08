@@ -1,14 +1,14 @@
 label label_sex_tutorial:
 
     scene bg prison-ground
-    show footjob talk as joyce
+    show joyce footjob talk
     show screen screen_dick_ui
     with dissolve
     pause
     j "Are you ready for your first exam?"
     j "Can you guess what is it?"
     j "Here's a hint"
-    show footjob hint as joyce with dissolve
+    show joyce footjob hint with dissolve
     window hide
     pause
     window auto
@@ -16,20 +16,20 @@ label label_sex_tutorial:
     j "I'm gonna rub your dick."
     j "With my feet."
     j "You must have been waiting for this no?" 
-    show footjob talk as joyce with dissolve
+    show joyce footjob talk with dissolve
     j "First, let's release this bad boy."
     play sound "rpg/Key.wav"
-    show get-hard (1) as anim with dissolve
+    show get-hard 1 as anim with dissolve
     j "Can you get hard for me baby?"
     j "I'll make you feel so good."
     pause 0.4
-    show get-hard (2) as anim
+    show get-hard 2 as anim
     pause 0.4
-    show get-hard (3) as anim
+    show get-hard 3 as anim
     pause 0.4
-    show get-hard (4) as anim
+    show get-hard 4 as anim
     pause 0.4
-    show get-hard (5) as anim
+    show get-hard 5 as anim
     pause
     j "Wow"
     j "You have a nice big cock."
@@ -40,20 +40,20 @@ label label_sex_tutorial:
     j "If you get too excited, you'll cum and fail."
     j "How do you get excited? Well for example..."
     hide anim
-    show footjob (1) as joyce
+    show joyce footjob 1
     with dissolve
 
-    show footjob (2) as joyce
+    show joyce footjob 2
     pause 0.1
-    show footjob (3) as joyce
+    show joyce footjob 3
     pause 0.1
-    show footjob (4) as joyce
+    show joyce footjob 4
     pause 0.1
-    show footjob (3) as joyce
+    show joyce footjob 3
     pause 0.1
-    show footjob (2) as joyce
+    show joyce footjob 2
     pause 0.1
-    show footjob (1) as joyce
+    show joyce footjob 1
     pause 0.1
     $ game.lust += 1
     $ date.lust += 1
@@ -65,7 +65,6 @@ label label_sex_tutorial:
     j "Resist this, and you'll get to the next trial."
     j "Fail, and you'll have to take this exam again in 3 days."
     hide screen screen_tutorial with dissolve
-
     j "Ready?"
     show joyce footjob
     $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
@@ -81,7 +80,7 @@ label label_footjob:
 
     $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
     scene bg prison-ground
-    show footjob talk as joyce
+    show joyce footjob talk
     with dissolve
 
     j "Hello, my slave. "
@@ -90,24 +89,23 @@ label label_footjob:
     j "Does it hurt?"
     j "First, let's release this bad boy."
     play sound "rpg/Key.wav"
-    show get-hard (1) as anim with dissolve
+    show joyce get-hard 1 with dissolve
     pause
     j "Now, can you get hard for me baby?"
     pause 0.4
-    show get-hard (2) as anim
+    show joyce get-hard 2
     pause 0.4
-    show get-hard (3) as anim
+    show joyce get-hard 3
     pause 0.4
-    show get-hard (4) as anim
+    show joyce get-hard 4
     pause 0.4
-    show get-hard (5) as anim
+    show joyce get-hard 5
     pause
     j "Good boy."
     j "You're a good boy with a nice, big cock."
     j "Resist this, and you'll get to the next trial."
     j "Fail, and you'll have to start this again."
-    hide anim
-    show footjob (1) as joyce
+    show joyce footjob 1 -get-hard
     with dissolve
     j "Are you ready?"
 
@@ -116,7 +114,7 @@ label label_footjob:
 
     j "I'll start moving."
     
-    show joyce footjob 
+    show joyce -1 
 
     call label_footjob_gameLoop from _call_label_footjob_gameLoop
     return
@@ -170,7 +168,6 @@ label label_footjob_endTurn:
         
         call label_after_successful_Date_common from _call_label_after_successful_Date_common_5
         call label_footjob_isWin
-        
         call label_newDay("label_prison") from _call_label_newDay_17
 
 
@@ -180,6 +177,7 @@ label label_footjob_isLost:
     hide screen screen_sex_ui with dissolve
 
     $ update_animationSpeed(0.045)
+    $ date.animation_speed = 0
     with dissolve
 
     pause 0.5
@@ -190,32 +188,29 @@ label label_footjob_isLost:
     stop sound
     
     if phase == 1:
-        show footjob (1) as joyce
+        show joyce footjob 1
     else:
-        show footjob v2 (1) as joyce
+        show joyce footjob v2 1
     pause 0.2
     play sound "sex/Poison-cum.wav"
     if phase == 1:
-        show footjob (1) as joyce at shaking
+        show joyce footjob 1 at shaking
     else:
-        show footjob v2 (1) as joyce at shaking
-    show cum1 as anim at shaking
+        show joyce footjob v2 1 at shaking
+    show footjob cum 1 at shaking
     pause(0.15)
-    show cum2 as anim
+    show footjob cum 2
     pause(0.15)
-    show cum3 as anim
+    show footjob cum 3
     pause(0.5)
-    show cum4 as anim
+    show footjob cum 4
     pause(0.3)
-    if phase == 1:
-        show end-cummed as anim at default
-    else:
-        show end-cummed2 as anim at default
+    show footjob cummed at default
     
     if phase == 1:
-        show footjob (1) as joyce at default
+        show joyce footjob 1 at default
     else:
-        show footjob v2 (1) as joyce at default
+        show joyce footjob v2 1 at default
     pause 0.4
     
     $ game.lust = 0
@@ -227,40 +222,37 @@ label label_footjob_isLost:
     j "Time to lock you up again"
     play sound "rpg/Key.wav"
     if phase == 1:
-        show footjob talk as joyce with dissolve
+        show joyce footjob talk with dissolve
     else:
-        show footjob v2 talk as joyce with dissolve
+        show joyce footjob v2 talk with dissolve
     j "Try again next time"
     return
 
 label label_footjob_v2:
     $ phase = 2
-    show footjob (1) as joyce with dissolve
+    show joyce footjob 1 with dissolve
     j "You're holding out well"
     j "How about I make it a bit more challenging?"
-    j "Let me get more comfy"
+    j "I'll show you things you've never seen."
     play sound "sex/undress.wav"
-    show footjob v2 (1) as joyce with dissolve
+    show joyce footjob v2 1 with dissolve
     pause
-
-    show joyce footjob v2 as joyce with dissolve
 
     $ date.speedUp()
     $ date.lustPerTurn += 10
-    show joyce footjob v2
 
     pause 0.5
     return
 
 label label_footjob_isWin:
     stop sound
-    show footjob v2 talk as joyce
+    show joyce footjob v2 talk
     with dissolve
     j "Well done."
     j "You'll move to the next trial."
     j "Until then..."
     play sound "rpg/Key.wav"
-    show footjob v2 talk (2) as joyce with dissolve
+    show joyce footjob v2 talk 2 with dissolve
     j "Try not to burst."
 
     hide joyce with dissolve

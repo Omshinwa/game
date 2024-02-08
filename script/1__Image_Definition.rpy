@@ -361,20 +361,14 @@ init python:
 init python:
     #those are functions used to make writing SEX animations easier/more dynamic
 
-    # def img_if_naked(filename, skipIfSlow=False, frameToShowIfSlow = None):
-    #     """
-    #     add 'naked' if the variable naked is on
-    #     skipIfSlow takes an integer (the same as skip_frame_if_slow)
-    #     """
-    #     if skipIfSlow >= date.animation_speed:
-    #         if frameToShowIfSlow == None:
-    #             frameToShowIfSlow = max( int(filename[-2])-1, 1 )
-    #         filename = filename[:-2] + str(frameToShowIfSlow) + ")"
-
-    #     if date.naked:
-    #         return "Joyce/sex/" + filename + " naked.png"
-    #     else:
-    #         return "Joyce/sex/" + filename + ".png"
+    def img_if_naked(filename, skipIfSlow=False, frameToShowIfSlow = None):
+        """
+        add 'naked' if the variable naked is on
+        """
+        if "naked" in renpy.get_attributes("joyce"):
+            return "Joyce/sex/" + filename + " naked.png"
+        else:
+            return "Joyce/sex/" + filename + ".png"
 
 
 
@@ -403,41 +397,78 @@ image joyce cowgirl:
     pause(animation_speed)
     repeat
 
-image joyce footjob:
-    "Joyce/sex/footjob/footjob (1).png"
+image img_joyce_footjob:
+    "Joyce/sex/footjob/joyce footjob 1.png"
     pause(animation_speed)
-
-    "Joyce/sex/footjob/footjob (2).png"
+    "Joyce/sex/footjob/joyce footjob 2.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob (3).png"
+    "Joyce/sex/footjob/joyce footjob 3.png"
     pause(animation_speed)
-
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
-    "Joyce/sex/footjob/footjob (4).png"
+    "Joyce/sex/footjob/joyce footjob 4.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob (3).png"
+    "Joyce/sex/footjob/joyce footjob 3.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob (2).png"
+    "Joyce/sex/footjob/joyce footjob 2.png"
     pause(animation_speed)
     repeat
 
-image joyce footjob v2:
-    "Joyce/sex/footjob/footjob v2 (1).png"
+image img_joyce_footjob_naked:
+    "Joyce/sex/footjob/joyce footjob 1 naked.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob v2 (2).png"
+    "Joyce/sex/footjob/joyce footjob 2 naked.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob v2 (3).png"
+    "Joyce/sex/footjob/joyce footjob 3 naked.png"
     pause(animation_speed)
-
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
-    "Joyce/sex/footjob/footjob v2 (4).png"
+    "Joyce/sex/footjob/joyce footjob 4 naked.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob v2 (3).png"
+    "Joyce/sex/footjob/joyce footjob 3 naked.png"
     pause(animation_speed)
-    "Joyce/sex/footjob/footjob v2 (2).png"
+    "Joyce/sex/footjob/joyce footjob 2 naked.png"
     pause(animation_speed)
     repeat
 
+image img_joyce_footjob_v2:
+    img_if_naked("footjob/joyce footjob v2 1")
+    skip_frame_if_slow(1)
+    img_if_naked("footjob/joyce footjob v2 2")
+    skip_frame_if_slow(1)
+    img_if_naked("footjob/joyce footjob v2 3")
+    skip_frame_if_slow(1)
+    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    img_if_naked("footjob/joyce footjob v2 4")
+    pause(animation_speed)
+    img_if_naked("footjob/joyce footjob v2 5")
+    pause(animation_speed)
+    img_if_naked("footjob/joyce footjob v2 6")
+    skip_frame_if_slow(2)
+    img_if_naked("footjob/joyce footjob v2 7")
+    skip_frame_if_slow(2)
+    img_if_naked("footjob/joyce footjob v2 6")
+    skip_frame_if_slow(2)
+    img_if_naked("footjob/joyce footjob v2 5")
+    skip_frame_if_slow(2)
+    img_if_naked("footjob/joyce footjob v2 4")
+    pause(animation_speed)
+    img_if_naked("footjob/joyce footjob v2 3")
+    pause(animation_speed)
+    img_if_naked("footjob/joyce footjob v2 2")
+    skip_frame_if_slow(1)
+    repeat
+
+layeredimage joyce footjob:
+    group footjob:
+        attribute v1 default:
+            "img_joyce_footjob"
+        attribute naked if_not "v2":
+            "img_joyce_footjob_naked"
+        attribute v2:
+            "img_joyce_footjob_v2"
+        # attribute v2 if_not "naked":
+        #     "img_joyce_footjob_v2"
+        # attribute v2 if_all "naked":
+        #     "img_joyce_footjob_v2_naked"
 
 image img_joyce_handjob:
     "Joyce/sex/handjob/joyce handjob 3.png"

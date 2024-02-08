@@ -124,3 +124,4 @@ screen game_complete():
 
 # credits: people in the renpy server:
 # Junior @juniorthejunior Pinky!
+# Consider leaving a good review if you enjoyed the game, it goes a long way to help me keep working!

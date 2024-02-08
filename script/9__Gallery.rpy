@@ -218,7 +218,7 @@ screen screen_replay(label):
 
 label label_replay_btn_goto(label=None):
     $ game.jeu_sensitive = False
-    hide handjob #hide cum
+    $ renpy.hide(renpy.get_attributes("joyce")[0]) #hide cum
     $ date.speedUp()
     $ date.speedDown()
 
@@ -229,7 +229,7 @@ label label_replay_btn_goto(label=None):
 label label_screen_replay_btn_speed_up:
     # $ game.jeu_sensitive = False
     if date.animation_speed == 0:
-        hide handjob #hide cum
+        $ renpy.hide(renpy.get_attributes("joyce")[0]) #hide cum
     $ date.speedUp()
     return
 

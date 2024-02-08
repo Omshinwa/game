@@ -72,7 +72,7 @@ define cardList = {
     "achievement" : {"txt":_("Check Achievements")},
     "memory" : {"txt":_("Check Memories")},
 
-    "undress" : {"txt":_("Remove the clothes.")}
+    "undress" : {"txt":_("Remove clothing.")}
         }
 label label_card_achievement:
     "bite"

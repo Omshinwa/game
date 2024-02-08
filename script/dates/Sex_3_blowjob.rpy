@@ -180,7 +180,8 @@ label label_blowjob_v2:
     show joyce blowjob 3 with dissolve
     j "You're getting better at this, aren't you?"
     j "Your dick is so salty and musty."
-    j "Then it's time..."
+    j "I can't resist..."
+    j "You too right? You want me to eat it."
     j "I'm gonna squeeze all your cum."
     # j "I'm your cum dumpster after all."
     play sound "sex/kiss-dick.wav"
@@ -198,7 +199,7 @@ label label_blowjob_v2:
     show joyce blowjob v2 6
     pause 0.1
     show joyce blowjob v2 1 with dissolve
-    j "MHHHH"
+    j "It tastes even better."
     show joyce -1 with dissolve
 
     $ date.speedUp()
