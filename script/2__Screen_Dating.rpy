@@ -184,6 +184,8 @@ screen screen_date_ui():
     use screen_date_bottom_ui()
     use screen_buttons_ui()
 
+renpy.hide_screen()
+
 screen screen_orgasm_ui:
 
     $ cropped_size = int( max(0,(1 - (date.orgasm/date.orgasmMax))) * (456) )
@@ -230,25 +232,25 @@ screen screen_trust_ui(range_var = 100):
         $ gameOrDate = game
 
     fixed:
-        xpos 220
-        ypos 21
+        xpos 200
+        ypos 20
         xsize 440
-        ysize 200
+        ysize 180
 
         vbox:
+            spacing 0
 
             for index, stat in enumerate(["lust", "trust", "attraction"]):
-                
                 fixed:
-                    ysize 66
+                    ysize 60
                     
                     if stat == "lust":
                         $ objectif = date.objectives["lust"]
                         $ textStat = "{k=15.0}LUST{/k}"
                         if getattr(gameOrDate, "lust") > getattr(gameOrDate, "trust") and getattr(gameOrDate, "lust") > getattr(gameOrDate, "attraction"):
-                            $ colorStat2 = "#ff0000"
+                            $ colorStat2 = "#f00a"
                         else:
-                            $ colorStat2 = "#666"
+                            $ colorStat2 = "#666a"
                         $ colorStat = "#ffd561"
                         $ textColor ="#cc3"
                     elif stat == "trust":
@@ -256,18 +258,18 @@ screen screen_trust_ui(range_var = 100):
                         $ textStat = "{k=5.0}TRUST{/k}"
                         $ colorStat = "#61e5ff"
                         $ textColor ="#55f"
-                        $ colorStat2 = "#aaa"
+                        $ colorStat2 = "#aaaa"
                     elif stat == "attraction":
                         $ objectif = date.objectives["attraction"]
                         $ textStat = "{k=-2.0}Attraction{/k}"
                         $ colorStat = "#ff8bf0"
                         $ textColor = "#f3a"
-                        $ colorStat2 = "#aaa"
+                        $ colorStat2 = "#aaaa"
                     
                     # if game.state != "dating":
                     #     $ objectif = -999
 
-                    bar value getattr(gameOrDate, stat) range range_var xsize 440 ysize 66 left_bar colorStat right_bar colorStat2
+                    bar value getattr(gameOrDate, stat) range range_var xsize 440 ysize 60 left_bar colorStat right_bar colorStat2
                     
 
                     if objectif == -999:
@@ -304,19 +306,19 @@ screen screen_turn_counter:
     fixed:
         if game.state == "dating" or game.state == "sexing":
             add Color((255/(date.turnLeft*0.05 + 0.95), 228/(1+logTable[date.turnLeft]), 147))
-        xsize 200
-        ysize 200
+        xsize 180
+        ysize 180
         xpos 20 ypos 20
 
         text "{b}{i}{k=-25.0}"+str(date.turnLeft)+"{/k}{/i}{/b}":
-            size 190 style "outline_text" xalign 0.4 yalign 0.8 color "#000000"
+            size 190 style "outline_text" xalign 0.4 ypos 10 color "#000000"
             if date.turnLeft>9:
                 size 180  xalign 0.7
             elif date.turnLeft == 1:
                 color "#f00"
 
         text "turn(s) left":
-            size 25 style "outline_text" xalign 1.0 yalign 1.0
+            size 25 style "outline_text" xalign 1.0 yalign 1.07
             
 screen screen_gameloop():
     pass
@@ -361,24 +363,23 @@ screen screen_buttons_ui():
         action [SelectedIf(Play('sound',"card/switch.mp3", selected=True)), Call(date.endTurn)]
         sensitive game.jeu_sensitive
             
-    
-    # DEBUG if game.state == "sexing" or game.progress[0]>=2:
-    fixed:
-        xpos 1800
-        ypos 610
-        if date.drink>0:
-            imagebutton:
-                idle "ui/water-bottle.png"
-                hover "ui/water-bottle-hover.png"
-                action Call("label_drink")
-                sensitive game.jeu_sensitive
-        else:
-            add "ui/water-bottle-empty.png"
+    if game.progress[0]>=2 or game.debug_mode: #game.state == "sexing" or 
         fixed:
-            xpos 20
-            ypos 35
-            xsize 50
-            text str(date.drink) size 50 xalign 0.5 style "style_small_numbers"
+            xpos 1800
+            ypos 610
+            if date.drink>0:
+                imagebutton:
+                    idle "ui/water-bottle.png"
+                    hover "ui/water-bottle-hover.png"
+                    action Call("label_drink")
+                    sensitive game.jeu_sensitive
+            else:
+                add "ui/water-bottle-empty.png"
+            fixed:
+                xpos 20
+                ypos 35
+                xsize 50
+                text str(date.drink) size 50 xalign 0.5 style "style_small_numbers"
         
     # TRASHCAN
     fixed:

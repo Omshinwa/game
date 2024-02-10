@@ -117,7 +117,7 @@ label test_sprites:
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
 define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino"]
 
-layeredimage joycde:
+layeredimage joyce:
 
     group outfits:
         attribute outfit1 null
