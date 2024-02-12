@@ -2,29 +2,6 @@ screen screen_tutorial(disp, properties={}):
     # show screen screen_tutorial("Joyce/cut-in_drink.png", {"xalign":0.5, "yalign":0.3, "zoom":1.5}) onlayer master 
     add disp:
         properties properties
-        
-screen screen_day():
-    fixed:
-        add "#00f"
-        xsize 200
-        ysize 200
-        xpos 20 ypos 20
-
-        text "day":
-            size 50 style "outline_text"  xalign 0.5 yalign 0.0
-
-        text "{b}"+str(game.day)+"{/b}":
-            size 150 style "outline_text"  xalign 0.5 yalign 0.8
-            if game.day >= 100:
-                kerning len(str(game.day))*-10 xalign 0.8
-    
-        if game.state == "living":
-            if game.day % game.dateEvery==0:
-                text "today!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
-            elif game.day % game.dateEvery==game.dateEvery-1:
-                text "tomorrow!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
-            else:
-                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
 
 screen screen_deck_stack():
     imagebutton:
@@ -40,7 +17,7 @@ screen screen_deck_stack():
         xsize 30
         text str(len(deck.list)) size 60 xalign 0.5 style "outline_text"
 
-screen screen_show_deck(what=deck.list, label_callback="label_null", instruction="", background="#000a", cancelAction=None):
+screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruction="", background="#000a", cancelAction=None):
 
     sensitive game.jeu_sensitive # prevent clicking on a lot of cards
     
@@ -78,7 +55,7 @@ screen screen_show_deck(what=deck.list, label_callback="label_null", instruction
                             imagebutton:
                                 idle card.img
                                 hover card.img_hover
-                                action [SetVariable("game.jeu_sensitive", False), Call(label_callback, index)]
+                                action [SetVariable("game.jeu_sensitive", False), Call(var_label_callback, index)]
                                 at Transform(zoom=zoom)
 
     imagebutton:

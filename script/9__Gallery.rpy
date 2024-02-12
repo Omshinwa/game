@@ -129,8 +129,11 @@ screen screen_gallery_replay:
             # Call make_button to show a particular button.
             # textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
-            textbutton "handjob" action Call("label_handjob") style "style_text_button"
+            textbutton "handjob" action Call("label_handjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "titjob" action Call("label_titjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "blowjob" action Call("label_blowjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "cowgirl" action Call("label_cowgirl") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "test_sprites" action Call("test_sprites") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
 
 
             # The screen is responsible for returning to the main menu. It could also
@@ -195,11 +198,6 @@ screen gallery_navigation(gallery):
         textbutton _("slideshow") action gallery.ToggleSlideshow()
         textbutton _("return") action gallery.Return()
 
-init python:
-    def label_callback(name, abnormal):
-        store.current_label = name
-
-    config.label_callback = label_callback
 
 screen screen_replay(label):
     sensitive game.jeu_sensitive
@@ -211,7 +209,7 @@ screen screen_replay(label):
         textbutton _("CUM") action Call("label_replay_btn_goto", label + "_isLost")
         textbutton _("Win") action Call("label_replay_btn_goto", label + "_isWin")
         textbutton _("update") action [SetVariable("game.jeu_sensitive", False), Function(update_animationSpeed)]
-        textbutton _("undress") action [Function(renpy.show,"joyce -naked"), Call("label_replay_btn_goto", "label_card_undress")]
+        textbutton _("undress") action [Function(renpy.show,"joyce -naked"), Call("label_replay_btn_goto", "label_replay_undress")]
         textbutton _("redress") action Function(renpy.show,"joyce -naked")
 
 #everytime we click on a label, we want to hide CUM (handjob) and set the speed to 1 if it was 0.
@@ -233,4 +231,12 @@ label label_screen_replay_btn_speed_up:
     $ date.speedUp()
     return
 
-
+label label_replay_undress:
+    if renpy.has_label(date.name + "_undress"):
+        show joyce -naked
+        $ renpy.call(date.name + "_undress") 
+    else:
+        $ print("no label " + date.name + "_undress")
+        $ date.naked = True
+        show joyce naked
+        return

@@ -260,7 +260,7 @@ label label_home_trash():
         return
     else:
         show screen screen_trashbin
-        call screen screen_show_deck(label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="#0000")
+        call screen screen_show_deck(var_label_callback="label_home_trash_cutscene", instruction=_("choose a card to throw"), background="#0000")
         hide screen screen_trashbin
         return
 

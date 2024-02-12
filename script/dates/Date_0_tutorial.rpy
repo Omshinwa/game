@@ -90,7 +90,7 @@ label label_tutorial_endTurn:
             j "Do you often meet girls like this?"
             show screen screen_date_ui with dissolve
     else:
-        call label_reaction from _call_label_reaction
+        call label_reaction
         
-    call label_endTurn_common from _call_label_endTurn_common
+    call label_endTurn_common
     return

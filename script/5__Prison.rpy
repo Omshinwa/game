@@ -138,7 +138,7 @@ label label_prison_rat_introduction():
     rat "…from past prisoners, hehe."
     rat "Just leave some food for me."
     rat "Good luck staying alive"
-    $ g.day_rat_appears -= 1
+    $ g.day_rat_appears -= 4
     $ game.jeu_sensitive = True
     jump label_prison
 
@@ -236,7 +236,7 @@ label label_prison_remove_card(index):
     $ renpy.call("label_newDay", "label_prison")
 
 label label_prison_toilet:
-    call screen screen_show_deck(label_callback="label_prison_remove_card", instruction=_("REMOVE A CARD"), background="img_toilet-static")
+    call screen screen_show_deck(var_label_callback="label_prison_remove_card", instruction=_("REMOVE A CARD"), background="img_toilet-static")
     return
 
 label label_prison_food:

@@ -37,12 +37,12 @@ label label_reaction():
         j "That sounds like such a boring hobby, doesn't it?"
         j "What about you, do you like playing games?"
         menu:
-            "yes":
+            "Yes":
                 j smile "Oh, you do? That's nice!"
                 j "What kind of games do you play?"
-            "no":
-                j "..."
-                j upset "really"
+            "No":
+                j "Oh."
+                j upset "That's disappointing."
                 show joyce -upset
     
     elif value == 2:
@@ -50,9 +50,16 @@ label label_reaction():
         j "I used to play those on the Nintendo DS too."
         j "What are you playing these days?"
         "..."
-        j "What are you getting so shy about?"
+        j smile "What are you getting so shy about?"
         j smile "Come, on tell me!"
-        j smile "Alright, but you have to tell me on our next date!"
+        menu:
+            "I will tell you next time...":
+                j upset -smile "Oh what? Come on."
+                j -upset "Alright."
+                j "But you have to tell me on our next date!"
+            "I play adult dating sims":
+                j -smile  "Adult...?"
+                j eyeside blush "Like, with naked people?"
 
     elif value == 3:
         j "How often do you meet girls like this?"
@@ -119,9 +126,10 @@ label label_reaction():
                 j "HAHAHA"
 
     elif value == 9:
-        j "Wow you play porn games?"
+        j "So you play porn games?"
         j "Oh, I'm not judging."
         j smirk "I'm not so innocent either, hehe."
+        j happy smile "I actually think I played some..."
         j "Erotic video games are fun."
         j -smirk "..."
         j foxy blush "But I like more human contact."
@@ -276,8 +284,8 @@ label label_card_reaction(what = None):
             pause 0.15*4
             hide anim
             j eyeside blush "..."
-            j foxy blush "Stop, I'm ticklish…!"
-            show joyce -foxy -blush with dissolve
+            j happy smile blush "Stop, I'm ticklish…!"
+            show joyce -happy -smile -blush with dissolve
 
             # show layer master:
             #     zoom 1.0 xalign 0.5 yalign 0.5
@@ -417,6 +425,9 @@ label label_card_reaction(what = None):
     return
 
 label label_reaction_undress():
+    
+    # if "undress" in date.reaction:
+    #     $ renpy.call(date.reaction["undress"]) 
     #default reaction to UNDRESS
     show joyce 1 with dissolve
     j "You want to see my body?"
@@ -432,7 +443,6 @@ label label_reaction_undress():
     hide black onlayer screens with dissolve
     j "How do you like it?"
     show joyce -1
-    pause
     return
 
 label label_date_isLost:

@@ -1,4 +1,4 @@
-label label_newDay(label_callback):
+label label_newDay(var_label_callback):
     $ renpy.set_return_stack(renpy.get_return_stack()[-1])
     # $ renpy.pop_call()
 
@@ -26,10 +26,10 @@ label label_newDay(label_callback):
     
     # pause
     # jump expression "label_home_tutorial"
-    jump expression label_callback
+    jump expression var_label_callback
 
 label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, fromWhere=None, index=None,):
-    if _in_replay or game.debug_mode:
+    if game.state == "sex" and ( _in_replay or game.debug_mode ):
         return
     
     $ game.jeu_sensitive = False

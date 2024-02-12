@@ -8,7 +8,6 @@ init python:
     
     #create an animation
     def generate_anim3(img_path, frames, speed=0.1):
-        Animation()
         txt = "Animation("
         for frame in range(frames):
             txt += "'"+ img_path + str(frame+1) + ").png', "+str(speed)+","
@@ -95,9 +94,9 @@ define config.adjust_attributes["joyce"] = joyce_adjuster
 label test_sprites:
     scene bg terrasse
     $ i = 0
-    $ outfits = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","outfitsm"]
-    # $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
-    $ attr = ["", "foxy", "happy", "upset", "wink", "worried", "bite", "smile", "smirk", "tongue", "blush", "eyeside"]
+    $ outfits = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","outfitsm"]
+    $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
+    # $ attr = ["", "foxy", "happy", "upset", "wink", "worried", "bite", "smile", "smirk", "tongue", "blush", "eyeside"]
     # $ third_switch = ["", "hair_braids"]
     $ third_switch = [""]
 
@@ -107,15 +106,15 @@ label test_sprites:
             $ n = 0
             while n < len(third_switch):
                 $ current = outfits[i] + " " + attr[m] + " " + third_switch[n]
-                show expression "joyce " + outfits[i] + " " + attr[m] + " " + third_switch[n] at trs_depied
+                $ renpy.show("joyce " + outfits[i] + " " + attr[m] + " " + third_switch[n], at_list=[trs_depied])
                 j "[current]"
-                hide expression "joyce " + outfits[i] + " " + third_switch[n]
+                hide joyce
                 $ n += 1
             $ m += 1
         $ i += 1
 
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
-define normal_face = ["outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino"]
+define normal_face = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino"]
 
 layeredimage joyce:
 
@@ -135,11 +134,15 @@ layeredimage joyce:
         attribute night5 null
 
         attribute outfitcasino null
+        attribute outfitsport null
 
     group hair variant "back":
         attribute hair default: 
             "joyce_hair_back" 
         attribute hair_braids
+        attribute outfitsport
+        attribute outfitsm:
+            "joyce_hair_back" 
 
     group arm variant "back":
 
@@ -162,6 +165,10 @@ layeredimage joyce:
             "joyce_arm_night"
         attribute arm if_any "outfitcasino":
             "joyce_arm_casino"
+        attribute arm if_any "outfitsport":
+            "joyce_arm_sport"
+        attribute arm if_any "outfitsm":
+            "joyce_arm_sm"
             
         attribute reveal-1 if_not "night":
             "joyce_arm_left_back"
@@ -171,20 +178,26 @@ layeredimage joyce:
             "joyce_arm_left_back_night"
         attribute reveal-2 if_not ["night","night3", "night4"]:
             "joyce_arm_left_back"
-        attribute push:
+        attribute push if_not "outfitsm":
             "joyce_arm_right_back"
+        attribute push if_any "outfitsm":
+            "joyce_arm_right_back_sm"
 
         attribute whip:
-            "joyce_arm_whip_back"
-        attribute key:
+            "joyce_arm_whip_back_sm"
+        attribute key if_not "outfitsm":
             "joyce_arm_key"
-        attribute key:
+        attribute key if_not "outfitsm":
             "joyce_arm_right_back"
+        attribute key if_any "outfitsm":
+            "joyce_arm_key_sm"
+        attribute key if_any "outfitsm":
+            "joyce_arm_right_back_sm"
 
         attribute armscrossed:
             "joyce_arm_armscrossed_back"
-        attribute defend:
-            "joyce_arm_crossed_back"
+        # attribute defend:
+            # "joyce_arm_crossed_back"
         
         # attribute hideboobs:
         #     "joyce_arm_hide_back"
@@ -223,6 +236,8 @@ layeredimage joyce:
         
         attribute base if_any "outfitcasino":
             "joyce_casino"
+        attribute base if_any "outfitsport":
+            "joyce_sport"
         
         attribute base if_all ["outfitred", "reveal-2"]:
             "joyce_red_reveal"
@@ -236,16 +251,6 @@ layeredimage joyce:
             "joyce_night3_reveal"
         attribute base if_all ["night4", "reveal-2"]:
             "joyce_night4_reveal"
-
-        # attribute armscrossed if_any "outfit2":
-        #     "joyce_2_armscrossed"
-
-        # attribute whip:
-        #     "joyce_sm_whip"
-        # attribute key:
-        #     "joyce_sm_key"
-        # attribute push:
-        #     "joyce_sm_push"
     
 
     group face:
@@ -279,7 +284,7 @@ layeredimage joyce:
         attribute tongue
         attribute bite
 
-    group arm:
+    group arm: #frontarm
         attribute reveal-1 if_not ["night"]:
             "joyce_arm_right_reveal (1)"
         attribute reveal-1 if_any ["night"]:
@@ -310,13 +315,19 @@ layeredimage joyce:
         attribute hair_braids
         attribute green_hair:
             "green_hair"
+        attribute outfitsport
+        attribute outfitsm:
+            "joyce_hair_front_sm" 
 
     group arm variant "in front of hair":
     
         attribute whip:
-            "joyce_arm_whip_front"
+            "joyce_arm_whip_front_sm"
         attribute push:
             "joyce_arm_push"
+        attribute push if_any "outfitsm":
+            "joyce_arm_push_sm"
+
 
         attribute defend:
             "joyce_arm_defend"
@@ -338,7 +349,7 @@ image img_blink:
     pause(2.0)
     repeat
 
-default animation_speed = 0.15
+default animation_speed = 0.9
 
 init python:
     def update_animationSpeed(speed:float = None) :
@@ -373,29 +384,42 @@ init python:
 
 
     def skip_frame_if_slow(minimum = 2):
-        if date.animation_speed > minimum:
+        if animation_speed < date.animation_speed_hash[minimum]:
             # return "pause(animation_speed)"
             return animation_speed
         else:
-            return "dont_display_anything"
+            return "this_will_skip_the_frame"
 
-image joyce cowgirl:
-    "Joyce/sex/cowgirl/cowgirl (1).png"
+    def alt_img_if_slow(minimum, normal_img, slow_img):
+        if animation_speed < date.animation_speed_hash[minimum]:
+            return normal_img
+        else:
+            return slow_img
+
+image img_joyce_cowgirl:
+    img_if_naked("cowgirl/joyce cowgirl 1")
     pause(animation_speed)
-
     function renpy.curry(play_sexsound)(filename="sex/slap.wav") #hacky
-
-    "Joyce/sex/cowgirl/cowgirl (2).png"
+    img_if_naked("cowgirl/joyce cowgirl 2")
     pause(animation_speed)
-    "Joyce/sex/cowgirl/cowgirl (3).png"
+    img_if_naked("cowgirl/joyce cowgirl 3")
     pause(animation_speed)
-    "Joyce/sex/cowgirl/cowgirl (4).png"
+    img_if_naked("cowgirl/joyce cowgirl 4")
     pause(animation_speed)
-    "Joyce/sex/cowgirl/cowgirl (5).png"
+    img_if_naked("cowgirl/joyce cowgirl 5")
     pause(animation_speed)
-    "Joyce/sex/cowgirl/cowgirl (6).png"
+    img_if_naked("cowgirl/joyce cowgirl 6")
     pause(animation_speed)
     repeat
+
+layeredimage joyce cowgirl:
+    group cowgirl:
+        attribute v1 default:
+            "img_joyce_cowgirl"
+        attribute naked if_not "v2":
+            "img_joyce_cowgirl"
+        attribute v2:
+            "img_joyce_cowgirl"
 
 image img_joyce_footjob:
     "Joyce/sex/footjob/joyce footjob 1.png"
@@ -412,7 +436,6 @@ image img_joyce_footjob:
     "Joyce/sex/footjob/joyce footjob 2.png"
     pause(animation_speed)
     repeat
-
 image img_joyce_footjob_naked:
     "Joyce/sex/footjob/joyce footjob 1 naked.png"
     pause(animation_speed)
@@ -428,7 +451,6 @@ image img_joyce_footjob_naked:
     "Joyce/sex/footjob/joyce footjob 2 naked.png"
     pause(animation_speed)
     repeat
-
 image img_joyce_footjob_v2:
     img_if_naked("footjob/joyce footjob v2 1")
     skip_frame_if_slow(1)
@@ -465,10 +487,6 @@ layeredimage joyce footjob:
             "img_joyce_footjob_naked"
         attribute v2:
             "img_joyce_footjob_v2"
-        # attribute v2 if_not "naked":
-        #     "img_joyce_footjob_v2"
-        # attribute v2 if_all "naked":
-        #     "img_joyce_footjob_v2_naked"
 
 image img_joyce_handjob:
     "Joyce/sex/handjob/joyce handjob 3.png"
@@ -542,6 +560,49 @@ layeredimage joyce handjob:
         attribute v2 if_all "naked":
             "img_joyce_handjob_v2_naked"
 
+image img_joyce_titjob:
+    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    img_if_naked("titjob/joyce titjob 1")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob 2")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob 3")
+    skip_frame_if_slow(2)
+    img_if_naked("titjob/joyce titjob 4")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob 5")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob 6")
+    skip_frame_if_slow(1)
+    repeat
+image img_joyce_titjob_v2:
+    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    img_if_naked("titjob/joyce titjob v2 1")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob v2 2")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob v2 3")
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob v2 4")
+    pause(animation_speed)
+    alt_img_if_slow(2,img_if_naked("titjob/joyce titjob v2 5"), img_if_naked("titjob/joyce titjob v2 3"))
+    pause(animation_speed)
+    alt_img_if_slow(2,img_if_naked("titjob/joyce titjob v2 6"), img_if_naked("titjob/joyce titjob v2 2"))
+    pause(animation_speed)
+    img_if_naked("titjob/joyce titjob v2 7")
+    skip_frame_if_slow(2)
+    repeat
+
+layeredimage joyce titjob:
+    group titjob:
+        attribute v1 default:
+            "img_joyce_titjob"
+        attribute naked if_not "v2":
+            "img_joyce_titjob"
+        attribute v2 if_not "naked":
+            "img_joyce_titjob_v2"
+        attribute v2 if_all "naked":
+            "img_joyce_titjob_v2"
 
 image img_joyce_blowjob:
     function renpy.curry(play_sexsound)(filename="sex/slurp.wav") #hacky

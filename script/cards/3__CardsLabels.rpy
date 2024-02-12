@@ -68,6 +68,7 @@ label label_card_flirt:
     $ date.increment('attraction',2,False);
     return
 label label_card_talk:
+    call label_reaction
     $ date.increment('trust',1)
     return
 label label_card_talk2:
@@ -77,7 +78,18 @@ label label_card_spaceout:
     return
 
 label label_card_undress:
-    if "undress" in date.reaction:
-        $ renpy.call(date.reaction["undress"]) 
+    if "naked" in renpy.get_attributes("joyce"):
+        #already naked
+        return
+
+    if renpy.has_label(date.name + "_undress"):
+        $ renpy.call(date.name + "_undress") 
     else:
+        $ print("no label " + date.name + "_undress")
         call label_reaction_undress
+
+
+    # if "undress" in date.reaction:
+    #     $ renpy.call(date.reaction["undress"]) 
+    # else:
+    #     call label_reaction_undress

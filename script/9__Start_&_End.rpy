@@ -89,6 +89,12 @@ label custom_main_menu:
         call screen screen_gameloop()
     jump .gameLoop
 
+init 5 python:
+    debug_deck = Deck()
+    debug_deck.list = [Card("talk"),Card("talk"),Card("talk"),Card("calm"),Card("spaceout"),Card("spaceout"),Card("spaceout"),
+    Card("spaceout"),Card("listen"),Card("eyecontact"),Card("draw2"),Card("flirt"),Card("pair"),Card("recycle")]
+    debug_deck.deck = [Card("talk"),Card("talk"),Card("talk"),Card("calm"),Card("spaceout"),Card("spaceout"),Card("spaceout"),
+    Card("spaceout"),Card("listen"),Card("eyecontact"),Card("draw2"),Card("flirt"),Card("pair"),Card("recycle")]
 
 #############################################################################
 ##                                                                                     

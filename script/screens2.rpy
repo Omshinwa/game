@@ -26,7 +26,7 @@ screen choice(items):
     hbox: 
         spacing int( 300/(len(items)) )
         for n, i in enumerate(items):
-            textbutton i.caption action i.action at anim_choice(n)
+            textbutton i.caption action i.action xsize max(300,len(i.caption)*7) ysize max(400,len(i.caption)*10) at anim_choice(n)
 
 transform anim_choice(t):
     yoffset ((t%2)*2-1) * 1000
@@ -43,23 +43,17 @@ style choice_button_text is button_text
 
 style choice_hbox:
     yalign 0.5
-    # xpos 405
-    # xanchor 0.5
     xalign 0.5
-
-    # spacing gui.choice_spacing # 200 
 
 style choice_button is default:
     properties gui.button_properties("choice_button")
-    ysize 400
-    xsize 300
-    
 
 style choice_button_text is default:
     properties gui.button_text_properties("choice_button")
     yalign 0.5
     size 50
     font "fonts/Venus+Carrare.otf"
+    
 
 screen quick_menu():
     

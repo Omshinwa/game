@@ -161,7 +161,7 @@ label label_card_recycle(index):
 
 label label_card_sisyphus(index):
     $ game.jeu_sensitive = True
-    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, label_callback='label_card_sisyphus2', instruction='Choose a card to add back', background='#000a', cancelAction=Call("label_card_sisyphus_cancel"))
+    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, var_label_callback='label_card_sisyphus2', instruction='Choose a card to add back', background='#000a', cancelAction=Call("label_card_sisyphus_cancel"))
     call screen screen_gameloop()
     return
 

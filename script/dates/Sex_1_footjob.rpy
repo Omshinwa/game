@@ -78,7 +78,7 @@ label label_footjob:
     if game.progress[1] == -1 and not (_in_replay or game.debug_mode):
         jump label_sex_tutorial
 
-    $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
+    $ date = Date("sex", name="footjob", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=20)
     scene bg prison-ground
     show joyce footjob talk
     with dissolve

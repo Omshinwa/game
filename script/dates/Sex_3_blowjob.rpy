@@ -1,5 +1,5 @@
 label label_blowjob:
-    $ date = Date("sex", endTurn = "label_blowjob_SexEndTurn", turnLeft=8, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", name="blowjob", endTurn = "label_blowjob_SexEndTurn", turnLeft=8, isWin = "date.turnLeft <= 0")
 
     scene bg basement
     show joyce blowjob talk 1
@@ -51,7 +51,7 @@ label label_blowjob:
         if len(deck.hand) == 0:
             call expression date.endTurn
         $ game.jeu_sensitive = True
-        pause
+        call screen screen_gameloop()
     call .gameLoop from _call_label_blowjob_gameLoop
 
     # This ends the game.

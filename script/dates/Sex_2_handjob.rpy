@@ -7,7 +7,7 @@
 # label_POSITION_isWin
 
 label label_handjob:
-    $ date = Date("sex", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", name="handjob", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
 
     scene bg basement
     show joyce handjob talk

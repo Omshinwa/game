@@ -1,8 +1,8 @@
 init python:
     class Date():
-        def __init__(self, dateOrSex, **kwargs):
+        def __init__(self, dateOrSex, name="", **kwargs):
 
-            self.name = current_label #get the name of current label to set the name of this date
+            self.name = name #get the name of current label to set the name of this date
             game.jeu_sensitive = False;
 
             if dateOrSex == "date":
@@ -84,7 +84,8 @@ init python:
                 self.lustPerTurn = 0
 
             if _in_replay or game.debug_mode:
-                self.replay_mode()
+                if dateOrSex == "sex":
+                    self.replay_mode()
 
             # reaction is a dictionary of    card : label
             # you play a card X, it will lead you to label Y after.
@@ -168,7 +169,7 @@ init python:
                 renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
                 
         def replay_mode(self):
-            renpy.say("","debug mode is on")
+            renpy.say("","debug mode is on, setting isLost to False and isWin to False and game.progress to -1")
             game.progress[1] == -1
             self._isLost = "False"
             self._isWin = "False"
@@ -197,14 +198,16 @@ label label_beginDuel_common():
     $ date.attraction = game.attraction
     $ date.attractionMultiplier = 1
     
-    $ date.animation_speed = 3
+    $ date.animation_speed = 1
 
     $ deck.drink = 3
 
     if _in_replay or game.debug_mode:
         show screen screen_replay(date.name)
-        $ deck.hand = [Card("undress")]
-        return
+        if game.state == "sex":
+            $ update_animationSpeed()
+            $ deck.hand = [Card("undress")]
+            return
 
     if game.progress[1] == -1:
         $ game.progress[1] = 0
@@ -325,10 +328,10 @@ label label_after_successful_Date_common():
         show joyce null with dissolve
     return
 
-label label_date_isLost_common(label_callback = "label_home"):
-    """
-    this label is called after every turn
-    """
+label label_date_isLost_common(var_label_callback = "label_home"):
+    # """
+    # this label is called after every turn
+    # """
     play sound "card/switch.mp3"
     $ game.jeu_sensitive = False
 
@@ -336,7 +339,6 @@ label label_date_isLost_common(label_callback = "label_home"):
 
         if _in_replay or game.debug_mode :
             $ renpy.end_replay()
-
 
         play sound "rpg/Fall1.wav"
         show date-fail onlayer screens at truecenter with blinds
@@ -399,6 +401,6 @@ label label_date_isLost_common(label_callback = "label_home"):
             $ date.lust = 0
             $ date.trust = 0
             $ date.attraction = 0
-        call label_newDay(label_callback)
+        call label_newDay(var_label_callback)
 
     return

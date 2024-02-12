@@ -1,10 +1,12 @@
 define config.font_name_map["font_venus_cormier"] = FontGroup().add("Venus+Cormier.otf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 define config.font_name_map["font_dyslexic"] = FontGroup().add("Venus+Cormier.otf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 # Acier < Plomb < Carrare < Martre < Cormier
-define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
+define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0x0021).add("DejaVuSans.ttf", 0x00A0,0xffff)
+# define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("DejaVuSans.ttf", 0x00A0,0xffff) #.add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff) #check if you have the ♥︎ emoji U+2665
 
 define config.font_name_map["font_venus_acier"] = FontGroup().add("Venus+Plomb.otf", 0x0020, 0x007f).add("DejaVuSans.ttf", 0x00A0,0x00B2).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
     
+#.add("Venus+Carrare.otf", 0x0020, 0x007f)
 
 style default:
     properties gui.text_properties()

@@ -184,8 +184,6 @@ screen screen_date_ui():
     use screen_date_bottom_ui()
     use screen_buttons_ui()
 
-renpy.hide_screen()
-
 screen screen_orgasm_ui:
 
     $ cropped_size = int( max(0,(1 - (date.orgasm/date.orgasmMax))) * (456) )
@@ -302,6 +300,29 @@ screen screen_trust_ui(range_var = 100):
 
 define logTable = [0, 0, 0.01, 0.05, 0.12, 0.18, 0.28, 0.4, 0.53, 0.68, 0.85, 1.1, 1.18, 1.40, 1.85, 2.4, 3.0]
         
+screen screen_day():
+    fixed:
+        add "#00f"
+        xsize 180
+        ysize 180
+        xpos 20 ypos 20
+
+        text "day":
+            size 50 style "outline_text"  xalign 0.5 yalign 0.0
+
+        text "{b}"+str(game.day)+"{/b}":
+            size 150 style "outline_text"  xalign 0.5 yalign 0.8
+            if game.day >= 100:
+                kerning len(str(game.day))*-10 xalign 0.8
+    
+        if game.state == "living":
+            if game.day % game.dateEvery==0:
+                text "today!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+            elif game.day % game.dateEvery==game.dateEvery-1:
+                text "tomorrow!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+            else:
+                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+
 screen screen_turn_counter:
     fixed:
         if game.state == "dating" or game.state == "sexing":
@@ -318,7 +339,7 @@ screen screen_turn_counter:
                 color "#f00"
 
         text "turn(s) left":
-            size 25 style "outline_text" xalign 1.0 yalign 1.07
+            size 25 font "font_venus_cormier" color "#000000" xalign 1.0 yalign 1.02
             
 screen screen_gameloop():
     pass

@@ -2,6 +2,8 @@ init python:
     config.console = True
     preferences.skip_unseen = True
 
+    config.use_cpickle = False
+
     def nullfunction(*args):
         return
 
@@ -10,6 +12,13 @@ init python:
     renpy.music.register_channel("drawcard", "sfx")
     renpy.music.register_channel("activatecard", "sfx", loop=False)
 
+
+    def function_label_callback(name, abnormal):
+        global current_label
+        current_label = name
+
+    config.label_callback = function_label_callback
+    #allows you to check the name of the current label
 
     class Game():
         def __init__(self):
