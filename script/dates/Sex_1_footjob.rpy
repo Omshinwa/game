@@ -19,17 +19,17 @@ label label_sex_tutorial:
     show joyce footjob talk with dissolve
     j "First, let's release this bad boy."
     play sound "rpg/Key.wav"
-    show get-hard 1 as anim with dissolve
+    show joyce get-hard 1 with dissolve
     j "Can you get hard for me baby?"
     j "I'll make you feel so good."
     pause 0.4
-    show get-hard 2 as anim
+    show joyce get-hard 2
     pause 0.4
-    show get-hard 3 as anim
+    show joyce get-hard 3
     pause 0.4
-    show get-hard 4 as anim
+    show joyce get-hard 4
     pause 0.4
-    show get-hard 5 as anim
+    show joyce get-hard 5
     pause
     j "Wow"
     j "You have a nice big cock."
@@ -39,7 +39,6 @@ label label_sex_tutorial:
     j "This is your Lust."
     j "If you get too excited, you'll cum and fail."
     j "How do you get excited? Well for example..."
-    hide anim
     show joyce footjob 1
     with dissolve
 

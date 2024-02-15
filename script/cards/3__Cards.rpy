@@ -55,11 +55,11 @@ define cardList = {
     "eyecontact": {"txt":_("+1 attraction"), "eff":"renpy.call('label_card_eyecontact')","value2":1, "sort":"03", "color":"attraction"},
     "flirt": {"txt":_("+2 attraction"), "eff":"renpy.call('label_card_flirt')","value2":2, "sort":"04", "color":"attraction"},
     # "kiss" : {"txt":_("+4 attraction"), "eff":"date.increment('attraction',4,False);","value2":3, "sort":"05"},
-    "touchy" : {"txt":_("For the rest of this turn: Attraction gains are doubled."), "eff":"date.attractionMultiplier *= 2","value2":2, "sort":"06", "color":"attraction"},
+    "touchy" : {"txt":_("For the rest of this turn: Attraction gains are doubled."),"value2":2, "sort":"06", "color":"attraction"},
 
     "talk": {"txt":_("+1 trust"), "eff":"renpy.call('label_card_talk')","value2":1, "sort":"00", "color":"trust"},
     "talk2": {"txt":_("+2 trust"), "eff":"renpy.call('label_card_talk2')","value2":2, "sort":"01", "color":"trust"},
-    "listen": {"txt":_("For the rest of this turn: Trust gains are doubled"), "eff":"date.trustMultiplier *= 2","value2":2, "sort":"02", "color":"trust"},
+    "listen": {"txt":_("For the rest of this turn: Trust gains are doubled"), "sort":"02", "color":"trust"},
 
 ####            POKER MENU STUFF
 
@@ -72,7 +72,7 @@ define cardList = {
     "achievement" : {"txt":_("Check Achievements")},
     "memory" : {"txt":_("Check Memories")},
 
-    "undress" : {"txt":_("Remove clothing.")}
+    "undress" : {"txt":_("Remove clothing."), "value":0 }
         }
 label label_card_achievement:
     "bite"

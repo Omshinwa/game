@@ -71,9 +71,8 @@ label label_tutorial:
             call expression date.endTurn
 
         $ game.jeu_sensitive = True
-        call label_card_reaction
-        # call screen screen_gameloop()
-        pause
+        call screen screen_gameloop()
+        # pause
         
     jump .gameLoop
 

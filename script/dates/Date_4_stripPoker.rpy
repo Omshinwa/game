@@ -60,7 +60,7 @@ label label_stripPoker:
         j -smile eyeside "That's what you're here for, aren't you?"
 
     # hide joyce with dissolve
-    # show expression "joyce " + " outfit"+whichDress at sitting
+    # show expression "joyce " + " outfit"+whichDress at trs_sitting
 
     show joyce night at trs_depied onlayer master zorder 0 with dissolve
 

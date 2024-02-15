@@ -63,16 +63,28 @@ label label_card_peek5:
     return
 label label_card_eyecontact:
     $ date.increment('attraction',1,False);
+    call label_card_reaction
     return
 label label_card_flirt:
     $ date.increment('attraction',2,False);
+    call label_card_reaction
+    return
+label label_card_touchy:
+    $ date.attractionMultiplier *= 2
+    call label_card_reaction
     return
 label label_card_talk:
     call label_reaction
     $ date.increment('trust',1)
+    call label_card_reaction
     return
 label label_card_talk2:
     $ date.increment('trust',2)
+    call label_card_reaction
+    return
+label label_card_listen:
+    $ date.trustMultiplier *= 2
+    call label_card_reaction
     return
 label label_card_spaceout:
     return

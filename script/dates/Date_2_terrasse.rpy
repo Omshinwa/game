@@ -5,11 +5,11 @@ label label_terrasse:
 
     if game.progress[1]>=1:
         show screen screen_glass("terrasse") onlayer master zorder 2
-        show joyce outfit2 smile at sitting
+        show joyce outfit2 smile at trs_sitting
         with dissolve
         j "I remembered to dress lighter this time."
     else:
-        show joyce outfit1 smile at sitting
+        show joyce outfit1 smile at trs_sitting
         with dissolve
         j "Hey!"
         j "You found me, come sit there."
@@ -73,7 +73,7 @@ label label_terrasse_endTurn:
             show layer master:
                 zoom 1.0
             with dissolve
-            show joyce smile at sitting with dissolve
+            show joyce smile at trs_sitting with dissolve
             j "So where were we at?" 
             show screen screen_date_ui with dissolve
             pause 0.5

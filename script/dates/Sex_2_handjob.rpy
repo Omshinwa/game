@@ -77,7 +77,7 @@ label label_handjob:
             call expression date.endTurn
 
         $ game.jeu_sensitive = True
-        pause
+        call screen screen_gameloop()
         
     call .gameLoop from _call_label_handjob_gameLoop
 

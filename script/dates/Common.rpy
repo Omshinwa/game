@@ -1,8 +1,9 @@
 init python:
     class Date():
         def __init__(self, dateOrSex, name="", **kwargs):
-
-            self.name = name #get the name of current label to set the name of this date
+            
+            self.name = current_label
+            # self.name = name #get the name of current label to set the name of this date
             game.jeu_sensitive = False;
 
             if dateOrSex == "date":
@@ -204,7 +205,7 @@ label label_beginDuel_common():
 
     if _in_replay or game.debug_mode:
         show screen screen_replay(date.name)
-        if game.state == "sex":
+        if game.state == "sexing":
             $ update_animationSpeed()
             $ deck.hand = [Card("undress")]
             return
@@ -229,7 +230,7 @@ label label_beginDuel_common():
     play sound "rpg/Wind1.wav"
     show date-start onlayer screens at truecenter with blinds
     pause 0.4
-    play sound "date/datestart2.mp3"
+    play sound "date/_datestart2.mp3"
     hide date-start  onlayer screens with moveoutbottom
 
     if game.state == "dating":

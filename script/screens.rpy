@@ -1200,7 +1200,7 @@ screen confirm(message, yes_action, no_action):
                 textbutton _("Yes") action yes_action
                 textbutton _("No") action no_action
 
-    ## Right-click and escape answer "no".
+    ## Right-click and escape answer "No".
     key "game_menu" action no_action
 
 

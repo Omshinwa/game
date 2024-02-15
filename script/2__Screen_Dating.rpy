@@ -174,7 +174,7 @@ screen screen_sex_ui():
     if game.progress[0]!=8:
         use screen_turn_counter()
     
-    use speed_indicator()
+    # use speed_indicator()
     use screen_date_bottom_ui()
     use screen_buttons_ui()
 
@@ -302,26 +302,28 @@ define logTable = [0, 0, 0.01, 0.05, 0.12, 0.18, 0.28, 0.4, 0.53, 0.68, 0.85, 1.
         
 screen screen_day():
     fixed:
-        add "#00f"
+        # add "#000e"
+        add "day_icon"
         xsize 180
         ysize 180
         xpos 20 ypos 20
 
-        text "day":
-            size 50 style "outline_text"  xalign 0.5 yalign 0.0
+        
+        # text "DAY":
+        #     size 100 color "#fff" font "font_venus_cormier"  xalign 0.5 yalign 0.02 xsize 180
 
         text "{b}"+str(game.day)+"{/b}":
-            size 150 style "outline_text"  xalign 0.5 yalign 0.8
+            size 140 xalign 0.5 yalign 0.8 color "#ffffff" font "font_venus_cormier" outlines [ (absolute(5), "#000000", absolute(0), absolute(3)) ] #style "outline_text"  
             if game.day >= 100:
                 kerning len(str(game.day))*-10 xalign 0.8
     
         if game.state == "living":
             if game.day % game.dateEvery==0:
-                text "today!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+                text "today!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
             elif game.day % game.dateEvery==game.dateEvery-1:
-                text "tomorrow!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+                text "tomorrow!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
             else:
-                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 165 color "#e970d2" style "outline_text"
+                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
 
 screen screen_turn_counter:
     fixed:
@@ -384,7 +386,7 @@ screen screen_buttons_ui():
         action [SelectedIf(Play('sound',"card/switch.mp3", selected=True)), Call(date.endTurn)]
         sensitive game.jeu_sensitive
             
-    if game.progress[0]>=2 or game.debug_mode: #game.state == "sexing" or 
+    if game.state == "sexing" or game.debug_mode: # game.progress[0]>=2 or 
         fixed:
             xpos 1800
             ypos 610
@@ -430,7 +432,6 @@ screen screen_glass(id):
 
 screen speed_indicator():
     fixed:
-
         ypos 600
         xalign 1.0
         xysize 100,50*len(date.animation_speed_hash)

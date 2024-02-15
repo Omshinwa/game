@@ -134,6 +134,7 @@ screen screen_gallery_replay:
             textbutton "blowjob" action Call("label_blowjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "cowgirl" action Call("label_cowgirl") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "test_sprites" action Call("test_sprites") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "library" action Call("label_library") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
 
 
             # The screen is responsible for returning to the main menu. It could also
@@ -208,7 +209,7 @@ screen screen_replay(label):
         textbutton _("V2") action [Function(renpy.show,"joyce -v2"), Call("label_replay_btn_goto", label + "_v2")]
         textbutton _("CUM") action Call("label_replay_btn_goto", label + "_isLost")
         textbutton _("Win") action Call("label_replay_btn_goto", label + "_isWin")
-        textbutton _("update") action [SetVariable("game.jeu_sensitive", False), Function(update_animationSpeed)]
+        # textbutton _("update") action [SetVariable("game.jeu_sensitive", False), Function(update_animationSpeed)]
         textbutton _("undress") action [Function(renpy.show,"joyce -naked"), Call("label_replay_btn_goto", "label_replay_undress")]
         textbutton _("redress") action Function(renpy.show,"joyce -naked")
 

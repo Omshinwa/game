@@ -16,11 +16,11 @@ label label_dream_0:
         j "Hello, [povname]."
         j "Did you miss me that much?"
         menu:
-            "yes":
+            "Yes":
                 j "hehe."
                 j "Good, I like honest boys."
                 j "I'll give you a reward…"
-            "no":
+            "No":
                 j "Oh, how cold hearted…"
                 j "Don't I make you feel some way?"
         j "What do you want to do to me?"

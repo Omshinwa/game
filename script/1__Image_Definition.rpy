@@ -114,11 +114,11 @@ label test_sprites:
         $ i += 1
 
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
-define normal_face = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino"]
+define normal_face = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
 
 layeredimage joyce:
 
-    group outfits:
+    group outfits: #make sure you cant have two different outfit at the same time
         attribute outfit1 null
         attribute outfit2 null
         attribute outfitred null
@@ -133,6 +133,7 @@ layeredimage joyce:
         attribute night4 null
         attribute night5 null
 
+        attribute outfit3 null
         attribute outfitcasino null
         attribute outfitsport null
 
@@ -201,6 +202,8 @@ layeredimage joyce:
         
         # attribute hideboobs:
         #     "joyce_arm_hide_back"
+        attribute holdbook:
+            "joyce_arm_holdbook_back"
 
     group base:
         attribute base default:
@@ -209,6 +212,8 @@ layeredimage joyce:
             "joyce_1"
         attribute base if_any "outfit2":
             "joyce_2"
+        attribute base if_any "outfit3":
+            "joyce_3"
         attribute base if_any "outfitsm":
             "joyce_sm"
         attribute base if_any "outfitdream":
@@ -275,6 +280,7 @@ layeredimage joyce:
         attribute happy
         attribute eyes_closed:
             "joyce_eyes_closed"
+        attribute eyesdown
 
     group mouth if_not "null":
         attribute null_mouth default:
@@ -301,12 +307,12 @@ layeredimage joyce:
 
         attribute armscrossed if_any ["outfit2"]:
             "joyce_2_armscrossed"
-        attribute armscrossed if_any "outfitred":
-            "joyce_arm_crossed_red"
         attribute armscrossed if_any "night":
             "joyce_arm_crossed_night"
         attribute arm if_any "night4":
             "joyce_arm_hide_front"
+
+        attribute holdbook
             
 
     group hair variant "front":
@@ -318,6 +324,10 @@ layeredimage joyce:
         attribute outfitsport
         attribute outfitsm:
             "joyce_hair_front_sm" 
+    
+    group accessories:
+        attribute outfit3:
+            "joyce_glasses"
 
     group arm variant "in front of hair":
     
@@ -335,6 +345,7 @@ layeredimage joyce:
         #     "joyce_blue_defend"
         attribute defend if_any "night":
             "joyce_arm_defend_night"
+        
 
 image img_blink:
     "joyce_eyes_normal"

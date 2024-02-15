@@ -29,7 +29,7 @@ label label_newDay(var_label_callback):
     jump expression var_label_callback
 
 label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0, fromWhere=None, index=None,):
-    if game.state == "sex" and ( _in_replay or game.debug_mode ):
+    if game.state == "sexing" and ( _in_replay or game.debug_mode ):
         return
     
     $ game.jeu_sensitive = False
@@ -90,7 +90,7 @@ label label_transform_card(cardID, cardID2, prompt, callback=None):
     if any(c.name == cardID for c in deck.list):
         menu:
             "[prompt]"
-            "yes":
+            "Yes":
                 hide card onlayer screens
                 hide card2 onlayer screens
                 python:
@@ -101,7 +101,7 @@ label label_transform_card(cardID, cardID2, prompt, callback=None):
                 call label_add_card_to_deck(toWhere="list", card=Card(cardID2), xfrom=300, yfrom=500, pauseTime=0.5) from _call_label_add_card_to_deck_1
                 if callback != None:
                     call label_newDay(callback) from _call_label_newDay_1
-            "no":
+            "No":
                 hide card onlayer screens
                 hide card2 onlayer screens
     else:

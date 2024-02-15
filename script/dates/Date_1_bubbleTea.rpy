@@ -7,7 +7,7 @@ label label_bubbleTea:
     if game.progress[1]>=1:
         show screen screen_glass("bbt") onlayer master zorder 2
 
-    show joyce outfit1 smile at sitting
+    show joyce outfit1 smile at trs_sitting
 
     with dissolve
 
@@ -55,7 +55,7 @@ label label_bubbleTea_endTurn:
             hide joyce with dissolve
             pause 2.0
             show joyce outfit1 smile at standing with dissolve
-            show joyce at sitting with dissolve
+            show joyce at trs_sitting with dissolve
             j "here"
             play sound "day/put_on_table.wav"
             show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
@@ -76,8 +76,8 @@ label label_bubbleTea_endTurn:
             j worried "Em"
             j "Can I taste it?"
             menu:
-                "yes":
-                    show joyce blink smile
+                "Yes":
+                    show joyce -worried smile
                     j "Thanks!"
                     show screen screen_tutorial("Joyce/cut-in_drink.png", {"xalign":0.5, "yalign":0.3, "zoom":1.5}) onlayer master zorder 5 with moveinleft
                     
@@ -104,7 +104,7 @@ label label_bubbleTea_endTurn:
                     $ g.bubbleTea_share_drink = True
                     window hide
                     window auto
-                "no":
+                "No":
                     j "Oh, ok.."
                     $ date.attraction -= 2
                     $ date.trust -= 2

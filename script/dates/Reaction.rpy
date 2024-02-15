@@ -258,10 +258,10 @@ label label_card_reaction(what = None):
         if value <= 4:
             hide screen screen_date_ui with dissolve
 
-        if renpy.get_image_bounds("joyce")[1]<55:
+        if renpy.get_image_bounds("joyce")[1] == -45:
             $ i = trs_depied
         else:
-            $ i = sitting
+            $ i = trs_sitting
         show joyce
         
         if value == 0: #touch hair

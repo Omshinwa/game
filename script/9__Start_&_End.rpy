@@ -78,7 +78,7 @@ label custom_main_menu:
     # hide screen main_menu
     scene bg casino
     show fg poker-table onlayer master zorder 2
-    show joyce outfitcasino smile hair_braids at sitting, trs_slowbreath
+    show joyce outfitcasino smile hair_braids at trs_sitting, trs_slowbreath
     show joyce_hand_poker onlayer master zorder 2
     with dissolve
     show screen screen_date_bottom_ui() onlayer master zorder 2

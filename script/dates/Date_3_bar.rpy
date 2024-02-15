@@ -18,9 +18,9 @@ label label_barDate:
         j -eyeside "Come on, let's get some seats and something to drink haha!"
 
         if whichDress == "red":
-            show joyce outfitred at sitting onlayer master zorder 0 
+            show joyce outfitred at trs_sitting onlayer master zorder 0 
         else:
-            show joyce outfitblue at sitting onlayer master zorder 0 
+            show joyce outfitblue at trs_sitting onlayer master zorder 0 
         with dissolve
         
         show screen screen_glass("bar") onlayer master zorder 2
@@ -31,9 +31,9 @@ label label_barDate:
         show screen screen_glass("bar") onlayer master zorder 2
 
         if whichDress == "red":
-            show joyce outfitred at sitting onlayer master zorder 0 
+            show joyce outfitred at trs_sitting onlayer master zorder 0 
         else:
-            show joyce outfitblue at sitting onlayer master zorder 0 
+            show joyce outfitblue at trs_sitting onlayer master zorder 0 
         with dissolve
         j smile "Hurry! Let's party!"
         j smile "haha"
@@ -107,7 +107,7 @@ label label_barDate_endTurn:
         with dissolve
 
         j smile "Hey! Hope I didn't keep you waiting."
-        show joyce at sitting with dissolve
+        show joyce at trs_sitting with dissolve
         j foxy "Did you get my picture?"
         j "No peeking under the table hehe!"
         show screen screen_date_ui with dissolve

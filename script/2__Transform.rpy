@@ -25,7 +25,7 @@ transform standing:
     yanchor 1.0
     zoom 1.0 xalign 0.5
 
-transform sitting:
+transform trs_sitting:
     # yoffset 100 #137
     ypos 1220
     yanchor 1.0

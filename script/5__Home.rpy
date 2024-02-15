@@ -429,7 +429,7 @@ label label_home_add_cards(cardID, prompt, callback=True):
     show expression trans_show_card_2(Card(cardID).img) as card
     menu:
         "[prompt]"
-        "yes":
+        "Yes":
             hide card
             hide screen screen_tutorial
             call label_add_card_to_deck("list", Card(cardID), 300, 500) from _call_label_add_card_to_deck_2
@@ -438,7 +438,7 @@ label label_home_add_cards(cardID, prompt, callback=True):
                     call label_newDay('label_home') from _call_label_newDay_23
                 else:
                     call expression callback from _call_expression_10
-        "no":
+        "No":
             hide card
             hide screen screen_tutorial
     return
