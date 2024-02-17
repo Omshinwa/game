@@ -191,7 +191,7 @@ label label_footjob_isLost:
     else:
         show joyce footjob v2 1
     pause 0.2
-    play sound "sex/Poison-cum.wav"
+    play sound "sex/_Poison-cum.wav"
     if phase == 1:
         show joyce footjob 1 at shaking
     else:

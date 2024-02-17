@@ -624,9 +624,9 @@ image img_joyce_blowjob:
     "Joyce/sex/blowjob/joyce blowjob 3.png"
     pause(animation_speed)
     "Joyce/sex/blowjob/joyce blowjob 4.png"
-    skip_frame_if_slow(3)
+    skip_frame_if_slow(2)
     "Joyce/sex/blowjob/joyce blowjob 5.png"
-    skip_frame_if_slow(3)
+    skip_frame_if_slow(2)
     "Joyce/sex/blowjob/joyce blowjob 6.png"
     pause(animation_speed)
     repeat
@@ -639,9 +639,9 @@ image img_joyce_blowjob_naked:
     "Joyce/sex/blowjob/joyce blowjob 3 naked.png"
     pause(animation_speed)
     "Joyce/sex/blowjob/joyce blowjob 4 naked.png"
-    skip_frame_if_slow(3)
+    skip_frame_if_slow(2)
     "Joyce/sex/blowjob/joyce blowjob 5 naked.png"
-    skip_frame_if_slow(3)
+    skip_frame_if_slow(2)
     "Joyce/sex/blowjob/joyce blowjob 6 naked.png"
     pause(animation_speed)
     repeat

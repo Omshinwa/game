@@ -106,6 +106,16 @@ label label_show_deck_callback(*args):
     $ game.jeu_sensitive = True
     return
 
+
+image img_lust_bar_1 = Crop((0, 0, 122, 120), "ui/lust_bar.png")
+image img_lust_bar_2 = Crop((122, 0, 196, 120), "ui/lust_bar.png")
+image img_lust_bar_3 = Crop((122+196, 0, 152, 120), "ui/lust_bar.png")
+
+image img_lust_bar_full_1 = Crop((0, 0, 122, 120), "ui/lust_bar_full.png")
+image img_lust_bar_full_2 = Crop((122, 0, 196, 120), "ui/lust_bar_full.png")
+image img_lust_bar_full_3 = Crop((122+196, 0, 152, 120), "ui/lust_bar_full.png")
+
+
 screen screen_dick_ui:
 
     if game.state == "dating" or game.state == "sexing":
@@ -113,7 +123,7 @@ screen screen_dick_ui:
     else:
         $ gameOrDate = game
 
-    $ sizeMultiplier = 1/50
+    $ sizeMultiplier = 1/100
     $ shaft_size = int( 196*(getattr(gameOrDate, "lustMax") * sizeMultiplier) )
     $ fullSizeDick = 122 + shaft_size + 152
     $ croppedSize = int ( fullSizeDick * getattr(gameOrDate, "lust")/getattr(gameOrDate, "lustMax") )
@@ -122,28 +132,23 @@ screen screen_dick_ui:
         xpos 240
         xsize 122 + shaft_size + 152
         if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
-            image Transform("ui/lust_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") )
-            image Transform("ui/lust_bar2.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image Transform("ui/lust_bar3.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
+            image Transform("img_lust_bar_1", matrixcolor=ColorizeMatrix("#822", "#fcc") )
+            image Transform("img_lust_bar_2", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+            image Transform("img_lust_bar_3", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
         else:
-            image "ui/lust_bar1.png"
-            image "ui/lust_bar2.png" xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image "ui/lust_bar3.png" xpos 122+shaft_size
+            image "img_lust_bar_1"
+            image "img_lust_bar_2" xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+            image "img_lust_bar_3" xpos 122+shaft_size
 
         if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
-            image Crop( (0, 0, croppedSize, 120), Transform("ui/lust_full_bar1.png", matrixcolor=ColorizeMatrix("#822", "#fcc") ) ) 
-            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), Transform("ui/lust_full_bar2.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), Transform("ui/lust_full_bar3.png"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122+shaft_size
+            image Crop( (0, 0, croppedSize, 120), Transform("img_lust_bar_full_1", matrixcolor=ColorizeMatrix("#822", "#fcc") ) ) 
+            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), Transform("img_lust_bar_full_2"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), Transform("img_lust_bar_full_3"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122+shaft_size
         else:
-            image Crop( (0, 0, croppedSize, 120), "ui/lust_full_bar1.png") 
-            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), "ui/lust_full_bar2.png")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "ui/lust_full_bar3.png")  xpos 122+shaft_size
+            image Crop( (0, 0, croppedSize, 120), "img_lust_bar_full_1") 
+            image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), "img_lust_bar_full_2")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "img_lust_bar_full_1")  xpos 122+shaft_size
 
-        # fixed: #cum bar
-        #     frame:
-        #         xsize croppedSize
-        #         ysize 30
-        #         background Solid("#3700ff")
 
         text str(getattr(gameOrDate, "lust") ) + "/" + str(getattr(gameOrDate, "lustMax") ):
             size 50 style "outline_text" xalign 0.45 ypos 40
@@ -157,7 +162,7 @@ screen screen_dick_ui:
                 color "#000000"
         
         if game.state == "sexing":
-            text "( next turn: +" +str(date.lustPerTurn)+ ")" size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
+            text _("( next turn: +[date.lustPerTurn])") size 30 xalign 0.45 ypos 100 color "#e970d2" style "outline_text"
 
             if getattr(date,"lustMultiplier") !=1:
                 text "x" + str( getattr(date,"lustMultiplier")   ):
@@ -244,7 +249,7 @@ screen screen_trust_ui(range_var = 100):
                     
                     if stat == "lust":
                         $ objectif = date.objectives["lust"]
-                        $ textStat = "{k=15.0}LUST{/k}"
+                        $ textStat = _("{k=15.0}LUST{/k}")
                         if getattr(gameOrDate, "lust") > getattr(gameOrDate, "trust") and getattr(gameOrDate, "lust") > getattr(gameOrDate, "attraction"):
                             $ colorStat2 = "#f00a"
                         else:
@@ -289,7 +294,7 @@ screen screen_trust_ui(range_var = 100):
                     text textStat:
                         xpos 20
                         yalign 0.8
-                        size 40 style "outline_dyslexic"
+                        size 40 style "outline_dyslexic" #40 for ENG  size 50 for CN
                         color textColor
         if game.state == "living":
             text "(+" + str(eval(game.lustPerDay)) + ")":
@@ -301,29 +306,31 @@ screen screen_trust_ui(range_var = 100):
 define logTable = [0, 0, 0.01, 0.05, 0.12, 0.18, 0.28, 0.4, 0.53, 0.68, 0.85, 1.1, 1.18, 1.40, 1.85, 2.4, 3.0]
         
 screen screen_day():
+    $ local_screen_var = str(game.dateEvery - game.day % game.dateEvery)
     fixed:
-        # add "#000e"
-        add "day_icon"
+        # add Color("#f00").rotate_hue(game.day/10) #"#00fe" 
+        add Color(hsv=(0.6, min(1.0, 10/( max(1,game.day-125) )), 1.0))
+        # add "day_icon"
         xsize 180
         ysize 180
         xpos 20 ypos 20
 
         
-        # text "DAY":
-        #     size 100 color "#fff" font "font_venus_cormier"  xalign 0.5 yalign 0.02 xsize 180
+        text _("d   a   y"):
+            size 30 color "#fff" font "font_venus_cormier"  xalign 0.5 yalign 0.02 xsize 180
 
         text "{b}"+str(game.day)+"{/b}":
-            size 140 xalign 0.5 yalign 0.8 color "#ffffff" font "font_venus_cormier" outlines [ (absolute(5), "#000000", absolute(0), absolute(3)) ] #style "outline_text"  
+            size 130 xalign 0.5 yalign 0.9 color "#ffffff" font "font_venus_cormier" outlines [ (absolute(5), "#000000", absolute(0), absolute(3)) ] #style "outline_text"  
             if game.day >= 100:
-                kerning len(str(game.day))*-10 xalign 0.8
+                kerning len(str(game.day))*-10
     
         if game.state == "living":
             if game.day % game.dateEvery==0:
-                text "today!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
+                text _("today!") size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
             elif game.day % game.dateEvery==game.dateEvery-1:
-                text "tomorrow!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
+                text _("tomorrow!") size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
             else:
-                text "in " +str(game.dateEvery - game.day % game.dateEvery)+ " days!" size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
+                text _("in [local_screen_var] days!") size 30 xalign 0.45 ypos 1.00 color "#e970d2" style "outline_text"
 
 screen screen_turn_counter:
     fixed:
@@ -340,7 +347,8 @@ screen screen_turn_counter:
             elif date.turnLeft == 1:
                 color "#f00"
 
-        text "turn(s) left":
+        # text "":
+        text _("turn(s) left"):
             size 25 font "font_venus_cormier" color "#000000" xalign 1.0 yalign 1.02
             
 screen screen_gameloop():
@@ -351,6 +359,7 @@ image img_end_turn:
         "ui/end_turn.png"
     contains:
         Text(_("END{size=60}\nTURN"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, align=(0.5, 1.1), font="font_carrare")
+        # Text(_("结束{size=60}\n回合"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, align=(0.5, 1.1), font="font_carrare")
         rotate -90
 
 image button_img_end_turn:
@@ -371,9 +380,7 @@ image button_img_end_turn:
     on insensitive:
         Transform("img_end_turn",alpha=0.7)
 
-    
-        
-        
+       
 
 screen screen_buttons_ui():
 

@@ -232,7 +232,7 @@ label label_cowgirl_isLost:
     hide moan_bubble
     show joyce at shaking
     with dissolve
-    play sound "sex/Poison-cum.wav"
+    play sound "sex/_Poison-cum.wav"
     pause 0.1
     show joyce cowgirl 3 at shaking with dissolve
     pause 0.7

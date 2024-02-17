@@ -19,9 +19,11 @@ init python:
                 self._turnLeft = 0
 
             
-            self.config = {}
-
+            self.lastPlayed = None
+            self.playedThisTurn = []
+            
             self.objectives = {}
+
             if "objectif_trust" in kwargs:
                 self.objectives["trust"] = kwargs["objectif_trust"]
             else:
@@ -88,10 +90,6 @@ init python:
                 if dateOrSex == "sex":
                     self.replay_mode()
 
-            # reaction is a dictionary of    card : label
-            # you play a card X, it will lead you to label Y after.
-            self.reaction = {}
-
         @property
         def turnLeft(self):
             return self._turnLeft - self.turn
@@ -147,16 +145,16 @@ init python:
                 elif which == "attraction":
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
-                    self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                    # if negative:
-                    #     self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                    # else:
-                    #     if self.lust<0 and value<0:
-                    #         pass
-                    #     else:
-                    #         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
-                    #         if value < 0:
-                    #             self.lust = max(0, self.lust)
+                    # self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    if negative:
+                        self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    else:
+                        if self.lust<0 and value<0:
+                            pass
+                        else:
+                            self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                            if value < 0:
+                                self.lust = max(0, self.lust)
                 else:
                     raise Exception("no valid specified argument: which") 
                 if resetAllMultiplier:
@@ -203,12 +201,11 @@ label label_beginDuel_common():
 
     $ deck.drink = 3
 
-    if _in_replay or game.debug_mode:
+    if game.state == "sexing" and (_in_replay or game.debug_mode):
         show screen screen_replay(date.name)
-        if game.state == "sexing":
-            $ update_animationSpeed()
-            $ deck.hand = [Card("undress")]
-            return
+        $ update_animationSpeed()
+        $ deck.hand = [Card("undress")]
+        return
 
     if game.progress[1] == -1:
         $ game.progress[1] = 0
@@ -265,7 +262,7 @@ label label_sex_endTurn():
     return
 
 label label_endTurn_common():
-
+    $ date.playedThisTurn = []
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
     $ date.lustMultiplier = 1
@@ -346,25 +343,11 @@ label label_date_isLost_common(var_label_callback = "label_home"):
         pause 0.3
         hide date-fail onlayer screens with moveoutbottom
 
+        show joyce null
+        hide screen screen_date_ui with dissolve
+
         if date.lust > date.trust and date.lust > date.attraction:
-            show joyce null
-            hide screen screen_date_ui with dissolve
-            if game.progress[0]<4:
-                j armscrossed upset "Um... don't you think I can notice?"
-                j "Sorry but I'm gonna go. I'm really not in the mood today."
-                j "Let's do this another day."
-            else:
-                if game.progress[1]<3:
-                    j foxy armscrossed "You're getting a bit too horny, aren't you?"
-                    j smile "Seems like today's not your day."
-                    j tongue "Hehe, try next time. "
-                    j smirk "My door is always open for you."
-                else:
-                    j foxy armscrossed "Ooh bad play."
-                    j smile "You should take your time."
-                    j "You don't need to burst everything in one go."
-                    j "Just focus on each step, one at a time."
-                    j wink tongue "Big boy."
+            call label_date_isLost_lust
 
         elif len(deck.deck) == 0:
             show joyce null

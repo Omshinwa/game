@@ -4,7 +4,7 @@ label label_card_calm:
     $ date.increment('lust',-3, negative=True)
     return
 label label_card_maxcalm:
-    $ date.increment('lust',-10, negative=True)
+    $ date.increment('lust',-10)
     $ deck.hand.append(Card('stop'))
     return
 label label_card_slower:
@@ -29,10 +29,9 @@ label label_card_draw2:
     return
 label label_card_devil:
     $ deck.draw(2)
-    # $ temp = date.lust
-    # $ date.lust = 0
-    # $ date.increment('lust', temp*2, negative=True)
-    $ date.increment('lust', 10, negative=True)
+    $ temp = date.lust
+    $ date.lust = 0
+    $ date.increment('lust', temp*2, negative=True)
     $ del temp
     return
 label label_card_pair:
@@ -63,28 +62,57 @@ label label_card_peek5:
     return
 label label_card_eyecontact:
     $ date.increment('attraction',1,False);
-    call label_card_reaction
+    if "eyecontact" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_eyecontact"):
+        $ renpy.call(date.name + "_eyecontact") 
+    else:
+        call label_card_reaction
     return
 label label_card_flirt:
     $ date.increment('attraction',2,False);
-    call label_card_reaction
+    if "flirt" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_flirt"):
+        $ renpy.call(date.name + "_flirt") 
+    else:
+        call label_card_reaction
     return
 label label_card_touchy:
     $ date.attractionMultiplier *= 2
-    call label_card_reaction
+    if "touchy" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_touchy"):
+        $ renpy.call(date.name + "_touchy") 
+    else:
+        call label_card_reaction
     return
 label label_card_talk:
-    call label_reaction
     $ date.increment('trust',1)
-    call label_card_reaction
+    if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_talk"):
+        $ renpy.call(date.name + "_talk") 
+    else:
+        call label_card_reaction_talk
     return
 label label_card_talk2:
     $ date.increment('trust',2)
-    call label_card_reaction
+    if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_talk"):
+        $ renpy.call(date.name + "_talk") 
+    else:
+        call label_card_reaction_talk
     return
 label label_card_listen:
     $ date.trustMultiplier *= 2
-    call label_card_reaction
+    if "listen" in date.playedThisTurn:
+        pass
+    elif renpy.has_label(date.name + "_listen"):
+        $ renpy.call(date.name + "_listen") 
+    else:
+        call label_card_reaction_talk
     return
 label label_card_spaceout:
     return

@@ -121,7 +121,7 @@ label label_blowjob_isLost:
         $ phase = 2
         show joyce blowjob v2 cum 1 with dissolve
         pause 0.3
-        play sound "sex/Poison-cum.wav"
+        play sound "sex/_Poison-cum.wav"
         show joyce blowjob v2 cum 1 at shaking
         pause 0.4
         show joyce blowjob v2 cum 1 at default with dissolve
@@ -144,9 +144,9 @@ label label_blowjob_isLost:
         pause 
     else:
         $ phase = 1
-        show joyce blowjob 4 with dissolve
+        show joyce 4 with dissolve
         pause 0.3
-        play sound "sex/Poison-cum.wav"
+        play sound "sex/_Poison-cum.wav"
         show joyce blowjob cum 1 at shaking
         pause 0.4
         show joyce blowjob cum 1 at default with dissolve

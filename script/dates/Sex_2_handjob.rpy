@@ -154,7 +154,7 @@ label label_handjob_isLost:
     $ date.animation_speed = 0
     pause 0.5
     
-    play sound "sex/Poison-cum.wav"
+    play sound "sex/_Poison-cum.wav"
     if "v2" in renpy.get_attributes("joyce"):
         $ phase = 2
         show joyce v2 1 at shaking

@@ -35,9 +35,9 @@ label label_tutorial:
         play sound "rpg/Item1.wav"
         j null armscrossed "During a date, you play cards from your hand that have various effects."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
-        j "The aim of a date is to build {b}{color=#55f}{u}trust{/u}{/color}{/b} and {b}{color=#f3a}{u}attraction{/u}{/color}{/b}."
-        j "{b}{color=#cc3}{u}Lust{/u}{/color}{/b} is a negative trait."
-        j "If {b}Lust is your highest stat{/b}, the girl will notice you're being too horny."
+        j "The aim of a date is to build {color=#55f}{b}trust{/b}{/color} and {color=#f3a}{b}attraction{/b}{/color}."
+        j "{b}{color=#cc3}Lust{/color}{/b} is a negative trait."
+        j "If {color=#f00}Lust is your highest stat{/color}, the girl will notice you're being too horny."
         j "She will be upset and the date will end early."
         j "So don't act too horny. At least not on your first dates!"
         j "This date, you need to build 5 Trust to be successful."
@@ -79,17 +79,17 @@ label label_tutorial:
 
 label label_tutorial_endTurn:
     call label_date_isLost_common("label_home_tutorial")
-    
-    if game.progress[1]<=0:
-        if date.turn == 0:
-            hide screen screen_date_ui with dissolve
-            show joyce null
-            j smile "So you're [povname]! Nice to meet you."
-            j "I was a bit worried before coming here, but you seem nice."
-            j "Do you often meet girls like this?"
-            show screen screen_date_ui with dissolve
-    else:
-        call label_reaction
-        
     call label_endTurn_common
     return
+
+label label_tutorial_talk:
+    if "label_tutorial_talk" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("label_tutorial_talk")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+        j smile "So you're [povname]! Nice to meet you."
+        j "I was a bit worried before coming here, but you seem nice."
+        j "Do you often meet girls like this?"
+        show screen screen_date_ui with dissolve
+    else:
+        call label_reaction_talk

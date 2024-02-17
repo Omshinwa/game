@@ -52,26 +52,26 @@ screen screen_home:
         imagebutton:
             idle showInteractible("home/bed.png", (0.99,0.6))
             hover Transform("home/bed.png", matrixcolor=TintMatrix((255,255,1275)))
-            action [SetDict(done_flag, "home/bed.png", 1), Call("label_home_bed")]
+            action [AddToSet(done_flag["buttons"], "home/bed.png"), Call("label_home_bed")]
             focus_mask True
 
         imagebutton:
             idle showInteractible("home/trash.png", (0.08,0.95))
             hover Transform("home/trash.png", matrixcolor=TintMatrix((255,255,1275)))
-            action [SetDict(done_flag, "home/trash.png", 1), Call("label_home_trash")]
+            action [AddToSet(done_flag["buttons"], "home/trash.png"), Call("label_home_trash")]
             focus_mask True
 
         imagebutton:
             idle showInteractible("home/comp.png",(0.25,0.3))
             hover Transform("home/comp.png", matrixcolor=TintMatrix((255,255,1275)))
-            action [SetDict(done_flag, "home/comp.png", 1), Call("label_home_comp")]
+            action [AddToSet(done_flag["buttons"], "home/comp.png"), Call("label_home_comp")]
             focus_mask True
 
         if g.plant < 4:
             imagebutton:
                 idle showInteractible("home/plant-"+str(g.plant)+".png",(0.05,0.5))
                 hover tintImg("home/plant-"+str(g.plant)+".png", (255,255,1275))
-                action [SetDict(done_flag, "home/plant-"+str(g.plant)+".png", 1), Call("label_home_plant")]
+                action [AddToSet(done_flag["buttons"], "home/plant-"+str(g.plant)+".png"), Call("label_home_plant")]
                 focus_mask True
         else:
             imagebutton:
@@ -83,7 +83,7 @@ screen screen_home:
         imagebutton:
             idle showInteractible("home/cat.png",(0.45,0.85))
             hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
-            action [SetDict(done_flag, "home/cat.png", 1), Call("label_home_cat")]
+            action [AddToSet(done_flag["buttons"], "home/cat.png"), Call("label_home_cat")]
             focus_mask True
 
         if game.hasNewMessage():
@@ -159,9 +159,13 @@ screen screen_home_end_act_2:
 
 
 label label_home():
-    if g.water:
-        $ g.water = False
-        $ g.plant += 1
+    # make the plant grow
+
+    if g.water > 0:
+        $ g.water -= 1
+        if g.water == 0:
+            $ g.water = -1
+            $ g.plant += 1
 
     if game.progress[0]*2>g.phoneProgress[0] and game.day%game.dateEvery==game.dateEvery-1:
         $ g.phoneProgress[0] += 1
@@ -295,7 +299,7 @@ label label_home_cat:
         menu:
             "talk to it":
                 call label_home_add_cards("talk", "Add a Small Talk to your deck?") from _call_label_home_add_cards_1
-            "stare it":
+            "stare at it":
                 call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?") from _call_label_home_add_cards_2
             "X":
                 return
@@ -304,9 +308,9 @@ label label_home_cat:
         menu:
             "talk to it":
                 call label_home_add_cards("talk", "Add a Small Talk to your deck?") from _call_label_home_add_cards_3
-            "stare it":
+            "stare at it":
                 call label_home_add_cards("eyecontact", "Add an Eye Contact to your deck?") from _call_label_home_add_cards_4
-            "look what it found":
+            "look at what it found":
                 call label_home_add_cards("drink", "Add a Drink! to your deck?") from _call_label_home_add_cards_5
             "X":
                 return
@@ -345,7 +349,7 @@ label label_home_bed:
             show black with dissolve
             queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
             pause 2.0
-            queue sound ["sex/Poison-cum.wav"]
+            queue sound ["sex/_Poison-cum.wav"]
             "Lust reset to zero"
             $ game.lust = -1 * eval(game.lustPerDay)
             
@@ -363,7 +367,7 @@ label label_home_bed:
     return
 
 label label_big_tree_thank_you():
-    if 10 > g.plant >= 4:
+    if 98 > g.plant >= 4:
         "'Thank you'"
         "?!"
         "You feel like you just heard a voice."
@@ -372,53 +376,66 @@ label label_big_tree_thank_you():
     return
 
 label label_water_the_plant():
-    if g.plant == 0:
-        "You feel like the plant is already growing."
-    elif g.plant == 1:
-        "You feel like the plant is getting bigger."
-    elif g.plant == 2:
-        "You feel like the plant is going to be massive."
-    elif g.plant == 3:
-        "You feel like the plant is going to take over the world."
-    elif g.plant == 4:
-        `It will take some more time for it to grow.`
-    if g.plant<5:
-        $ g.water = True
-    call label_newDay('label_home') from _call_label_newDay_4
+    if g.plant >= 4:
+        "It needs time to grow now, not water."
+        return
+    elif g.water > 0:
+        "You've already recently watered it."
+        return
+    menu:
+        "Maybe watering it will help it grow?"
+        "Sure":
+            jump .water_the_plant
+        "X":
+            return
+
+    label .water_the_plant: 
+        play sound "day/watering-the-plant-with.mp3"
+        if g.plant == 0:
+            "You feel like the plant is already growing."
+        elif g.plant == 1:
+            "You feel like the plant is getting bigger."
+        elif g.plant == 2:
+            "You feel like the plant is going to be massive."
+        elif g.plant == 3:
+            "You feel like the plant is going to take over the world."
+            $ g.plant = 4
+        $ g.water = 4
+        call label_newDay('label_home') from _call_label_newDay_4
 
 label label_home_plant():
-    if g.plant <= 0:
+    if g.plant == 0:
         menu:
             "water it":
-                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_8
+                jump label_water_the_plant
             "X":
                 return
-    elif g.plant <= 1:
+    elif g.plant == 1:
         menu:
             "water it":
-                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_12
-            "meditate":
-                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_13
+                jump label_water_the_plant
+            "smell it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant")
             "X":
                 return    
-    elif g.plant <= 2:
+    elif g.plant == 2:
         menu:
             "water it":
-                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_14
+                jump label_water_the_plant
+            "smell it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant")
             "meditate":
                 call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_15
-            "admire it":
-                call label_home_add_cards("newday", "Add a NewDay to your deck?") from _call_label_home_add_cards_16
             "X":
                 return
-    else:
+    elif g.plant >= 3:
         menu:
             "water it":
-                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant") from _call_label_home_add_cards_17
+                jump label_water_the_plant
+            "smell it":
+                call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant")
             "meditate":
                 call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_18
-            "admire it":
-                call label_home_add_cards("newday", "Add a NewDay to your deck?") from _call_label_home_add_cards_19
             "study it":
                 call label_home_add_cards("fibonacci", "Add a Fibonacci to your deck?") from _call_label_home_add_cards_20
             "X":

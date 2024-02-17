@@ -1,7 +1,9 @@
 define config.font_name_map["font_venus_cormier"] = FontGroup().add("Venus+Cormier.otf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 define config.font_name_map["font_dyslexic"] = FontGroup().add("Venus+Cormier.otf", 0x0020, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 # Acier < Plomb < Carrare < Martre < Cormier
-define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0x0021).add("DejaVuSans.ttf", 0x00A0,0xffff)
+define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff) #cararre doesnt have '!' 0x0021
+#.add("DejaVuSans.ttf", 0x00A0,0xffff)
+
 # define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf", 0x0022, 0x007f).add("DejaVuSans.ttf", 0x00A0,0xffff) #.add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff) #check if you have the ♥︎ emoji U+2665
 
 define config.font_name_map["font_venus_acier"] = FontGroup().add("Venus+Plomb.otf", 0x0020, 0x007f).add("DejaVuSans.ttf", 0x00A0,0x00B2).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
@@ -19,7 +21,7 @@ style default:
 
 style outline_text:
     color "#000000"
-    outlines [ (absolute(5), "#ffffff", absolute(0), absolute(3)) ]
+    outlines [ (absolute(4), "#ffffff", absolute(0), absolute(2)) ]
     font "font_venus_cormier"
 
 style outline_dyslexic:
@@ -72,7 +74,7 @@ transform showInteractible(child, xyalign=(0.5,0.5)):
     contains:
         "ui/click-me.png"
         align xyalign
-        alpha (0.0 if child in done_flag else 1.0)
+        alpha (0.0 if child in done_flag["buttons"] else 1.0)
         parallel:
             rotate 0.0
             pause 0.2

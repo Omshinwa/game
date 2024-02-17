@@ -32,8 +32,6 @@ label start:
     if not povname:
         $ povname = "William"
 
-    $ game.day = 0
-
     jump label_tutorial
     # jump label_home
     # jump label_prison_rat_introduction

@@ -1,13 +1,12 @@
 """
 A bunch of script labels where Joyce talks with you, they are naturally triggered after each turn if theres no dialogue left
 """
-default done_flag = {"script":0}
-label label_reaction():
+default done_flag = {"talk":0,"buttons":Set(),"seen_labels":Set()}
+label label_reaction_talk():
 
-    if "script" not in done_flag:
-        $ done_flag["script"] = 0
+    call label_card_reaction_check_if_sex
 
-    $ value = done_flag["script"]
+    $ value = done_flag["talk"]
     
     if (game.progress[0]+1)*2 <= value:
         return
@@ -145,9 +144,24 @@ label label_reaction():
     show screen screen_date_ui with dissolve
     $ done_flag["script"] += 1
 
-return
+    return
 
+label label_card_reaction_check_if_sex():
 
+    if game.state == "sexing":
+        $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk"]
+        if date.lastPlayed.name in i:
+            if done_flag[date.lastPlayed.name in i] == 999:
+                return
+            python:
+                for card in i:
+                    done_flag[card] = 999
+            j "What are you trying to do?"
+            j "Building more trust and attraction?"
+            j "How is that going to help now?"
+            j "I'm playing with your dick and that's the only thing you can think of?"
+            j "Hahaha, change the way you play."
+    return
 
 
 """
@@ -155,16 +169,17 @@ These scripts are reacting to a card being played
 """
 
 label label_card_reaction(what = None):
+    hide screen screen_date_ui with dissolve
 
     if what == None:
-        if hasattr(game.lastPlayed, "name"):
-            $ what = game.lastPlayed.name
+        if hasattr(date.lastPlayed, "name"):
+            $ what = date.lastPlayed.name
 
-    if what == "talk2":
+    if what == "talk2" or what == "listen":
         call label_card_reaction("talk") from _call_label_card_reaction_1
         return
 
-    if what not in done_flag:
+    elif what not in done_flag:
         $ done_flag[what] = 0
 
     $ value = done_flag[what]
@@ -172,40 +187,28 @@ label label_card_reaction(what = None):
     if value > game.progress[0]:
         return
     
-    if game.state == "sexing":
-        $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk", "listen"]
-        if what in i:
-            if done_flag[what] == 99:
-                return
-            $ i2 = 0 
-            while i2<len(i):
-                $ done_flag[i[i2]] = 99
-                $ i2 += 1
-            j "What are you trying to do?"
-            j "Building more trust and attraction?"
-            j "How is that going to help now?"
-            j "I'm playing with your dick and that's the only thing you can think of?"
-            j "Hahaha, change the way you play."
-
-        return
-
-    elif game.state == "dating":
-        show joyce null with {"master": dissolve}
+    call label_card_reaction_check_if_sex()
+    show joyce null with {"master": dissolve}
 
     if what == "eyecontact":
-
-        if value <= 4:
-            hide screen screen_date_ui with dissolve
 
         if value == 0:
             show layer master:
                 zoom 1.5 xalign 0.5 yalign 0.1
             with dissolve
             pause 0.4
+            j "?"
             j "..."
+        
+        elif value == 1:
+            show layer master:
+                zoom 1.5 xalign 0.5 yalign 0.1
+            with dissolve
+            pause 0.4
+            j "?"
             j eyeside blush "..."
 
-        elif value == 1:
+        elif value == 2:
             show layer master:
                 zoom 2.0 xalign 0.5 yalign 0.1
             with dissolve
@@ -213,7 +216,7 @@ label label_card_reaction(what = None):
             j blush "..."
             j eyeside "Is there something on my face?"
 
-        elif value == 2:
+        elif value == 3:
             show layer master:
                 zoom 1.5 xalign 0.5 yalign 0.1
             with dissolve
@@ -227,7 +230,7 @@ label label_card_reaction(what = None):
             with dissolve
             j -eyeside "..."
 
-        elif value == 3:
+        elif value == 4:
             show layer master:
                 zoom 3.0 xalign 0.5 yalign 0.4
             with dissolve
@@ -239,7 +242,7 @@ label label_card_reaction(what = None):
             j eyeside blush "..."
             j "Do you enjoy looking at me that much?"
 
-        elif value == 4:
+        elif value == 5:
             show layer master:
                 zoom 3.0 xalign 0.5 yalign 0.55
             with dissolve
@@ -255,8 +258,6 @@ label label_card_reaction(what = None):
         with dissolve
 
     elif what == "touchy":
-        if value <= 4:
-            hide screen screen_date_ui with dissolve
 
         if renpy.get_image_bounds("joyce")[1] == -45:
             $ i = trs_depied
@@ -333,7 +334,7 @@ label label_card_reaction(what = None):
     elif what == "flirt":
 
         if value == 0 or value == 1:
-            hide screen screen_date_ui with dissolve
+
             menu:
                 "I like your dress":
                     if game.progress[0] != 3:
@@ -367,7 +368,7 @@ label label_card_reaction(what = None):
                             j "Would you bleach your hair green?"
                     show joyce -green_hair with dissolve
         elif value == 2:
-            hide screen screen_date_ui with dissolve
+          
             menu:
                 "I think you're beautiful":
                     j eyeside blush "..."
@@ -397,8 +398,7 @@ label label_card_reaction(what = None):
                             renpy.with_statement(dissolve)
                             renpy.return_statement()
                         done_flag["flirt_done"].add(i)
-            
-            hide screen screen_date_ui with dissolve
+
             menu:
                 "You have nice boobs":
                     j foxy smirk "You like them?"
@@ -445,67 +445,86 @@ label label_reaction_undress():
     show joyce -1
     return
 
-label label_date_isLost:
+label label_date_isLost_lust:
+    $ what = "isLost_lust"
+    if what not in done_flag:
+        $ done_flag[what] = 0
     
-    j armscrossed upset "Um... don't you think I can notice?"
-    j "Sorry but I'm gonna go. I'm really not in the mood today."
-    j "Let's do this another day."
+    if date.name = "stripPoker":
+        if game.progress[1]<3:
+            j foxy armscrossed "You're getting a bit too horny, aren't you?"
+            j smile "Seems like today's not your day."
+            j tongue "Hehe, try next time. "
+            j smirk "My door is always open for you."
+        else:
+            j foxy armscrossed "Ooh bad play."
+            j smile "You should take your time."
+            j "You don't need to burst everything in one go."
+            j "Just focus on each step, one at a time."
+            j wink tongue "Big boy."
 
-    j "Em.."
-    j "The way you're looking at me... with those eyes..."
-    j "At my body..."
-    j "You thought I didn't notice?"
-    j "It's flattering but..."
-    j "Let's do this another time when you have cooled off?"
-
-
-    j "What's wrong [povname]?"
-    j "You look like you're having such a hard time."
-    j "I see it in your expression, you're barely holding it."
-    j "Actually..."
-    j "I can just see it in your pants also."
-    j "Maybe we should, um.."
-    j "Do this another day? Even I'm flustered..."
-    j "When I see your bulge..."
-
-
-    j "Oh my god, are you getting horny again?"
-    j "What is this bulge in your pants?"
-    j "Are you getting hard just from talking with me?"
-    j "It's amazing somehow."
-    j "Maybe you should go to the bathroom."
-    j "Release your tension, or something..."
-    j "Masturbate."
-    j "Em forget it..."
-    j "Let's come back again next time ok?"
+    if what == 0:
+        j armscrossed upset "Um... don't you think I can notice?"
+        j "Sorry but I'm gonna go. I'm really not in the mood today."
+        j "Let's do this another day."
+    elif what == 1:
+        j "Em.."
+        j "The way you're looking at me... with those eyes..."
+        j "You thought I didn't notice?"
+        j "Let's do this another time when you have cooled off?"
+    elif what == 2:
+        j "Where are you looking?"
+        j "You've just been staring at my body..."
+        j "It's flattering but..."
+        j "Let's end it there for today, okay?"
+    elif what == 3:
+        j eyesdown "..."
+        j -eyedown "..."
+        j eyesdown blush "..."
+        j -eyedown "..."
+        j "[povname].."
+        j "Your pants..."
+        j "There's a bulge in your pants."
+        j "Maybe we should, um.."
+        j "Do this another day? Even I can't focus..."
+    elif what == 3:
+        j blush "Oh my god, are you getting hard again?"
+        j "How are you getting hard just from talking with me?"
+        j "Do you want to go to the bathroom?"
+        j "Release your tension, or something..."
+        j "Masturbate."
+        j "Em forget what I said..."
+        j "I said too much."
+        j "Let's stop here? I need some air..."
     
+    elif what == 4:
+        j "[povname] you look like you're trying so hard."
+        j "I can see it in your eyes."
+        j "You want to jump me so bad."
+        j "You're going to devour me."
+        j "Kyaa I'm so scared, I want to run awaaay."
+        j "Heehee, [povname], you should be more gentleman-ly."
+        j "Let's stop here for now shall we?"
+        j "We can try again another time... [povname]..."
 
-    j "Aw [povname], you're so cute trying so hard."
-    j "But you've already lost control."
-    j "You want to jump on me so bad, I can feel your gaze."
-    j "Kyaa I'm so scared, you're going to devour me."
-    j "I want to run awaaay."
-    j "Heehee, [povname], you should be more gentleman-ly."
-    j "Let's stop here for now shall we?"
-    j "We can try again another time... [povname]..."
+    elif what == 5:
+        j "What's in your mind?"
+        j "What have you been thinking?"
+        j "Hmm let me guess..."
+        j "You just wanna rip off my clothes and see what's under, right?"
+        j "Heehee, you're so transparent [povname]."
+        j "But not yet... you're not there yet."
+        j "I'll need you to try just a little bit harder."
 
-
-    j "What's in your mind?"
-    j "What have you been thinking?"
-    j "Hmm let me guess..."
-    j "You just wanna rip off my clothes and see what's under, right?"
-    j "Heehee, you're so transparent [povname]."
-    j "But not yet... you're not there yet."
-    j "I'll need you to try just a little bit harder."
-
-    j "You're being a bit... too pushy [povname]."
-    j "I love dating you [povname]."
-    j "But it's not fun if it's too easy."
-    j "Bear it a little more, I know you can do it."
-    j "You'll get your reward eventually."
-    "(zoom master layer)"
-    j "whisper (my body)"
-    j "See you next time."
+    elif what >= 6:
+        j "You're being a bit... too pushy [povname]."
+        j "I love dating you [povname]."
+        j "But it's not fun if it's too easy."
+        j "Bear it a little more, I know you can do it."
+        j "You'll get your reward eventually."
+        "(zoom master layer)"
+        j "whisper (you'll get to fuck my body)"
+        j "See you next time."
 
 
     

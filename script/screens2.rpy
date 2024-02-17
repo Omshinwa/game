@@ -71,7 +71,7 @@ screen quick_menu():
 
                 xalign 1.0
                 yalign 1.0
-                textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color gui.hover_color
+                textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color gui.hover_color #
 
 style style_debug_text:
     size 40 color "#FF0" ypos 0 outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]

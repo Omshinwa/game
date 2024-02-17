@@ -28,27 +28,22 @@ init python:
 
             self.lustMax = 30
             self.lust = 0
-
             self.trust = 0
             self.attraction = 0
 
             self.trustMultiplier = 1
             self.attractionMultiplier= 1
             self.lustMultiplier = 1
-
             self.allMultiplierOnce= 1
 
-            self.state = "" #either "dating" or "deckbuilding"
+            self.state = "" #either "dating" or "living" or "sexing"
 
             self.isHoverHand = False
 
             self.story = ["tutorial", "bubbleTea", "terrasse", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl", "start"]
             self.progress = [0,-1] # left is progress, right is numbers of turns 
 
-            self.day = 3
-
-            self.lastPlayed = None
-            self.cardPlaying = None
+            self.day = 0
 
             self.debug_mode = 0
 
@@ -99,7 +94,7 @@ default g.phoneLogs = {
         [0, "I looved this bar"],[0, "I felt like such a lady, thanks for helping me choose the dress."],[2, "No problem, you were such a sight! I love spending time with you."],[0, "same <3"],[0, "hey.. about next time"],[0, "How about coming to my house?"],[2, "sure! I'd love to."],[0, "nice I'll send you the address"],[0, "See you <3"]
     ],
     9:[
-        [1, "pic6.png"],["exe", "renpy.call('label_pic6_reaction')"], [0, "Oh no I didn't mean to send this pic!"],[2, "Really?"],[0, ":-P"],[0, "It's an appetizer for tomorrow"],[2, "Wow, i'm excited"],[0, "<3"]
+        [1, "pic6.png"],["exe", "renpy.call('label_pic6_reaction')"], [0, _("Oh no I didn't mean to send this pic!")],[2, _("Really?")],[0, _(":-P")],[0, _("It's an appetizer for tomorrow")],[2, _("Wow, i'm excited")],[0, _("<3")]
     ],
     10:[
         [1, "pic7.png"],["exe", "renpy.call('label_pic7_reaction')"]
@@ -111,7 +106,7 @@ default g.dreamProgress = 0
 default g.trashbin = [] # array of (image, angle, xpos, ypos)
 default g.bubbleTea_share_drink = False
 default g.plant = 0
-default g.water = False
+default g.water = -1
 
 default persistent.displayContentWarning = True
 

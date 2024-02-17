@@ -146,7 +146,7 @@ label label_titjob_isLost:
     $ date.animation_speed = 0
     pause 0.5
     
-    play sound "sex/Poison-cum.wav"
+    play sound "sex/_Poison-cum.wav"
     if "v2" in renpy.get_attributes("joyce"):
         show joyce v2 1 at shaking
         show titjob v2 cum 1 at shaking

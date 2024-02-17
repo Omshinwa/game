@@ -74,7 +74,7 @@ label custom_main_menu:
     $ game.jeu_sensitive = False
     default deck = Deck()
     $ deck = Deck()
-    $ deck.deck = [Card("newgame"), Card("continue"), Card("load"), Card("prefs"), Card("achievement"), Card("memory")]
+    $ deck.deck = [Card("newgame"), Card("load"), Card("prefs"), Card("achievement"), Card("memory"), Card("lang")]
     # hide screen main_menu
     scene bg casino
     show fg poker-table onlayer master zorder 2

@@ -149,7 +149,7 @@ init python:
 
 
 label playCard(card, index):
-    $ game.cardPlaying = card
+    $ date.lastPlayed = card
     $ commands = card.eff
     $ commands.replace("index", str(index))
     $ commands = commands.split("; ")
@@ -157,12 +157,10 @@ label playCard(card, index):
     while playCardindex < len(commands):
         $ exec(commands[playCardindex])
         $ playCardindex+=1
-        # if i < len(commands):
         pause 0.2
-    $ game.lastPlayed = card
-    $ game.cardPlaying = None
-    # $ del playCardindex 
-    
+    $ del playCardindex 
+    if card.name not in date.playedThisTurn:
+        $ date.playedThisTurn.append(card.name)
     return
 
 label playCardfromHand(index):

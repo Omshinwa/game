@@ -301,7 +301,7 @@ screen screen_prison_sans_rat:
         idle showInteractible("prison/toilet.png", (0.85,0.95))
         hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275))) 
         # hover Transform("prison/toilet.png", zoom=1.05) 
-        action [SetDict(done_flag, "prison/toilet.png", 1), Call("label_prison_toilet")]
+        action [AddToSet(done_flag["buttons"], "prison/toilet.png"), Call("label_prison_toilet")]
         focus_mask True
         # hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275)))
         # idle "prison/toilet.png"
@@ -309,19 +309,19 @@ screen screen_prison_sans_rat:
     imagebutton:
         idle showInteractible("prison/bed.png",(0.1,0.9))
         hover Transform("prison/bed.png", matrixcolor=TintMatrix((255,255,1275)))
-        action [SetDict(done_flag, "prison/bed.png", 1), Call("label_prison_bed")]
+        action [AddToSet(done_flag["buttons"], "prison/bed.png"), Call("label_prison_bed")]
         focus_mask True
 
     imagebutton:
         idle showInteractible("prison/metal-door.png",(0.6,0.5))
         hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((255,255,1275)))
-        action [SetDict(done_flag, "prison/metal-door.png", 1), Call("label_prison_open_door")]
+        action [AddToSet(done_flag["buttons"], "prison/metal-door.png"), Call("label_prison_open_door")]
         focus_mask True
 
     imagebutton:
         idle showInteractible("prison/food-tray.png",(0.55,0.95))
         hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((255,255,1275)))
-        action [SetDict(done_flag, "prison/food-tray.png", 1), Call("label_prison_food")]
+        action [AddToSet(done_flag["buttons"], "prison/food-tray.png"), Call("label_prison_food")]
         focus_mask True
 
 screen screen_prison:
@@ -333,7 +333,7 @@ screen screen_prison:
     imagebutton:  
         idle showInteractible("prison/rat.png", (0.3, 0.95))
         hover Transform("prison/rat.png", matrixcolor=TintMatrix((255,255,1275)))
-        action  [SetDict(done_flag, "prison/rat.png", 1), Show("screen_prison_rat_add_cards")]
+        action  [AddToSet(done_flag["buttons"], "prison/rat.png"), Show("screen_prison_rat_add_cards")]
         focus_mask True
 
     use screen_prison_sans_rat

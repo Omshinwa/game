@@ -113,8 +113,6 @@ label label_bubbleTea_endTurn:
                     "-2 attraction -2 trust."
                     window hide
                     window auto
-    else:
-        call label_reaction from _call_label_reaction_1
         
     show screen screen_date_ui with dissolve
             
@@ -125,3 +123,15 @@ label label_bubbleTea_endTurn:
         call label_add_card_to_deck("hand", Card("peek"),pauseTime=0.5) from _call_label_add_card_to_deck_5
 
     return
+
+label label_bubbleTea_talk:
+    if "label_bubbleTea_talk" not in done_flag["seen_labels"] and game.progress[1]>1:
+        $ done_flag["seen_labels"].add("label_bubbleTea_talk")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+        j smile "You like drinking milk tea?"
+        j "I like this place, but I've been coming here too often lately."
+        j "Haha."
+        show screen screen_date_ui with dissolve
+    else:
+        call label_reaction_talk
