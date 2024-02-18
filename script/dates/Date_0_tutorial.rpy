@@ -83,8 +83,8 @@ label label_tutorial_endTurn:
     return
 
 label label_tutorial_talk:
-    if "label_tutorial_talk" not in done_flag["seen_labels"]:
-        $ done_flag["seen_labels"].add("label_tutorial_talk")
+    if "tutorial_talk" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("tutorial_talk")
         hide screen screen_date_ui with dissolve
         show joyce null
         j smile "So you're [povname]! Nice to meet you."
@@ -93,3 +93,4 @@ label label_tutorial_talk:
         show screen screen_date_ui with dissolve
     else:
         call label_reaction_talk
+    return

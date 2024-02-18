@@ -125,8 +125,8 @@ label label_bubbleTea_endTurn:
     return
 
 label label_bubbleTea_talk:
-    if "label_bubbleTea_talk" not in done_flag["seen_labels"] and game.progress[1]>1:
-        $ done_flag["seen_labels"].add("label_bubbleTea_talk")
+    if "bubbleTea_talk" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("bubbleTea_talk")
         hide screen screen_date_ui with dissolve
         show joyce null
         j smile "You like drinking milk tea?"
@@ -135,3 +135,4 @@ label label_bubbleTea_talk:
         show screen screen_date_ui with dissolve
     else:
         call label_reaction_talk
+    return

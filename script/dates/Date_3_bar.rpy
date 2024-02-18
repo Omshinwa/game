@@ -140,3 +140,44 @@ label label_pic5_reaction:
     $ game.jeu_sensitive = True
     call label_home_phone from _call_label_home_phone_5
     return
+
+label label_bar_talk:
+    if "bar_talk" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("bar_talk")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+        j smile "So?"
+        j "What do you think of the dress?"
+        menu:
+            "It looks great on you!":
+                j "Hehe."
+                j "I agree, I don't look half bad in it."
+            "I think you look better without wearing it.":
+                j "Huh? What do you..."
+                j foxy "Oh."
+                j "You naughty boy."
+                j "You don't even know what I look like under."
+        show screen screen_date_ui with dissolve
+    else:
+        call label_reaction_talk
+    return
+
+
+label label_bar_flirt:
+    if "bar_talk" in done_flag["seen_labels"] and "bar_flirt" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("bar_flirt")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+        menu:
+            "I think you look better without wearing it.":
+                j foxy "You don't even know what I look like under."
+        menu:
+            "Oh but I can imagine.":
+                j "Oh yea?"
+                j "This dress doesn't leave much room for imagination though."
+                j "My tits are almost overflowing."
+            "Soon enough I'll know.":
+                j "Aren't you cocky?"
+                j "You might end up disappointed."
+                j "Or I might be disappointed."
+                j "You're setting my expectactions pretty high."

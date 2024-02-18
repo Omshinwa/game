@@ -86,9 +86,10 @@ screen screen_debug:
             xalign 0.0 yalign 1.0
             vbox:
                 text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]) style "style_debug_text"
-                text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
-                text "date.lust: " + str(date.lust) style "style_debug_text"
-                text "date.turn: " + str(date.turn) style "style_debug_text"
+                if game.state == "dating" or game.state == "sexing":
+                    text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
+                    text "date.lust: " + str(date.lust) style "style_debug_text"
+                    text "date.turn: " + str(date.turn) style "style_debug_text"
                 text "label:" + (current_label) style "style_debug_text"
                 if renpy.get_attributes("joyce"):
                     text "joyce " + " ".join(renpy.get_attributes("joyce")) style "style_debug_text"

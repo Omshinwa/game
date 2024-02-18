@@ -80,11 +80,7 @@ label label_reaction_talk():
         j smile "Oh yeah, my place has a really huge basement, I'll show you next time!"
 
     elif value == 6:
-        play sound "day/gulp.wav"
-        j smile "*slurp*"
-        j "Ah! Nothing like alcohol after a rough day!"
-        j "I drink occasionally."
-        j "And when I mean occasionally, I mean you're my excuse to drink!"
+        pass
 
     elif value == 7:
         j "I feel like I want a cat because I'm so lonely at home."

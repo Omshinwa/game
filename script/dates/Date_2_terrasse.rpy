@@ -61,7 +61,6 @@ label label_terrasse_endTurn:
             j "Sorry, it was just too hot."
             show joyce outfit2
             j "I had to remove a few layers"
-            # show boob-shoot at truecenter with moveinright
             show layer master:
                 zoom 2.0 xalign 0.5 yalign 0.5
             with dissolve
@@ -86,4 +85,56 @@ label label_terrasse_endTurn:
     if "outfit2" in renpy.get_attributes("joyce"):
         call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5) from _call_label_add_card_to_deck_6
 
+    return
+
+label label_terrase_talk:
+    if "terrase_talk-1" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("terrase_talk-1")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+
+        play sound "day/gulp.wav"
+        j smile "*slurp*"
+        j "Ah! Nothing like alcohol after a rough day!"
+        j "I drink occasionally."
+        j "And when I mean occasionally, I mean you're my excuse to drink!"
+        
+        show screen screen_date_ui with dissolve
+    
+    elif "terrase_talk-2" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("terrase_talk-2")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+
+        j smile "Do you drink alcohol?"
+        menu:
+            "Sometimes":
+                j "Hehe, let's enjoy ourselves."
+            "Never":
+                j worried -smile "Oh really?"
+                j "Please don't force yourself for me."
+                j "Next time let's do something without alcohol then."
+        
+        show screen screen_date_ui with dissolve
+        return
+    else:
+        call label_reaction_talk
+
+
+label label_terrase_flirt:    
+    if "terrase_flirt" not in done_flag["seen_labels"] and "terrase_talk-2" not in done_flag["seen_labels"]:
+        $ done_flag["seen_labels"].add("terrase_flirt")
+        hide screen screen_date_ui with dissolve
+        show joyce null
+
+        j smile "Do you drink alcohol?"
+        menu:
+            "Only for you":
+                j -smile blush "..."
+                j "You're the type to say cheesy lines heh?"
+                j "Hahaha."
+        
+        show screen screen_date_ui with dissolve
+    else:
+        call label_reaction
     return

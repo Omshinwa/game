@@ -10,14 +10,14 @@ label label_dream_0:
     if g.dreamProgress == 0:
         hide black with Dissolve(2.0)
         "?"
-        show joyce outfitdream null at trs_depied onlayer master zorder 2
+        show joyce_dream at trs_depied onlayer master zorder 2
         with Dissolve(1.0)
         pause
         j "Hello, [povname]."
         j "Did you miss me that much?"
         menu:
             "Yes":
-                j "hehe."
+                j "Hehe."
                 j "Good, I like honest boys."
                 j "I'll give you a reward…"
             "No":
@@ -26,7 +26,7 @@ label label_dream_0:
         j "What do you want to do to me?"
     else:
         hide black
-        show joyce outfitdream null at trs_depied onlayer master zorder 2
+        show joyce_dream at trs_depied onlayer master zorder 2
         with Dissolve(0.5)
         j "Back already?"
         j "Did you come here to get a card…"
@@ -34,12 +34,12 @@ label label_dream_0:
     "You can transform an Eye Contact card."
     label .chooseOption:
         menu:
-            "flirt":
+            "Flirt with her":
                 $ i = len([item for item in deck.list if item.name == "eyecontact"])
                 call label_transform_card("eyecontact", "flirt", "Transform 1 Eye Contact card into Flirt?") from _call_label_transform_card_4
                 if len([item for item in deck.list if item.name == "eyecontact"]) == i:
                     jump .chooseOption
-            "be touchy":
+            "Touch her":
                 $ i = len([item for item in deck.list if item.name == "eyecontact"])
                 call label_transform_card("eyecontact", "touchy", "Transform 1 Eye Contact card into Touchy?") from _call_label_transform_card_5
                 if len([item for item in deck.list if item.name == "eyecontact"]) == i:
