@@ -116,7 +116,7 @@ image img_lust_bar_full_2 = Crop((122, 0, 196, 120), "ui/lust_bar_full.png")
 image img_lust_bar_full_3 = Crop((122+196, 0, 152, 120), "ui/lust_bar_full.png")
 
 
-screen screen_dick_ui:
+screen screen_dick_ui():
 
     if game.state == "dating" or game.state == "sexing":
         $ gameOrDate = date

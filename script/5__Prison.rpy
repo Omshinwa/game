@@ -39,7 +39,7 @@ label label_welcome_prison():
             pass
         "Try and jump on her":
             show joyce whip
-            play sound "sex/whip.mp3"
+            play sound "sex/_whip.mp3"
             j -smile "Hey now…"
             j "Did you sleep on the wrong side?"
             j "Do you still not understand who's in control?"
@@ -67,7 +67,7 @@ label label_prison_rat_introduction():
     $ game.jeu_sensitive = False
     rat "So she caught another one, huh." with dissolve
     rat "You're not the first one to get trapped here."
-    hide screen_prison_sans_rat
+    hide screen screen_prison_sans_rat
     show screen screen_prison onlayer master
     with dissolve
     
@@ -91,7 +91,7 @@ label label_prison_rat_introduction():
             pause 0.1
         $ i += 1
     
-    pause 0.6 + len(toHide)*0.1
+    pause (0.6 + len(toHide)*0.1)
     python:
         for i in toHide:
             renpy.hide(i)
@@ -201,7 +201,7 @@ label label_prison():
         show joyce foxy outfitsm smile whip at trs_depied with dissolve
         j "Hello, slave."
         j "The milking starts now."
-        play sound "sex/Fouet.mp3"
+        play sound "_sex/Fouet.mp3"
         show joyce push
         with vpunch
         call label_prison_open_door(open=True) from _call_label_prison_open_door

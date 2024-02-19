@@ -251,7 +251,7 @@ label label_footjob_isWin:
     j "You'll move to the next trial."
     j "Until then..."
     play sound "rpg/Key.wav"
-    show joyce footjob v2 talk 2 with dissolve
+    show joyce footjob v2 lock with dissolve
     j "Try not to burst."
 
     hide joyce with dissolve

@@ -4,7 +4,7 @@ A bunch of script labels where Joyce talks with you, they are naturally triggere
 default done_flag = {"talk":0,"buttons":Set(),"seen_labels":Set()}
 label label_reaction_talk():
 
-    call label_card_reaction_check_if_sex
+    call label_reaction_check_if_sex
 
     $ value = done_flag["talk"]
     
@@ -142,7 +142,7 @@ label label_reaction_talk():
 
     return
 
-label label_card_reaction_check_if_sex():
+label label_reaction_check_if_sex():
 
     if game.state == "sexing":
         $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk"]
@@ -164,7 +164,7 @@ label label_card_reaction_check_if_sex():
 These scripts are reacting to a card being played
 """
 
-label label_card_reaction(what = None):
+label label_reaction(what = None):
     hide screen screen_date_ui with dissolve
 
     if what == None:
@@ -172,7 +172,7 @@ label label_card_reaction(what = None):
             $ what = date.lastPlayed.name
 
     if what == "talk2" or what == "listen":
-        call label_card_reaction("talk") from _call_label_card_reaction_1
+        call label_reaction("talk") from _call_label_reaction_1
         return
 
     elif what not in done_flag:
@@ -183,7 +183,7 @@ label label_card_reaction(what = None):
     if value > game.progress[0]:
         return
     
-    call label_card_reaction_check_if_sex()
+    call label_reaction_check_if_sex()
     show joyce null with {"master": dissolve}
 
     if what == "eyecontact":
@@ -446,7 +446,7 @@ label label_date_isLost_lust:
     if what not in done_flag:
         $ done_flag[what] = 0
     
-    if date.name = "stripPoker":
+    if date.name == "stripPoker":
         if game.progress[1]<3:
             j foxy armscrossed "You're getting a bit too horny, aren't you?"
             j smile "Seems like today's not your day."

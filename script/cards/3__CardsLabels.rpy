@@ -67,7 +67,7 @@ label label_card_eyecontact:
     elif renpy.has_label(date.name + "_eyecontact"):
         $ renpy.call(date.name + "_eyecontact") 
     else:
-        call label_card_reaction
+        call label_reaction
     return
 label label_card_flirt:
     $ date.increment('attraction',2,False);
@@ -76,7 +76,7 @@ label label_card_flirt:
     elif renpy.has_label(date.name + "_flirt"):
         $ renpy.call(date.name + "_flirt") 
     else:
-        call label_card_reaction
+        call label_reaction
     return
 label label_card_touchy:
     $ date.attractionMultiplier *= 2
@@ -85,7 +85,7 @@ label label_card_touchy:
     elif renpy.has_label(date.name + "_touchy"):
         $ renpy.call(date.name + "_touchy") 
     else:
-        call label_card_reaction
+        call label_reaction
     return
 label label_card_talk:
     $ date.increment('trust',1)
@@ -94,7 +94,7 @@ label label_card_talk:
     elif renpy.has_label(date.name + "_talk"):
         $ renpy.call(date.name + "_talk") 
     else:
-        call label_card_reaction_talk
+        call label_reaction_talk
     return
 label label_card_talk2:
     $ date.increment('trust',2)
@@ -103,7 +103,7 @@ label label_card_talk2:
     elif renpy.has_label(date.name + "_talk"):
         $ renpy.call(date.name + "_talk") 
     else:
-        call label_card_reaction_talk
+        call label_reaction_talk
     return
 label label_card_listen:
     $ date.trustMultiplier *= 2
@@ -112,7 +112,7 @@ label label_card_listen:
     elif renpy.has_label(date.name + "_listen"):
         $ renpy.call(date.name + "_listen") 
     else:
-        call label_card_reaction_talk
+        call label_reaction_talk
     return
 label label_card_spaceout:
     return

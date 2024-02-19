@@ -202,7 +202,7 @@ label label_cowgirl_isWin:
     $ renpy.music.play("sex/heavy-breathing.wav", channel="sexvoice", loop=True, relative_volume=0.5)
     pause
     stop sexvoice
-    play sound "sex/Fouet.mp3" volume 0.4
+    play sound "_sex/Fouet.mp3" volume 0.4
     show joyce cowgirl orgasm 4 at default with vpunch
     pause
     show joyce cowgirl orgasm 5 with dissolve

@@ -469,379 +469,379 @@ translate chinese label_reaction_784d597c:
     ""
 
 # game/script/dates/Reaction.rpy:184
-translate chinese label_card_reaction_b4f551a6:
+translate chinese label_reaction_b4f551a6:
 
     # j "What are you trying to do?"
     j ""
 
 # game/script/dates/Reaction.rpy:185
-translate chinese label_card_reaction_2d012fcd:
+translate chinese label_reaction_2d012fcd:
 
     # j "Building more trust and attraction?"
     j ""
 
 # game/script/dates/Reaction.rpy:186
-translate chinese label_card_reaction_58591701:
+translate chinese label_reaction_58591701:
 
     # j "How is that going to help now?"
     j ""
 
 # game/script/dates/Reaction.rpy:187
-translate chinese label_card_reaction_ca715fb6:
+translate chinese label_reaction_ca715fb6:
 
     # j "I'm playing with your dick and that's the only thing you can think of?"
     j ""
 
 # game/script/dates/Reaction.rpy:188
-translate chinese label_card_reaction_f1689332:
+translate chinese label_reaction_f1689332:
 
     # j "Hahaha, change the way you play."
     j ""
 
 # game/script/dates/Reaction.rpy:205
-translate chinese label_card_reaction_b4fa3fc0:
+translate chinese label_reaction_b4fa3fc0:
 
     # j "..."
     j ""
 
 # game/script/dates/Reaction.rpy:206
-translate chinese label_card_reaction_648c4823:
+translate chinese label_reaction_648c4823:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:213
-translate chinese label_card_reaction_ade6f614:
+translate chinese label_reaction_ade6f614:
 
     # j blush "..."
     j blush ""
 
 # game/script/dates/Reaction.rpy:214
-translate chinese label_card_reaction_10f7b3b0:
+translate chinese label_reaction_10f7b3b0:
 
     # j eyeside "Is there something on my face?"
     j eyeside ""
 
 # game/script/dates/Reaction.rpy:221
-translate chinese label_card_reaction_ade6f614_1:
+translate chinese label_reaction_ade6f614_1:
 
     # j blush "..."
     j blush ""
 
 # game/script/dates/Reaction.rpy:222
-translate chinese label_card_reaction_0ac9b45b:
+translate chinese label_reaction_0ac9b45b:
 
     # j "Why do you stare at me so often?"
     j ""
 
 # game/script/dates/Reaction.rpy:223
-translate chinese label_card_reaction_452a55ca:
+translate chinese label_reaction_452a55ca:
 
     # j "I feel so shy. I'm so bad at keeping eye contact."
     j ""
 
 # game/script/dates/Reaction.rpy:224
-translate chinese label_card_reaction_f857c852:
+translate chinese label_reaction_f857c852:
 
     # j eyeside "Please, can you look elsewhere?"
     j eyeside ""
 
 # game/script/dates/Reaction.rpy:228
-translate chinese label_card_reaction_8817fc92:
+translate chinese label_reaction_8817fc92:
 
     # j -eyeside "..."
     j -eyeside ""
 
 # game/script/dates/Reaction.rpy:239
-translate chinese label_card_reaction_648c4823_1:
+translate chinese label_reaction_648c4823_1:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:240
-translate chinese label_card_reaction_1b4f90ee:
+translate chinese label_reaction_1b4f90ee:
 
     # j "Do you enjoy looking at me that much?"
     j ""
 
 # game/script/dates/Reaction.rpy:247
-translate chinese label_card_reaction_94aab917:
+translate chinese label_reaction_94aab917:
 
     # j smirk foxy "You like what you see?"
     j smirk foxy ""
 
 # game/script/dates/Reaction.rpy:251
-translate chinese label_card_reaction_92507be7:
+translate chinese label_reaction_92507be7:
 
     # j bite "I bet you wanna see more.."
     j bite ""
 
 # game/script/dates/Reaction.rpy:272
-translate chinese label_card_reaction_648c4823_2:
+translate chinese label_reaction_648c4823_2:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:286
-translate chinese label_card_reaction_648c4823_3:
+translate chinese label_reaction_648c4823_3:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:287
-translate chinese label_card_reaction_cbb8ae43:
+translate chinese label_reaction_cbb8ae43:
 
     # j happy smile blush "Stop, I'm ticklish…!"
     j happy smile blush ""
 
 # game/script/dates/Reaction.rpy:305
-translate chinese label_card_reaction_648c4823_4:
+translate chinese label_reaction_648c4823_4:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:306
-translate chinese label_card_reaction_b040f1eb:
+translate chinese label_reaction_b040f1eb:
 
     # j "You have such warm hands."
     j ""
 
 # game/script/dates/Reaction.rpy:326
-translate chinese label_card_reaction_018bd5b3:
+translate chinese label_reaction_018bd5b3:
 
     # j blush defend "hey"
     j blush defend ""
 
 # game/script/dates/Reaction.rpy:328
-translate chinese label_card_reaction_8188ba83:
+translate chinese label_reaction_8188ba83:
 
     # j foxy smirk "Not in public…"
     j foxy smirk ""
 
 # game/script/dates/Reaction.rpy:330
-translate chinese label_card_reaction_1eee31cd:
+translate chinese label_reaction_1eee31cd:
 
     # j foxy smirk "Not yet…"
     j foxy smirk ""
 
 # game/script/dates/Reaction.rpy:340
-translate chinese label_card_reaction_ade6f614_2:
+translate chinese label_reaction_ade6f614_2:
 
     # j blush "..."
     j blush ""
 
 # game/script/dates/Reaction.rpy:341
-translate chinese label_card_reaction_2623ef6b:
+translate chinese label_reaction_2623ef6b:
 
     # j "Thanks, I wasn't sure what to wear."
     j ""
 
 # game/script/dates/Reaction.rpy:342
-translate chinese label_card_reaction_fce2bad5:
+translate chinese label_reaction_fce2bad5:
 
     # j smile "I thought maybe I should wear something more elegant…"
     j smile ""
 
 # game/script/dates/Reaction.rpy:343
-translate chinese label_card_reaction_fb16a2d2:
+translate chinese label_reaction_fb16a2d2:
 
     # j "Then I realized I was running late, so I just put on whatever."
     j ""
 
 # game/script/dates/Reaction.rpy:344
-translate chinese label_card_reaction_02cf3227:
+translate chinese label_reaction_02cf3227:
 
     # j "haha"
     j ""
 
 # game/script/dates/Reaction.rpy:347
-translate chinese label_card_reaction_b47997e8:
+translate chinese label_reaction_b47997e8:
 
     # j foxy smirk "Hehe"
     j foxy smirk ""
 
 # game/script/dates/Reaction.rpy:348
-translate chinese label_card_reaction_68fe486b:
+translate chinese label_reaction_68fe486b:
 
     # j "I guess I did pull it off…"
     j ""
 
 # game/script/dates/Reaction.rpy:351
-translate chinese label_card_reaction_17624f77:
+translate chinese label_reaction_17624f77:
 
     # j smile "Isn't it a bit boring?"
     j smile ""
 
 # game/script/dates/Reaction.rpy:352
-translate chinese label_card_reaction_31a8bdd5:
+translate chinese label_reaction_31a8bdd5:
 
     # j "I have a friend who's always bleaching her hair all the time"
     j ""
 
 # game/script/dates/Reaction.rpy:353
-translate chinese label_card_reaction_8cc22c52:
+translate chinese label_reaction_8cc22c52:
 
     # j "These days she's doing green hair I think"
     j ""
 
 # game/script/dates/Reaction.rpy:354
-translate chinese label_card_reaction_90993f2c:
+translate chinese label_reaction_90993f2c:
 
     # j "Do you think it would suit me?"
     j ""
 
 # game/script/dates/Reaction.rpy:359
-translate chinese label_card_reaction_92a15148:
+translate chinese label_reaction_92a15148:
 
     # j "Green?"
     j ""
 
 # game/script/dates/Reaction.rpy:360
-translate chinese label_card_reaction_0d724a51:
+translate chinese label_reaction_0d724a51:
 
     # j "Really?"
     j ""
 
 # game/script/dates/Reaction.rpy:361
-translate chinese label_card_reaction_b21c71a1:
+translate chinese label_reaction_b21c71a1:
 
     # j "No way! That's so bold. I could never."
     j ""
 
 # game/script/dates/Reaction.rpy:362
-translate chinese label_card_reaction_00e06752:
+translate chinese label_reaction_00e06752:
 
     # j "I kinda admire her for that."
     j ""
 
 # game/script/dates/Reaction.rpy:364
-translate chinese label_card_reaction_4b423112:
+translate chinese label_reaction_4b423112:
 
     # j "Yeah, I didn't think so either."
     j ""
 
 # game/script/dates/Reaction.rpy:365
-translate chinese label_card_reaction_48965a1c:
+translate chinese label_reaction_48965a1c:
 
     # j "haha."
     j ""
 
 # game/script/dates/Reaction.rpy:366
-translate chinese label_card_reaction_2208fc69:
+translate chinese label_reaction_2208fc69:
 
     # j "But I kinda admire my friend."
     j ""
 
 # game/script/dates/Reaction.rpy:367
-translate chinese label_card_reaction_3e03a90a:
+translate chinese label_reaction_3e03a90a:
 
     # j "Would you bleach your hair green?"
     j ""
 
 # game/script/dates/Reaction.rpy:373
-translate chinese label_card_reaction_648c4823_5:
+translate chinese label_reaction_648c4823_5:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:374
-translate chinese label_card_reaction_d579c9d9:
+translate chinese label_reaction_d579c9d9:
 
     # j "Don't say that…"
     j ""
 
 # game/script/dates/Reaction.rpy:375
-translate chinese label_card_reaction_24563c7e:
+translate chinese label_reaction_24563c7e:
 
     # j "You're making me shy"
     j ""
 
 # game/script/dates/Reaction.rpy:376
-translate chinese label_card_reaction_8817fc92_1:
+translate chinese label_reaction_8817fc92_1:
 
     # j -eyeside "..."
     j -eyeside ""
 
 # game/script/dates/Reaction.rpy:377
-translate chinese label_card_reaction_5003b742:
+translate chinese label_reaction_5003b742:
 
     # j eyeside bite "You're not bad looking either"
     j eyeside bite ""
 
 # game/script/dates/Reaction.rpy:380
-translate chinese label_card_reaction_648c4823_6:
+translate chinese label_reaction_648c4823_6:
 
     # j eyeside blush "..."
     j eyeside blush ""
 
 # game/script/dates/Reaction.rpy:381
-translate chinese label_card_reaction_21563cec:
+translate chinese label_reaction_21563cec:
 
     # j "You're so bold"
     j ""
 
 # game/script/dates/Reaction.rpy:382
-translate chinese label_card_reaction_b4fa3fc0_1:
+translate chinese label_reaction_b4fa3fc0_1:
 
     # j "..."
     j ""
 
 # game/script/dates/Reaction.rpy:383
-translate chinese label_card_reaction_f392ada7:
+translate chinese label_reaction_f392ada7:
 
     # j -blush happy smile "But I also do enjoy our dates together."
     j -blush happy smile ""
 
 # game/script/dates/Reaction.rpy:384
-translate chinese label_card_reaction_17ae1252:
+translate chinese label_reaction_17ae1252:
 
     # j -eyeside "I hope this will last"
     j -eyeside ""
 
 # game/script/dates/Reaction.rpy:385
-translate chinese label_card_reaction_a90947fa:
+translate chinese label_reaction_a90947fa:
 
     # j tongue -happy "teehee ~"
     j tongue -happy ""
 
 # game/script/dates/Reaction.rpy:404
-translate chinese label_card_reaction_d8c3b77a:
+translate chinese label_reaction_d8c3b77a:
 
     # j foxy smirk "You like them?"
     j foxy smirk ""
 
 # game/script/dates/Reaction.rpy:405
-translate chinese label_card_reaction_e8b1cee6:
+translate chinese label_reaction_e8b1cee6:
 
     # j "They're pretty big, right?"
     j ""
 
 # game/script/dates/Reaction.rpy:407
-translate chinese label_card_reaction_2c3eed06:
+translate chinese label_reaction_2c3eed06:
 
     # j "Here's a peek…"
     j ""
 
 # game/script/dates/Reaction.rpy:412
-translate chinese label_card_reaction_ff794543:
+translate chinese label_reaction_ff794543:
 
     # j wink tongue reveal-1 "That's it"
     j wink tongue reveal-1 ""
 
 # game/script/dates/Reaction.rpy:416
-translate chinese label_card_reaction_5cee8c48:
+translate chinese label_reaction_5cee8c48:
 
     # j "You wanna lick them?"
     j ""
 
 # game/script/dates/Reaction.rpy:417
-translate chinese label_card_reaction_8ae9ad71:
+translate chinese label_reaction_8ae9ad71:
 
     # j wink tongue "Slurp slurp"
     j wink tongue ""
 
 # game/script/dates/Reaction.rpy:418
-translate chinese label_card_reaction_882fd615:
+translate chinese label_reaction_882fd615:
 
     # j -wink -reveal-2 -tongue smile "Not yet, hehe…"
     j -wink -reveal-2 -tongue smile ""

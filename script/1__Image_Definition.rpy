@@ -81,10 +81,11 @@ init python:
             atts.add("null_skin")
             atts.add("null_eyes")
             atts.add("null_mouth")
-            if "defend" in atts:
-                atts.remove("defend")
-            if "armscrossed" in atts:
-                atts.remove("armscrossed")
+            atts.add("arm")
+            # if "defend" in atts:
+            #     atts.remove("defend")
+            # if "armscrossed" in atts:
+            #     atts.remove("armscrossed")
 
         return names[0], *atts
 
@@ -114,7 +115,7 @@ label test_sprites:
         $ i += 1
 
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
-define normal_face = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
+define normal_face = ["outfitsport", "outfitsport2", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
 
 layeredimage joyce:
 
@@ -136,6 +137,7 @@ layeredimage joyce:
         attribute outfit3 null
         attribute outfitcasino null
         attribute outfitsport null
+        attribute outfitsport2 null
 
     group hair variant "back":
         attribute hair default: 
@@ -149,12 +151,6 @@ layeredimage joyce:
 
         attribute arm default: #the default argument means we're always including the attribute "arm"
             null
-
-        # if "outfitpoker" in renpy.get_attributes("joyce"):
-        #     "joyce_arm_poker"
-        # else:
-        #     if not "night4":
-        #         "joyce_arm"
 
         attribute arm if_not ["night4", "outfitcasino"]:
             "joyce_arm"
@@ -204,6 +200,10 @@ layeredimage joyce:
         #     "joyce_arm_hide_back"
         attribute holdbook:
             "joyce_arm_holdbook_back"
+        attribute running if_any ["outfitsport"]:
+            "joyce_arm_back_diagonal_sport"
+        attribute running if_any ["outfitsport2"]:
+            "joyce_arm_back_diagonal"
 
     group base:
         attribute base default:
@@ -257,7 +257,6 @@ layeredimage joyce:
         attribute base if_all ["night4", "reveal-2"]:
             "joyce_night4_reveal"
     
-
     group face:
         attribute face default:
             "joyce_face"
@@ -289,8 +288,9 @@ layeredimage joyce:
         attribute smirk if_any normal_face
         attribute tongue
         attribute bite
+        attribute breath
 
-    group arm: #frontarm
+    group arm variant "front": #frontarm
         attribute reveal-1 if_not ["night"]:
             "joyce_arm_right_reveal (1)"
         attribute reveal-1 if_any ["night"]:
@@ -313,7 +313,10 @@ layeredimage joyce:
             "joyce_arm_hide_front"
 
         attribute holdbook
-            
+        attribute running if_any ["outfitsport2"]:
+            "joyce_arm_front_running"
+        attribute running if_any ["outfitsport"]:
+            "joyce_arm_front_running_sport"
 
     group hair variant "front":
         attribute hair: 
@@ -337,7 +340,6 @@ layeredimage joyce:
             "joyce_arm_push"
         attribute push if_any "outfitsm":
             "joyce_arm_push_sm"
-
 
         attribute defend:
             "joyce_arm_defend"
@@ -688,11 +690,6 @@ layeredimage joyce blowjob:
         attribute v2 if_all "naked":
             "img_joyce_blowjob_v2_naked"
 
-image card_zone_bg:
-    xalign 1.0 
-    "ui/card_zone_bg.png"
-    linear 3.0 xalign 0.0
-    repeat
 
 image img_toilet-static:
     "prison/toilet-static.png"
@@ -700,12 +697,6 @@ image img_toilet-static:
 
 image img_toilet-flush = Movie(play="images/prison/flush.avi")
 
-image joyce cowgirl-orgasm:
-    "Joyce/sex/cowgirl/cowgirl-orgasm (1).png"
-    pause(0.1)
-    "Joyce/sex/cowgirl/cowgirl-orgasm (2).png"
-    pause(0.1)
-    repeat
 
 image img_hand_caress:
     "Joyce/anim/hand-caress.png"

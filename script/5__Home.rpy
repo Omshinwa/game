@@ -406,7 +406,7 @@ label label_water_the_plant():
         elif g.plant == 3:
             "You feel like the plant is going to take over the world."
             $ g.plant = 4
-        $ g.water = 4
+        $ g.water = 7
         call label_newDay('label_home') from _call_label_newDay_4
 
 label label_home_plant():
@@ -431,7 +431,7 @@ label label_home_plant():
             "smell it":
                 call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant")
             "meditate":
-                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_15
+                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?")
             "X":
                 return
     elif g.plant >= 3:
@@ -441,9 +441,9 @@ label label_home_plant():
             "smell it":
                 call label_home_add_cards("calm", "Add a Calm to your deck?", callback="label_water_the_plant")
             "meditate":
-                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?") from _call_label_home_add_cards_18
+                call label_home_add_cards("maxcalm", "Add a MaxCalm to your deck?")
             "study it":
-                call label_home_add_cards("fibonacci", "Add a Fibonacci to your deck?") from _call_label_home_add_cards_20
+                call label_home_add_cards("fibonacci", "Add a Fibonacci to your deck?")
             "X":
                 return
     return
