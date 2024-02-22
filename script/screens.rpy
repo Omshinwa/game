@@ -112,7 +112,7 @@ screen say(who, what):
 
         text what id "what"
 
-        background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+        background Image("gui/textbox.png")
 
     ## If there's a side image, display it above the text. Do not display on the
     ## phone variant - there's no room.
@@ -138,7 +138,6 @@ style window:
     xfill True
     yalign gui.textbox_yalign
     ysize gui.textbox_height
-
     background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
 
 style namebox:
@@ -161,6 +160,7 @@ style say_dialogue:
     xpos gui.dialogue_xpos
     xsize gui.dialogue_width
     ypos gui.dialogue_ypos
+    # yalign 1.0
 
     adjust_spacing False
 
@@ -1466,6 +1466,7 @@ screen bubble(who, what):
 
         text what:
             id "what"
+        # add Solid("#0f02")
 
 style bubble_window is empty
 style bubble_namebox is empty
@@ -1473,7 +1474,7 @@ style bubble_who is default
 style bubble_what is default
 
 style bubble_window:
-    xpadding 30
+    xpadding 20
     # top_padding 5
     # bottom_padding 5
 
@@ -1486,7 +1487,7 @@ style bubble_who:
     color "#000"
 
 style bubble_what:
-    align (0.5, 0.5)
+    align (0.5, 0.6) #fynedit
     text_align 0.5
     layout "subtitle"
     color "#000"

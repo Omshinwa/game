@@ -47,7 +47,7 @@ label label_welcome_prison():
     j "I've got the key for it as well as the key to your cage."
     j smile "I'll come to check on you twice a week. You'll undergo a physical check-up."
     j "This is the only occasion your cock will be free."
-    j "If you manage not to cum, you'll move on to the next stage."
+    j "If you manage to resist from cumming, you'll move on to the next stage."
     j "{b}At the last stage, you will fuck my pussy.{/b}"
     j key "If you can make me cum, you win the key to your cage."
     j "Understood?"
@@ -96,7 +96,7 @@ label label_prison_rat_introduction():
         for i in toHide:
             renpy.hide(i)
 
-    rat "Wow that's lot of shit cards"
+    rat "Wow that's lot of junk."
     rat "Let me see what I have in stock."
 
     $ score /= 2
@@ -107,7 +107,7 @@ label label_prison_rat_introduction():
     $ goodCards = { key: item for (key, item) in cardList.items() if "value" in cardList[key] and cardList[key]["value"]>=3 } #
     
     $ i = score
-    $ g.prison_cards[0] = [Card("slowsteady"),Card("spaceout"),Card("universeout"),Card("darkhole"),Card("pair"),Card("change")]
+    $ g.prison_cards[0] = [Card("spaceout"),Card("universeout"),Card("darkhole"),Card("nova"),Card("pair"),Card("change")]
     
     $ i = score - 2
     while i>score/2:
@@ -135,9 +135,13 @@ label label_prison_rat_introduction():
 
     rat "Good choice."
     rat "If you ever need help, I still have a lot of extra cards."
-    rat "…from past prisoners, hehe."
+    rat "...from past prisoners."
     rat "Just leave some food for me."
-    rat "Good luck staying alive"
+    rat "Good luck staying alive."
+    pause 0.5
+    rat "Oh wait, I have an extra card for you."
+    rat "I think you'll enjoy this card. Hehe."
+    call label_add_card_to_deck( "list", Card("undress"), pauseTime=1.0)
     $ g.day_rat_appears -= 4
     $ game.jeu_sensitive = True
     jump label_prison
@@ -201,7 +205,7 @@ label label_prison():
         show joyce foxy outfitsm smile whip at trs_depied with dissolve
         j "Hello, slave."
         j "The milking starts now."
-        play sound "_sex/Fouet.mp3"
+        play sound "sex/_Fouet.mp3"
         show joyce push
         with vpunch
         call label_prison_open_door(open=True) from _call_label_prison_open_door
@@ -215,7 +219,7 @@ label label_prison_open_door(open=False):
     if game.debug_mode or open:
         hide screen screen_prison
         $ renpy.pop_call()
-        jump expression "label_" + game.story[game.progress[0]]
+        jump expression "label_" + g.story[game.progress[0]]
     else:
         $ game.jeu_sensitive = False
         play sound "day/locked.wav"
@@ -250,13 +254,14 @@ label label_prison_food:
     return
 
 label label_prison_bed:
-    menu:
-        "Try to calm down (Cut your lust by 2)"
-        "Yes":
-            $ game.lust = int(game.lust/2)
-            call label_newDay("label_prison") from _call_label_newDay_6
-        "No":
-            pass
+    # menu:
+    #     "Try to calm down (Cut your lust by 2)"
+    #     "Yes":
+    #         $ game.lust = int(game.lust/2)
+    #         call label_newDay("label_prison") from _call_label_newDay_6
+    #     "No":
+    #         pass    
+    call label_home_add_cards("spaceout", "Do Nothing?", callback='label_prison')
     return
 
 label label_prison_add_card(cards):
@@ -300,29 +305,30 @@ screen screen_prison_sans_rat:
     imagebutton:
         idle showInteractible("prison/toilet.png", (0.85,0.95))
         hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275))) 
-        # hover Transform("prison/toilet.png", zoom=1.05) 
         action [AddToSet(done_flag["buttons"], "prison/toilet.png"), Call("label_prison_toilet")]
         focus_mask True
-        # hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275)))
-        # idle "prison/toilet.png"
+        sensitive True
 
     imagebutton:
         idle showInteractible("prison/bed.png",(0.1,0.9))
         hover Transform("prison/bed.png", matrixcolor=TintMatrix((255,255,1275)))
         action [AddToSet(done_flag["buttons"], "prison/bed.png"), Call("label_prison_bed")]
         focus_mask True
+        sensitive True
 
     imagebutton:
         idle showInteractible("prison/metal-door.png",(0.6,0.5))
         hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((255,255,1275)))
         action [AddToSet(done_flag["buttons"], "prison/metal-door.png"), Call("label_prison_open_door")]
         focus_mask True
+        sensitive True
 
     imagebutton:
         idle showInteractible("prison/food-tray.png",(0.55,0.95))
         hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((255,255,1275)))
         action [AddToSet(done_flag["buttons"], "prison/food-tray.png"), Call("label_prison_food")]
         focus_mask True
+        sensitive True
 
 screen screen_prison:
     use screen_dick_ui
@@ -335,6 +341,7 @@ screen screen_prison:
         hover Transform("prison/rat.png", matrixcolor=TintMatrix((255,255,1275)))
         action  [AddToSet(done_flag["buttons"], "prison/rat.png"), Show("screen_prison_rat_add_cards")]
         focus_mask True
+        sensitive True
 
     use screen_prison_sans_rat
 
@@ -377,28 +384,28 @@ screen screen_add_cards(cards, callback=None):
     fixed:
         xalign 0.5
         yalign 0.5
-        xsize game.card_xsize * len(cards) + 20
-        ysize game.card_ysize + 20
+        xsize g.card_xsize * len(cards) + 20
+        ysize g.card_ysize + 20
         imagebutton:
             idle "#ffffffaa"
             hover "#ff0f"
             action Call(callback, cards)
         for index, card in enumerate(cards):
-            add card.img xpos index*game.card_xsize + 10 ypos 10
+            add card.img xpos index*g.card_xsize + 10 ypos 10
 
 screen screen_add_cards_small(cards, callback=None):
     
     fixed:
         xalign 0.5
         yalign 0.5
-        xsize int(game.card_xsize * len(cards)*0.8) + 20
-        ysize int(game.card_ysize*0.8) + 20
+        xsize int(g.card_xsize * len(cards)*0.8) + 20
+        ysize int(g.card_ysize*0.8) + 20
         imagebutton:
             idle "#ffffffaa"
             hover "#ff0f"
             action Call(callback, cards)
         for index, card in enumerate(cards):
-            add card.img zoom 0.8 xpos int(index*game.card_xsize*0.8) + 10 ypos 10
+            add card.img zoom 0.8 xpos int(index*g.card_xsize*0.8) + 10 ypos 10
 
 screen screen_replace_deck(threePacks):
     add "#000a"

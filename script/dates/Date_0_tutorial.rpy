@@ -33,7 +33,8 @@ label label_tutorial:
         $ game.jeu_sensitive = False
         show screen screen_tutorial("misc/tutorial-cards.png") with dissolve
         play sound "rpg/Item1.wav"
-        j null armscrossed "During a date, you play cards from your hand that have various effects."
+        show joyce null
+        j armscrossed "During a date, you play cards from your hand that have various effects."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         j "The aim of a date is to build {color=#55f}{b}trust{/b}{/color} and {color=#f3a}{b}attraction{/b}{/color}."
         j "{b}{color=#cc3}Lust{/color}{/b} is a negative trait."
@@ -60,7 +61,7 @@ label label_tutorial:
                 j smile "I had a good time."
                 j "I feel like I can trust you."
                 j "Do you want to meet again later this week?"
-                j "Hey... Here's my number"
+                j "Here's my number."
                 j "I'll text you."
                 j "See ya."
                 hide joyce with dissolve
@@ -81,6 +82,7 @@ label label_tutorial_endTurn:
     call label_date_isLost_common("label_home_tutorial")
     call label_endTurn_common
     return
+
 
 label label_tutorial_talk:
     if "tutorial_talk" not in done_flag["seen_labels"]:

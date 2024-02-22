@@ -136,7 +136,7 @@ screen screen_gallery_replay:
             textbutton "test_sprites" action Call("test_sprites") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "library" action Call("label_library") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "jogging" action Call("label_jogging") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
-
+            textbutton "Image Tools" action Call("label_image_tools") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
 
             # The screen is responsible for returning to the main menu. It could also
             # navigate to other gallery screens.

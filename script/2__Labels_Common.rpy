@@ -1,4 +1,4 @@
-label label_newDay(var_label_callback):
+label label_newDay(var_label_callback="label_home"):
     $ renpy.set_return_stack(renpy.get_return_stack()[-1])
     # $ renpy.pop_call()
 
@@ -76,6 +76,8 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
     return
 
 label label_drink:
+    if date.name == "label_stripPoker":
+        $ stripPoker_got_drugged = True
     $ game.jeu_sensitive = False
     if date.drink>0:
         play sound "day/gulp.wav"

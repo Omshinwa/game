@@ -1,39 +1,34 @@
 """
 A bunch of script labels where Joyce talks with you, they are naturally triggered after each turn if theres no dialogue left
 """
-default done_flag = {"talk":0,"buttons":Set(),"seen_labels":Set()}
+default done_flag = {"talk":0,"buttons":Set(),"seen_labels":Set(),"oncePerDate":Set(),}
 label label_reaction_talk():
 
     call label_reaction_check_if_sex
 
     $ value = done_flag["talk"]
-    
     if (game.progress[0]+1)*2 <= value:
-        return
-    elif value>10:
         return
 
     hide screen screen_date_ui with dissolve
-
     show joyce null
-
     if value == 0:
-        j eyeside armscrossed "It's getting pretty warm these days."
-        j "I'm not such a fan of summer to be honest."
-        j "I don't really tan... I get more like sunburns..."
-        j "I heard it's because my skin is too thin."
-        show joyce null
-        j -eyeside smile "Oh well"
+        j smile "It's getting pretty warm these days."
+        j eyeside armscrossed -smile "But to be honest I don't like summer too much."
+        j "When I try to tan, I just get sunburns..."
+        j -armscrossed smile happy "I think it's because my skin is too thin."
+    if value == 10:
+        j "Another reason I don't like summer."
+        j "It just gets so hot you know?"
+        j "I regret wearing so many layers today."
+        j -eyeside smile "Oh well."
         if game.progress[0] < 1:
             j "Nothing like a day at the park to stay fresh."
-        elif game.progress[0] < 4: # in case we trigger it on a second date
-            j "That's why I like to come here for an afternoon drink."
-        j eyes_closed -armscrossed "Though I regret wearing so many layers today."
-
-    if value == 1:
+    elif value == 1:
         j "These days I've picked up sudoku again."
-        j "I solve puzzle books to pass the time on my morning commute."
-        j "That sounds like such a boring hobby, doesn't it?"
+        j smile "I used to only play it to pass the time on my morning commute."
+        j happy "But now I've realized I do it even when I'm home."
+        j -happy "That sounds like such a boring hobby, doesn't it?"
         j "What about you, do you like playing games?"
         menu:
             "Yes":
@@ -45,7 +40,7 @@ label label_reaction_talk():
                 show joyce -upset
     
     elif value == 2:
-        j "So you play dating sims…"
+        j "So you play dating sims..."
         j "I used to play those on the Nintendo DS too."
         j "What are you playing these days?"
         "..."
@@ -55,16 +50,17 @@ label label_reaction_talk():
             "I will tell you next time...":
                 j upset -smile "Oh what? Come on."
                 j -upset "Alright."
-                j "But you have to tell me on our next date!"
+                j smile "But you have to tell me on our next date!"
             "I play adult dating sims":
                 j -smile  "Adult...?"
-                j eyeside blush "Like, with naked people?"
+                j worried blush "Like, with naked people?"
 
     elif value == 3:
         j "How often do you meet girls like this?"
         j "I'm just wondering if you're a playboy type."
         j smile "Though you don't seem like one, haha."
-        j -smile "I'm personally looking for the one..."
+        j -smile "I'm personally looking for my soulmate."
+        j smile "Is it cheesy to say that?"
         j "But I have pretty high requirements."
         j foxy smile "Will you pass the test? Hehe, just kidding."
 
@@ -76,7 +72,7 @@ label label_reaction_talk():
     
     elif value == 5:
         j "Cats are also useful against pests."
-        j "I've seen some rats in my basement. A cat would be helpful…"
+        j "I've seen some rats in my basement. A cat would be helpful."
         j smile "Oh yeah, my place has a really huge basement, I'll show you next time!"
 
     elif value == 6:
@@ -137,18 +133,16 @@ label label_reaction_talk():
         j "But don't underestimate me!"
         j "*hic*"
 
+    $ done_flag["talk"] += 1
     show screen screen_date_ui with dissolve
-    $ done_flag["script"] += 1
 
     return
 
-label label_reaction_check_if_sex():
+label label_reaction_check_if_sex(card = None):
 
     if game.state == "sexing":
         $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk"]
         if date.lastPlayed.name in i:
-            if done_flag[date.lastPlayed.name in i] == 999:
-                return
             python:
                 for card in i:
                     done_flag[card] = 999
@@ -156,7 +150,7 @@ label label_reaction_check_if_sex():
             j "Building more trust and attraction?"
             j "How is that going to help now?"
             j "I'm playing with your dick and that's the only thing you can think of?"
-            j "Hahaha, change the way you play."
+            j "Hahaha, change the way you think."
     return
 
 
@@ -165,32 +159,31 @@ These scripts are reacting to a card being played
 """
 
 label label_reaction(what = None):
-    hide screen screen_date_ui with dissolve
 
     if what == None:
         if hasattr(date.lastPlayed, "name"):
             $ what = date.lastPlayed.name
-
     if what == "talk2" or what == "listen":
         call label_reaction("talk") from _call_label_reaction_1
         return
-
     elif what not in done_flag:
         $ done_flag[what] = 0
-
-    $ value = done_flag[what]
-
-    if value > game.progress[0]:
-        return
+    
+    hide screen screen_date_ui with dissolve
     
     call label_reaction_check_if_sex()
+
+    $ value = done_flag[what]
+    if value == 999:
+        return
+    
     show joyce null with {"master": dissolve}
 
     if what == "eyecontact":
 
         if value == 0:
             show layer master:
-                zoom 1.5 xalign 0.5 yalign 0.1
+                zoom 1.2 xalign 0.5 yalign 0.1
             with dissolve
             pause 0.4
             j "?"
@@ -247,8 +240,7 @@ label label_reaction(what = None):
             show layer master:
                 zoom 1.0 xalign 0.5 yalign 0.5
             with dissolve
-            j bite "I bet you wanna see more.."
-            show joyce -bite with dissolve
+            j worried bite "I bet you wanna see more.."
         show layer master:
             zoom 1.0 xalign 0.5 yalign 0.5
         with dissolve
@@ -259,7 +251,6 @@ label label_reaction(what = None):
             $ i = trs_depied
         else:
             $ i = trs_sitting
-        show joyce
         
         if value == 0: #touch hair
             show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9, 0.15) at i as anim
@@ -270,9 +261,6 @@ label label_reaction(what = None):
             show joyce -eyeside -blush with dissolve
                 
         elif value == 1:
-            # show layer master:
-            #     zoom 1.5 xalign 0.5 yalign 0.3
-            # with dissolve
             show expression generate_anim3("Joyce/anim/touch-shoulder/touch-shoulder (",4, 0.15) at i as anim
             play sound "date/caress.wav"
             pause 0.15*4
@@ -284,14 +272,7 @@ label label_reaction(what = None):
             j happy smile blush "Stop, I'm ticklish…!"
             show joyce -happy -smile -blush with dissolve
 
-            # show layer master:
-            #     zoom 1.0 xalign 0.5 yalign 0.5
-            # with dissolve
-
         elif value == 2:
-            # show layer master:
-            #     zoom 1.5 xalign 0.5 yalign 0.3
-            # with dissolve
             show expression generate_anim3("Joyce/anim/touch-face/touch-face (",4, 0.15) at i as anim
             play sound "date/caress.wav"
             pause 0.15*4
@@ -301,26 +282,19 @@ label label_reaction(what = None):
             hide anim
             j eyeside blush "..."
             j "You have such warm hands."
-            show joyce bite with dissolve
+            show joyce worried bite with dissolve
             pause
             show joyce -eyeside -blush with dissolve
 
-            # show layer master:
-            #     zoom 1.0 xalign 0.5 yalign 0.5
-            # with dissolve
-
-        elif value == 3 or value == 4:
-            # show layer master:
-            #     zoom 1.5 xalign 0.5 yalign 0.3
-            # with dissolve
+        else:
             show expression generate_anim3("Joyce/anim/touch-boobs/touch-boobs (",10, 0.15) at i as anim
             pause 0.15*4
             play sound "date/caress2.wav"
             pause 0.15*4
-            show joyce at shock(renpy.get_image_bounds("joyce")[3] / 1140)
+            show joyce at shock(renpy.get_image_bounds("joyce")[3] / 1250)
             pause 0.15*2
             hide anim
-            j blush defend "hey"
+            j blush defend "Hey!"
             if game.progress[0]<4:
                 j foxy smirk "Not in public…"
             else:
@@ -334,12 +308,16 @@ label label_reaction(what = None):
             menu:
                 "I like your dress":
                     if game.progress[0] != 3:
-                        j blush "..."
-                        j "Thanks, I wasn't sure what to wear."
-                        j smile "I thought maybe I should wear something more elegant…"
-                        j "Then I realized I was running late, so I just put on whatever."
-                        j "haha"
-                        show joyce -blush with dissolve
+                        if date.name == "label_jogging":
+                            j eyeside "Em..."
+                            j -eyeside "What dress?"
+                        else:
+                            j blush "..."
+                            j "Thanks, I wasn't sure what to wear."
+                            j smile "I thought maybe I should wear something more elegant…"
+                            j "Then I realized I was running late, so I just put on whatever."
+                            j "haha"
+                            show joyce -blush with dissolve
                     else:
                         j foxy smirk "Hehe"
                         j "I guess I did pull it off…"
@@ -352,12 +330,12 @@ label label_reaction(what = None):
                     show joyce green_hair with dissolve
                     pause
                     menu:
-                        "oh yea big time":
+                        "I can totally see it":
                             j "Green?"
-                            j "Really?"
+                            j happy "Really?"
                             j "No way! That's so bold. I could never."
                             j "I kinda admire her for that."
-                        "hmm no":
+                        "Hmm no":
                             j "Yeah, I didn't think so either."
                             j "haha."
                             j "But I kinda admire my friend."
@@ -369,51 +347,57 @@ label label_reaction(what = None):
                 "I think you're beautiful":
                     j eyeside blush "..."
                     j "Don't say that…"
-                    j "You're making me shy"
+                    j "You're making me shy."
                     j -eyeside "..."
-                    j eyeside bite "You're not bad looking either"
+                    j happy smile "You're not bad looking either."
                     show joyce -eyeside -bite with dissolve
                 "I love being with you":
                     j eyeside blush "..."
                     j "You're so bold"
                     j "..."
                     j -blush happy smile "But I also do enjoy our dates together."
-                    j -eyeside "I hope this will last"
+                    j -eyeside "I hope this will last."
                     j tongue -happy  "teehee ~"
                     show joyce -tongue with dissolve
 
-        elif value == 3:
+        elif value >= 3:
             python:
-                if "flirt_done" not in done_flag:
-                    done_flag["flirt_done"] = set()
+                if "oncePerDate" not in done_flag:
+                    done_flag["oncePerDate"] = set()
                 outfits = ["outfitred","outfitblue","night","night2","night3","night4"]
                 for i in outfits:
                     if i in renpy.get_attributes("joyce"):
-                        if i in done_flag["flirt_done"]:
+                        if i in done_flag["oncePerDate"]:
                             renpy.show_screen("screen_date_ui")
                             renpy.with_statement(dissolve)
                             renpy.return_statement()
-                        done_flag["flirt_done"].add(i)
+                        done_flag["oncePerDate"].add(i)
 
-            menu:
-                "You have nice boobs":
-                    j foxy smirk "You like them?"
-                    j "They're pretty big, right?"
-                    if "night3" not in renpy.get_attributes("joyce") and "night4" not in renpy.get_attributes("joyce"):
-                        j "Here's a peek…"
-                        show joyce reveal-1 with dissolve
-                        pause 0.5
-                        show joyce reveal-2 with dissolve
-                        pause
-                        j wink tongue reveal-1 "That's it"
-                        show joyce -wink -tongue -reveal-1 with dissolve
-                    else:
-                        show joyce reveal-2 with dissolve
-                        j "You wanna lick them?"
-                        j wink tongue "Slurp slurp"
-                        j -wink -reveal-2 -tongue smile "Not yet, hehe…"
-                        show joyce -reveal-2 -smile with dissolve
-            $ done_flag[what] -= 1
+            if value == 3:
+                menu:
+                    "You have a nice figure":
+                        "FYNTODO"
+                    "You have nice boobs":
+                        j foxy smirk "Oh? You're pretty bold."
+                        j "You like them?"
+            else:
+                j "You like my boobs?"
+                
+            j "They're pretty big, right?"
+            if "night3" not in renpy.get_attributes("joyce") and "night4" not in renpy.get_attributes("joyce"):
+                j "Here's a peek..."
+                show joyce reveal-1 with dissolve
+                pause 0.5
+                show joyce reveal-2 with dissolve
+                pause
+                j wink tongue reveal-1 "That's it"
+                show joyce -wink -tongue -reveal-1 with dissolve
+            else:
+                show joyce reveal-2 with dissolve
+                j "You wanna lick them?"
+                j wink tongue "Slurp slurp"
+                j -wink -reveal-2 -tongue smile "Not yet, hehe..."
+                show joyce -reveal-2 -smile with dissolve
 
     show screen screen_date_ui with dissolve
     $ done_flag[what] += 1
@@ -445,7 +429,7 @@ label label_date_isLost_lust:
     $ what = "isLost_lust"
     if what not in done_flag:
         $ done_flag[what] = 0
-    
+    $ what = done_flag[what]
     if date.name == "stripPoker":
         if game.progress[1]<3:
             j foxy armscrossed "You're getting a bit too horny, aren't you?"

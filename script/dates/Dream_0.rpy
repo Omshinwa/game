@@ -9,7 +9,7 @@ label label_dream_0:
     show black
     if g.dreamProgress == 0:
         hide black with Dissolve(2.0)
-        "?"
+        "!"
         show joyce_dream at trs_depied onlayer master zorder 2
         with Dissolve(1.0)
         pause
@@ -49,11 +49,11 @@ label label_dream_0:
     
     if g.dreamProgress == 0:
         j "Did this give you any new ideas?"
-        j "I hope you use those ideas for our next date…"
+        j "I hope you use those for our next date…"
         play sound "day/alarm.wav"
         pause 1.0
         j "It seems our time is up."
-    j "See you soon, cowboy."
+    j "See you soon, sweetheart."
     $ g.dreamProgress = 1
     
     call label_newDay("label_home_weirdDream") from _call_label_newDay_13

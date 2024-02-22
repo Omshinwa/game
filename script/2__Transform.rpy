@@ -10,10 +10,12 @@ transform trs_fastbreath:
     repeat
 
 transform trs_slowbreath:
-    yoffset 0 yzoom 1.0
-    linear 5 yzoom 1.002
-    linear 5 yzoom 1.00
-    repeat
+    subpixel True
+    block:
+        yoffset 0 yzoom 1.0
+        ease 3 yzoom 1.005 xzoom 1.002
+        ease 3 yzoom 1.0 xzoom 1.0
+        repeat
 
 transform trs_depied:
     ypos 1080
@@ -31,12 +33,21 @@ transform trs_sitting:
     yanchor 1.0
     zoom 1.0 xalign 0.5
 
-transform top:
-    zoom 1.0
-    xalign 0.5
-    yalign 0.0
+transform trs_bg_blur(strength=4,mask="hard", child=None):
+    contains:
+        child
+    contains:
+        AlphaMask(child,"bg_mask_"+mask)
+        blur strength
 
-transform shock(offset = 1.0):
+init python:
+    def get_joyce_zoom():
+        if renpy.get_image_bounds("joyce"):
+            return renpy.get_image_bounds("joyce")[3] / 1250 #1250 is the height of the picture
+        else:
+            return 1.0
+
+transform shock(offset = get_joyce_zoom()):
     zoom offset
     linear 0.1 zoom offset-0.02
     linear 0.1 zoom offset

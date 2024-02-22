@@ -148,17 +148,18 @@ init python:
             renpy.pause(delay)
 
 
-label playCard(card, index):
+label playCard(card, index, playCardindex=0):
     $ date.lastPlayed = card
     $ commands = card.eff
     $ commands.replace("index", str(index))
     $ commands = commands.split("; ")
-    $ playCardindex = 0
     while playCardindex < len(commands):
+        # "[commands] [playCardindex]"
         $ exec(commands[playCardindex])
         $ playCardindex+=1
+        # "done exec [playCardindex]"
         pause 0.2
-    $ del playCardindex 
+    # "deleting [playCardindex]"
     if card.name not in date.playedThisTurn:
         $ date.playedThisTurn.append(card.name)
     return

@@ -26,8 +26,8 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
     default page = 0
     
     $ card_per_line = g.card_per_line
-    $ zoom = 1800/(game.card_xsize * card_per_line)
-    $ line_per_page = int(780 / game.card_ysize / zoom)
+    $ zoom = 1800/(g.card_xsize * card_per_line)
+    $ line_per_page = int(780 / g.card_ysize / zoom)
     $ offset = card_per_line * line_per_page * page
 
     add background
@@ -47,8 +47,8 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
                     fixed:
                         xalign index2%card_per_line / (card_per_line-1)
                         ypos int(index2/card_per_line) * int(333*zoom)
-                        xsize int(game.card_xsize*zoom)
-                        ysize int(game.card_ysize*zoom)
+                        xsize int(g.card_xsize*zoom)
+                        ysize int(g.card_ysize*zoom)
                         yanchor 0.0
                         # xanchor 0.0
                         fixed:

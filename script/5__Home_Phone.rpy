@@ -251,7 +251,7 @@ label label_pic6_reaction:
     
     with dissolve
     pause
-    "This picture is turning you on…"
+    "This picture is turning you on..."
     "Lust +20"
     $ game.lust += 20
     play sound "rpg/Lust.wav"
@@ -325,18 +325,23 @@ label label_pic1_reaction:
                         jump .sudoku
                 
                 
-                define answer = """4_7_______3__7_26___2_3__75683149_5__5478___17193256_8____125_7___4_315__215_74__"""
+                $ answer = """4_7_______3__7_26___2_3__75683149_5__5478___17193256_8____125_7___4_315__215_74__"""
                 $ sudoku_pos = (sudokuNumber[1]-1)*9 + (sudokuNumber[2]-1)
                 $ osef = "There's a [sudokuNumber[0]] in row [sudokuNumber[1]], column [sudokuNumber[2]]"
                 $ g.phoneLogs[3].append( [2, osef])
                 $ del osef
-                # $ g.phoneLogs[3].append( [2, "sudoku_pos [sudoku_pos]"])
-                if len(answer) <= sudoku_pos and answer[sudoku_pos] == str(sudokuNumber[0]):
+                if sudokuNumber[1]==0 or sudokuNumber[2]==0:
+                    $ g.phoneLogs[3].append( [0, "Em..."])
+                    $ g.phoneLogs[3].append( [0, "Nevermind..."])
+                elif answer[sudoku_pos] == str(sudokuNumber[0]): # len(answer) > sudoku_pos and 
                     $ g.phoneLogs[3].append( [0, "Wow! How did you find that? Thanks!"])
                     $ g.phoneLogs[3].append( [2, "+3 trust, +3 attraction"])
                     $ g.phoneLogs[3].append( [0, "what?"])
                     $ g.phoneLogs[3].append( [2, "dont worry about it ;-)"])
                     $ g.phoneLogs[3].append( ["exe", "game.trust+=3; game.attraction+=3; renpy.call('label_home_phone')"])
+                    $ renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
+                elif answer[sudoku_pos] == "_":
+                    $ g.phoneLogs[3].append( [0, "Em, I already put a number there..."])
                 else:
                     $ g.phoneLogs[3].append( [0, "thanks! I'll see what I can do with that."])
             "No":

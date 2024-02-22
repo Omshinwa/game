@@ -45,7 +45,6 @@ label label_bubbleTea:
 
 label label_bubbleTea_endTurn:
     call label_date_isLost_common from _call_label_date_isLost_common_1
-
     if game.progress[1]<=1:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
@@ -56,7 +55,7 @@ label label_bubbleTea_endTurn:
             pause 2.0
             show joyce outfit1 smile at standing with dissolve
             show joyce at trs_sitting with dissolve
-            j "here"
+            j "Here."
             play sound "day/put_on_table.wav"
             show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
             pause
@@ -64,7 +63,7 @@ label label_bubbleTea_endTurn:
             j "Isn't it nice to have something sweet to drink?"
             show screen screen_tutorial("misc/tutorial-drink.png") with dissolve
             play sound "rpg/Item1.wav"
-            j "When you take a sip, you'll shuffle back all the cards in your hand into the deck"
+            j "When you take a sip, you'll shuffle back all the cards in your hand into the deck."
             j "Then you'll redraw as many! Try this when you feel stuck."
             j "Here, try it:"
             hide screen screen_tutorial with dissolve 
@@ -72,13 +71,11 @@ label label_bubbleTea_endTurn:
         elif date.turn == 1:
             hide screen screen_date_ui with dissolve
             j "Does it taste good?"
-            show joyce null
-            j worried "Em"
-            j "Can I taste it?"
+            j null "Em..."
+            j worried "Can I taste it?"
             menu:
                 "Yes":
-                    show joyce -worried smile
-                    j "Thanks!"
+                    j -worried smile "Thanks!"
                     show screen screen_tutorial("Joyce/cut-in_drink.png", {"xalign":0.5, "yalign":0.3, "zoom":1.5}) onlayer master zorder 5 with moveinleft
                     
                     play sound "day/gulp.wav"
@@ -100,12 +97,12 @@ label label_bubbleTea_endTurn:
                     with dissolve
                     "You feel like you want to look at her lips closer..."
                     show screen screen_date_ui with dissolve
-                    "(a Peek card was added to your hand)"
+                    "(a Peek card is added to your hand)"
                     $ g.bubbleTea_share_drink = True
                     window hide
                     window auto
                 "No":
-                    j "Oh, ok.."
+                    j "Oh, ok..."
                     $ date.attraction -= 2
                     $ date.trust -= 2
                     $ game.attraction -= 2
@@ -116,7 +113,6 @@ label label_bubbleTea_endTurn:
         
     show screen screen_date_ui with dissolve
             
-
     call label_endTurn_common from _call_label_endTurn_common_1
     
     if game.progress[1]>=2 and g.bubbleTea_share_drink:

@@ -13,7 +13,7 @@ label label_barDate:
             $ g.phoneLogs[7][0] = [1, "pic5-blue.png"]
         with dissolve
     
-        j smile "Heey [povname]"
+        j smile "Heey [povname]~"
         j eyeside "Wow… This place is so nice!"
         j -eyeside "Come on, let's get some seats and something to drink haha!"
 
@@ -36,7 +36,7 @@ label label_barDate:
             show joyce outfitblue at trs_sitting onlayer master zorder 0 
         with dissolve
         j smile "Hurry! Let's party!"
-        j smile "haha"
+        show joyce foxy
 
     show layer master:
         zoom 1.5 xalign 0.5 yalign 0.65
@@ -59,7 +59,7 @@ label label_barDate:
                 j smile "That was a beautiful evening"
                 j "I'll be thinking about you tonight."
                 j "See you soon."
-                call label_newDay("label_home") from _call_label_newDay_11
+                call label_newDay("label_home")
             
             show joyce 
     
@@ -97,8 +97,9 @@ label label_barDate_endTurn:
             jump .gameLoop
 
         pause
+        hide screen screen_home_phone onlayer master
         $ game.jeu_sensitive = False
-        pause
+        pause 1.0
 
         if whichDress == "red":
             show joyce outfitred at standing onlayer master zorder 0 
@@ -111,8 +112,6 @@ label label_barDate_endTurn:
         j foxy "Did you get my picture?"
         j "No peeking under the table hehe!"
         show screen screen_date_ui with dissolve
-    else:
-        call label_reaction from _call_label_reaction_3
 
     call label_endTurn_common from _call_label_endTurn_common_3
 

@@ -16,10 +16,11 @@ define cardList = {
 
     "stop": {"txt":_("Can't be played"), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
 
-    "awakening": {"txt":_("This turn: double Lust and Speed changes."), "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
+    "awakening": {"txt":_("Double the next Lust change."), "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
+    # "awakening": {"txt":_("Reset your lust to Zero.\nDiscard half your deck."), "value":3,"sort":"30"},
 
     "draw2": {"txt":_("draw 2 cards"), "eff":"renpy.call('label_card_draw2')", "value":4,"sort":"42"},#
-    "devil": {"txt":_("Draw 2 cards, Gain 10 Lust."), "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
+    "devil": {"txt":_("Draw 2 cards, Double your current lust."), "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
     "pair": {"txt":_("IF you have a pair in your hand: draw 2 cards"), "cond":"deck.hasPair()>1", "eff":"renpy.call('label_card_pair')", "value":3,"sort":"44"},
     "recycle": {"txt":_("Discard all the cards on the right of this card, then redraw as many +1"), "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"45"},
 
@@ -39,9 +40,9 @@ define cardList = {
     "exodia1" : {"txt":_("{b}ORIGIN{/b}\nConvert your\nYou need all\n order to"), "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare", "sort":"91"},
 
     "universeout" : {"txt":_("Add 2 Space Out cards in your hand."), "eff":"renpy.call('label_card_universeout')", "value":1, "sort":"63"},
-    "darkhole" : {"txt":_("Discard your hand, -5 Lust per discarded card."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
+    "darkhole" : {"txt":_("-1 Lust for each card in hand."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
     "spaceout" : {"txt":_("does nothing"), "value":0, "sort":"65"}, #_("")
-    "nova" : {"txt":_("-X² Lust, where X is the number of Space Out cards in the discard pile."), "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
+    "nova" : {"txt":_("-3*X Lust, where X is the number of Space Out cards in the discard pile."), "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
     #alternatively it could be every space out in deck hand and graveyard
 
 
@@ -60,7 +61,7 @@ define cardList = {
 
     "talk": {"txt":_("+1 trust"), "eff":"renpy.call('label_card_talk')","value2":1, "sort":"00", "color":"trust"}, #+1 trust
     "talk2": {"txt":_("+2 trust"), "eff":"renpy.call('label_card_talk2')","value2":2, "sort":"01", "color":"trust"},
-    "listen": {"txt":_("For the rest of this turn: Trust gains are doubled"), "sort":"02", "color":"trust"},
+    "listen": {"txt":_("For the rest of this turn: Trust gains are doubled"), "value2":2, "sort":"02", "color":"trust"},
 
     ####            POKER MENU STUFF
 
@@ -72,6 +73,7 @@ define cardList = {
     "discord" : {"txt":_("Go see our Discord!"), "eff":"renpy.jump('start')","sort":"___", },
     "achievement" : {"txt":_("Check Achievements")},
     "memory" : {"txt":_("Check Memories")},
+    "fullscreen": {"txt":_("Switch between Windowed and Fullscreen mode.")},
 
     "undress" : {"txt":_("Remove clothing."), "value":0 }
         }
@@ -80,6 +82,10 @@ init python:
     CARD_IMG_DICT = {}
     for card in cardList:
         CARD_IMG_DICT[card] = Image("cards/"+card+".png")
+
+label label_card_fullscreen:
+    $ renpy.run(Preference("display", "fullscreen"))
+    return
 
 label label_card_lang:
     if _preferences.language == 'chinese':
@@ -90,7 +96,6 @@ label label_card_lang:
     return
 
 label label_card_achievement:
-    "bite"
     # show screen screen_achievement
     # pause
     call screen screen_achievement

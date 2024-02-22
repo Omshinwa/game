@@ -47,6 +47,7 @@ style choice_hbox:
 
 style choice_button is default:
     properties gui.button_properties("choice_button")
+    # background Frame('gui/button/choice_idle_bac_test.png')
 
 style choice_button_text is default:
     properties gui.button_text_properties("choice_button")
@@ -87,10 +88,12 @@ screen screen_debug:
             vbox:
                 text "game.isHoverHand: "  + str(game.isHoverHand) + "\ngame.jeu_sensitive: " + str(game.jeu_sensitive) + "\ngame.progress: "+str(game.progress[0]) + "," + str(game.progress[1]) style "style_debug_text"
                 if game.state == "dating" or game.state == "sexing":
-                    text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
+                    if game.state == "sexing":
+                        text "anim_speed: " + str(animation_speed) + " ( " + str(date.animation_speed) + " )" style "style_debug_text"
                     text "date.lust: " + str(date.lust) style "style_debug_text"
                     text "date.turn: " + str(date.turn) style "style_debug_text"
                 text "label:" + (current_label) style "style_debug_text"
+                text str(renpy.game.context().current) style "style_debug_text"
                 if renpy.get_attributes("joyce"):
                     text "joyce " + " ".join(renpy.get_attributes("joyce")) style "style_debug_text"
                     

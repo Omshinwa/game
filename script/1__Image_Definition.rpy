@@ -82,40 +82,14 @@ init python:
             atts.add("null_eyes")
             atts.add("null_mouth")
             atts.add("arm")
-            # if "defend" in atts:
-            #     atts.remove("defend")
-            # if "armscrossed" in atts:
-            #     atts.remove("armscrossed")
 
         return names[0], *atts
 
 define config.adjust_attributes["joyce"] = joyce_adjuster
 
 
-label test_sprites:
-    scene bg terrasse
-    $ i = 0
-    $ outfits = ["outfitsport", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","outfitsm"]
-    $ attr = ["", "push", "key", "whip", "armscrossed", "reveal-1", "reveal-2", "defend"]
-    # $ attr = ["", "foxy", "happy", "upset", "wink", "worried", "bite", "smile", "smirk", "tongue", "blush", "eyeside"]
-    # $ third_switch = ["", "hair_braids"]
-    $ third_switch = [""]
-
-    while i<len(outfits):
-        $ m = 0
-        while m < len(attr):
-            $ n = 0
-            while n < len(third_switch):
-                $ current = outfits[i] + " " + attr[m] + " " + third_switch[n]
-                $ renpy.show("joyce " + outfits[i] + " " + attr[m] + " " + third_switch[n], at_list=[trs_depied])
-                j "[current]"
-                hide joyce
-                $ n += 1
-            $ m += 1
-        $ i += 1
-
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
-define normal_face = ["outfitsport", "outfitsport2", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
+define normal_face = ["outfitsport", "outfitsport2", "outfitsport3", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
 
 layeredimage joyce:
 
@@ -138,14 +112,19 @@ layeredimage joyce:
         attribute outfitcasino null
         attribute outfitsport null
         attribute outfitsport2 null
+        attribute outfitsport3 null
 
     group hair variant "back":
         attribute hair default: 
             "joyce_hair_back" 
+        attribute green_hair:
+            "joyce_hair_back_green" 
         attribute hair_braids
         attribute outfitsport
-        attribute outfitsm:
-            "joyce_hair_back" 
+        attribute outfitsport2:
+            "joyce_hair_back_outfitsport"
+        attribute outfitsport3:
+            "joyce_hair_back_outfitsport"
 
     group arm variant "back":
 
@@ -195,15 +174,13 @@ layeredimage joyce:
             "joyce_arm_armscrossed_back"
         # attribute defend:
             # "joyce_arm_crossed_back"
-        
-        # attribute hideboobs:
-        #     "joyce_arm_hide_back"
         attribute holdbook:
             "joyce_arm_holdbook_back"
+
+        attribute running if_not ["outfitsport"]:
+            "joyce_arm_back_diagonal"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_back_diagonal_sport"
-        attribute running if_any ["outfitsport2"]:
-            "joyce_arm_back_diagonal"
 
     group base:
         attribute base default:
@@ -241,8 +218,14 @@ layeredimage joyce:
         
         attribute base if_any "outfitcasino":
             "joyce_casino"
-        attribute base if_any "outfitsport":
+        attribute base if_any "outfitsport" if_not "undress":
             "joyce_sport"
+        attribute base if_all ["outfitsport", "undress"]:
+            "joyce_sport_undress"
+        attribute base if_any "outfitsport2":
+            "joyce_sport2"
+        attribute base if_any "outfitsport3":
+            "joyce_sport3"
         
         attribute base if_all ["outfitred", "reveal-2"]:
             "joyce_red_reveal"
@@ -256,10 +239,13 @@ layeredimage joyce:
             "joyce_night3_reveal"
         attribute base if_all ["night4", "reveal-2"]:
             "joyce_night4_reveal"
+        
     
     group face:
         attribute face default:
             "joyce_face"
+        attribute sweaty
+
 
     group skin:
         attribute null_skin if_any "null":
@@ -280,8 +266,9 @@ layeredimage joyce:
         attribute eyes_closed:
             "joyce_eyes_closed"
         attribute eyesdown
+        attribute tired
 
-    group mouth if_not "null":
+    group mouth: #if_not "null":
         attribute null_mouth default:
             "joyce_mouth_normal"
         attribute smile if_any normal_face
@@ -289,6 +276,7 @@ layeredimage joyce:
         attribute tongue
         attribute bite
         attribute breath
+        attribute opened
 
     group arm variant "front": #frontarm
         attribute reveal-1 if_not ["night"]:
@@ -313,24 +301,29 @@ layeredimage joyce:
             "joyce_arm_hide_front"
 
         attribute holdbook
-        attribute running if_any ["outfitsport2"]:
+        attribute running if_not ["outfitsport"]:
             "joyce_arm_front_running"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_front_running_sport"
+
 
     group hair variant "front":
         attribute hair: 
             "joyce_hair_front" 
         attribute hair_braids
         attribute green_hair:
-            "green_hair"
+            "joyce_hair_front_green"
         attribute outfitsport
-        attribute outfitsm:
-            "joyce_hair_front_sm" 
+        attribute outfitsport2:
+            "joyce_hair_front_outfitsport"
+        attribute outfitsport3:
+            "joyce_hair_front_outfitsport"
     
     group accessories:
         attribute outfit3:
             "joyce_glasses"
+        attribute outfitsm:
+            "joyce_glasses_sm" 
 
     group arm variant "in front of hair":
     
@@ -347,6 +340,8 @@ layeredimage joyce:
         #     "joyce_blue_defend"
         attribute defend if_any "night":
             "joyce_arm_defend_night"
+        attribute undress if_any ["outfitsport", "outfitsport2"]:
+            "joyce_arm_front_sport_undress"
         
 
 image img_blink:
@@ -374,12 +369,14 @@ init python:
             speed = date.animation_speed_hash[date.animation_speed]
         animation_speed = speed
 
-        # if joyce isnt in animation mode, this remake her animated by removing superfluous tags
+        # if _in_replay:
+            # if joyce isnt in animation mode, this remake her animated by removing superfluous tags
         keywords = [renpy.get_attributes("joyce")[0], "naked", "v2"]
         temp = tuple(element for element in renpy.get_attributes("joyce") if element not in keywords)
         renpy.show("joyce -" + " -".join(temp))
-        # renpy.show("joyce")
+        
         return
+
 
 
 init python:
@@ -389,7 +386,7 @@ init python:
         """
         add 'naked' if the variable naked is on
         """
-        if "naked" in renpy.get_attributes("joyce"):
+        if renpy.get_attributes("joyce") and "naked" in renpy.get_attributes("joyce"):
             return "Joyce/sex/" + filename + " naked.png"
         else:
             return "Joyce/sex/" + filename + ".png"
@@ -610,11 +607,7 @@ layeredimage joyce titjob:
     group titjob:
         attribute v1 default:
             "img_joyce_titjob"
-        attribute naked if_not "v2":
-            "img_joyce_titjob"
-        attribute v2 if_not "naked":
-            "img_joyce_titjob_v2"
-        attribute v2 if_all "naked":
+        attribute v2:
             "img_joyce_titjob_v2"
 
 image img_joyce_blowjob:

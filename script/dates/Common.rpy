@@ -99,7 +99,7 @@ init python:
             
             if self.animation_speed < len(self.animation_speed_hash) - 1:
                 self.animation_speed += 1
-                update_animationSpeed()
+            update_animationSpeed()
 
             if useMultiplier:
                 i = 1
@@ -115,12 +115,12 @@ init python:
             if self.animation_speed > 1:
                 self.animation_speed -= 1
                 update_animationSpeed()
-
+            
             if useMultiplier:
                 i = 1
                 while i < self.lustMultiplier and self.animation_speed > 1:
                     renpy.pause(0.3)
-                    self.animation_speed += 1
+                    self.animation_speed -= 1
                     update_animationSpeed()
                 i += 1
 
@@ -138,16 +138,19 @@ init python:
             
             return self.ydisplace
 
-        def increment(self, which, value, resetAllMultiplier = True, useMultiplier=True, negative=False): #allow
+        def increment(self, which, value, resetAllMultiplier = True, useMultiplier=True, negative=False): #
+            before = getattr(self,which)
             if useMultiplier:
                 if which == "trust":
                     self.trust += value * self.trustMultiplier * self.allMultiplierOnce
                 elif which == "attraction":
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
-                    # self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                    if value>0:
+                        renpy.sound.play("rpg/Lust.wav", relative_volume=0.5)
                     if negative:
                         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
+                        self.lustMultiplier = 1
                     else:
                         if self.lust<0 and value<0:
                             pass
@@ -155,17 +158,20 @@ init python:
                             self.lust += value * self.lustMultiplier * self.allMultiplierOnce
                             if value < 0:
                                 self.lust = max(0, self.lust)
+                            self.lustMultiplier = 1
                 else:
                     raise Exception("no valid specified argument: which") 
                 if resetAllMultiplier:
                     self.allMultiplierOnce = 1
             else:
                 setattr(self, which, getattr(self,which) + value )
-                
-            if value<0:
-                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2))
-            else:
-                renpy.with_statement(ImageDissolve("gui/transition.png", 0.2, reverse=True) )
+            now = getattr(self,which)
+            
+            print(0.1*abs(now-before)**0.5)
+            renpy.with_statement(ImageDissolve("gui/transition.png", min(max(0.2, 0.1*abs(now-before)**0.5),3.0), reverse=value>0 ))
+
+            # else:
+            #     renpy.with_statement(ImageDissolve("gui/transition.png", max(0.2, 0.05 *abs(now-before)), reverse=True) )
                 
         def replay_mode(self):
             renpy.say("","debug mode is on, setting isLost to False and isWin to False and game.progress to -1")
@@ -237,7 +243,7 @@ label label_beginDuel_common():
             show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
             hide screen screen_tutorial with dissolve
     elif game.state == "sexing":
-        if date.lust > date.lustMax:
+        if date.lust + date.lustPerTurn >= date.lustMax:
             pause 0.5
             play sound "rpg/Sonic1-onTheEdge.wav"
             show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
@@ -265,7 +271,6 @@ label label_endTurn_common():
     $ date.playedThisTurn = []
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
-    $ date.lustMultiplier = 1
     $ date.turn += 1
     $ game.progress[1] = max(date.turn, game.progress[1])
 
@@ -290,7 +295,6 @@ label label_endTurn_common():
     return
 
 label label_after_successful_Date_common():
-
     hide screen screen_date_ui
     hide screen screen_sex_ui
     hide screen screen_dick_ui
@@ -332,6 +336,7 @@ label label_date_isLost_common(var_label_callback = "label_home"):
     # """
     play sound "card/switch.mp3"
     $ game.jeu_sensitive = False
+    pause 0.3 #allows for the animation to be played
 
     if date.isLost():
 
@@ -342,25 +347,19 @@ label label_date_isLost_common(var_label_callback = "label_home"):
         show date-fail onlayer screens at truecenter with blinds
         pause 0.3
         hide date-fail onlayer screens with moveoutbottom
-
-        show joyce null
         hide screen screen_date_ui with dissolve
+        show joyce null
 
         if date.lust > date.trust and date.lust > date.attraction:
             call label_date_isLost_lust
 
         elif len(deck.deck) == 0:
-            show joyce null
-            hide screen screen_date_ui with dissolve
-            if game.progress[0]<4:
-                j eyeside armscrossed "..."
-                j "Seems like you've run out of things to say."
-                j "I guess the date's over then..."
-                j "Next time, think about other topics to talk about."
+            j eyeside armscrossed "..."
+            j "Seems like you've run out of things to say."
+            j "I guess the date's over then..."
+            j "Next time, think about other topics to talk about."
                 
         elif date.turnLeft <= 1:
-            show joyce null
-            hide screen screen_date_ui with dissolve
             if game.progress[0]<4:
                 j eyeside armscrossed "Oh, look at the time!"
                 j "Sorry, I gotta go."

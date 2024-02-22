@@ -5,7 +5,7 @@ init python:
     def getCardPadding(handSize):
         if handSize == 0:
             return 0
-        padding = ( 1800 - (handSize+1)*game.card_xsize ) / handSize
+        padding = ( 1800 - (handSize+1)*g.card_xsize ) / handSize
         return min(padding, 20)
 
     focus_card_index = -1
@@ -18,19 +18,19 @@ screen screen_card_hand():
 
     fixed at date.updateYdisplace():
         xsize 1800
-        ysize game.card_ysize
+        ysize g.card_ysize
         xalign 0.3
         yanchor 1.0
 
         fixed:
-            xsize int( len(deck.hand)* game.card_xsize + (paddingPerCard*(len(deck.hand)-1)) )
+            xsize int( len(deck.hand)* g.card_xsize + (paddingPerCard*(len(deck.hand)-1)) )
             xalign 0.5
 
             for index, card in enumerate(deck.hand):
                 fixed:
-                    xpos int((index)* game.card_xsize + paddingPerCard*index)
-                    xsize game.card_xsize
-                    ysize game.card_ysize
+                    xpos int((index)* g.card_xsize + paddingPerCard*index)
+                    xsize g.card_xsize
+                    ysize g.card_ysize
                     
                     imagebutton:
                         sensitive game.jeu_sensitive
@@ -60,13 +60,14 @@ screen screen_date_bottom_ui():
             hovered SetVariable("game.isHoverHand", True)
             unhovered SetVariable("game.isHoverHand", False)
             action Return()
-            xsize 1700
+            xsize 1650
             if game.isHoverHand:
-                ysize game.card_ysize
+                ysize g.card_ysize
             else:
                 ysize 200
             yalign 1.0
-            xalign 0.35
+            xpos 150
+            # background "#0f03"
     
     else:
         button:
@@ -75,16 +76,18 @@ screen screen_date_bottom_ui():
             ysize 1080
             yalign 1.0
             xalign 0.35
+            # background "#f003"
         
         button:
             action SetVariable("game.isHoverHand", True)
             xsize 1700
             if game.isHoverHand:
-                ysize game.card_ysize
+                ysize g.card_ysize
             else:
                 ysize 200
             yalign 1.0
-            xalign 0.35
+            xpos 150
+            # background "#00f3"
 
     use screen_card_hand()
 
@@ -120,8 +123,10 @@ screen screen_dick_ui():
 
     if game.state == "dating" or game.state == "sexing":
         $ gameOrDate = date
+        $ lustPerTurn = date.lustPerTurn
     else:
         $ gameOrDate = game
+        $ lustPerTurn = 0
 
     $ sizeMultiplier = 1/100
     $ shaft_size = int( 196*(getattr(gameOrDate, "lustMax") * sizeMultiplier) )
@@ -131,23 +136,25 @@ screen screen_dick_ui():
         ypos 20
         xpos 240
         xsize 122 + shaft_size + 152
-        if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
-            image Transform("img_lust_bar_1", matrixcolor=ColorizeMatrix("#822", "#fcc") )
-            image Transform("img_lust_bar_2", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image Transform("img_lust_bar_3", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
-        else:
-            image "img_lust_bar_1"
-            image "img_lust_bar_2" xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image "img_lust_bar_3" xpos 122+shaft_size
+        
+        # if date.lust + date.lustPerTurn >= date.lustMax:
+        #     image Transform("img_lust_bar_1", matrixcolor=ColorizeMatrix("#822", "#fcc") )
+        #     image Transform("img_lust_bar_2", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+        #     image Transform("img_lust_bar_3", matrixcolor=ColorizeMatrix("#822", "#fcc") ) xpos 122+shaft_size
+        # else:
 
-        if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
+        image "img_lust_bar_1"
+        image "img_lust_bar_2" xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
+        image "img_lust_bar_3" xpos 122+shaft_size
+
+        if gameOrDate.lust + lustPerTurn >= gameOrDate.lustMax:
             image Crop( (0, 0, croppedSize, 120), Transform("img_lust_bar_full_1", matrixcolor=ColorizeMatrix("#822", "#fcc") ) ) 
             image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), Transform("img_lust_bar_full_2"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
             image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), Transform("img_lust_bar_full_3"), matrixcolor=ColorizeMatrix("#822", "#fcc") )  xpos 122+shaft_size
         else:
             image Crop( (0, 0, croppedSize, 120), "img_lust_bar_full_1") 
             image Crop( (0, 0, int( (croppedSize - 122) * (1/sizeMultiplier) / getattr(gameOrDate, "lustMax") ), 120), "img_lust_bar_full_2")  xpos 122 xzoom getattr(gameOrDate, "lustMax")  * sizeMultiplier
-            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "img_lust_bar_full_1")  xpos 122+shaft_size
+            image Crop( (0, 0, croppedSize - 122 - shaft_size, 120), "img_lust_bar_full_3")  xpos 122+shaft_size
 
 
         text str(getattr(gameOrDate, "lust") ) + "/" + str(getattr(gameOrDate, "lustMax") ):
@@ -173,10 +180,9 @@ screen screen_dick_ui():
 
 screen screen_sex_ui():
     use screen_dick_ui()
-    if game.progress[0]==8:
+    if date.name=="label_cowgirl":
         use screen_orgasm_ui()
-    
-    if game.progress[0]!=8:
+    else:
         use screen_turn_counter()
     
     # use speed_indicator()
@@ -377,10 +383,9 @@ image button_img_end_turn:
             "img_end_turn"
             ypos 1.0
             linear 0.3 ypos 0.0
+
     on insensitive:
         Transform("img_end_turn",alpha=0.7)
-
-       
 
 screen screen_buttons_ui():
 
@@ -390,7 +395,7 @@ screen screen_buttons_ui():
         align (0, 1.00)
         xsize 200
         ysize 290
-        action [SelectedIf(Play('sound',"card/switch.mp3", selected=True)), Call(date.endTurn)]
+        action [Play('sound',"card/switch.mp3", selected=True), Call(date.endTurn)]
         sensitive game.jeu_sensitive
             
     if game.state == "sexing" or game.debug_mode: # game.progress[0]>=2 or 

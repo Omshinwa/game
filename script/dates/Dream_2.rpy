@@ -4,13 +4,13 @@ label label_dream_2:
     scene bg dream
     show black
     hide black with Dissolve(1.0)
-    show joyce outfitdream3 null at trs_depied onlayer master zorder 2
+    show joyce_dream3 at trs_depied onlayer master zorder 2
     with Dissolve(0.5)
     pause 0.5
     
     if g.dreamProgress == 3:
         j "Hey sweety"
-        j "What's wrong? Something different about me?"
+        j "What's wrong? Something's different about me?"
         j "Oh no, I'm wet!"
         j "What will I do?..."
     else:

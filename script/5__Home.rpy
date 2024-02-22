@@ -22,7 +22,7 @@ screen screen_home:
         imagebutton:
             idle "home/door-open.png"
             hover Transform("home/door-open.png", matrixcolor=TintMatrix((255,255,178)))
-            action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+            action [Hide("screen_home"), Jump("label_" + g.story[game.progress[0]])]
             focus_mask True
 
         imagebutton:
@@ -44,7 +44,7 @@ screen screen_home:
             imagebutton:
                 idle "home/door.png"
                 hover Transform("home/door.png", matrixcolor=TintMatrix((255,255,178)))
-                action [Hide("screen_home"), Jump("label_" + game.story[game.progress[0]])]
+                action [Hide("screen_home"), Jump("label_" + g.story[game.progress[0]])]
                 focus_mask True
         else:
             add "home/door.png"     
@@ -164,7 +164,7 @@ screen screen_home_end_act_2:
 #############################################################################
 
 
-label label_home():
+label label_home:
     # make the plant grow
 
     if g.water > 0:
@@ -255,7 +255,7 @@ label label_home_weirdDream():
     show screen screen_home onlayer master
     show black onlayer screens
     hide black onlayer screens with dissolve
-    "You feel like you had a weird dream…"
+    "You feel like you had a weird dream..."
     "But you can't remember what it was about."
     jump label_home
 
@@ -406,7 +406,7 @@ label label_water_the_plant():
         elif g.plant == 3:
             "You feel like the plant is going to take over the world."
             $ g.plant = 4
-        $ g.water = 7
+        $ g.water = 4
         call label_newDay('label_home') from _call_label_newDay_4
 
 label label_home_plant():
@@ -448,7 +448,7 @@ label label_home_plant():
                 return
     return
 
-label label_home_add_cards(cardID, prompt, callback=True):
+label label_home_add_cards(cardID, prompt, callback="label_home"):
     show expression trans_show_card_2(Card(cardID).img) as card
     menu:
         "[prompt]"
@@ -457,10 +457,7 @@ label label_home_add_cards(cardID, prompt, callback=True):
             hide screen screen_tutorial
             call label_add_card_to_deck("list", Card(cardID), 300, 500) from _call_label_add_card_to_deck_2
             if callback:
-                if callback == True:
-                    call label_newDay('label_home') from _call_label_newDay_23
-                else:
-                    call expression callback from _call_expression_10
+                call label_newDay(callback) 
         "No":
             hide card
             hide screen screen_tutorial

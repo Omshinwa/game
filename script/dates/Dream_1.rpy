@@ -8,7 +8,7 @@ label label_dream_1:
     scene bg dream
     show black
     hide black with Dissolve(1.0)
-    show joyce outfitdream2 null at trs_depied onlayer master zorder 2
+    show joyce_dream2 at trs_depied onlayer master zorder 2
     with Dissolve(0.5)
     pause 0.5
     
@@ -18,7 +18,7 @@ label label_dream_1:
         j "Did you think I didn't notice during our date?"
         j "You were drooling over those tits."
     else:
-        j "Did you miss me…"
+        j "Did you miss me..."
         j "Or did you miss those huge tits?"
 
     "You can transform an Eye Contact card or get a special card."

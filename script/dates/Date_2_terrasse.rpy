@@ -12,7 +12,7 @@ label label_terrasse:
         show joyce outfit1 smile at trs_sitting
         with dissolve
         j "Hey!"
-        j "You found me, come sit there."
+        j "You found me! Come sit there."
         show screen screen_glass("terrasse") onlayer master zorder 2
         play sound "day/put_on_table.wav"
         j "Ahhh... Nothing beats a cold beer on a terrace."
@@ -26,7 +26,7 @@ label label_terrasse:
             if date.isWin():
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_2
 
-                j smile "Phew! I'm getting a bit too tipsy."
+                j smile "Phew! I'm getting a bit tipsy."
                 j "I think I'll go home now. This was nice."
                 j "We should go somewhere special next time"
                 j "I'll think about something."
@@ -49,26 +49,27 @@ label label_terrasse_endTurn:
     if game.progress[1]<=0:            
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
-            j null "Geez, it's way too hot outside."
-            j "Hold on, I've got an idea."
+            show joyce null
+            j blush tired opened "Geez, it's so hot today."
+            j "Hold on, I'm gonna go to the bathroom."
             j "Be right back."
             show joyce at standing with dissolve
             pause 0.5
             hide joyce with dissolve
-            pause
+            pause 3.0
             show joyce outfit2 at standing as joyce with dissolve
-            j smile "hey" 
+            j smile "Hey" 
             j "Sorry, it was just too hot."
             show joyce outfit2
-            j "I had to remove a few layers"
+            j "I had to remove a few layers."
             show layer master:
                 zoom 2.0 xalign 0.5 yalign 0.5
             with dissolve
-            pause
+            pause 3.0
             j "What's wrong?"
-            "n-nothing"
-            j "hmm Okay"
-            j "Let's keep going, shall we?"
+            menu:
+                "N-nothing":
+                    j "Hmm okay."
             show layer master:
                 zoom 1.0
             with dissolve

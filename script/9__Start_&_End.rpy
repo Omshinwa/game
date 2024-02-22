@@ -13,7 +13,7 @@
 
 label main_menu:
 
-    $ game.debug_mode = True
+    # $ game.debug_mode = True
 
     show screen screen_debug
     if persistent.displayContentWarning:
@@ -64,6 +64,8 @@ This is the custom main menu with joyce in the casino
 """
 label custom_main_menu:
 
+
+    # $ preferences.fullscreen = True
     # jump test_sprites
     
     $ renpy.set_return_stack([])
@@ -71,13 +73,13 @@ label custom_main_menu:
     show screen screen_debug
     # $ quick_menu = False
     $ quick_menu = True
-    $ game.jeu_sensitive = False
+    $ game.jeu_sensitive = False 
     default deck = Deck()
     $ deck = Deck()
-    $ deck.deck = [Card("newgame"), Card("load"), Card("prefs"), Card("achievement"), Card("memory"), Card("lang")]
+    $ deck.deck = [Card("newgame"), Card("prefs"), Card("achievement"), Card("memory"), Card("lang"), Card("fullscreen")]
     # hide screen main_menu
-    scene bg casino
-    show fg poker-table onlayer master zorder 2
+    scene bg casino at trs_bg_blur
+    show fg poker-table onlayer master zorder 2 
     show joyce outfitcasino smile hair_braids at trs_sitting, trs_slowbreath
     show joyce_hand_poker onlayer master zorder 2
     with dissolve
@@ -129,5 +131,5 @@ screen game_complete():
     use screen_deck_stack
 
 # credits: people in the renpy server:
-# Junior @juniorthejunior Pinky!
+# Junior @juniorthejunior Pinky! HB38
 # Consider leaving a good review if you enjoyed the game, it goes a long way to help me keep working!

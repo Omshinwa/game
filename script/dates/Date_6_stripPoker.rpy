@@ -1,9 +1,11 @@
 label label_stripPoker:
+    $ stripPoker_got_drugged = False
+
     if game.progress[1] == -1:
         scene black
         with dissolve
-        "This is the address Joyce sent you…"
-    scene bg flat close
+        "This is the address Joyce sent you..."
+    scene bg flat close at trs_bg_blur(10)
     with dissolve
     
     if game.progress[1] == -1:
@@ -18,7 +20,7 @@ label label_stripPoker:
 
     play sound "day/door_opening.wav"
     pause 0.2
-    scene bg flat open with dissolve
+    show bg flat open with dissolve
     pause 0.2
     show joyce night at trs_depied onlayer master zorder 2
     with dissolve
@@ -31,7 +33,7 @@ label label_stripPoker:
         j foxy smile "Who could it be?"
         j "Make yourself at home, you know the place by now."
     $ date = Date("date", objectif_trust = game.trust + 5, turnLeft = 8, endTurn = "label_stripPoker_endTurn")
-    scene bg bedroom
+    scene bg bedroom  at trs_bg_blur()
     show joyce smile night at trs_depied
     show fg bedroom-table onlayer master zorder 2
     with blinds
@@ -52,7 +54,7 @@ label label_stripPoker:
     
     if game.progress[1] == -1:
         j "Please, have a glass of red wine."
-        j "I've got an idea I think you'll like…"
+        j "I've got an idea I think you'll like..."
         j "How about we make this one a strip game?"
         j "Everytime you succeed, I'll remove a piece of clothing."
     else:
@@ -73,13 +75,23 @@ label label_stripPoker:
             if date.isWin():
                 hide screen screen_date_ui with dissolve
 
-                
                 if "night4" in renpy.get_attributes("joyce"):
+
+                    if stripPoker_got_drugged == False:
+                        $ achievement.grant_with_notification("Suspicious")
+
                     $ date.lust = 0
                     call label_after_successful_Date_common from _call_label_after_successful_Date_common_4
                     
-                    j foxy smile "This is so sexy…"
-                    j foxy smile "I think you're a good candidate."     
+                    j foxy smile "This is so sexy..."
+                    j foxy smile "I think you're a good candidate."   
+
+                    if stripPoker_got_drugged == False:
+                        j "..."
+                        j tired -smile"..."
+                        j night5 "Hey..."
+                        j "You know what's going on... Don't you?"  
+
                     show black onlayer screens:
                         alpha 0.4
                     with Dissolve(0.4) 
@@ -87,7 +99,7 @@ label label_stripPoker:
                         alpha 0.2
                     with Dissolve(0.4) 
 
-                    "You suddenly feel tired.."
+                    "You suddenly feel tired..."
                     j foxy "What's wrong?"
                     j foxy "Are you getting too excited? Do you need to sit down?"
                     "You need to lie down."
@@ -102,7 +114,7 @@ label label_stripPoker:
                     with Dissolve(0.4) 
 
 
-                    j foxy -night4 night5 "Did you drink too much?"
+                    j foxy night5 "Did you drink too much?"
                     "..."
                     "You feel like something was wrong with your drink."
                     "You need to go home NOW."
@@ -116,6 +128,7 @@ label label_stripPoker:
                         alpha 0.9
                     with Dissolve(0.4) 
 
+                    "You try to get up, but to no avail, you feel like drifting."
                     j "Be a good boy, and go to sleep."
 
                     show black onlayer screens:
@@ -123,7 +136,7 @@ label label_stripPoker:
                     with Dissolve(0.4) 
                     pause
                     j "Everything will be just fine."
-                    pause
+                    pause 1.0
                     call label_newDay("label_welcome_prison") from _call_label_newDay_12
 
                 elif "night" in renpy.get_attributes("joyce"):
@@ -140,11 +153,12 @@ label label_stripPoker:
                 elif "night3" in renpy.get_attributes("joyce"):
                     j foxy smile "Ooh, last one.."
                     play sound "sex/undress.wav"
+                    show joyce night4 with Dissolve(1.0)
                     j "For this last one, let's make it..."
                     j "A special requirement."
-                    show joyce night4 with Dissolve(1.0)
                     $ date.objectives["lust"] = 100
                     $ date._isLost = "len(deck.deck) == 0 or date.turnLeft == 1"
+                    j "Please get as horny as possible."
 
 
                 show screen screen_date_ui with dissolve
@@ -166,7 +180,7 @@ label label_stripPoker:
 label label_stripPoker_endTurn:
     call label_date_isLost_common from _call_label_date_isLost_common_4
     
-    call label_reaction from _call_label_reaction_4
+    # call label_reaction from _call_label_reaction_4
 
     call label_endTurn_common from _call_label_endTurn_common_4
     if "night2" in renpy.get_attributes("joyce"):

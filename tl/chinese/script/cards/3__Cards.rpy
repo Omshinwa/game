@@ -166,7 +166,7 @@ translate chinese strings:
 
     # game/script/cards/3__Cards.rpy:1
     old "Change Languages"
-    new ""
+    new "换语言"
 
     # game/script/cards/3__Cards.rpy:1
     old "Go see our Discord!"

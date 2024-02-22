@@ -132,7 +132,7 @@ define gui.namebox_tile = False
 ## number of pixels relative to the left or top side of the textbox, or 0.5 to
 ## center.
 define gui.dialogue_xpos = 0.5 #fynedit 402
-define gui.dialogue_ypos = 10 #fynedit 75
+define gui.dialogue_ypos = 0.1 #20 #fynedit 75
 
 ## The maximum width of dialogue text, in pixels.
 define gui.dialogue_width = 1116

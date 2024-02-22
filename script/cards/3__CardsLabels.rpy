@@ -1,4 +1,4 @@
-# in webbrowser, it cant find the strings of the name of the methods ie "date.increment('lust',-3, negative=True)" it wont find date.increment, i can find attributes tho
+# in webbrowser, it cant find the strings of the name of the methods ie "date.increment('lust',-3, negative=True)" it wont find date.increment, it can find attributes though
 
 label label_card_calm:
     $ date.increment('lust',-3, negative=True)
@@ -8,21 +8,21 @@ label label_card_maxcalm:
     $ deck.hand.append(Card('stop'))
     return
 label label_card_slower:
-    $ date.speedDown(True)
+    $ date.speedDown(False)
     $ date.lustPerTurn -= 3
     return
 label label_card_slowsteady:
-    $ date.speedDown(True)
-    $ date.speedDown(True)
+    $ date.speedDown(False)
+    $ date.speedDown(False)
     $ date.lustPerTurn -= 5
     return
 label label_card_fool:
-    $ date.speedDown(True)
-    $ date.speedDown(True)
+    $ date.speedDown(False)
+    $ date.speedDown(False)
     $ date.lustPerTurn -= 5
     return
 label label_card_faster:
-    $ date.speedUp(True)
+    $ date.speedUp(False)
     return
 label label_card_draw2:
     $ deck.draw(2)
@@ -31,6 +31,7 @@ label label_card_devil:
     $ deck.draw(2)
     $ temp = date.lust
     $ date.lust = 0
+    play sound "rpg/Lust.wav"
     $ date.increment('lust', temp*2, negative=True)
     $ del temp
     return
@@ -43,6 +44,7 @@ label label_card_universeout:
     $ deck.add_to_hand(Card('spaceout'));
     return
 label label_card_peek:
+    play sound "rpg/Lust.wav"
     $ date.increment('lust',2)
     return
 label label_card_peek2:
@@ -88,31 +90,31 @@ label label_card_touchy:
         call label_reaction
     return
 label label_card_talk:
-    $ date.increment('trust',1)
     if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_talk"):
         $ renpy.call(date.name + "_talk") 
     else:
         call label_reaction_talk
+    $ date.increment('trust',1)
     return
 label label_card_talk2:
-    $ date.increment('trust',2)
     if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_talk"):
         $ renpy.call(date.name + "_talk") 
     else:
         call label_reaction_talk
+    $ date.increment('trust',2)
     return
 label label_card_listen:
-    $ date.trustMultiplier *= 2
     if "listen" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_listen"):
         $ renpy.call(date.name + "_listen") 
-    else:
-        call label_reaction_talk
+    # else:
+    #     call label_reaction_talk
+    $ date.trustMultiplier *= 2
     return
 label label_card_spaceout:
     return
@@ -127,15 +129,27 @@ label label_card_undress:
     else:
         $ print("no label " + date.name + "_undress")
         call label_reaction_undress
+    return
 
+label label_card_awakening(card=None):
+    python:
+        i = int(len(deck.deck)/2)
+        for card in range(i):
+            renpy.sound.play("card/shuffle.mp3", channel='drawcard')
+            deck.discard_pile.append( deck.deck.pop(-1) )
+            renpy.pause(0.1)
+
+        renpy.sound.play("rpg/_Absorption2.wav", channel="drawcard")
+        date.increment("lust",-999)
+    return
 
 label label_card_nova:
     python:
-        i = 1
+        # i = 1
         for card in deck.discard_pile:
             if card.name == "spaceout":
-                date.increment("lust",-i)
-                i += 1
+                date.increment("lust",-3)
+                # i += 1
     return
 
 label label_card_newday:
@@ -183,10 +197,7 @@ label label_shuffle:
 
 label label_card_darkhole:
     $ i = len(deck.hand)
-    while len(deck.hand)>0:
-        $ deck.discard(0)
-        $ date.increment("lust", -5, False)
-    $ date.increment("lust", 0, True)
+    $ date.increment("lust", -i, True)
     return
 
 label label_card_recycle(index):
@@ -270,7 +281,7 @@ label label_card_exodia(index):
     return
 
     label .effect:
-        $ achievement.grant("Exodia")
+        $ achievement.grant_with_notification("Exodia")
 
         play activatecard "rpg/Flame1.wav"
         queue activatecard ["rpg/Flame1.wav","rpg/Flame1.wav"]

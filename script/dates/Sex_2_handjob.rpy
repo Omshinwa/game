@@ -7,7 +7,7 @@
 # label_POSITION_isWin
 
 label label_handjob:
-    $ date = Date("sex", name="handjob", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0")
+    $ date = Date("sex", name="handjob", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0", lustPerTurn=10)
 
     scene bg basement
     show joyce handjob talk
@@ -49,10 +49,13 @@ label label_handjob:
         show handjob get-hard 3
         pause
         j "Seems like it feels good"
-        j "I'll make you feel even better.."
+        j "Do you want me to touch your dick?"
+        j "Oh yes you do, my little slut."
+        j "I'll make you feel even better."
 
     call label_beginDuel_common() from _call_label_beginDuel_common_7
     $ current_speed = date.animation_speed
+    $ update_animationSpeed()
 
     hide handjob
     show joyce -talk
@@ -90,8 +93,8 @@ label label_handjob_endTurn:
     call label_sex_endTurn()
 
     $ date.speedUp()
+    $ date.lustPerTurn += 3
     pause(0.5)
-    $ date.speedUp()
     
     if date.isLost():
         call label_handjob_isLost
@@ -130,14 +133,8 @@ label label_handjob_v2:
     j "Mhh Delicious."
     show joyce -4
     $ date.speedUp()
+    $ date.lustPerTurn += 3
     with dissolve
-    pause
-    call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_13   
-    call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_14   
-    call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_15 
-    call label_add_card_to_deck("deck", Card("peek2"), pauseTime=0.3) from _call_label_add_card_to_deck_16 
-
-    $ date.speedUp()
     return
 
 label label_handjob_isLost:
@@ -171,7 +168,7 @@ label label_handjob_isLost:
         show joyce 4 at default
         show handjob cum 2 at default
         with dissolve
-        pause
+        pause 0.3
         with dissolve
     
     while date.lust>0:
