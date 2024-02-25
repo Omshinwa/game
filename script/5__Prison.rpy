@@ -304,28 +304,28 @@ screen screen_prison_sans_rat:
 
     imagebutton:
         idle showInteractible("prison/toilet.png", (0.85,0.95))
-        hover Transform("prison/toilet.png", matrixcolor=TintMatrix((255,255,1275))) 
+        hover Transform("prison/toilet.png", matrixcolor=TintMatrix((355,355,575))) 
         action [AddToSet(done_flag["buttons"], "prison/toilet.png"), Call("label_prison_toilet")]
         focus_mask True
         sensitive True
 
     imagebutton:
         idle showInteractible("prison/bed.png",(0.1,0.9))
-        hover Transform("prison/bed.png", matrixcolor=TintMatrix((255,255,1275)))
+        hover Transform("prison/bed.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/bed.png"), Call("label_prison_bed")]
         focus_mask True
         sensitive True
 
     imagebutton:
         idle showInteractible("prison/metal-door.png",(0.6,0.5))
-        hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((255,255,1275)))
+        hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/metal-door.png"), Call("label_prison_open_door")]
         focus_mask True
         sensitive True
 
     imagebutton:
         idle showInteractible("prison/food-tray.png",(0.55,0.95))
-        hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((255,255,1275)))
+        hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/food-tray.png"), Call("label_prison_food")]
         focus_mask True
         sensitive True
@@ -338,7 +338,7 @@ screen screen_prison:
 
     imagebutton:  
         idle showInteractible("prison/rat.png", (0.3, 0.95))
-        hover Transform("prison/rat.png", matrixcolor=TintMatrix((255,255,1275)))
+        hover Transform("prison/rat.png", matrixcolor=TintMatrix((355,355,575)))
         action  [AddToSet(done_flag["buttons"], "prison/rat.png"), Show("screen_prison_rat_add_cards")]
         focus_mask True
         sensitive True

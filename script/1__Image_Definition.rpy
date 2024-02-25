@@ -145,7 +145,11 @@ layeredimage joyce:
             "joyce_arm_sport"
         attribute arm if_any "outfitsm":
             "joyce_arm_sm"
-            
+        
+        
+        attribute defend:
+            "joyce_arm_defend_back"
+
         attribute reveal-1 if_not "night":
             "joyce_arm_left_back"
         attribute reveal-1 if_any "night":
@@ -290,6 +294,8 @@ layeredimage joyce:
 
         attribute armscrossed if_not ["outfit1", "outfit2","outfitdream", "outfitdream2", "outfitdream3"]:
             "joyce_arm_armscrossed_front"        
+        attribute armscrossed if_all ["outfitsport"]:
+            "joyce_arm_armscrossed_front_sport"        
         attribute armscrossed if_any ["outfit1", "outfitdream", "outfitdream2", "outfitdream3"]:
             "joyce_arm_crossed_1"
 
@@ -335,9 +341,11 @@ layeredimage joyce:
             "joyce_arm_push_sm"
 
         attribute defend:
-            "joyce_arm_defend"
+            "joyce_arm_defend_front"
         # attribute defend if_any "outfitblue":
         #     "joyce_blue_defend"
+        attribute defend if_any "outfitsport":
+            "joyce_arm_defend_front_sport"
         attribute defend if_any "night":
             "joyce_arm_defend_night"
         attribute undress if_any ["outfitsport", "outfitsport2"]:

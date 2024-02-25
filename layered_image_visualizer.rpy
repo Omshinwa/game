@@ -1306,10 +1306,13 @@ screen expression_button(exp, grp, is_multiple=False,
         ## Right-click to set whether this attribute
         ## is excluded from randomization
         if not is_short:
-            alternate ToggleSetMembership(
-                persistent.sprt_no_random_attributes.setdefault(
-                persistent.sprt_who, dict()).setdefault(grp, set()), exp
-            )
+            # alternate ToggleSetMembership(
+            #     persistent.sprt_no_random_attributes.setdefault(
+            #     persistent.sprt_who, dict()).setdefault(grp, set()), exp
+            # )
+            #fyn edit, rightclick instead copy the file location:
+            alternate Function(sprt.copy_to_clipboard, exp)
+
         if exp in persistent.sprt_no_random_attributes.get(
                 persistent.sprt_who, dict()).get(grp, set()):
             foreground sprt.construct_frame(sprt.MAROON, "#0000", sprt.PADDING)

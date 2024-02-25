@@ -64,7 +64,7 @@ label label_null(*args):
 
 define g.card_xsize = 230
 define g.card_ysize = 330
-define g.story = ["tutorial", "bubbleTea", "terrasse", "library", "jogging", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl", "start"]
+define g.story = ["tutorial", "bubbleTea", "terrasse", "library", "jogging", "barDate", "stripPoker", "footjob", "handjob", "blowjob", "cowgirl"]
 
 default g.day_rat_appears = 0 #when does the rat appear
 default g.findFromTrash = True #get a Recycle card when you threw away enough cards
