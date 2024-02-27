@@ -24,5 +24,10 @@ label label_jogging:
     $ g.phoneProgress[1] = 10
     call label_newDay("label_home")
 
+    label .gameLoop:
+        show joyce null with dissolve
+        if len(deck.hand) == 0:
+            pass
+
 label label_jogging_endTurn:
     call label_date_isLost_common

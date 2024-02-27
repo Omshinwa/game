@@ -63,6 +63,7 @@ label label_barDate:
             
             show joyce 
     
+        show joyce null with dissolve
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_4
 
@@ -79,7 +80,7 @@ label label_barDate_endTurn:
     if date.turn == 1 and game.progress[1]<=1:
         hide screen screen_date_ui with dissolve
         j "Sorry, I have to use the restroom…"
-        show joyce at standing with dissolve
+        show joyce at trs_standing with dissolve
         pause 0.5
         hide joyce with dissolve
         pause 
@@ -102,9 +103,9 @@ label label_barDate_endTurn:
         pause 1.0
 
         if whichDress == "red":
-            show joyce outfitred at standing onlayer master zorder 0 
+            show joyce outfitred at trs_standing onlayer master zorder 0 
         else:
-            show joyce outfitblue at standing onlayer master zorder 0 
+            show joyce outfitblue at trs_standing onlayer master zorder 0 
         with dissolve
 
         j smile "Hey! Hope I didn't keep you waiting."

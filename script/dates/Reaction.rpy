@@ -143,14 +143,15 @@ label label_reaction_check_if_sex(card = None):
     if game.state == "sexing":
         $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk"]
         if date.lastPlayed.name in i:
-            python:
-                for card in i:
-                    done_flag[card] = 999
-            j "What are you trying to do?"
-            j "Building more trust and attraction?"
-            j "How is that going to help now?"
-            j "I'm playing with your dick and that's the only thing you can think of?"
-            j "Hahaha, change the way you think."
+            if done_flag[date.lastPlayed.name] != 999:
+                python:
+                    for card in i:
+                        done_flag[card] = 999
+                j "What are you trying to do?"
+                j "Building more trust and attraction?"
+                j "How is that going to help now?"
+                j "I'm playing with your dick and that's the only thing you can think of?"
+                j "Hahaha, change the way you think."
     return
 
 
@@ -336,9 +337,9 @@ label label_reaction(what = None):
                             j "No way! That's so bold. I could never."
                             j "I kinda admire her for that."
                         "Hmm no":
-                            j "Yeah, I didn't think so either."
-                            j "haha."
-                            j "But I kinda admire my friend."
+                            j happy "Yeah, I didn't think so either."
+                            j "Haha."
+                            j -happy "But I kinda admire my friend."
                             j "Would you bleach your hair green?"
                     show joyce -green_hair with dissolve
         elif value == 2:

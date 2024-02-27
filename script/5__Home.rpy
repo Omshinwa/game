@@ -50,21 +50,21 @@ screen screen_home:
             add "home/door.png"     
             
         imagebutton:
-            idle showInteractible("home/bed.png", (0.99,0.6))
+            idle showInteractible("home/bed.png", (0.88,0.6))
             hover Transform("home/bed.png", matrixcolor=TintMatrix((255,255,1275)))
             action [AddToSet(done_flag["buttons"], "home/bed.png"), Call("label_home_bed")]
             focus_mask True
             sensitive True
 
         imagebutton:
-            idle showInteractible("home/trash.png", (0.08,0.95))
+            idle showInteractible("home/trash.png", (0.15,0.85))
             hover Transform("home/trash.png", matrixcolor=TintMatrix((255,255,1275)))
             action [AddToSet(done_flag["buttons"], "home/trash.png"), Call("label_home_trash")]
             focus_mask True
             sensitive True
 
         imagebutton:
-            idle showInteractible("home/comp.png",(0.25,0.3))
+            idle showInteractible("home/comp.png",(0.28,0.35))
             hover Transform("home/comp.png", matrixcolor=TintMatrix((255,255,1275)))
             action [AddToSet(done_flag["buttons"], "home/comp.png"), Call("label_home_comp")]
             focus_mask True
@@ -72,7 +72,7 @@ screen screen_home:
 
         if g.plant < 4:
             imagebutton:
-                idle showInteractible("home/plant-"+str(g.plant)+".png",(0.05,0.5))
+                idle showInteractible("home/plant-"+str(g.plant)+".png",(0.13,0.47))
                 hover tintImg("home/plant-"+str(g.plant)+".png", (255,255,1275))
                 action [AddToSet(done_flag["buttons"], "home/plant-"+str(g.plant)+".png"), Call("label_home_plant")]
                 focus_mask True
@@ -85,7 +85,7 @@ screen screen_home:
                 focus_mask True
 
         imagebutton:
-            idle showInteractible("home/cat.png",(0.45,0.85))
+            idle showInteractible("home/cat.png",(0.45,0.77))
             hover Transform("home/cat.png", matrixcolor=TintMatrix((255,255,1275)))
             action [AddToSet(done_flag["buttons"], "home/cat.png"), Call("label_home_cat")]
             focus_mask True
@@ -339,7 +339,7 @@ label label_home_comp:
         
     else:
         menu:
-            "You log into discord"
+            "You log in."
             "Post messages":
                 call label_transform_card("talk", "talk2", "Transform 1 Small Talk card into Talk?", "label_home") from _call_label_transform_card_2
             "Read messages":

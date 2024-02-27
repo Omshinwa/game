@@ -327,7 +327,7 @@ screen navigation():
 
             textbutton _("Main Menu") action MainMenu()
 
-        textbutton _("About") action ShowMenu("about")
+        # textbutton _("About") action ShowMenu("about")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
@@ -771,8 +771,23 @@ screen preferences():
                 vbox:
                     style_prefix "radio"
                     label _("Input Mode")
-                    textbutton _("Mouse") action ToggleTouchMode(0)
-                    textbutton _("Touchscreen") action ToggleTouchMode(1)
+                    # textbutton _("Mouse") action ToggleTouchMode(0)
+                    button:
+                        text _("Mouse") style "radio_button_text" yalign 0.5 xpos 80
+                        action ToggleTouchMode(0)
+                        add "gui/mouse.png":
+                            xalign 0.0
+                            yalign 0.5
+                        ysize 70
+                    
+                    button:
+                        text _("Touchscreen") style "radio_button_text" yalign 0.5 xpos 80
+                        action ToggleTouchMode(1)
+                        add "gui/touch.png":
+                            xalign 0.0
+                            yalign 0.5
+                        ysize 70
+                    # textbutton _("Touchscreen") action ToggleTouchMode(1)
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.
@@ -783,21 +798,21 @@ screen preferences():
                 style_prefix "slider"
                 box_wrap True
 
+                # vbox:
+
+                    # label _("Text Speed")
+
+                    # bar value Preference("text speed")
+
+                    # label _("Auto-Forward Time")
+
+
+                    # bar value Preference("auto-forward time")
+
                 vbox:
-
-                    label _("Text Speed")
-
-                    bar value Preference("text speed")
-
-                    label _("Auto-Forward Time")
-
-
-                    bar value Preference("auto-forward time")
-
-                vbox:
-                    #FYN
+                    #FYNEDIT
                     if config.has_music or config.has_sound or config.has_voice:
-                        label _("MASTER")
+                        label _("MASTER VOLUME")
                         hbox:
                             bar value Preference("main volume")
 

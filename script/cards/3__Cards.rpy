@@ -40,7 +40,7 @@ define cardList = {
     "exodia1" : {"txt":_("{b}ORIGIN{/b}\nConvert your\nYou need all\n order to"), "eff":"renpy.call('label_card_exodia', index)", "value":0, "rarity":"rare", "sort":"91"},
 
     "universeout" : {"txt":_("Add 2 Space Out cards in your hand."), "eff":"renpy.call('label_card_universeout')", "value":1, "sort":"63"},
-    "darkhole" : {"txt":_("-1 Lust for each card in hand."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
+    "darkhole" : {"txt":_("Discard the rest of your hand.\n-5 Lust for each discarded card."), "eff":"renpy.call('label_card_darkhole')", "value":1, "sort":"64"},
     "spaceout" : {"txt":_("does nothing"), "value":0, "sort":"65"}, #_("")
     "nova" : {"txt":_("-3*X Lust, where X is the number of Space Out cards in the discard pile."), "eff":"renpy.call('label_card_nova')", "value":1, "sort":"66"},
     #alternatively it could be every space out in deck hand and graveyard
@@ -66,7 +66,6 @@ define cardList = {
     ####            POKER MENU STUFF
 
     "newgame" : {"txt":_("Start a New Game"), "eff":"renpy.jump('start')","sort":"___", },
-    "continue" : {"txt":_("Continue from Last Save"), "eff":"renpy.run(FileLoad(renpy.newest_slot(),newest=False,slot=True))","sort":"___", },
     "load" : {"txt":_("Load a Save file"), "eff":"renpy.run(ShowMenu('load'))","sort":"___", },
     "prefs" : {"txt":_("Open Preferences Menu"), "eff":"renpy.run(ShowMenu('preferences'))","sort":"___", },
     "lang" : {"txt":_("Change Language"), "sort":"___", },

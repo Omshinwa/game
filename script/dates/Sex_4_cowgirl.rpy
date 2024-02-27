@@ -1,14 +1,14 @@
 label label_cowgirl:
     $ date = Date("sex", name="cowgirl", endTurn = "label_cowgirl_SexEndTurn", isWin = "date.orgasm>=date.orgasmMax")
 
-    scene bg basement
+    scene bg living-room
     show joyce cowgirl talk
     with dissolve
 
     j "Ready?"
 
     play sound "rpg/Key.wav"
-    show joyce cowgirl get-hard 1 with dissolve
+    show joyce get-hard 1 with dissolve
 
     if game.progress[1] == -1:
         pause
@@ -20,9 +20,9 @@ label label_cowgirl:
         j "Get hard for me"
         j "I want to slide it right into my pussy."
     pause 0.4
-    show joyce cowgirl get-hard 2
+    show joyce get-hard 2
     pause 0.4
-    show joyce cowgirl get-hard 3
+    show joyce get-hard 3
     pause
 
     if game.progress[1] == -1:
@@ -33,32 +33,32 @@ label label_cowgirl:
             "Fuck me already":
                 j "Yes daddy."
                 j "Anything for you."
-                show joyce cowgirl insert with dissolve
+                show joyce insert with dissolve
                 j "Please fuck me."
             "You're a bitch":
                 j "Oh yes I'm a bitch."
                 j "But I'm your bitch, daddy."
                 j "Forget any other girl."
-                show joyce cowgirl insert with dissolve
+                show joyce insert with dissolve
         j "My pussy is only yours."
         j "Can you feel how wet I am?"
     else:
         j "Sorry if I get loud."
         j "I've been waiting so long for this."
     play sound "sex/sloppy.wav"
-    show joyce cowgirl 6 with dissolve
+    show joyce 6 with dissolve
     pause 0.4
     j "Oh my god yes."
     play sound "sex/sloppy.wav"
-    show joyce cowgirl 1 with dissolve
+    show joyce 1 with dissolve
     pause 0.4
     j "Your dick feels so good."
-    show joyce cowgirl 2 with dissolve
+    show joyce 2 with dissolve
     j "Fuck me daddy."
 
     call label_beginDuel_common() from _call_label_beginDuel_common_9
     $ current_speed = date.animation_speed
-    show joyce cowgirl with dissolve
+    show joyce with dissolve
     show moan_bubble
     $ renpy.music.play("sex/moans.wav", channel="sexvoice", loop=True)
     $ phase = 1
@@ -131,9 +131,9 @@ label label_cowgirl_v2:
     show joyce
     j "It's coming !{w=1.0}{nw}"
     $ date.speedUp()
-    show joyce cowgirl 3 with dissolve 
+    show joyce 3 with dissolve 
     pause 0.3
-    show joyce cowgirl orgasm 2 at shaking with vpunch
+    show joyce orgasm 2 at shaking with vpunch
     $ renpy.music.play("sex/moans_climax.wav", channel="sexvoice", loop=True)
     hide moan_bubble
     j "Kyaaa{w=1.0}{nw}"
@@ -187,7 +187,7 @@ label label_cowgirl_isWin:
     show joyce
     pause 0.5
 
-    show joyce cowgirl orgasm 3 at shaking with vpunch
+    show joyce orgasm 3 at shaking with vpunch
     $ renpy.music.play("sex/moans_climax.wav", channel="sexvoice", loop=True)
     j "gNHUUUUUU{w=2.0}{nw}"
     j "NGOooOOOO{w=1.0}{nw}"
@@ -196,23 +196,23 @@ label label_cowgirl_isWin:
     stop sexvoice fadeout 0.2
     hide moan_bubble
     pause(1)
-    show joyce cowgirl orgasm 3 at default
+    show joyce orgasm 3 at default
     pause 0.3
-    show joyce cowgirl orgasm 3 at trs_fastbreath
+    show joyce orgasm 3 at trs_fastbreath
     $ renpy.music.play("sex/heavy-breathing.wav", channel="sexvoice", loop=True, relative_volume=0.5)
     pause
     stop sexvoice
-    play sound "_sex/Fouet.mp3" volume 0.4
-    show joyce cowgirl orgasm 4 at default with vpunch
+    play sound "sex/_Fouet.mp3" volume 0.4
+    show joyce orgasm 4 at default with vpunch
     pause
-    show joyce cowgirl orgasm 5 with dissolve
+    show joyce orgasm 5 with dissolve
     pause(0.3)
     play sound "sex/cum-out.mp3"
-    show joyce cowgirl orgasm 6 with dissolve
+    show joyce orgasm 6 with dissolve
     pause(0.3)
-    show joyce cowgirl orgasm 7 with dissolve
+    show joyce orgasm 7 with dissolve
     pause(0.3)
-    show joyce cowgirl orgasm 8 with dissolve
+    show joyce orgasm 8 with dissolve
     pause
     "It seems like she's unconscious..."
     return
@@ -234,23 +234,23 @@ label label_cowgirl_isLost:
     with dissolve
     play sound "sex/_Poison-cum.wav"
     pause 0.1
-    show joyce cowgirl 3 at shaking with dissolve
+    show joyce 3 at shaking with dissolve
     pause 0.7
-    show joyce cowgirl 3 at default
+    show joyce 3 at default
     pause
     j "Daddy, you just came!"
     j "Are you trying to make me pregnant?"
     j "My belly feels so warm now."
-    show joyce cowgirl cum-out 1 with dissolve
+    show joyce cum-out 1 with dissolve
     pause 0.4
     play sound "sex/cum-out.mp3"
-    show joyce cowgirl cum-out 2 with dissolve
+    show joyce cum-out 2 with dissolve
     pause 0.4
-    show joyce cowgirl cum-out 3 with dissolve
+    show joyce cum-out 3 with dissolve
     pause
     j "Look at all this cum."
     play sound "rpg/Key.wav"
-    show joyce cowgirl lock with dissolve
+    show joyce lock with dissolve
     pause
     j "Alright daddy it's time to go back to your kennel."
     j "Frankly,"

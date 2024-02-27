@@ -67,7 +67,8 @@ label label_tutorial:
                 hide joyce with dissolve
                 
                 call label_newDay("label_home_tutorial")
-
+        
+        show joyce null with dissolve
         if len(deck.hand) == 0:
             call expression date.endTurn
 

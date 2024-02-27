@@ -635,7 +635,7 @@ screen sprt_viewport_layered(demonstration=False, tinted=False):
         xinitial persistent.sprt_xinitial.setdefault(persistent.sprt_who, 0.5)
         fixed:
             xysize (config.screen_width*4, config.screen_height*4)
-            if not demonstration and not tinted:
+            if not demonstration and not tinted and persistent.sprt_who:
                 add sprt.construct_image_attributes(persistent.sprt_who):
                     align (0.5, 0.5) zoom persistent.sprt_zoom_dict.setdefault(
                         persistent.sprt_who, 1.0)

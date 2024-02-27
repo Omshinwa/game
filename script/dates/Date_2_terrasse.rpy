@@ -33,6 +33,7 @@ label label_terrasse:
                 j "See ya!"
                 call label_newDay("label_home") from _call_label_newDay_10
 
+        show joyce null with dissolve
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_3
 
@@ -53,11 +54,11 @@ label label_terrasse_endTurn:
             j blush tired opened "Geez, it's so hot today."
             j "Hold on, I'm gonna go to the bathroom."
             j "Be right back."
-            show joyce at standing with dissolve
+            show joyce at trs_standing with dissolve
             pause 0.5
             hide joyce with dissolve
             pause 3.0
-            show joyce outfit2 at standing as joyce with dissolve
+            show joyce outfit2 at trs_standing as joyce with dissolve
             j smile "Hey" 
             j "Sorry, it was just too hot."
             show joyce outfit2

@@ -245,9 +245,14 @@ label label_prison_toilet:
 
 label label_prison_food:
     menu:
-        "Eat and get stronger? (+1 dick size)"
+        "Eat?"
         "Yes":
+            play sound "day/412068__inspectorj__chewing-carrot-a.wav"
+            $ temp = game.lustMax
             $ game.lustMax += 1
+            "You feel a bit more resilient.\n([temp]->[game.lustMax])"
+            with dissolve
+            pause 1.0
             call label_newDay("label_prison") from _call_label_newDay_5
         "No":
             pass
@@ -303,28 +308,28 @@ screen screen_prison_sans_rat:
     sensitive game.jeu_sensitive
 
     imagebutton:
-        idle showInteractible("prison/toilet.png", (0.85,0.95))
+        idle showInteractible("prison/toilet.png", (0.78,0.8))
         hover Transform("prison/toilet.png", matrixcolor=TintMatrix((355,355,575))) 
         action [AddToSet(done_flag["buttons"], "prison/toilet.png"), Call("label_prison_toilet")]
         focus_mask True
         sensitive True
 
     imagebutton:
-        idle showInteractible("prison/bed.png",(0.1,0.9))
+        idle showInteractible("prison/bed.png",(0.15,0.8))
         hover Transform("prison/bed.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/bed.png"), Call("label_prison_bed")]
         focus_mask True
         sensitive True
 
     imagebutton:
-        idle showInteractible("prison/metal-door.png",(0.6,0.5))
+        idle showInteractible("prison/metal-door.png",(0.57,0.45))
         hover Transform("prison/metal-door.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/metal-door.png"), Call("label_prison_open_door")]
         focus_mask True
         sensitive True
 
     imagebutton:
-        idle showInteractible("prison/food-tray.png",(0.55,0.95))
+        idle showInteractible("prison/food-tray.png",(0.53,0.83))
         hover Transform("prison/food-tray.png", matrixcolor=TintMatrix((355,355,575)))
         action [AddToSet(done_flag["buttons"], "prison/food-tray.png"), Call("label_prison_food")]
         focus_mask True
@@ -337,7 +342,7 @@ screen screen_prison:
     sensitive game.jeu_sensitive
 
     imagebutton:  
-        idle showInteractible("prison/rat.png", (0.3, 0.95))
+        idle showInteractible("prison/rat.png", (0.32, 0.83))
         hover Transform("prison/rat.png", matrixcolor=TintMatrix((355,355,575)))
         action  [AddToSet(done_flag["buttons"], "prison/rat.png"), Show("screen_prison_rat_add_cards")]
         focus_mask True

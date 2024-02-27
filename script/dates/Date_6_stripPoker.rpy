@@ -166,6 +166,7 @@ label label_stripPoker:
             show joyce 
 
         
+        show joyce null with dissolve
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_5
 

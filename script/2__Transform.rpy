@@ -22,7 +22,7 @@ transform trs_depied:
     yanchor 1.0
     zoom 0.9 xalign 0.5
 
-transform standing:
+transform trs_standing: #thats just trs_sitting but when they get up
     ypos 1080
     yanchor 1.0
     zoom 1.0 xalign 0.5

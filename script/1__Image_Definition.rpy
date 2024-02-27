@@ -15,10 +15,15 @@ init python:
         txt += "'#0000', 2.0)"
         return eval(txt)
 
-# image test:
-#     contains:
-#         "cut-in_drink"
-#         shaking
+    #create an animation from AE
+    def generate_anim_AE(img_path, frames, speed=0.1):
+        txt = "Animation("
+        for frame in range(frames):
+            txt += "'"+ img_path + format(frame,'02d') + ".png', "+str(speed)+","
+        
+        txt += "'#0000', 0.0)"
+        return eval(txt)
+
 
 image moan_bubble:
     # DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
@@ -163,8 +168,7 @@ layeredimage joyce:
         attribute push if_any "outfitsm":
             "joyce_arm_right_back_sm"
 
-        attribute whip:
-            "joyce_arm_whip_back_sm"
+
         attribute key if_not "outfitsm":
             "joyce_arm_key"
         attribute key if_not "outfitsm":
@@ -185,6 +189,13 @@ layeredimage joyce:
             "joyce_arm_back_diagonal"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_back_diagonal_sport"
+
+        attribute whip:
+            "joyce_arm_whip_back_sm"
+        attribute whisper:
+            "joyce_arm_whisper_back"
+        attribute whisper if_not "outfit3":
+            "joyce_arm_right_back"
 
     group base:
         attribute base default:
@@ -351,6 +362,12 @@ layeredimage joyce:
         attribute undress if_any ["outfitsport", "outfitsport2"]:
             "joyce_arm_front_sport_undress"
         
+        attribute whisper:
+            "joyce_arm_whisper_front"
+        attribute whisper if_all "outfit3":
+            "joyce_arm_holdbook_right"
+
+        
 
 image img_blink:
     "joyce_eyes_normal"
@@ -384,8 +401,6 @@ init python:
         renpy.show("joyce -" + " -".join(temp))
         
         return
-
-
 
 init python:
     #those are functions used to make writing SEX animations easier/more dynamic
@@ -438,6 +453,9 @@ layeredimage joyce cowgirl:
             "img_joyce_cowgirl"
         attribute v2:
             "img_joyce_cowgirl"
+        attribute v2 if_all "naked":
+            "img_joyce_cowgirl"
+
 
 image img_joyce_footjob:
     "Joyce/sex/footjob/joyce footjob 1.png"
@@ -593,6 +611,7 @@ image img_joyce_titjob:
     img_if_naked("titjob/joyce titjob 6")
     skip_frame_if_slow(1)
     repeat
+
 image img_joyce_titjob_v2:
     function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
     img_if_naked("titjob/joyce titjob v2 1")
@@ -615,7 +634,11 @@ layeredimage joyce titjob:
     group titjob:
         attribute v1 default:
             "img_joyce_titjob"
-        attribute v2:
+        attribute naked if_not "v2":
+            "img_joyce_titjob"
+        attribute v2 if_not "naked":
+            "img_joyce_titjob_v2"
+        attribute v2 if_all "naked":
             "img_joyce_titjob_v2"
 
 image img_joyce_blowjob:

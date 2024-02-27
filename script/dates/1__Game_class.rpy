@@ -82,13 +82,14 @@ default g.phoneLogs = {
     4:[
         [0, "hey look at this kitty"], [0, "she followed me around"], [0,"such a cutie! I wished I had a cat."], [1, "pic2.png"], ["exe", "renpy.call('label_pic2_reaction')"]
     ],
-    5:[
-        [0,"that was a nice date"],[0, "but I know where we could go next time!"],[0, "let's go to a fancy bar!"], [0, "how about it"], [2, "Good idea!"], [2, "Let's try and dress a bit fancy haha"], [0, "ooh i like that"], [0, "alright that's a plan then."],[0, "im gonna go to sleep now"],[0, "good niight <3"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')", [2, "goodnight"]]
-    ],
-    6:[[0, "next date is library"]],
-    7:[[0, "next date is library"]],
+    5:[[0, "next date is library"]],
+    6:[[0, "I want to try a quiet date."],[0, "Let's go to the library tomorrow!"],[0, "Think of a book you want to read."]],
+    
+    7:[[0, "next date is jogging"]],
     8:[[0, "next date is jogging"]],
-    9:[[0, "next date is jogging"]],
+    9:[
+        [0,"that was a nice date"],[0, "but I know where we could go next time!"],[0, "let's go to a fancy bar!"], [0, "how about it"], [2, "Good idea!"], [2, "Let's try and dress a bit fancy haha"], [0, "ooh i like that"], [0, "alright that's a plan then."],[0, "im gonna go to sleep now"],[0, "good niight <3"],[1, "pic3.png"], ["exe", "renpy.call('label_pic3_reaction')"], [2, "goodnight"]
+        ],
     10:[
         [0, "about the fancy bar"],[0, "I don't know what to wear for tomorrow"],[0, "which dress do you think looks better?"],[1, "pic4.png"], ["exe", "renpy.call('label_pic4_reaction')"]
     ],

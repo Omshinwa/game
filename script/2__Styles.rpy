@@ -66,56 +66,12 @@ transform tintImg(child, color): #DOES NOT WORK IF THE IMAGE ISNT FULL SCREEN, u
     child
     matrixcolor TintMatrix(color)
 
-transform showInteractible(child, xyalign=(0.5,0.5)):
+transform showInteractible(child, pos=(0.5,0.5)):
     matrixcolor IdentityMatrix()
     contains:
         child
     contains:
-        "click-me"
-        align xyalign
+        generate_anim_AE("images/ui/click-me/click-me_",34)
+        anchor (0.5, 0.5)
+        pos pos
         alpha (0.0 if child in done_flag["buttons"] else 1.0)
-
-image click-me-small:
-    "ui/click-me.png"
-    anchor (0.5,0.5)
-    subpixel True
-    parallel:
-        ease 3.0 zoom 0.0
-        ease 0.5 zoom 0.5
-        repeat
-    parallel:
-        linear 3.0 yoffset -20
-        yoffset 40
-        linear 0.5 yoffset 30
-        repeat
-
-image click-me:
-    xysize (250, 250)
-    contains:
-        pause 0.5
-        "click-me-small"
-        pos (0.3,0.6)
-    contains:
-        pause 1.5
-        "click-me-small"
-        pos (0.4,0.3)
-    contains:
-        "click-me-small"
-        pos (0.75,0.3)
-    contains:
-        pause 2.5
-        "click-me-small"
-        pos (0.25,0.35)
-    contains:
-        "click-me-small"
-        pos (0.6,0.7)
-    contains:
-        pause 0.7
-        "click-me-small"
-        pos (0.5,0.4)
-    contains:
-        pause 2.0
-        "click-me-small"
-        pos (0.7,0.6)
- 
-    

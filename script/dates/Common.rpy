@@ -289,9 +289,6 @@ label label_endTurn_common():
     
     $ game.jeu_sensitive = True;
 
-    if game.state == "dating":
-        show joyce null with dissolve
-
     return
 
 label label_after_successful_Date_common():
@@ -325,10 +322,6 @@ label label_after_successful_Date_common():
     $ g.phoneProgress[1] = 0
 
     $ game.animation_speed = 0
-
-    if game.state == "dating":
-        show joyce null with dissolve
-    return
 
 label label_date_isLost_common(var_label_callback = "label_home"):
     # """

@@ -35,9 +35,11 @@ label label_bubbleTea:
                 j worried "It's getting quite warm! How about we enjoy our drinks outdoors next time?"
                 call label_newDay("label_home") from _call_label_newDay_9
                 
+        show joyce null with dissolve
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_2
         $ game.jeu_sensitive = True
+        
         call screen screen_gameloop()
         
     jump .gameLoop
@@ -49,11 +51,11 @@ label label_bubbleTea_endTurn:
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             j "I'm gonna grab a drink, I'll get something for you too!"
-            show joyce at standing with dissolve
+            show joyce at trs_standing with dissolve
             pause 0.5
             hide joyce with dissolve
             pause 2.0
-            show joyce outfit1 smile at standing with dissolve
+            show joyce outfit1 smile at trs_standing with dissolve
             show joyce at trs_sitting with dissolve
             j "Here."
             play sound "day/put_on_table.wav"

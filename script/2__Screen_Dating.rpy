@@ -66,7 +66,7 @@ screen screen_date_bottom_ui():
             else:
                 ysize 200
             yalign 1.0
-            xpos 150
+            xpos 120
             # background "#0f03"
     
     else:
@@ -361,12 +361,16 @@ screen screen_gameloop():
     pass
 
 image img_end_turn:
+    xysize (160, 290)
     contains:
         "ui/end_turn.png"
+        xalign 1.0
+        ypos 10
     contains:
-        Text(_("END{size=60}\nTURN"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, align=(0.5, 1.1), font="font_carrare")
-        # Text(_("结束{size=60}\n回合"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, align=(0.5, 1.1), font="font_carrare")
+        Text(_("END{size=60}\nTURN"), color="#ffffff", outlines=[ (5, "#00000055", 0, 0) ], kerning=-5, size=80, pos=(-20, 70), font="font_carrare")
         rotate -90
+    # contains:
+    #     Solid("#00f8")
 
 image button_img_end_turn:
     on idle:
@@ -374,15 +378,15 @@ image button_img_end_turn:
     on hover:
         "img_end_turn"
     on selected_insensitive: #selected_hover, selected_idle, 
-        crop (0, 0, 200, 290)
+        crop (0, 0, 160, 290)
         contains:
             "img_end_turn"
             ypos 0
-            linear 0.3 ypos -1.0
+            linear 0.3 ypos -290
         contains:
             "img_end_turn"
-            ypos 1.0
-            linear 0.3 ypos 0.0
+            ypos 290
+            linear 0.3 ypos 0
 
     on insensitive:
         Transform("img_end_turn",alpha=0.7)
@@ -392,9 +396,7 @@ screen screen_buttons_ui():
     #END TURN
     button: # at Transform(None,alpha=0.7)
         add "button_img_end_turn"
-        align (0, 1.00)
-        xsize 200
-        ysize 290
+        align (0.0, 1.0)
         action [Play('sound',"card/switch.mp3", selected=True), Call(date.endTurn)]
         sensitive game.jeu_sensitive
             

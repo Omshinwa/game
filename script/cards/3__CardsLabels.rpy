@@ -63,31 +63,31 @@ label label_card_peek5:
     $ date.increment('lust',30)
     return
 label label_card_eyecontact:
-    $ date.increment('attraction',1,False);
     if "eyecontact" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_eyecontact"):
         $ renpy.call(date.name + "_eyecontact") 
     else:
         call label_reaction
+    $ date.increment('attraction',1,False);
     return
 label label_card_flirt:
-    $ date.increment('attraction',2,False);
     if "flirt" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_flirt"):
         $ renpy.call(date.name + "_flirt") 
     else:
         call label_reaction
+    $ date.increment('attraction',2,False);
     return
 label label_card_touchy:
-    $ date.attractionMultiplier *= 2
     if "touchy" in date.playedThisTurn:
         pass
     elif renpy.has_label(date.name + "_touchy"):
         $ renpy.call(date.name + "_touchy") 
     else:
         call label_reaction
+    $ date.attractionMultiplier *= 2
     return
 label label_card_talk:
     if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
@@ -196,8 +196,14 @@ label label_shuffle:
     return
 
 label label_card_darkhole:
+    # $ i = len(deck.hand)
+    # $ date.increment("lust", -i, True)
+    # return
     $ i = len(deck.hand)
-    $ date.increment("lust", -i, True)
+    while len(deck.hand)>0:
+        $ deck.discard(0)
+        $ date.increment("lust", -5, False)
+    $ date.increment("lust", 0, True)
     return
 
 label label_card_recycle(index):
