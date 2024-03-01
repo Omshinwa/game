@@ -158,7 +158,7 @@ label playCard(card, index, playCardindex=0):
         $ exec(commands[playCardindex])
         $ playCardindex+=1
         # "done exec [playCardindex]"
-        pause 0.2
+        # pause 0.1
     # "deleting [playCardindex]"
     if card.name not in date.playedThisTurn:
         $ date.playedThisTurn.append(card.name)

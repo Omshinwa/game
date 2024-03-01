@@ -70,12 +70,13 @@ screen quick_menu():
             hbox:
                 style_prefix "quick"
 
-                xalign 1.0
+                xanchor 1.0
+                xpos 1920
                 yalign 1.0
-                textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color gui.hover_color #
+                textbutton _("menu") action ShowMenu('preferences') text_size 50 text_color "#fff" text_hover_color "#b2f5ce" #ysize 45 # text_yoffset -10
 
 style style_debug_text:
-    size 40 color "#FF0" ypos 0 outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]
+    size 40 color "#FF0" ypos 0 outlines [ (4, "#050505", 0, 2) ]
 screen screen_debug:
     zorder 100
 

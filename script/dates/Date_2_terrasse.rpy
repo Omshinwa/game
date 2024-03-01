@@ -45,6 +45,8 @@ label label_terrasse:
 
 
 label label_terrasse_endTurn:
+    
+    call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_2
     
     if game.progress[1]<=0:            
@@ -80,9 +82,6 @@ label label_terrasse_endTurn:
             pause 0.5
     else:
         call label_reaction from _call_label_reaction_2
-
-
-    call label_endTurn_common from _call_label_endTurn_common_2
 
     if "outfit2" in renpy.get_attributes("joyce"):
         call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5) from _call_label_add_card_to_deck_6

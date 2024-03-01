@@ -9,6 +9,8 @@ define config.font_name_map["font_carrare"] = FontGroup().add("Venus+Carrare.otf
 define config.font_name_map["font_venus_acier"] = FontGroup().add("DejaVuSans.ttf", 0x002A, 0x002A).add("Venus+Plomb.otf", 0x0020, 0x007f).add("DejaVuSans.ttf", 0x00A0,0x00B2).add("AdobeHeitiStd-Regular.otf", 0x0000, 0xffff)
 #.add("Venus+Carrare.otf", 0x0020, 0x007f)
 
+define gui.matrix_green_colorize = ColorizeMatrix("#009f5d","#dfd")
+
 style default:
     properties gui.text_properties()
     language gui.language
@@ -20,17 +22,17 @@ style default:
 
 style outline_text:
     color "#000000"
-    outlines [ (absolute(4), "#ffffff", absolute(0), absolute(2)) ]
+    outlines [ (5, "#ffffff", 0, 2) ]
     font "font_venus_cormier"
 
 style outline_dyslexic:
     color "#fff"
-    outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]
+    outlines [ (4, "#050505", 0, 2) ]
     font "font_venus_cormier"
 
 style style_small_numbers:
     color "#fff"
-    outlines [ (absolute(4), "#050505", absolute(0), absolute(2)) ]
+    outlines [ (4, "#050505", 0, 2) ]
     font "font_carrare"
 
 style style_card_effect:
@@ -43,7 +45,7 @@ style style_card_effect:
 
 style quirky_command:
     color "#ffffff"
-    # outlines [ (absolute(8), "#181d2899", absolute(0), absolute(10)), (absolute(10), "#25d7ff", absolute(0), absolute(0)), (5, "#000000", absolute(0), absolute(0)) ]
+    # outlines [ (8, "#181d2899", 0, absolute(10)), (absolute(10), "#25d7ff", 0, 0), (5, "#000000", 0, 0) ]
     outlines [ (8, "#181d2899", 0, 10), (10, gui.hover_color, 0, 0), (5, "#000000", 0, 0) ]
     font "font_carrare"
     size 100

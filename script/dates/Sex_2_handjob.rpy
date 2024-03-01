@@ -88,9 +88,7 @@ label label_handjob:
 
 
 label label_handjob_endTurn:
-    $ game.jeu_sensitive = False
-
-    call label_sex_endTurn()
+    call label_endTurn_common
 
     $ date.speedUp()
     $ date.lustPerTurn += 3
@@ -106,7 +104,6 @@ label label_handjob_endTurn:
     elif date.turn > 3:
         call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_17   
         pause 0.5
-    call label_endTurn_common from _call_label_endTurn_common_6
 
     if date.isWin():
             

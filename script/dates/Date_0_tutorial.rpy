@@ -80,8 +80,8 @@ label label_tutorial:
 
 
 label label_tutorial_endTurn:
-    call label_date_isLost_common("label_home_tutorial")
     call label_endTurn_common
+    call label_date_isLost_common("label_home_tutorial")
     return
 
 

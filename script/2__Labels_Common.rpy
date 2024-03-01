@@ -22,7 +22,7 @@ label label_newDay(var_label_callback="label_home"):
     
     $ game.state = "living"
     with dissolve
-    $ game.lust += eval(game.lustPerDay)
+    $ game.lust += game.lustPerDay
     
     # pause
     # jump expression "label_home_tutorial"

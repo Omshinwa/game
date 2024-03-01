@@ -64,8 +64,9 @@ label label_library:
     pause
     j "Did you bring a water bottle?"
     j smirk "I brought one in case."
+    $ date.drink = 3
     play sound "day/put_on_table.wav"
-    show screen screen_glass("library") onlayer master zorder 2
+    show screen screen_glass("library", (600,600)) onlayer master zorder 2
     with dissolve
     pause
     j happy blush "You can drink from it if you're thirsty."
@@ -88,8 +89,8 @@ label label_library:
             if date.isWin():
                 call label_after_successful_Date_common
                 call label_newDay("label_home")
-
-        show joyce eyesdown null_skin null_mouth holdbook with dissolve
+        pause 0.0
+        show joyce eyesdown null_skin null_mouth holdbook with Dissolve(.5)
         if len(deck.hand) == 0:
             call expression date.endTurn
 
@@ -103,16 +104,17 @@ label label_library:
     call label_newDay("label_home")
 
 label label_library_endTurn:
+    call label_endTurn_common
     call label_date_isLost_common
 
 label label_library_talk:
-    menu:
-        "What are you reading?":
-            j -eyedown "Oh, this?"
-    j "It's an ancient Indian book on the philosophy and theory of love"
-    menu:
-        "Is it good?":
-            j "Oh yea it's pretty interesting."
-            j "I might borrow it."
-        "What is it called?":
-            j blush "Em, you wouldn't know it."
+    # menu:
+    #     "What are you reading?":
+    #         j -eyedown "Oh, this?"
+    # j "It's an ancient Indian book on the philosophy and theory of love"
+    # menu:
+    #     "Is it good?":
+    #         j "Oh yea it's pretty interesting."
+    #         j "I might borrow it."
+    #     "What is it called?":
+    #         j blush "Em, you wouldn't know it."

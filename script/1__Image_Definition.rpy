@@ -189,13 +189,16 @@ layeredimage joyce:
             "joyce_arm_back_diagonal"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_back_diagonal_sport"
-
+        
+        attribute throwWater:
+            "joyce_arm_right_back"
         attribute whip:
             "joyce_arm_whip_back_sm"
         attribute whisper:
             "joyce_arm_whisper_back"
         attribute whisper if_not "outfit3":
             "joyce_arm_right_back"
+
 
     group base:
         attribute base default:
@@ -359,6 +362,14 @@ layeredimage joyce:
             "joyce_arm_defend_front_sport"
         attribute defend if_any "night":
             "joyce_arm_defend_night"
+
+        attribute shh:
+            "joyce_arm_right_shh"
+        attribute shh if_all "outfit3":
+            "joyce_arm_holdbook_right"
+
+        attribute throwWater:
+            "joyce_arm_throwwater"
         attribute undress if_any ["outfitsport", "outfitsport2"]:
             "joyce_arm_front_sport_undress"
         
@@ -382,10 +393,10 @@ image img_blink:
     pause(2.0)
     repeat
 
-default animation_speed = 0.9
+default animation_speed = 0.999
 
 init python:
-    def update_animationSpeed(speed:float = None) :
+    def update_animationSpeed(speed:float = None, * , changeSprite:bool = True) :
         """
         whenever the speed changes, we need to show the img again. also it automatically put "v2" again 
         """
@@ -396,9 +407,12 @@ init python:
 
         # if _in_replay:
             # if joyce isnt in animation mode, this remake her animated by removing superfluous tags
-        keywords = [renpy.get_attributes("joyce")[0], "naked", "v2"]
-        temp = tuple(element for element in renpy.get_attributes("joyce") if element not in keywords)
-        renpy.show("joyce -" + " -".join(temp))
+        
+        # do we update the sprite to show the sex animation?
+        if changeSprite:
+            keywords = [renpy.get_attributes("joyce")[0], "naked", "v2"]
+            temp = tuple(element for element in renpy.get_attributes("joyce") if element not in keywords)
+            renpy.show("joyce -" + " -".join(temp))
         
         return
 

@@ -43,7 +43,7 @@ init python:
                 self._isLost = kwargs["isLost"]
             else:
                 if game.state == "dating":
-                    self._isLost = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 1"
+                    self._isLost = None
                 else:
                     self._isLost = "date.lust >= date.lustMax"
 
@@ -63,10 +63,10 @@ init python:
             self.drink = 3
             self.turn = 0
             self.naked = False
-            self.lustMax = -99
-            self.lust = -99
-            self.trust = -99
-            self.attraction = -99
+            self.lustMax = game.lustMax
+            self.lust = game.lust
+            self.trust = game.trust
+            self.attraction = game.attraction
 
             self.trustMultiplier = 1
             self.attractionMultiplier= 1
@@ -125,6 +125,8 @@ init python:
                 i += 1
 
         def isLost(self):
+            if self._isLost == None: #default behavior
+                return eval("len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0")
             return eval(self._isLost)
         def isWin(self):
             return eval(self._isWin)
@@ -147,7 +149,7 @@ init python:
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
                     if value>0:
-                        renpy.sound.play("rpg/Lust.wav", relative_volume=0.5)
+                        renpy.sound.play("rpg/Lust.wav", relative_volume=min(0.5,0.05*value))
                     if negative:
                         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
                         self.lustMultiplier = 1
@@ -165,13 +167,11 @@ init python:
                     self.allMultiplierOnce = 1
             else:
                 setattr(self, which, getattr(self,which) + value )
+                
             now = getattr(self,which)
             
-            print(0.1*abs(now-before)**0.5)
-            renpy.with_statement(ImageDissolve("gui/transition.png", min(max(0.2, 0.1*abs(now-before)**0.5),3.0), reverse=value>0 ))
-
-            # else:
-            #     renpy.with_statement(ImageDissolve("gui/transition.png", max(0.2, 0.05 *abs(now-before)), reverse=True) )
+            # print(0.1*abs(now-before)**0.5)
+            # renpy.with_statement(ImageDissolve("gui/transition.png", min(max(0.2, 0.1*abs(now-before)**0.5),3.0), reverse=value>0 ))
                 
         def replay_mode(self):
             renpy.say("","debug mode is on, setting isLost to False and isWin to False and game.progress to -1")
@@ -194,24 +194,17 @@ init python:
 label label_beginDuel_common():
 
     $ game.jeu_sensitive = False;
-
-    $ date.lust = game.lust
-    $ date.lustMax = game.lustMax
-    $ date.lustMultiplier = 1
-    $ date.trust = game.trust
-    $ date.trustMultiplier = 1
-    $ date.attraction = game.attraction
-    $ date.attractionMultiplier = 1
-    
     $ date.animation_speed = 1
+    
+    if game.state == "sexing":
 
-    $ deck.drink = 3
-
-    if game.state == "sexing" and (_in_replay or game.debug_mode):
-        show screen screen_replay(date.name)
-        $ update_animationSpeed()
-        $ deck.hand = [Card("undress")]
-        return
+        if (_in_replay or game.debug_mode):
+            show screen screen_replay(date.name)
+            $ deck.hand = [Card("undress")] #useful to have a card in hand so it doesnt skip turns
+            $ update_animationSpeed()
+            return
+        
+        $ update_animationSpeed(changeSprite=False)
 
     if game.progress[1] == -1:
         $ game.progress[1] = 0
@@ -251,7 +244,6 @@ label label_beginDuel_common():
     return
 
 label label_sex_endTurn():
-    $ i=0
     # while i < date.animation_lust[date.animation_speed]:
     #     $ date.lust += 1
     #     $ date.orgasm += 1
@@ -259,22 +251,27 @@ label label_sex_endTurn():
     #     pause(1.0/ date.animation_lust[date.animation_speed])
 
     play sound "card/switch.mp3"
-    
-    while i < date.lustPerTurn:
-        $ date.lust += 1
-        $ date.orgasm += 1
-        $ i += 1
-        pause(1.0/ date.lustPerTurn)
+    $ date.lust += date.lustPerTurn
+    $ date.orgasm += date.lustPerTurn # times the sensitivity
     return
 
 label label_endTurn_common():
+    # """
+    # this label is called after every turn
+    # """
+    $ game.jeu_sensitive = False
+
+    if game.state == "sexing":
+        call label_sex_endTurn
+    else:
+        play sound "card/switch.mp3"
+    pause 0.3 #allows for the animation to be played
+
     $ date.playedThisTurn = []
     $ date.attractionMultiplier = 1
     $ date.trustMultiplier = 1
     $ date.turn += 1
     $ game.progress[1] = max(date.turn, game.progress[1])
-
-    $ handSize = len(deck.hand)
 
     if game.state == "sexing" and date.lust + date.lustPerTurn >= date.lustMax:
         play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
@@ -283,12 +280,12 @@ label label_endTurn_common():
         play sound "rpg/Item1.wav"
         pause 0.3
 
-    while handSize < 5 and len(deck.deck)>0:
-        $ deck.draw(1)
+    if not date.isLost():
         $ handSize = len(deck.hand)
+        while handSize < 5 and len(deck.deck)>0:
+            $ deck.draw(1)
+            $ handSize = len(deck.hand)
     
-    $ game.jeu_sensitive = True;
-
     return
 
 label label_after_successful_Date_common():
@@ -322,15 +319,10 @@ label label_after_successful_Date_common():
     $ g.phoneProgress[1] = 0
 
     $ game.animation_speed = 0
+    
+    return
 
 label label_date_isLost_common(var_label_callback = "label_home"):
-    # """
-    # this label is called after every turn
-    # """
-    play sound "card/switch.mp3"
-    $ game.jeu_sensitive = False
-    pause 0.3 #allows for the animation to be played
-
     if date.isLost():
 
         if _in_replay or game.debug_mode :

@@ -47,7 +47,7 @@ label label_stripPoker:
         pause
         show joyce smile night at trs_depied 
     with dissolve
-    j foxy "here"
+    j foxy "Here."
     play sound "day/put_on_table.wav"
     show screen screen_glass("house") onlayer master zorder 2
     with dissolve
@@ -88,9 +88,49 @@ label label_stripPoker:
 
                     if stripPoker_got_drugged == False:
                         j "..."
-                        j tired -smile"..."
+                        show joyce tired -smile
+                        pause
                         j night5 "Hey..."
-                        j "You know what's going on... Don't you?"  
+                        j "You know what's going on... Don't you?"
+                        j "..."
+                        hide screen screen_glass onlayer master
+                        show joyce throwWater
+                        pause 0.1
+                        play sound "date/throw-water.ogg"
+                        # pause 0.1
+                        show throw-wine 2 onlayer master zorder 2
+                        # with dissolve
+                        pause 0.1
+                        show throw-wine 3
+                        # with dissolve
+                        pause 0.1
+                        show throw-wine 4
+                        # with dissolve
+                        pause
+                        "!"
+                        show layer master:
+                            blur 10
+                        with dissolve
+                        "(Your eyes hurt!)"
+                        j -throwWater "Why did you have to make it so hard, huh?"
+                        show black onlayer screens:
+                            alpha 0.2
+                        with Dissolve(0.4) 
+                        "You suddenly feel tired..."
+                        j "Be a good boy, and go to sleep."
+                        show black onlayer screens:
+                            alpha 0.5
+                        with Dissolve(0.4) 
+                        pause
+                        "It's no use, you can't see anything, you don't know where you're going."
+                        show black onlayer screens:
+                            alpha 1.0
+                        with Dissolve(0.4) 
+                        pause
+                        j "Everything will be just fine."
+                        pause 1.0
+                        call label_newDay("label_welcome_prison")
+
 
                     show black onlayer screens:
                         alpha 0.4
@@ -179,11 +219,11 @@ label label_stripPoker:
 
 
 label label_stripPoker_endTurn:
+    call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_4
     
     # call label_reaction from _call_label_reaction_4
 
-    call label_endTurn_common from _call_label_endTurn_common_4
     if "night2" in renpy.get_attributes("joyce"):
         call label_add_card_to_deck("hand", Card("peek2"), pauseTime = 0.5) from _call_label_add_card_to_deck_8
     if "night3" in renpy.get_attributes("joyce"):

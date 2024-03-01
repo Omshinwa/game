@@ -356,8 +356,8 @@ label label_home_bed:
             queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
             pause 2.0
             queue sound ["sex/_Poison-cum.wav"]
-            "Lust reset to zero"
-            $ game.lust = -1 * eval(game.lustPerDay)
+            "Lust reset to zero."
+            $ game.lust = -1 * game.lustPerDay
             
             python:
                 if renpy.random.random() > 0.5:

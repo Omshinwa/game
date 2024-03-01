@@ -1,3 +1,13 @@
+
+#        ::::::::::: ::::::::  :::   :::  ::::::::  :::::::::: 
+#            :+:    :+:    :+: :+:   :+: :+:    :+: :+:        
+#            +:+    +:+    +:+  +:+ +:+  +:+        +:+        
+#            +#+    +#+    +:+   +#++:   +#+        +#++:++#   
+#            +#+    +#+    +#+    +#+    +#+        +#+        
+#        #+# #+#    #+#    #+#    #+#    #+#    #+# #+#        
+#         #####      ########     ###     ########  ########## 
+
+
 transform shaking:    
     yoffset 0 zoom 1.0
     linear 0.05 zoom 1.01
@@ -52,6 +62,27 @@ transform shock(offset = get_joyce_zoom()):
     linear 0.1 zoom offset-0.02
     linear 0.1 zoom offset
 
+
+#        ::::::::   ::::::::  :::::::::  :::::::::: :::::::::: ::::    ::: 
+#       :+:    :+: :+:    :+: :+:    :+: :+:        :+:        :+:+:   :+: 
+#       +:+        +:+        +:+    +:+ +:+        +:+        :+:+:+  +:+ 
+#       +#++:++#++ +#+        +#++:++#:  +#++:++#   +#++:++#   +#+ +:+ +#+ 
+#              +#+ +#+        +#+    +#+ +#+        +#+        +#+  +#+#+# 
+#       #+#    #+# #+#    #+# #+#    #+# #+#        #+#        #+#   #+#+# 
+#        ########   ########  ###    ### ########## ########## ###    #### 
+
+
+transform trs_transition_dissolve:
+    on hide:
+        linear .25 alpha 0.0
+    on show:
+        linear .25 alpha 1.0
+
+transform trs_transition_dick_fill_up(croppedSize):
+    subpixel True
+    corner1 (0, 0)
+    linear 0.5 corner2 (croppedSize, 120) 
+
 transform trsfm_cards_go_down:
     ypos 1080
     ease 0.2 ypos 1220
@@ -92,6 +123,17 @@ transform animated_text:
     yoffset -100
     ease 0.7 crop (0,0,1.0,1.0) yoffset 0 zoom 1.0
 
+
+
+#        ::::    ::::  ::::::::::: ::::::::   ::::::::  
+#        +:+:+: :+:+:+     :+:    :+:    :+: :+:    :+: 
+#        +:+ +:+:+ +:+     +:+    +:+        +:+        
+#        +#+  +:+  +#+     +#+    +#++:++#++ +#+        
+#        +#+       +#+     +#+           +#+ +#+        
+#        #+#       #+#     #+#    #+#    #+# #+#    #+# 
+#        ###       ### ########### ########   ########  
+
+
 transform trs_phone:
     on show:
         ypos -1000 xalign 0.9
@@ -113,6 +155,8 @@ transform trans_flush_card:
         zoom 4.0 xpos 0.5 ypos 0.5 xanchor 0.5 yanchor 0.5
         ease 1.0 zoom 1.0
 
+
+
 transform image_qui_defile:
     ypos 0
     linear 30 ypos -3570 
@@ -124,3 +168,4 @@ transform give_cards_to_rat:
     function renpy.curry(play_sexsound)(filename="card/draw.mp3") #hacky
     ease 0.1 xpos 680 ypos 820
     alpha 0.0
+

@@ -7,6 +7,12 @@ default povname = "William"
     
 default game = Game()
 default date = Date("date")
+# default game._lustPerDay = "game.progress[0] + 1"
+
+init python:
+    deck_default = Deck()
+    for card in cardList:
+        deck_default.list.append(Card(card))
 
 # The game starts here.
 
@@ -23,7 +29,7 @@ label start:
 
     # python:
     #     for card in cardList:
-    #         deck.list.append(Card(card))
+    #         deck_default.append(Card(card))
     
     $ povname = renpy.input("What is your name?", length=32)
     with dissolve

@@ -15,6 +15,7 @@ define cardList = {
     "faster": {"txt":_("Go faster, +3 Lust per turn."), "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
 
     "stop": {"txt":_("Can't be played"), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
+    "tired": {"txt":_("You're tired."), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
 
     "awakening": {"txt":_("Double the next Lust change."), "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
     # "awakening": {"txt":_("Reset your lust to Zero.\nDiscard half your deck."), "value":3,"sort":"30"},

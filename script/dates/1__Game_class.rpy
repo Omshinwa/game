@@ -1,3 +1,5 @@
+
+
 init python:
     config.console = True
     preferences.skip_unseen = True
@@ -19,34 +21,29 @@ init python:
 
     config.label_callback = function_label_callback
     #allows you to check the name of the current label
-    
+
     class Game():
         def __init__(self):
             self.jeu_sensitive = True
 
-            self.lustMax = 30
+            self.lustMax = 999
             self.lust = 0
             self.trust = 0
             self.attraction = 0
-
-            self.trustMultiplier = 1
-            self.attractionMultiplier= 1
-            self.lustMultiplier = 1
-            self.allMultiplierOnce= 1
 
             self.state = "" #either "dating" or "living" or "sexing"
 
             self.isHoverHand = False
 
             self.progress = [0,-1] # left is progress, right is numbers of turns 
-
             self.day = 0
-
             self.debug_mode = 0
-
             self.dateEvery = 4
+            self._lustPerDay = "game.progress[0] + 1"
 
-            self.lustPerDay = "game.progress[0] + 1"
+        @property
+        def lustPerDay(self):
+            return eval(self._lustPerDay)
 
         @staticmethod
         def hasNewMessage():

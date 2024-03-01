@@ -97,14 +97,7 @@ label label_cowgirl:
     return
 
 label label_cowgirl_SexEndTurn:
-    $ game.jeu_sensitive = False
-
-    $ i=0
-    while i < date.animation_lust[date.animation_speed]:
-        $ date.lust += 1
-        $ date.orgasm += 1
-        $ i += 1
-        pause(1.0/ date.animation_lust[date.animation_speed])
+    call label_endTurn_common
     
     $ date.speedUp()
     show joyce cowgirl
@@ -119,7 +112,7 @@ label label_cowgirl_SexEndTurn:
         $ game.lust = 0
         call label_newDay("label_prison") from _call_label_newDay_22
 
-    call label_endTurn_common from _call_label_endTurn_common_8
+    
     return
 
 label label_cowgirl_v2:

@@ -46,6 +46,7 @@ label label_bubbleTea:
 
 
 label label_bubbleTea_endTurn:
+    call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_1
     if game.progress[1]<=1:
         if date.turn == 0:
@@ -115,8 +116,6 @@ label label_bubbleTea_endTurn:
         
     show screen screen_date_ui with dissolve
             
-    call label_endTurn_common from _call_label_endTurn_common_1
-    
     if game.progress[1]>=2 and g.bubbleTea_share_drink:
         call label_add_card_to_deck("hand", Card("peek"),pauseTime=0.5) from _call_label_add_card_to_deck_5
 

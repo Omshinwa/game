@@ -60,8 +60,6 @@ label label_barDate:
                 j "I'll be thinking about you tonight."
                 j "See you soon."
                 call label_newDay("label_home")
-            
-            show joyce 
     
         show joyce null with dissolve
         if len(deck.hand) == 0:
@@ -75,6 +73,7 @@ label label_barDate:
 
 
 label label_barDate_endTurn:
+    call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_3
     
     if date.turn == 1 and game.progress[1]<=1:
@@ -113,8 +112,6 @@ label label_barDate_endTurn:
         j foxy "Did you get my picture?"
         j "No peeking under the table hehe!"
         show screen screen_date_ui with dissolve
-
-    call label_endTurn_common from _call_label_endTurn_common_3
 
     call label_add_card_to_deck("hand", Card("peek"+whichDress),pauseTime = 0.5) from _call_label_add_card_to_deck_7
 

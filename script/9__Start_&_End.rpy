@@ -31,6 +31,7 @@ label splashscreen:
     return
 # label splashscreen is displayed before anything, need a return
 
+
 screen screen_content_warning():
     add "#000"
     vbox:

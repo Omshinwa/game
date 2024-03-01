@@ -59,14 +59,7 @@ label label_blowjob:
     return
 
 label label_blowjob_SexEndTurn:
-    $ game.jeu_sensitive = False
-
-    $ i=0
-    while i < date.animation_lust[date.animation_speed]:
-        $ date.lust += 1
-        $ date.orgasm += 1
-        $ i += 1
-        pause(1.0/ date.animation_lust[date.animation_speed])
+    call label_endTurn_common
     
     $ date.speedUp()
     if "v2" in renpy.get_attributes("joyce"):
@@ -80,7 +73,7 @@ label label_blowjob_SexEndTurn:
         show joyce blowjob v2
     else:
         show joyce blowjob
-    
+        
     if date.isLost():
         call label_blowjob_isLost
         call label_newDay("label_prison") from _call_label_newDay_20
@@ -90,9 +83,8 @@ label label_blowjob_SexEndTurn:
 
     elif date.turn >3:
         call label_add_card_to_deck("deck", Card("peek4"), pauseTime=0.5) from _call_label_add_card_to_deck_22
-        
-        
-    call label_endTurn_common from _call_label_endTurn_common_7
+         
+    
 
     if date.isWin():
         

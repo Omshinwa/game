@@ -55,9 +55,10 @@ label label_sex_tutorial:
     show joyce footjob 1
     pause 0.1
     $ game.lust += 1
-    $ date.lust += 1
-    with blinds
+    $ date.increment("lust",1)
+    # with blinds
     j "There, you got a little bit excited."
+    $ game.lust += 10
     j "Depending on the speed I'm going, you'll get more and more excited."
     j "I'll start slow and go faster every turn."
     j "Your goal is to resist for {b}6 turns{/b}"
@@ -65,11 +66,11 @@ label label_sex_tutorial:
     j "Fail, and you'll have to take this exam again in 3 days."
     hide screen screen_tutorial with dissolve
     j "Ready?"
-    show joyce footjob
     $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=5)
     call label_beginDuel_common() from _call_label_beginDuel_common_5
     hide screen screen_dick_ui
-    $ current_speed = date.animation_speed
+    show joyce -1 
+    with dissolve
     jump label_footjob_gameLoop
 
 label label_footjob:
@@ -133,27 +134,18 @@ label label_footjob_gameLoop:
 
 
 label label_footjob_endTurn:
-    $ game.jeu_sensitive = False
-
-    $ i=0
-    while i < date.lustPerTurn:
-        $ date.lust += 1
-        $ date.orgasm += 1
-        $ i += 1
-        pause(0.05)
-    
-    $ date.speedUp()
-    $ date.lustPerTurn += 3
-    pause 0.2
+    call label_endTurn_common
     
     if date.isLost():
         call label_footjob_isLost
         call label_newDay("label_prison") from _call_label_newDay_16
 
+    $ date.speedUp()
+    $ date.lustPerTurn += 3
+    pause 0.2
+
     if date.turn == 1:
         call label_footjob_v2
-
-    call label_endTurn_common from _call_label_endTurn_common_5
 
     if date.turn >= 2:
         call label_add_card_to_deck("hand", Card("peek2"), pauseTime=0.5) from _call_label_add_card_to_deck_12
@@ -229,6 +221,7 @@ label label_footjob_v2:
     j "You're holding out well"
     j "How about I make it a bit more challenging?"
     play sound "sex/undress.wav"
+    pause 0.2
     show joyce v2 1 with dissolve
     pause
     j "How do you like this angle?"

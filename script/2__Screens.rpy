@@ -7,7 +7,7 @@ screen screen_deck_stack():
     imagebutton:
         xalign 1.0
         idle "ui/exploring-deck_stack.png"
-        hover Transform("ui/exploring-deck_stack.png", matrixcolor=TintMatrix((204,204,255)))
+        hover Transform("ui/exploring-deck_stack.png", matrixcolor=TintMatrix("#ccccff"))
         action Show("screen_show_deck", dissolve, deck.list, "label_null")
         focus_mask True
 
@@ -61,7 +61,7 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
     imagebutton:
         insensitive im.Grayscale("ui/next.png")
         sensitive page+1 < len(what)/(card_per_line * line_per_page)
-        hover Transform("ui/next.png", matrixcolor=TintMatrix((255,255,0)))
+        hover Transform("ui/next.png", matrixcolor=gui.matrix_green_colorize)
         action SetScreenVariable("page", page+1)
         idle "ui/next.png"
         yalign 0.97
@@ -70,14 +70,14 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
         sensitive page>0
         idle "ui/prev.png"
         insensitive im.Grayscale("ui/prev.png")
-        hover Transform("ui/prev.png", matrixcolor=TintMatrix((255,255,0)))
+        hover Transform("ui/prev.png", matrixcolor=gui.matrix_green_colorize)
         action SetScreenVariable("page", page-1)
         yalign 0.97
         xalign 0.4
     
     imagebutton:
         idle "ui/cancel.png"
-        hover Transform("ui/cancel.png", matrixcolor=TintMatrix((255,255,0)))
+        hover Transform("ui/cancel.png", matrixcolor=gui.matrix_green_colorize)
         if cancelAction == None:
             action [SetScreenVariable("page", 0), Hide("screen_show_deck"),SetVariable("game.jeu_sensitive", True),Return()]
         else:
@@ -92,11 +92,11 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
         if g.card_per_line >=5:
             imagebutton:
                 idle "ui/zoom-in.png"
-                hover Transform("ui/zoom-in.png", matrixcolor=TintMatrix((255,255,0)))
+                hover Transform("ui/zoom-in.png", matrixcolor=gui.matrix_green_colorize)
                 action SetVariable("g.card_per_line", g.card_per_line-3)
         imagebutton:
             idle "ui/zoom-out.png"
-            hover Transform("ui/zoom-out.png", matrixcolor=TintMatrix((255,255,0)))
+            hover Transform("ui/zoom-out.png", matrixcolor=gui.matrix_green_colorize)
             action SetVariable("g.card_per_line", g.card_per_line+3)
             xpos 100
 
