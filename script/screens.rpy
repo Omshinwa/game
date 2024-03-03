@@ -432,13 +432,11 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
     style_prefix "game_menu"
 
-    if main_menu:
-        add gui.main_menu_background
-    else:
-        add gui.game_menu_background
-    
-    # if renpy.get_screen("load"): # title == "Save":
-    #     add "gui/overlay/test.png"
+    # if main_menu:
+    #     add gui.main_menu_background
+    # else:
+    #     add gui.game_menu_background
+
 
     frame:
         style "game_menu_outer_frame"
@@ -609,9 +607,18 @@ screen load():
     tag menu
     use file_slots(_("Load"))
 
+image img_day_wave2:
+    xysize (2116, 200)
+    contains:
+        Frame("ui/wavy_big.png", 0,19,0,0, tile=True)
+        xpos -196
+        linear 5.0 xpos 0
+        repeat
 
 screen file_slots(title):
     default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
+    
+    add "img_day_wave2" yalign 1.0
 
     use game_menu(title):
 
@@ -631,15 +638,18 @@ screen file_slots(title):
                 input:
                     style "page_label_text"
                     value page_name_value
+                    
+                ypos -170
 
             ## The grid of file slots.
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
                 xalign 0.5
-                yalign 0.5
+                ypos -80
 
-                spacing 50 #gui.slot_spacing
+                xspacing 15
+                yspacing 15
 
                 for i in range(gui.file_slot_cols * gui.file_slot_rows):
 
@@ -650,17 +660,20 @@ screen file_slots(title):
                         action FileAction(slot)
 
                         # add "#00f"
-                        has vbox
+                        vbox:
 
-                        add FileScreenshot(slot) xalign 0.5 ypos 10
+                            add FileScreenshot(slot) xalign 0.5 ypos 10
 
-                        fixed:
-                            # add "#00f"
-                            text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
-                                style "slot_time_text"
+                            fixed:
+                                # add "#00f"
+                                text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
+                                    style "slot_time_text"
 
-                        text FileSaveName(slot):
-                            style "slot_name_text"
+                            text FileSaveName(slot):
+                                style "slot_name_text"
+
+                        textbutton "X" xysize(50, 60) background None action FileDelete(slot) text_font "fonts/Venus+Cormier.otf" text_size 50 align(1.0,0.0) text_align(1.0,0.0) 
+
 
                         key "save_delete" action FileDelete(slot)
 
@@ -717,6 +730,9 @@ style page_label:
 
 style page_label_text:
     textalign 0.5
+    size 50
+    outlines [ (4, "#050505", 0, 1) ]
+    font "Venus+Cormier.otf"
     layout "subtitle"
     hover_color gui.hover_color
 
@@ -733,6 +749,7 @@ style slot_button_text:
     properties gui.button_text_properties("slot_button")
     xsize 325
     size 33
+    yalign 1.0
 
 
 ## Preferences screen ##########################################################

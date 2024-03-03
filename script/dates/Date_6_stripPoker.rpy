@@ -88,7 +88,7 @@ label label_stripPoker:
 
                     if stripPoker_got_drugged == False:
                         j "..."
-                        show joyce tired -smile
+                        show joyce bored -smile
                         pause
                         j night5 "Hey..."
                         j "You know what's going on... Don't you?"

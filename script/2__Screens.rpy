@@ -101,6 +101,7 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
             xpos 100
 
     text instruction xalign 0.5 style "quirky_command" ypos 790 xsize 1600 at animated_text
+    transclude
 
 screen screen_fullscreen(disp):
     # modal True

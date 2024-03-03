@@ -3,42 +3,83 @@ image library-table-shadow =  ConditionSwitch(
     "'whisper' in renpy.get_attributes('joyce')","fg2 library-table-shadow-right",
     True,"fg2 library-table-shadow-null")
 
-label label_library:
-    scene bg library-entrance at trs_bg_blur
-    show joyce smile outfit3 at trs_depied
+label label_library_intro_first_time:
     j "Hey [povname], I'm here!"
     j "Did you recognize me?"
-    j "I had to bring out my glasses."
+    j happy "Notice anything different about me?"
     menu:
         "You wear glasses?":
-            j "Yea, I usually wear contact lenses."
+            j -happy "Yea, I usually wear contact lenses."
             j "But I was short on time today."
-            j "Let's get inside!"
+        "Cute dress.":
+            show joyce -smile blush -happy with dissolve
+            j "Oh."
+            j smirk "I was more thinking about the glasses."
+            j smirk "But thanks!"
+    j "Wanna get inside?"
+    return
+
+label label_library_intro_again:
+    j "..."
+    j squint "?"
+    j happy smile "Oh! [povname]."
+    j wave -happy "Sorry I didn't recognize you!"
+    menu:
+        "After 4 dates with me you still can't recognize me?":
+            j -wave -happy "Hahaha"
+            j "Hey it's tough without my lenses alright?"
+    j "You ready for round 2?"
+    j "I'm still not done with my book!"
+    j "Let's get inside!"
+    return
+
+label label_library:
+    scene bg library-entrance at trs_bg_blur
+    if game.progress[1]==-1:
+        show joyce smile outfit3 glasses at trs_depied
+    else:
+        show joyce outfit3 at trs_depied
+
+    with dissolve
+    pause
+
+    if game.progress[1]==-1:
+        call label_library_intro_first_time
+    else:
+        call label_library_intro_again
+    
     hide joyce with dissolve
     play sound "day/walk in.wav"
     show bg library-1 at trs_bg_blur
-    show joyce outfit3 at trs_depied
+    if game.progress[1]==-1:
+        show joyce outfit3 glasses at trs_depied
+    else:
+        show joyce outfit3 at trs_depied
     with Fade(0.5, 1.0, 0.5)
-    j eyeside -smile "Oh there's quite a few people here actually."
+    j -smile "Oh there's quite a few people."
+    j eyeside "Mhhh..."
     j -eyeside smirk "The book I want to read is in the opposite corner."
-    j "Be right back."
+    j wave "I'll go pick it up."
     hide joyce with dissolve
     play sound "day/walk out.wav"
     "Joyce is going through the aisles."
-    "What subject do you want to read?"
+    "While she does it, you think about what you'd want to read."
     menu:
-        "What subject do you want to read?"
+        "What do you want to read?"
         "Physics":
             $ temp = "Physics"
-        "Environ\nmental":
-            $ temp = "Environmental"
+        "Environ\nment":
+            $ temp = "the Environment"
         "Mythology":
             $ temp = "Mythology"
     "You search for a book on [temp]."
     "..."
-    "You find one that seems interesting enough."
     $ del temp
-    show joyce smirk outfit3 at trs_depied with dissolve
+    if game.progress[1]==-1:
+        show joyce smirk outfit3 glasses at trs_depied
+    else:
+        show joyce smirk outfit3 at trs_depied
+    with dissolve
     j "Are you good?"
     j "Let's go downstairs to read."
     
@@ -50,7 +91,11 @@ label label_library:
     show bg library at trs_bg_blur
     show fg library-table
     # show joyce smile outfit3 holdbook at trs_sitting
-    show joyce outfit3 at trs_standing
+    if game.progress[1]==-1:
+        show joyce outfit3 glasses at trs_standing
+    else:
+        show joyce outfit3 at trs_standing
+    with dissolve
     show library-table-shadow onlayer master zorder 2
 
     
@@ -63,7 +108,7 @@ label label_library:
     show joyce at trs_sitting
     pause
     j "Did you bring a water bottle?"
-    j smirk "I brought one in case."
+    j smirk "I brought one."
     $ date.drink = 3
     play sound "day/put_on_table.wav"
     show screen screen_glass("library", (600,600)) onlayer master zorder 2
