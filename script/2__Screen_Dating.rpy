@@ -215,9 +215,14 @@ screen screen_dick_ui():
         fixed:
             xalign 0.5 ypos 30 xsize 300 ysize 50
             # add "#0f0"
+            
+            # if getattr(date,"lustMultiplier") !=1:
+            text "x" + str( getattr(date,"lustMultiplier")   ):
+                size 20+5*getattr(date,"lustMultiplier") xpos 60 xanchor 0.5 yanchor 0.5 ypos 55 color "#cbb000" style "outline_text" 
+
             hbox:
                 xalign 0.5 
-                spacing 5
+                spacing 10
                 text str(getattr(gameOrDate, "lust") ) + "{size=-15}/" + str(getattr(gameOrDate, "lustMax") ) + "{/size}":
                     yalign 1.0 size 50  font "font_venus_cormier" outlines [ (5, "#000000", 0, 3) ]
                     if (lustRatio )>0.5:
@@ -225,13 +230,10 @@ screen screen_dick_ui():
                     else:
                         color Color("#ffffff").interpolate(Color("#ffed68"), min(1.0,lustRatio*2))
                 if game.state == "living":
-                    text _("{size=-10}({/size}+[game.lustPerDay]{size=-10}){/size}") style "style_pink_ui_day"
+                    text _("{size=-10}({/size}[game.lustPerDay]{size=-10}){/size}") style "style_pink_ui_day"
                 if game.state == "sexing":
-                    text _("{size=-10}({/size}+[date.lustPerTurn]{size=-10}){/size}") style "style_pink_ui_day"
+                    text _("{size=-10}({/size}[date.lustPerTurn]{size=-10}){/size}") style "style_pink_ui_day"
 
-                    if getattr(date,"lustMultiplier") !=1:
-                        text "x" + str( getattr(date,"lustMultiplier")   ):
-                            size 20+5*getattr(date,"lustMultiplier")xpos 60 xanchor 0.5 yanchor 0.5 ypos 55 color "#cbb000" style "outline_text" 
 
 screen screen_orgasm_ui:
 
@@ -423,10 +425,10 @@ screen screen_day():
             size 30 color "#9feaf8"font "font_venus_cormier"  xalign 0.5 yalign 0.02 xsize 180
 
         text "{b}"+str(game.day)+"{/b}":
-            size 140 xpos -10 yalign 0.8 outlines [ (5.5, "#000000", 0, 3.5) ] color "#ffffff"
+            size 140 xalign 0.4 yalign 0.8 outlines [ (5.5, "#000000", 0, 3.5) ] color "#ffffff"
             # xsize 180   color "#ffffff" font "font_venus_cormier" outlines [ (5.5, "#000000", 0, 3.5) ] 
             if game.day >= 100:
-                kerning len(str(game.day))*-10
+                kerning len(str(game.day))*-10 xpos -10 xanchor 0
     
         if game.state == "living":
             fixed:

@@ -42,22 +42,19 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
         fixed:
 
             for index, card in enumerate(what):
-                if offset<=index<offset+(line_per_page*card_per_line):
+                showif offset<=index<offset+(line_per_page*card_per_line):
+                    # $ card_per_line = g.card_per_line
                     $ index2 = index % (line_per_page*card_per_line)
-                    fixed:
-                        xalign index2%card_per_line / (card_per_line-1)
-                        ypos int(index2/card_per_line) * int(333*zoom)
+                    fixed at trs_insane_animation(end={"xalign":index2%card_per_line / (card_per_line-1), "ypos":int(index2/card_per_line) * int(333*zoom)}): #, "xsize":int(g.card_xsize*zoom), "ysize":int(g.card_ysize*zoom)}):
                         xsize int(g.card_xsize*zoom)
                         ysize int(g.card_ysize*zoom)
-                        yanchor 0.0
-                        # xanchor 0.0
+                        # yanchor 0.0
                         fixed:
                             imagebutton:
                                 idle card.img
                                 hover card.img_hover
                                 action [SetVariable("game.jeu_sensitive", False), Call(var_label_callback, index)]
                                 at Transform(zoom=zoom)
-
     imagebutton:
         insensitive im.Grayscale("ui/next.png")
         sensitive page+1 < len(what)/(card_per_line * line_per_page)
@@ -93,14 +90,14 @@ screen screen_show_deck(what=deck.list, var_label_callback="label_null", instruc
             imagebutton:
                 idle "ui/zoom-in.png"
                 hover Transform("ui/zoom-in.png", matrixcolor=gui.matrix_green_colorize)
-                action SetVariable("g.card_per_line", g.card_per_line-3)
+                action [SetVariable("g.card_per_line", g.card_per_line-3)]
         imagebutton:
             idle "ui/zoom-out.png"
             hover Transform("ui/zoom-out.png", matrixcolor=gui.matrix_green_colorize)
-            action SetVariable("g.card_per_line", g.card_per_line+3)
+            action [SetVariable("g.card_per_line", g.card_per_line+3), SetScreenVariable("page", 0)]
             xpos 100
 
-    text instruction xalign 0.5 style "quirky_command" ypos 790 xsize 1600 at animated_text
+    text instruction xalign 0.5 style "quirky_command" ypos 790 xsize 1600 at trs_animated_text
     transclude
 
 screen screen_fullscreen(disp):

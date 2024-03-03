@@ -104,9 +104,6 @@ layeredimage joyce:
         attribute outfitred null
         attribute outfitblue null
         attribute outfitsm null
-        attribute outfitdream null
-        attribute outfitdream2 null
-        attribute outfitdream3 null
         attribute night null
         attribute night2 null
         attribute night3 null
@@ -137,7 +134,7 @@ layeredimage joyce:
         attribute arm default: #the default argument means we're always including the attribute "arm"
             null
 
-        attribute arm if_not ["night4", "outfitcasino"]:
+        attribute arm if_not ["outfitcasino"]:
             "joyce_arm"
         attribute hide1:
             "joyce_arm_hide_back"
@@ -197,75 +194,40 @@ layeredimage joyce:
             "joyce_arm_back_diagonal_right"
         attribute wave:
             "joyce_arm_left_back"
-        attribute whip:
-            "joyce_arm_whip_back_sm"
-        attribute whisper:
-            "joyce_arm_whisper_back"
+        attribute whip "joyce_arm_whip_back_sm"
+        attribute whisper "joyce_arm_whisper_back"
         attribute whisper if_not "outfit3":
             "joyce_arm_right_back"
 
 
-    group base:
-        attribute base default:
-            "joyce_base"
-        attribute outfit1:
-            "joyce_1"
-        attribute outfit2:
-            "joyce_2"
-        attribute outfit3:
-            "joyce_3"
-        attribute outfitsm:
-            "joyce_sm"
-        attribute outfitdream:
-            "joyce_dream"
-        attribute outfitdream2:
-            "joyce_dream2"
-        attribute outfitdream3:
-            "joyce_dream3"
-        attribute outfitred if_not "reveal-2":
-            "joyce_red"
-        attribute outfitred if_all ["defend"]:
-            "joyce_red_defend"
-        attribute outfitblue:
-            "joyce_blue"
-        attribute night:
-            "joyce_night"
-        attribute night2:
-            "joyce_night2"
-        attribute night3 if_not "reveal-2":
-            "joyce_night3"
-        attribute night4 if_not "reveal-2":
-            "joyce_night4"
-        attribute night5:
-            "joyce_night5"
-        attribute night6:
-            "joyce_base"
-        
-        attribute outfitcasino:
-            "joyce_casino"
-        attribute outfitsport if_not "undress":
-            "joyce_sport"
-        attribute outfitsport if_all ["undress"]:
-            "joyce_sport_undress"
-        attribute outfitsport2:
-            "joyce_sport2"
-        attribute outfitsport3:
-            "joyce_sport3"
-        
-        attribute outfitred if_all ["reveal-2"]:
-            "joyce_red_reveal"
-        attribute outfitblue if_all ["reveal-2"]:
-            "joyce_blue_reveal"
-        attribute night if_all ["reveal-2"]:
-            "joyce_night_reveal"
-        attribute night2 if_all ["reveal-2"]:
-            "joyce_night2_reveal"
-        attribute night3 if_all ["reveal-2"]:
-            "joyce_night3_reveal"
-        attribute night4 if_all ["reveal-2"]:
-            "joyce_night4_reveal"
-        attribute night5 if_all ["reveal-2"]:
-            "joyce_night4_reveal"
+    # this is the case where base changes on some arm positions:
+    group base variant "outfitred" if_all "outfitred" auto
+    group base variant "outfitblue" if_all "outfitblue" auto
+    group base variant "outfitsport" if_all "outfitsport" auto
+    group base variant "night" if_all "night" auto
+    group base variant "night2" if_all "night2" auto
+    group base variant "night3" if_all "night3" auto
+    group base variant "night4" if_all "night4" auto
+    group base variant "night5" if_all "night5" auto
+
+
+    group base auto:
+        attribute night6 default
+        # attribute outfit1
+        # attribute outfit2
+        # attribute outfit3
+        # attribute outfitsm
+        # attribute night
+        # attribute night2 etc
+        # attribute night5
+        attribute outfitred if_not "reveal-2"
+        attribute outfitblue if_not "reveal-2"
+        attribute night3 if_not "reveal-2"
+        attribute night4 if_not "reveal-2"
+        # attribute outfitcasino
+        attribute outfitsport if_not "undress"
+        # attribute outfitsport2
+        # attribute outfitsport3
         
     
     group face:
@@ -287,8 +249,6 @@ layeredimage joyce:
         attribute worried if_any normal_face
         attribute eyeside if_any normal_face
         attribute foxy if_any normal_face
-        attribute foxy if_any "outfitsm":
-            "joyce_sm_foxy"
         attribute wink
         attribute happy
         attribute eyes_closed:
@@ -317,11 +277,11 @@ layeredimage joyce:
         attribute reveal-2 if_any ["night"]:
             "joyce_arm_right_reveal (2)_night"
 
-        attribute armscrossed if_not ["outfit1", "outfit2","outfitdream", "outfitdream2", "outfitdream3"]:
+        attribute armscrossed if_not ["outfit1"]:
             "joyce_arm_armscrossed_front"        
         attribute armscrossed if_all ["outfitsport"]:
             "joyce_arm_armscrossed_front_sport"        
-        attribute armscrossed if_any ["outfit1", "outfitdream", "outfitdream2", "outfitdream3"]:
+        attribute armscrossed if_any ["outfit1"]:
             "joyce_arm_crossed_1"
 
         attribute armscrossed if_any ["outfit2"]:
@@ -339,6 +299,12 @@ layeredimage joyce:
         attribute running if_any ["outfitsport"]:
             "joyce_arm_front_running_sport"
 
+    group accessories:
+        attribute pearls
+        attribute outfitred:
+            "joyce_accessories_pearls"
+        attribute outfitblue:
+            "joyce_accessories_pearls"
 
     group hair variant "front":
         attribute hair: 

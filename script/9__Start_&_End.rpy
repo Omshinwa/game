@@ -132,5 +132,5 @@ screen game_complete():
     use screen_deck_stack
 
 # credits: people in the renpy server:
-# renpytom Junior @juniorthejunior Pinky! HB38  Fen (Feniks) + link seronis
+# renpytom Junior @juniorthejunior Pinky! HB38  Fen (Feniks) + link seronis Jse(idk how much he helped lol)
 # Consider leaving a good review if you enjoyed the game, it goes a long way to help me keep working!
