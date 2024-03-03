@@ -96,7 +96,8 @@ style frame:
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
 screen say(who, what):
-    dismiss action Return() # fyn force dialogue when there's any
+    dismiss action Return() # fyn, force dialogue when there's any
+    # modal True # fyn, idk why but you cant click on the dialogue when modal is True
 
     style_prefix "say"
 
@@ -327,8 +328,6 @@ screen navigation():
 
             textbutton _("Main Menu") action MainMenu()
 
-        # textbutton _("About") action ShowMenu("about")
-
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## Help isn't necessary or relevant to mobile devices.
@@ -430,6 +429,10 @@ style main_menu_version:
 screen game_menu(title, scroll=None, yinitial=0.0):
     
 
+    dismiss action NullAction() # modal True doesnt prevent you from clicking on card idk why
+    
+    add "img_day_wave2" yalign 1.0
+
     style_prefix "game_menu"
 
     # if main_menu:
@@ -487,10 +490,16 @@ screen game_menu(title, scroll=None, yinitial=0.0):
         
     textbutton _("Return"):
         style "return_button"
-
         action Return()
 
-    label title
+    textbutton _("Credits"):
+        action ShowMenu("about")
+        align(1.0,1.0)
+        style "return_button"
+
+
+    label title:
+        text_outlines [ (5, "#000000", 0, 2) ]
 
     if main_menu:
         key "game_menu" action ShowMenu("main_menu")
@@ -548,44 +557,6 @@ style return_button:
     yoffset -45
 
 
-## About screen ################################################################
-##
-## This screen gives credit and copyright information about the game and Ren'Py.
-##
-## There's nothing special about this screen, and hence it also serves as an
-## example of how to make a custom screen.
-
-screen about():
-
-    tag menu
-
-    ## This use statement includes the game_menu screen inside this one. The
-    ## vbox child is then included inside the viewport inside the game_menu
-    ## screen.
-    use game_menu(_("About"), scroll="viewport"):
-
-        style_prefix "about"
-
-        vbox:
-
-            label "[config.name!t]"
-            text _("Version [config.version!t]\n")
-
-            ## gui.about is usually set in options.rpy.
-            if gui.about:
-                text "[gui.about!t]\n"
-
-            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
-
-
-style about_label is gui_label
-style about_label_text is gui_label_text
-style about_text is gui_text
-
-style about_label_text:
-    size gui.label_text_size
-
-
 ## Load and Save screens #######################################################
 ##
 ## These screens are responsible for letting the player save the game and load
@@ -616,9 +587,8 @@ image img_day_wave2:
         repeat
 
 screen file_slots(title):
+
     default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
-    
-    add "img_day_wave2" yalign 1.0
 
     use game_menu(title):
 
@@ -639,14 +609,14 @@ screen file_slots(title):
                     style "page_label_text"
                     value page_name_value
                     
-                ypos -170
+                ypos -140
 
             ## The grid of file slots.
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
                 xalign 0.5
-                ypos -80
+                ypos -50
 
                 xspacing 15
                 yspacing 15
@@ -672,7 +642,7 @@ screen file_slots(title):
                             text FileSaveName(slot):
                                 style "slot_name_text"
 
-                        textbutton "X" xysize(50, 60) background None action FileDelete(slot) text_font "fonts/Venus+Cormier.otf" text_size 50 align(1.0,0.0) text_align(1.0,0.0) 
+                        textbutton "X" xysize(50, 50) background None action FileDelete(slot) text_font "fonts/Venus+Cormier.otf" text_size 50 align(1.0,0.05) text_align(1.0,0.0) 
 
 
                         key "save_delete" action FileDelete(slot)

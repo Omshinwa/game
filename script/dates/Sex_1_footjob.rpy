@@ -18,7 +18,7 @@ label label_sex_tutorial:
     j "You must have been waiting for this no?" 
     show joyce footjob talk with dissolve
     j "First, let's release this bad boy."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce get-hard 1 with dissolve
     j "Can you get hard for me baby?"
     j "I'll make you feel so good."
@@ -35,6 +35,7 @@ label label_sex_tutorial:
     j "You have a nice big cock."
     j "I did well picking you."
     j "Let me explain how this works."
+    play sound "rpg/Item1.mp3"
     show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
     j "This is your Lust."
     j "If you get too excited, you'll cum and fail."
@@ -66,7 +67,7 @@ label label_sex_tutorial:
     j "Fail, and you'll have to take this exam again in 3 days."
     hide screen screen_tutorial with dissolve
     j "Ready?"
-    $ date = Date("sex", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=5)
+    $ date = Date("sex", name="footjob", endTurn = "label_footjob_endTurn", turnLeft=5, isWin = "date.turnLeft <= 0", lustPerTurn=5)
     call label_beginDuel_common() from _call_label_beginDuel_common_5
     hide screen screen_dick_ui
     show joyce -1 
@@ -88,7 +89,7 @@ label label_footjob:
     j "You did good holding it in so far."
     j "Does it hurt?"
     j "First, let's release this bad boy."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce get-hard 1 with dissolve
     pause
     j "Now, can you get hard for me baby?"
@@ -209,7 +210,7 @@ label label_footjob_isLost:
     j "I'm all sticky."
     j "You failed this exam."
     j "Time to lock you up again"
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show footjob lock
     show joyce lock with dissolve
     j "Try again next time."
@@ -239,7 +240,7 @@ label label_footjob_isWin:
     j "Well done."
     j "You'll move to the next trial."
     j "Until then..."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce footjob v2 lock with dissolve
     j "Try not to burst."
 

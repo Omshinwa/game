@@ -39,3 +39,26 @@ screen screen_achievement:
         text_color "#fff"
         text_hover_color "#ff0"
         action Function(achievement.clear_all)
+
+
+# secret devlog
+"""
+Q: Who's Joyce? Is it someone you know?
+A: She's losely inspired by a coworker I knew, at least that's where her name comes from. Mostly she's fictionnary.
+
+Q: Do you have BDSM fetishes?
+A: Not really. I just thought for a card-based game, you needed some kind of opposition for it to make sense. Hence the "don't cum" mechanic, it's like Health Points in a RPG. This is mostly the reason for the BDSM content lol. 
+
+Back a few months/years ago I had another small project (that never came to fruition) with a blonde girl who you get stranded on
+an island with. You play some card games with her. In general I just like card games.
+
+The real idea of this game came when I played "Queen of Hearts" by uskprod, it was a rather small indie game for a gamejam, but I had a blast playing it. The gameloop is already present, it's a good proof of concept. I just thought it could need some polish, better artwork, and deeper card mechanics.
+https://uskprod.itch.io/queen-of-hearts
+The SM part came because I thought it would be the best way to put a confrontational game mechanic, you fight against her but how? You resist cumming from her, that's it. I also think the idea of progressively having harder and harder challenges was hot.
+
+I redrew Joyce's sprite for the full game, it took quite a while actually.
+I would just keep redesigning again and again.
+Ultimately I changed the lighting on her face (you can see the left side is almost all white).
+This is inspired by old japanese Visual Novel, the art of some studio like elf. Their sprite work was really good and you can see
+this distintive lighting that really emphasizes the volume of the face.
+"""

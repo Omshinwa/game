@@ -9,7 +9,7 @@ label label_blowjob:
     if game.progress[1] == -1:
         j "I love seeing your dick up close."
         j "Now, what could this exam be?"
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show joyce blowjob get-hard 1 with dissolve
         pause
         j "My little slut."
@@ -26,7 +26,7 @@ label label_blowjob:
         j "Mhhh..."
     else:
         j "I missed this"
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show joyce blowjob get-hard 1 with dissolve
         pause
         j "Now get hard so I can suck your sperm."
@@ -130,7 +130,7 @@ label label_blowjob_isLost:
         j "Delicious"
         j "Did I do a good job licking it nice and clean?"
         j "But you failed again."
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show joyce blowjob v2 lock with dissolve
         j "Go back to jail, you premature ejaculator"
         pause 
@@ -147,7 +147,7 @@ label label_blowjob_isLost:
         pause
         j "Oh, you got my ass all sticky."
         j "Bad pet."
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show joyce blowjob lock with dissolve
         j "You're not allowed to cum anymore."
         pause
@@ -158,7 +158,7 @@ label label_blowjob_isWin:
     with dissolve
     j "Aww... No cum for mommy?"
     j "Alright"
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce blowjob v2 lock
     with dissolve
     j "Next is the last trial."

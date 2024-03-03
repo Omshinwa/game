@@ -63,7 +63,7 @@ screen quick_menu():
     zorder 100
 
     if _in_replay:
-        textbutton _("end replay") action EndReplay(False) xalign 1.0 yalign 1.0
+        textbutton _("end replay") action EndReplay(False) xalign 1.0 yalign 1.0 text_color "#fff" text_hover_color "#b2f5ce"
     else:
         if quick_menu:
 

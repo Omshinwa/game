@@ -90,7 +90,7 @@ define gui.title_text_size = 75
 ## The images used for the main and game menus.
 define gui.main_menu_background = "gui/main_menu.png"
 define gui.game_menu_background = "gui/game_menu.png"
-
+# define config.enter_sound = "rpg/plop.wav"
 
 ## Dialogue ####################################################################
 ##
@@ -225,8 +225,8 @@ define gui.choice_button_text_insensitive_color = '#7070707f'
 
 ## The save slot button.
 define gui.slot_button_width = 370 #414
-define gui.slot_button_height = 390 #309
-define gui.slot_button_borders = Borders(15, 15, 15, 15)
+define gui.slot_button_height = 370 #309
+define gui.slot_button_borders = Borders(15, 0, 15, 15)
 define gui.slot_button_text_size = 21
 define gui.slot_button_text_xalign = 0.5
 define gui.slot_button_text_idle_color = gui.idle_small_color

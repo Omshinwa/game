@@ -49,29 +49,29 @@ label label_bubbleTea_endTurn:
     call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_1
     if game.progress[1]<=1:
-        if date.turn == 0:
+        if date.turn == 1:
             hide screen screen_date_ui with dissolve
-            j "I'm gonna grab a drink, I'll get something for you too!"
+            j smirk "I'm gonna grab a drink, I'll get something for you too!"
             show joyce at trs_standing with dissolve
             pause 0.5
             hide joyce with dissolve
             pause 2.0
             show joyce outfit1 smile at trs_standing with dissolve
-            show joyce at trs_sitting with dissolve
+            show joyce at trs_sitting, trs_lighting_bbt with dissolve 
             j "Here."
             play sound "day/put_on_table.wav"
-            show screen screen_glass("bbt") onlayer master zorder 2 with Dissolve(0.2)
+            show screen screen_glass("bbt", (380,550)) onlayer master zorder 2 with Dissolve(0.2)
             pause
             show joyce smile
             j "Isn't it nice to have something sweet to drink?"
             show screen screen_tutorial("misc/tutorial-drink.png") with dissolve
-            play sound "rpg/Item1.wav"
+            play sound "rpg/Item1.mp3"
             j "When you take a sip, you'll shuffle back all the cards in your hand into the deck."
             j "Then you'll redraw as many! Try this when you feel stuck."
             j "Here, try it:"
             hide screen screen_tutorial with dissolve 
 
-        elif date.turn == 1:
+        elif date.turn == 2:
             hide screen screen_date_ui with dissolve
             j "Does it taste good?"
             j null "Em..."

@@ -236,7 +236,7 @@ label label_home_tutorial():
         show screen screen_home onlayer master
         show black 
         hide black with dissolve
-        play sound "rpg/Item1.wav"
+        play sound "rpg/Item1.mp3"
         "This is your home. You can improve your deck here."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve
         "You will keep your stats after a successful date."
@@ -353,7 +353,7 @@ label label_home_bed:
     menu:
         "take care of your lust":
             show black with dissolve
-            queue sound ["sex/sloppy.wav","sex/sloppy.wav","sex/sloppy.wav"]
+            queue sound ["sex/_sloppy.wav","sex/_sloppy.wav","sex/_sloppy.wav"]
             pause 2.0
             queue sound ["sex/_Poison-cum.wav"]
             "Lust reset to zero."

@@ -249,10 +249,10 @@ label label_prison_food:
         "Yes":
             play sound "day/412068__inspectorj__chewing-carrot-a.wav"
             $ temp = game.lustMax
+            "You feel a bit more resilient.\n([temp]->[temp+1])"
             $ game.lustMax += 1
-            "You feel a bit more resilient.\n([temp]->[game.lustMax])"
+            play sound "rpg/powerup.wav"
             with dissolve
-            pause 1.0
             call label_newDay("label_prison") from _call_label_newDay_5
         "No":
             pass

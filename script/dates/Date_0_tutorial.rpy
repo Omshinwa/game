@@ -32,7 +32,7 @@ label label_tutorial:
     if tutorial:
         $ game.jeu_sensitive = False
         show screen screen_tutorial("misc/tutorial-cards.png") with dissolve
-        play sound "rpg/Item1.wav"
+        play sound "rpg/Item1.mp3"
         show joyce null
         j armscrossed "During a date, you play cards from your hand that have various effects."
         show screen screen_tutorial("misc/tutorial-objectives.png") with dissolve

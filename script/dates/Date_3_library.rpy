@@ -1,7 +1,7 @@
-image library-table-shadow =  ConditionSwitch(
-    "'holdbook' in renpy.get_attributes('joyce')","fg2 library-table-shadow-all",
-    "'whisper' in renpy.get_attributes('joyce')","fg2 library-table-shadow-right",
-    True,"fg2 library-table-shadow-null")
+image library-table-shadow =  ShowingSwitch(
+    "joyce holdbook","fg2 library-table-shadow-all",
+    "joyce whisper","fg2 library-table-shadow-right",
+    None,"fg2 library-table-shadow-null")
 
 label label_library_intro_first_time:
     j "Hey [povname], I'm here!"
@@ -36,9 +36,9 @@ label label_library_intro_again:
 label label_library:
     scene bg library-entrance at trs_bg_blur
     if game.progress[1]==-1:
-        show joyce smile outfit3 glasses at trs_depied
+        show joyce smile outfit4 glasses at trs_depied
     else:
-        show joyce outfit3 at trs_depied
+        show joyce outfit4 at trs_depied
 
     with dissolve
     pause
@@ -52,9 +52,9 @@ label label_library:
     play sound "day/walk in.wav"
     show bg library-1 at trs_bg_blur
     if game.progress[1]==-1:
-        show joyce outfit3 glasses at trs_depied
+        show joyce outfit4 glasses at trs_depied
     else:
-        show joyce outfit3 at trs_depied
+        show joyce outfit4 at trs_depied
     with Fade(0.5, 1.0, 0.5)
     j -smile "Oh there's quite a few people."
     j eyeside "Mhhh..."
@@ -76,9 +76,9 @@ label label_library:
     "..."
     $ del temp
     if game.progress[1]==-1:
-        show joyce smirk outfit3 glasses at trs_depied
+        show joyce smirk outfit4 glasses at trs_depied
     else:
-        show joyce smirk outfit3 at trs_depied
+        show joyce smirk outfit4 at trs_depied
     with dissolve
     j "Are you good?"
     j "Let's go downstairs to read."
@@ -90,11 +90,11 @@ label label_library:
 
     show bg library at trs_bg_blur
     show fg library-table
-    # show joyce smile outfit3 holdbook at trs_sitting
+    # show joyce smile outfit4 holdbook at trs_sitting
     if game.progress[1]==-1:
-        show joyce outfit3 glasses at trs_standing
+        show joyce outfit4 glasses at trs_standing
     else:
-        show joyce outfit3 at trs_standing
+        show joyce outfit4 at trs_standing
     with dissolve
     show library-table-shadow onlayer master zorder 2
 

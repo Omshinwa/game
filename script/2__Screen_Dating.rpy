@@ -14,11 +14,11 @@ screen screen_gameloop():
 ###########################################################################################################
                              
 screen screen_sex_ui():
-    use screen_dick_ui()
     if date.name=="label_cowgirl":
         use screen_orgasm_ui()
     else:
         use screen_turn_counter()
+    use screen_dick_ui()
     
     # use speed_indicator()
     use screen_date_bottom_ui()
@@ -74,6 +74,8 @@ screen screen_card_hand():
 
             for index, card in enumerate(deck.hand):
                 imagebutton:
+                    if index == 0:
+                        id "FIRSTCARD"
                     xpos int((index)* g.card_xsize + paddingPerCard*index)
                     xsize g.card_xsize
                     ysize g.card_ysize
@@ -85,15 +87,15 @@ screen screen_card_hand():
                     else:
                         idle colorizeImg(card.img, ("#000","#bbb"))
 
-                    if not renpy.variant("touch"):
-                        hovered [SetVariable("game.isHoverHand", True)]
-                        unhovered [SetVariable("game.isHoverHand", False)]
+                    if not renpy.variant("touch") and game.jeu_sensitive:
+                        hovered [SetVariable("game.isHoverHand", True), Show("screen_keyremap_onCard")]
+                        unhovered [SetVariable("game.isHoverHand", False), Hide("screen_keyremap_onCard")]
                         if card.cond(index):
                             action [Call('playCardfromHand', index)]
 
                     else:
                         if not game.isHoverHand:
-                            action SetVariable("game.isHoverHand", True)
+                            action [SetVariable("game.isHoverHand", True), Show("screen_keyremap_onCard")]
                         elif card.cond(index):
                             action [Call('playCardfromHand', index)]
 
@@ -105,8 +107,9 @@ screen screen_date_bottom_ui():
 
     if not renpy.variant("touch"):
         button:
-            hovered SetVariable("game.isHoverHand", True)
-            unhovered SetVariable("game.isHoverHand", False)
+            if game.jeu_sensitive:
+                hovered [SetVariable("game.isHoverHand", True), Show("screen_keyremap_onCard")]
+                unhovered [SetVariable("game.isHoverHand", False), Hide("screen_keyremap_onCard")]
             action Return()
             xsize 1650
             if game.isHoverHand:
@@ -120,16 +123,8 @@ screen screen_date_bottom_ui():
     else:
         
         dismiss:
-            action SetVariable("game.isHoverHand", False)
+            action [SetVariable("game.isHoverHand", False), Hide("screen_keyremap_onCard")]
             modal False
-        # button:
-        #     action SetVariable("game.isHoverHand", False)
-        #     modal False
-        #     xsize 1920
-        #     ysize 1080
-        #     yalign 1.0
-        #     xalign 0.35
-        #     # background "#f003"
             
         button:
             action SetVariable("game.isHoverHand", True)
@@ -167,10 +162,9 @@ label label_date_ui_navigator_up():
 #
 ###########################################################################################################
 
-image img_lust_bar = Flatten(Frame("ui/lust_bar.png",238,0,211,0,tile="integer"))
+image img_lust_bar = Flatten(Frame("ui/lust_bar.png",238,0,211,0,tile="True"))
 image img_lust_bar_full = Frame("ui/lust_bar_full.png",122,0,152,0)
 
-image img_lust_bar_full_1 = Crop((0,0,122,125), "ui/lust_bar_full.png")
 image img_lust_bar_locked = Frame("ui/lust_bar_locked.png",176,0,152,0,tile="True")
 
 screen screen_dick_ui():
@@ -215,9 +209,10 @@ screen screen_dick_ui():
         fixed:
             xalign 0.5 ypos 30 xsize 300 ysize 50
             # add "#0f0"
+
             hbox:
                 xalign 0.5 
-                spacing 5
+                spacing 10
                 text str(getattr(gameOrDate, "lust") ) + "{size=-15}/" + str(getattr(gameOrDate, "lustMax") ) + "{/size}":
                     yalign 1.0 size 50  font "font_venus_cormier" outlines [ (5, "#000000", 0, 3) ]
                     if (lustRatio )>0.5:
@@ -225,13 +220,19 @@ screen screen_dick_ui():
                     else:
                         color Color("#ffffff").interpolate(Color("#ffed68"), min(1.0,lustRatio*2))
                 if game.state == "living":
-                    text _("{size=-10}({/size}+[game.lustPerDay]{size=-10}){/size}") style "style_pink_ui_day"
+                    text _("{size=-10}({/size}[game.lustPerDay]{size=-10}){/size}") style "style_pink_ui_day"
                 if game.state == "sexing":
-                    text _("{size=-10}({/size}+[date.lustPerTurn]{size=-10}){/size}") style "style_pink_ui_day"
+                    text _("{size=-10}({/size}[date.lustPerTurn]{size=-10}){/size}") style "style_pink_ui_day"
 
-                    if getattr(date,"lustMultiplier") !=1:
-                        text "x" + str( getattr(date,"lustMultiplier")   ):
-                            size 20+5*getattr(date,"lustMultiplier")xpos 60 xanchor 0.5 yanchor 0.5 ypos 55 color "#cbb000" style "outline_text" 
+            ###############################
+            #
+            # MULTIPLICATEUR
+            #
+            ###############################
+            if getattr(date,"lustMultiplier") !=1:
+                text "x" + str( getattr(date,"lustMultiplier")   ):
+                    size 20+5*getattr(date,"lustMultiplier") xpos 40 xanchor 0.5 yanchor 0.5 ypos 30 color "#02a2ff" style "outline_text" 
+
 
 screen screen_orgasm_ui:
 
@@ -280,7 +281,7 @@ screen screen_orgasm_ui:
 ###########################################################################################################
 
 init python:
-    class CustomAnimatedValue(AnimatedValue):
+    class CustomAnimatedValue(AnimatedValue): #to animate the bar values
         def __init__(self, value=0.0, range=1.0, old_value=None, delayPerIncrement=0.02):
             """
             :doc: value
@@ -423,10 +424,10 @@ screen screen_day():
             size 30 color "#9feaf8"font "font_venus_cormier"  xalign 0.5 yalign 0.02 xsize 180
 
         text "{b}"+str(game.day)+"{/b}":
-            size 140 xpos -10 yalign 0.8 outlines [ (5.5, "#000000", 0, 3.5) ] color "#ffffff"
+            size 140 xalign 0.4 yalign 0.8 outlines [ (5.5, "#000000", 0, 3.5) ] color "#ffffff"
             # xsize 180   color "#ffffff" font "font_venus_cormier" outlines [ (5.5, "#000000", 0, 3.5) ] 
             if game.day >= 100:
-                kerning len(str(game.day))*-10
+                kerning len(str(game.day))*-10 xpos -10 xanchor 0
     
         if game.state == "living":
             fixed:
@@ -441,10 +442,10 @@ style style_pink_ui_day:
     size 30 yalign 0.5 color "#de50c4" outlines [ (3, "#ffc5e9", 0, 0) ] font "Venus+Martre.otf"
 
 image img_day_wave:
-    xysize (382, 200)
+    xysize (388, 200)
     contains:
         Frame("ui/wavy.png", 0,19,0,0)
-        xpos -196
+        xpos -194
         linear 5.0 xpos 0
         repeat
 
@@ -595,6 +596,7 @@ screen screen_buttons_ui():
             text str(len(deck.deck)) size 80 xalign 0.5 style "style_small_numbers"
 
 screen screen_glass(id,position=(0,0)):
+
     if date.drink>0:
         imagebutton:
             pos position
@@ -603,8 +605,18 @@ screen screen_glass(id,position=(0,0)):
             hover tintImg("bg/" + id + "-glass-" + str(date.drink) + ".png", (255*1.5,255*1.5,255))
             action Call("label_drink")
             sensitive game.jeu_sensitive
+            hovered Show("screen_keyremap_onDrink")
+            unhovered Hide("screen_keyremap_onDrink")
+            id "DRINKME"
     else:
         add "bg/" + id + "-glass-0.png" pos position
+
+screen screen_keyremap_onCard():
+    key [ 'any_K_UP', 'any_KP_UP' ] action [Function(renpy.set_focus,"screen_glass", "DRINKME", layer='master')]
+
+screen screen_keyremap_onDrink():
+    key [ 'any_K_DOWN', 'any_KP_DOWN' ] action [Function(renpy.set_focus,"screen_date_ui", "FIRSTCARD")]
+
 
 screen speed_indicator():
     fixed:

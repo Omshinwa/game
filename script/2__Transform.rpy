@@ -28,22 +28,35 @@ transform trs_slowbreath:
         repeat
 
 transform trs_depied:
-    ypos 1080
-    yanchor 1.0
-    zoom 0.9 xalign 0.5
+    # ypos 1080
+    ypos -45
+    # yanchor 1.0
+    # zoom 0.9 xalign 0.5
+    zoom 0.9 xpos 465
 
 transform trs_standing: #thats just trs_sitting but when they get up
     ypos 1080
     yanchor 1.0
-    zoom 1.0 xalign 0.5
+    zoom 1.0 xpos 405 #xalign 0.5
 
 transform trs_sitting:
-    # yoffset 100 #137
-    ypos 1220
-    yanchor 1.0
-    zoom 1.0 xalign 0.5
+    # ypos 1220
+    # yanchor 1.0
+    ypos -30
+    yanchor 0.0
+    zoom 1.0 xpos 405 #xalign 0.5
 
-transform trs_bg_blur(strength=4,mask="hard", child=None):
+transform trs_contrejour:
+    # matrixcolor BrightnessMatrix(-0.15)
+    matrixcolor ColorizeMatrix(Color(hsv=(0,0,-0.1)),"#f0e8dc")
+transform trs_contrejour_pluie:
+    matrixcolor ColorizeMatrix(Color(hsv=(0,0,0.0)),"#eff3e6")
+
+transform trs_lighting_bbt:
+    # matrixcolor IdentityMatrix()
+    matrixcolor ColorizeMatrix(Color(hsv=(0,0,-0.1)),Color(rgb=(1.0, 1.03, 1.01))) #BrightnessMatrix(-0.15)
+
+transform trs_bg_blur(strength=4,mask="hard", child=None): #mask can be 'hard', 'soft' or 'none'
     contains:
         child
     contains:
@@ -117,11 +130,20 @@ transform trans_anim_move_card(xfrom, yfrom, xto, yto, pauseTime=0):
     pause pauseTime
     ease 0.4 zoom 0.2 xpos xto ypos yto alpha 0.0
 
-transform animated_text:
+transform trs_animated_text:
     zoom 1.2
-    crop (1.0,0.0,1.0,0.0)
-    yoffset -100
-    ease 0.7 crop (0,0,1.0,1.0) yoffset 0 zoom 1.0
+    yoffset -50
+    alpha 0.0
+    ease 0.3 yoffset 0 zoom 1.0 alpha 1.0
+
+transform trs_insane_animation(end):
+    ease 1.0 xalign end["xalign"] ypos end["ypos"]
+    # on appear:
+    #     ease 1.0 xalign end["xalign"] ypos end["ypos"]
+    # ease 1.0 xalign end["xalign"] ypos end["ypos"] #xsize end["xsize"] ysize end["ysize"]
+    # xalign end["xalign"] ypos end["ypos"]
+    # on hide:
+    #     xalign 0.0 ypos 0.0
 
 
 

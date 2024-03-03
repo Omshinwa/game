@@ -20,7 +20,7 @@ label label_titjob:
         j "Have you noticed? It's been [temp] days we've been living together."
         j "[temp] days you haven't washed you're little dick."
         $ del temp
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show joyce titjob get-hard 1 with dissolve
         pause
         j -1 2 "Fiou it smells here."
@@ -47,7 +47,7 @@ label label_titjob:
 
     else:
         j "Hello sweetheart ♥"
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show handjob get-hard 1 with dissolve
         pause
         j "You liked my tits so much you wanted to see them again huh?"
@@ -184,7 +184,7 @@ label label_titjob_isLost:
         pause 0.5
 
     j "Not bad."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     hide tongue
     if "v2" in renpy.get_attributes("joyce"):
         show joyce lock
@@ -207,7 +207,7 @@ label label_titjob_isWin:
     j "Hehe, well done, even my boobs weren't enough."
     j "Can you guess the next trial?"
     j "Think about it in your cage."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce lock with dissolve
     j "Until then."
     return

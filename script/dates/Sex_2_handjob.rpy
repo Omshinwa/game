@@ -6,6 +6,14 @@
 # label_POSITION_isLost
 # label_POSITION_isWin
 
+# Pretend my hand is a pussy for now
+# Just imagine your cock entering my body
+# And trusting deep into my pussy
+# It just feels like youre messing with my actual pussy doesnt it?
+# It’s so warm
+# It’s so hot
+# Do they feel good?
+
 label label_handjob:
     $ date = Date("sex", name="handjob", endTurn = "label_handjob_endTurn", turnLeft=7, isWin = "date.turnLeft <= 0", lustPerTurn=10)
 
@@ -21,7 +29,7 @@ label label_handjob:
         j "What do you think the test will be this time?"
         j "Let's free you."
 
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show handjob get-hard 1 with dissolve
         pause
         j "You must have felt cramped in there."
@@ -39,7 +47,7 @@ label label_handjob:
         j "deserves to be punished."
     else:
         j "There you are, my little slut."
-        play sound "rpg/Key.wav"
+        play sound "rpg/soubi-01.ogg"
         show handjob get-hard 1 with dissolve
         pause
         j "How does it feel?"
@@ -180,7 +188,7 @@ label label_handjob_isLost:
     j "Wasted here."
     j "You should have saved it for my pussy."
     j "Oh well."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     if phase == 1:
         hide eyes 
 
@@ -205,7 +213,7 @@ label label_handjob_isWin:
     j "Well done."
     j "You'll move to the next trial."
     j "Until then..."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     hide handjob with dissolve
     j "Take care of him."
     

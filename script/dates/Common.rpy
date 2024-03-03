@@ -1,8 +1,11 @@
 init python:
     class Date():
-        def __init__(self, dateOrSex, name="", **kwargs):
+        def __init__(self, dateOrSex, name=None, **kwargs):
             
-            self.name = current_label
+            if name == None:
+                self.name = current_label
+            else:
+                self.name = "label_"+name
             # self.name = name #get the name of current label to set the name of this date
             game.jeu_sensitive = False;
 
@@ -17,10 +20,6 @@ init python:
                 self._turnLeft = kwargs["turnLeft"]
             else:
                 self._turnLeft = 0
-
-            
-            self.lastPlayed = None
-            self.playedThisTurn = []
             
             self.objectives = {}
 
@@ -56,7 +55,7 @@ init python:
             if "endTurn" in kwargs:
                 self.endTurn = kwargs["endTurn"]
             else:
-                self.endTurn = ""
+                self.endTurn = self.name + "_endTurn"
 
             self.ydisplace = Transform( ypos=1080 )
 
@@ -67,6 +66,9 @@ init python:
             self.lust = game.lust
             self.trust = game.trust
             self.attraction = game.attraction
+
+            self.lastPlayed = None
+            self.playedThisTurn = []
 
             self.trustMultiplier = 1
             self.attractionMultiplier= 1
@@ -174,7 +176,7 @@ init python:
             # renpy.with_statement(ImageDissolve("gui/transition.png", min(max(0.2, 0.1*abs(now-before)**0.5),3.0), reverse=value>0 ))
                 
         def replay_mode(self):
-            renpy.say("","debug mode is on, setting isLost to False and isWin to False and game.progress to -1")
+            renpy.say("","replay/debug mode is on, setting isLost to False and isWin to False and game.progress to -1")
             game.progress[1] == -1
             self._isLost = "False"
             self._isWin = "False"
@@ -277,7 +279,7 @@ label label_endTurn_common():
         play sound "rpg/Sonic1-onTheEdge.wav" volume 0.5
         pause 0.5
     else:
-        play sound "rpg/Item1.wav"
+        play sound "rpg/Item1.mp3"
         pause 0.3
 
     if not date.isLost():
@@ -297,7 +299,7 @@ label label_after_successful_Date_common():
     if game.state == "dating":
         play sound "rpg/Holy5.wav"
         show date-nice at truecenter onlayer screens with blinds
-        pause 0.3
+        pause 0.5
         hide date-nice onlayer screens with moveoutbottom
     
     if BALANCE["keepStat"]:

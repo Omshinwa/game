@@ -23,9 +23,11 @@ label label_barDate:
             show joyce outfitblue at trs_sitting onlayer master zorder 0 
         with dissolve
         
+        pause
         show screen screen_glass("bar") onlayer master zorder 2
         play sound "day/put_on_table.wav"
-        j "A nice gin and tonic"
+        pause
+        j "Ah, a nice gin tonic."
         with dissolve
     else:
         show screen screen_glass("bar") onlayer master zorder 2
@@ -54,6 +56,10 @@ label label_barDate:
 
         label .winCondition:
             if date.isWin():
+                
+                if game.progress[1]<=2:
+                    call label_barDate_event
+
                 call label_after_successful_Date_common from _call_label_after_successful_Date_common_3
 
                 j smile "That was a beautiful evening"
@@ -75,46 +81,49 @@ label label_barDate:
 label label_barDate_endTurn:
     call label_endTurn_common
     call label_date_isLost_common from _call_label_date_isLost_common_3
-    
-    if date.turn == 1 and game.progress[1]<=1:
-        hide screen screen_date_ui with dissolve
-        j "Sorry, I have to use the restroom…"
-        show joyce at trs_standing with dissolve
-        pause 0.5
-        hide joyce with dissolve
-        pause 
-        play sound "day/newmsg.wav"
-        pause
-        "?"
-        show screen screen_home_phone onlayer master zorder 2
-        $ g.phoneProgress[0] += 1
-        $ g.phoneProgress[1] = 0
-        
-        $ game.jeu_sensitive = True
-        label .gameLoop:
-            call screen screen_gameloop()
-        if g.phoneProgress[1]<2:
-            jump .gameLoop
-
-        pause
-        hide screen screen_home_phone onlayer master
-        $ game.jeu_sensitive = False
-        pause 1.0
-
-        if whichDress == "red":
-            show joyce outfitred at trs_standing onlayer master zorder 0 
-        else:
-            show joyce outfitblue at trs_standing onlayer master zorder 0 
-        with dissolve
-
-        j smile "Hey! Hope I didn't keep you waiting."
-        show joyce at trs_sitting with dissolve
-        j foxy "Did you get my picture?"
-        j "No peeking under the table hehe!"
-        show screen screen_date_ui with dissolve
+    if date.turn == 2 and game.progress[1]<=2:
+        call label_barDate_event
 
     call label_add_card_to_deck("hand", Card("peek"+whichDress),pauseTime = 0.5) from _call_label_add_card_to_deck_7
 
+    return
+
+label label_barDate_event:
+    hide screen screen_date_ui with dissolve
+    j "Sorry, I have to use the restroom…"
+    show joyce at trs_standing with dissolve
+    pause 0.5
+    hide joyce with dissolve
+    pause 
+    play sound "day/newmsg.wav"
+    pause
+    "?"
+    show screen screen_home_phone onlayer master zorder 2
+    $ g.phoneProgress[0] += 1
+    $ g.phoneProgress[1] = 0
+    
+    $ game.jeu_sensitive = True
+    label .gameLoop:
+        call screen screen_gameloop()
+    if g.phoneProgress[1]<2:
+        jump .gameLoop
+
+    pause
+    hide screen screen_home_phone onlayer master
+    $ game.jeu_sensitive = False
+    pause 1.0
+
+    if whichDress == "red":
+        show joyce outfitred at trs_standing onlayer master zorder 0 
+    else:
+        show joyce outfitblue at trs_standing onlayer master zorder 0 
+    with dissolve
+
+    j smile "Hey! Hope I didn't keep you waiting."
+    show joyce at trs_sitting with dissolve
+    j foxy "Did you get my picture?"
+    j "No peeking under the table hehe!"
+    show screen screen_date_ui with dissolve
     return
 
 label label_pic5_reaction:

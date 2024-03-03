@@ -7,7 +7,7 @@ label label_cowgirl:
 
     j "Ready?"
 
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce get-hard 1 with dissolve
 
     if game.progress[1] == -1:
@@ -45,11 +45,11 @@ label label_cowgirl:
     else:
         j "Sorry if I get loud."
         j "I've been waiting so long for this."
-    play sound "sex/sloppy.wav"
+    play sound "sex/_sloppy.wav"
     show joyce 6 with dissolve
     pause 0.4
     j "Oh my god yes."
-    play sound "sex/sloppy.wav"
+    play sound "sex/_sloppy.wav"
     show joyce 1 with dissolve
     pause 0.4
     j "Your dick feels so good."
@@ -242,7 +242,7 @@ label label_cowgirl_isLost:
     show joyce cum-out 3 with dissolve
     pause
     j "Look at all this cum."
-    play sound "rpg/Key.wav"
+    play sound "rpg/soubi-01.ogg"
     show joyce lock with dissolve
     pause
     j "Alright daddy it's time to go back to your kennel."

@@ -121,14 +121,14 @@ screen screen_gallery_replay:
         add "#222" 
 
         # A grid of buttons.
-        grid 4 3:
+        vpgrid cols 4 rows 3:
             align (0.5, 0.5)
             xfill True
             yfill True
 
             # Call make_button to show a particular button.
             # textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
-            textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "footjob" action Replay("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "handjob" action Call("label_handjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "titjob" action Call("label_titjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "blowjob" action Call("label_blowjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
@@ -138,6 +138,7 @@ screen screen_gallery_replay:
             textbutton "jogging" action Call("label_jogging") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "poker" action Call("label_stripPoker") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "Image Tools" action Call("label_image_tools") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "picnic" action Call("label_picnic") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
 
             # The screen is responsible for returning to the main menu. It could also
             # navigate to other gallery screens.

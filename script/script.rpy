@@ -38,7 +38,7 @@ label start:
     if not povname:
         $ povname = "William"
 
-    jump label_tutorial
+    jump expression "label_" + g.story[0]
     # jump label_home
     # jump label_prison_rat_introduction
     # jump test_sprites

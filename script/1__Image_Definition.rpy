@@ -24,7 +24,6 @@ init python:
         txt += "'#0000', 0.0)"
         return eval(txt)
 
-
 image moan_bubble:
     # DynamicDisplayable(Moaning_bubble()) ## in a ATL image, the st resets after every repeat #remove the () ?
     parallel:
@@ -94,7 +93,7 @@ define config.adjust_attributes["joyce"] = joyce_adjuster
 
 
 # define all the outfits that doesnt have the face tilted, useful to check for blushes etc
-define normal_face = ["outfitsport", "outfitsport2", "outfitsport3", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","outfitcasino", "outfit3"]
+define normal_face = ["outfitsport", "outfitsport2", "outfitsport3", "outfit1", "outfit2", "outfitsm", "outfitred", "outfitblue", "night", "night2", "night3", "night4","night5","night6", "outfitcasino", "outfit3"]
 
 layeredimage joyce:
 
@@ -104,24 +103,27 @@ layeredimage joyce:
         attribute outfitred null
         attribute outfitblue null
         attribute outfitsm null
-        attribute outfitdream null
-        attribute outfitdream2 null
-        attribute outfitdream3 null
         attribute night null
         attribute night2 null
         attribute night3 null
         attribute night4 null
         attribute night5 null
         attribute night6 null
+        attribute sitted null
 
         attribute outfit3 null
+        attribute outfit4 null
         attribute outfitcasino null
         attribute outfitsport null
         attribute outfitsport2 null
         attribute outfitsport3 null
 
+        attribute wet null
+
     group hair variant "back":
         attribute hair default: 
+            "joyce_hair_back" 
+        attribute wet: 
             "joyce_hair_back" 
         attribute green_hair:
             "joyce_hair_back_green" 
@@ -137,7 +139,7 @@ layeredimage joyce:
         attribute arm default: #the default argument means we're always including the attribute "arm"
             null
 
-        attribute arm if_not ["night4", "outfitcasino"]:
+        attribute arm if_not ["outfitcasino", "sitted"]:
             "joyce_arm"
         attribute hide1:
             "joyce_arm_hide_back"
@@ -151,10 +153,24 @@ layeredimage joyce:
             "joyce_arm_sport"
         attribute arm if_any "outfitsm":
             "joyce_arm_sm"
+
+        attribute arm if_any "sitted" "joyce_arm_back_right_half"
+        attribute arm if_any "sitted" "joyce_arm_back_left_half"
+
+
+        attribute posé:
+            "joyce_arm_back_right_half"
+        attribute posé:
+            "joyce_arm_back_left_half"
         
-        
+        attribute armstraight "joyce_arm"
+
         attribute defend:
             "joyce_arm_defend_back"
+
+        attribute holdglasses if_any "sitted":
+            "joyce_arm_back_right_half"
+        attribute holdglasses if_not "sitted" "joyce_arm_right_back"
 
         attribute reveal-1 if_not "night":
             "joyce_arm_left_back"
@@ -181,8 +197,6 @@ layeredimage joyce:
 
         attribute armscrossed:
             "joyce_arm_armscrossed_back"
-        # attribute defend:
-            # "joyce_arm_crossed_back"
         attribute holdbook:
             "joyce_arm_holdbook_back"
 
@@ -190,84 +204,44 @@ layeredimage joyce:
             "joyce_arm_back_diagonal"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_back_diagonal_sport"
+
+            
+        attribute shh "joyce_arm_whisper_back"
+        attribute shh if_not "outfit4" "joyce_arm_right_back"
         
-        attribute throwWater:
-            "joyce_arm_right_back"
-        attribute wave:
-            "joyce_arm_back_diagonal_right"
-        attribute wave:
-            "joyce_arm_left_back"
-        attribute whip:
-            "joyce_arm_whip_back_sm"
-        attribute whisper:
-            "joyce_arm_whisper_back"
-        attribute whisper if_not "outfit3":
-            "joyce_arm_right_back"
+        attribute throwWater "joyce_arm_right_back"
+        attribute wave "joyce_arm_back_diagonal_right"
+        attribute wave "joyce_arm_left_back"
+        attribute whip "joyce_arm_whip_back_sm"
+        attribute whisper "joyce_arm_whisper_back"
+        attribute whisper if_not "outfit4" "joyce_arm_right_back"
 
 
-    group base:
-        attribute base default:
-            "joyce_base"
-        attribute outfit1:
-            "joyce_1"
-        attribute outfit2:
-            "joyce_2"
-        attribute outfit3:
-            "joyce_3"
-        attribute outfitsm:
-            "joyce_sm"
-        attribute outfitdream:
-            "joyce_dream"
-        attribute outfitdream2:
-            "joyce_dream2"
-        attribute outfitdream3:
-            "joyce_dream3"
-        attribute outfitred if_not "reveal-2":
-            "joyce_red"
-        attribute outfitred if_all ["defend"]:
-            "joyce_red_defend"
-        attribute outfitblue:
-            "joyce_blue"
-        attribute night:
-            "joyce_night"
-        attribute night2:
-            "joyce_night2"
-        attribute night3 if_not "reveal-2":
-            "joyce_night3"
-        attribute night4 if_not "reveal-2":
-            "joyce_night4"
-        attribute night5:
-            "joyce_night5"
-        attribute night6:
-            "joyce_base"
+    # this is the case where base changes on some arm positions:
+    # group base variant "outfitred" if_all "outfitred" auto
+    # group base variant "outfitblue" if_all "outfitblue" auto
+    # group base variant "outfitsport" if_all "outfitsport" auto
+    # group base variant "night" if_all "night" auto
+    # group base variant "night2" if_all "night2" auto
+    # group base variant "night3" if_all "night3" auto
+    # group base variant "night4" if_all "night4" auto
+    # group base variant "night5" if_all "night5" auto
+
+    group base variant "defend" if_any "defend" auto
+    group base variant "reveal-2" if_any "reveal-2" auto
+    group base variant "reveal" if_any "reveal" auto
+
+    group base auto:
+        attribute night6 default
+        attribute outfitred if_not "reveal-2"
+        attribute outfitblue if_not "reveal-2"
+        attribute night if_not "reveal-2"
+        attribute night2 if_not "reveal-2"
+        attribute night3 if_not "reveal-2"
+        attribute night4 if_not "reveal-2"
+        attribute night5 if_not "reveal-2"
+        attribute outfitsport if_not "undress"
         
-        attribute outfitcasino:
-            "joyce_casino"
-        attribute outfitsport if_not "undress":
-            "joyce_sport"
-        attribute outfitsport if_all ["undress"]:
-            "joyce_sport_undress"
-        attribute outfitsport2:
-            "joyce_sport2"
-        attribute outfitsport3:
-            "joyce_sport3"
-        
-        attribute outfitred if_all ["reveal-2"]:
-            "joyce_red_reveal"
-        attribute outfitblue if_all ["reveal-2"]:
-            "joyce_blue_reveal"
-        attribute night if_all ["reveal-2"]:
-            "joyce_night_reveal"
-        attribute night2 if_all ["reveal-2"]:
-            "joyce_night2_reveal"
-        attribute night3 if_all ["reveal-2"]:
-            "joyce_night3_reveal"
-        attribute night4 if_all ["reveal-2"]:
-            "joyce_night4_reveal"
-        attribute night5 if_all ["reveal-2"]:
-            "joyce_night4_reveal"
-        
-    
     group face:
         attribute face default:
             "joyce_face"
@@ -278,21 +252,18 @@ layeredimage joyce:
     group skin:
         attribute null_skin if_any "null":
             null
-        attribute blush if_any normal_face
+        attribute blush
 
-    group eyes:
+    group eyes auto:
         attribute null_eyes default:
             "img_blink" #null
-        attribute upset if_any normal_face
-        attribute worried if_any normal_face
-        attribute eyeside if_any normal_face
-        attribute foxy if_any normal_face
-        attribute foxy if_any "outfitsm":
-            "joyce_sm_foxy"
+        attribute upset
+        attribute worried
+        attribute eyeside
+        attribute foxy
         attribute wink
         attribute happy
-        attribute eyes_closed:
-            "joyce_eyes_closed"
+        attribute eyes_closed
         attribute eyesdown
         attribute squint
         attribute bored
@@ -300,14 +271,26 @@ layeredimage joyce:
     group mouth: #if_not "null":
         attribute null_mouth default:
             "joyce_mouth_normal"
-        attribute smile if_any normal_face
-        attribute smirk if_any normal_face
+        attribute smile 
+        attribute smirk
         attribute tongue
         attribute bite
         attribute breath
         attribute opened
 
     group arm variant "front": #frontarm
+
+        attribute armscrossed if_not ["outfit1"]:
+            "joyce_arm_armscrossed_front"        
+        attribute armscrossed if_all ["outfitsport"]:
+            "joyce_arm_armscrossed_front_sport"        
+        attribute armscrossed if_any ["outfit1"]:
+            "joyce_arm_crossed_1"
+        attribute armscrossed if_any ["outfit2"]:
+            "joyce_2_armscrossed"
+        attribute armscrossed if_any "night":
+            "joyce_arm_crossed_night"
+
         attribute reveal-1 if_not ["night"]:
             "joyce_arm_right_reveal (1)"
         attribute reveal-1 if_any ["night"]:
@@ -317,28 +300,34 @@ layeredimage joyce:
         attribute reveal-2 if_any ["night"]:
             "joyce_arm_right_reveal (2)_night"
 
-        attribute armscrossed if_not ["outfit1", "outfit2","outfitdream", "outfitdream2", "outfitdream3"]:
-            "joyce_arm_armscrossed_front"        
-        attribute armscrossed if_all ["outfitsport"]:
-            "joyce_arm_armscrossed_front_sport"        
-        attribute armscrossed if_any ["outfit1", "outfitdream", "outfitdream2", "outfitdream3"]:
-            "joyce_arm_crossed_1"
+        
+        attribute arm if_any "sitted" "joyce_arm_front_sitted_right"
+        attribute arm if_any "sitted" "joyce_arm_front_sitted_left"
 
-        attribute armscrossed if_any ["outfit2"]:
-            "joyce_2_armscrossed"
-        attribute armscrossed if_any "night":
-            "joyce_arm_crossed_night"
+        attribute posé:
+            "joyce_arm_front_sitted_right"
+        attribute posé:
+            "joyce_arm_front_sitted_left"
+            
         attribute hide1:
             "joyce_arm_hide_front"
         attribute hide2:
             "joyce_arm_hide2"
 
         attribute holdbook
+        attribute holdglasses if_any "sitted" "joyce_arm_front_sitted_right"
+
         attribute running if_not ["outfitsport"]:
             "joyce_arm_front_running"
         attribute running if_any ["outfitsport"]:
             "joyce_arm_front_running_sport"
 
+    group accessories:
+        attribute outfitred:
+            "joyce_accessories_pearls"
+        attribute outfitblue:
+            "joyce_accessories_pearls"
+        attribute pearls
 
     group hair variant "front":
         attribute hair: 
@@ -351,19 +340,21 @@ layeredimage joyce:
             "joyce_hair_front_outfitsport"
         attribute outfitsport3:
             "joyce_hair_front_outfitsport"
+        attribute wet
+
     
-    group accessories:
-        attribute glasses:
-            "joyce_glasses"
+    group accessories auto:
         attribute outfitsm:
             "joyce_glasses_sm" 
+        attribute pearls null
         attribute sweaty:
             "joyce_sweaty"
         attribute sweaty2:
             "joyce_sweaty2"
+        attribute sunglasses
+        attribute sunglasses2
 
     group arm variant "in front of hair":
-    
         attribute whip:
             "joyce_arm_whip_front_sm"
         attribute push:
@@ -380,9 +371,12 @@ layeredimage joyce:
         attribute defend if_any "night":
             "joyce_arm_defend_night"
 
+        attribute holdglasses:
+            "joyce_arm_holdglasses"
+
         attribute shh:
             "joyce_arm_right_shh"
-        attribute shh if_all "outfit3":
+        attribute shh if_all "outfit4":
             "joyce_arm_holdbook_right"
 
         attribute throwWater:
@@ -394,11 +388,10 @@ layeredimage joyce:
             "joyce_arm_wave"
         attribute whisper:
             "joyce_arm_whisper_front"
-        attribute whisper if_all "outfit3":
+        attribute whisper if_all "outfit4":
             "joyce_arm_holdbook_right"
 
         
-
 image img_blink:
     "joyce_eyes_normal"
     pause(3.0)
@@ -452,7 +445,14 @@ init python:
     def skip_frame_if_slow(minimum = 2):
         if animation_speed < date.animation_speed_hash[minimum]:
             # return "pause(animation_speed)"
-            return animation_speed
+            return "pause " + animation_speed
+        else:
+            return "this_will_skip_the_frame"
+
+    def skip_frame_if_fast(minimum = 2):
+        if date.animation_speed > minimum:
+            # return "pause(animation_speed)"
+            return "pause " + animation_speed
         else:
             return "this_will_skip_the_frame"
 
@@ -497,7 +497,7 @@ image img_joyce_footjob:
     pause(animation_speed)
     "Joyce/sex/footjob/joyce footjob 3.png"
     pause(animation_speed)
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/footjob/joyce footjob 4.png"
     pause(animation_speed)
     "Joyce/sex/footjob/joyce footjob 3.png"
@@ -512,7 +512,7 @@ image img_joyce_footjob_naked:
     pause(animation_speed)
     "Joyce/sex/footjob/joyce footjob 3 naked.png"
     pause(animation_speed)
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/footjob/joyce footjob 4 naked.png"
     pause(animation_speed)
     "Joyce/sex/footjob/joyce footjob 3 naked.png"
@@ -527,7 +527,7 @@ image img_joyce_footjob_v2:
     skip_frame_if_slow(1)
     img_if_naked("footjob/joyce footjob v2 3")
     skip_frame_if_slow(1)
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     img_if_naked("footjob/joyce footjob v2 4")
     pause(animation_speed)
     img_if_naked("footjob/joyce footjob v2 5")
@@ -568,7 +568,7 @@ image img_joyce_handjob:
     pause(animation_speed)
     "Joyce/sex/handjob/joyce handjob 3.png"
     pause(animation_speed)
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob 4.png"
     skip_frame_if_slow(2)
     repeat
@@ -583,12 +583,12 @@ image img_joyce_handjob_naked:
     pause(animation_speed)
     "Joyce/sex/handjob/joyce handjob 3 naked.png"
     pause(animation_speed)
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob 4 naked.png"
     skip_frame_if_slow(2)
     repeat
 image img_joyce_handjob_v2:
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob v2 1.png"
     skip_frame_if_slow(2)
     "Joyce/sex/handjob/joyce handjob v2 2.png"
@@ -603,7 +603,7 @@ image img_joyce_handjob_v2:
     pause(animation_speed)
     repeat
 image img_joyce_handjob_v2_naked:
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     "Joyce/sex/handjob/joyce handjob v2 1 naked.png"
     skip_frame_if_slow(2)
     "Joyce/sex/handjob/joyce handjob v2 2 naked.png"
@@ -630,7 +630,7 @@ layeredimage joyce handjob:
             "img_joyce_handjob_v2_naked"
 
 image img_joyce_titjob:
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     img_if_naked("titjob/joyce titjob 1")
     pause(animation_speed)
     img_if_naked("titjob/joyce titjob 2")
@@ -646,7 +646,7 @@ image img_joyce_titjob:
     repeat
 
 image img_joyce_titjob_v2:
-    function renpy.curry(play_sexsound)(filename="sex/sloppy.wav") #hacky
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
     img_if_naked("titjob/joyce titjob v2 1")
     pause(animation_speed)
     img_if_naked("titjob/joyce titjob v2 2")

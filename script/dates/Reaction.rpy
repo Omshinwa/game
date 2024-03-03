@@ -11,7 +11,7 @@ label label_reaction_talk():
         return
 
     hide screen screen_date_ui with dissolve
-    show joyce null
+    # show joyce null
     if value == 0:
         j smile "It's getting pretty warm these days."
         j eyeside armscrossed -smile "But to be honest I don't like summer too much."
@@ -141,9 +141,9 @@ label label_reaction_talk():
 label label_reaction_check_if_sex(card = None):
 
     if game.state == "sexing":
-        $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk"]
+        $ i = ["eyecontact", "touchy", "flirt", "smalltalk", "talk", "talk2", "listen"]
         if date.lastPlayed.name in i:
-            if done_flag[date.lastPlayed.name] != 999:
+            if (date.lastPlayed.name not in done_flag) or done_flag[date.lastPlayed.name] != 999:
                 python:
                     for card in i:
                         done_flag[card] = 999
@@ -255,7 +255,7 @@ label label_reaction(what = None):
         
         if value == 0: #touch hair
             show expression generate_anim3("Joyce/anim/touch-hair/touch-hair (",9, 0.15) at i as anim
-            play sound "date/touch.wav"
+            play sound "date/touch_hair.wav"
             pause 0.15*9
             hide anim
             j eyeside blush "..."
@@ -510,12 +510,9 @@ label label_date_isLost_lust:
 
     
 
-# Pretend my hand is a pussy for now
-# Just imagine your cock entering my body
-# And trusting deep into my pussy
-# It just feels like youre messing with my actual pussy doesnt it?
-# It’s so warm
-# It’s so hot
-# Do they feel good?
+# "Do you often meet boys?"
+# "Mhhh..."
+# "I'm embarassed to say it."
+# "But let's say I've been looking for the one."
 
 
