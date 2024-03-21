@@ -588,6 +588,10 @@ image img_day_wave2:
 
 screen file_slots(title):
 
+    
+
+    dismiss action NullAction() # modal True doesnt prevent you from clicking on card idk why
+
     default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
 
     use game_menu(title):
