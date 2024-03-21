@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 renpy.alpha renpy.solid
 renpy.blur renpy.geometry
 renpy.geometry renpy.texture shader_breathing
@@ -29,3 +30,36 @@ renpy.geometry renpy.matrixcolor renpy.solid
 renpy.matrixcolor renpy.matrixcolor renpy.texture
 renpy.ftl
 renpy.geometry renpy.matrixcolor renpy.texture
+=======
+renpy.imagedissolve renpy.imagedissolve
+renpy.texture
+renpy.dissolve renpy.dissolve
+renpy.geometry renpy.texture
+renpy.matrixcolor renpy.matrixcolor renpy.texture
+renpy.matrixcolor renpy.texture -renpy.texture renpy.blur renpy.texture -renpy.texture renpy.blur
+renpy.geometry renpy.matrixcolor renpy.texture
+renpy.solid
+renpy.matrixcolor renpy.texture
+renpy.matrixcolor renpy.texture renpy.texture
+renpy.geometry renpy.solid
+renpy.geometry renpy.mask
+renpy.texture -renpy.texture renpy.blur renpy.texture -renpy.texture renpy.blur
+renpy.geometry renpy.matrixcolor renpy.solid
+renpy.texture renpy.texture
+renpy.alpha renpy.geometry renpy.matrixcolor renpy.texture
+renpy.matrixcolor renpy.solid
+renpy.alpha renpy.texture
+renpy.alpha renpy.solid
+renpy.dissolve renpy.geometry
+shader_breathing renpy.texture
+renpy.ftl
+renpy.alpha renpy.geometry renpy.texture
+renpy.matrixcolor renpy.alpha renpy.texture
+renpy.geometry renpy.texture shader_breathing
+renpy.alpha renpy.matrixcolor renpy.texture
+renpy.alpha renpy.geometry renpy.solid
+renpy.blur renpy.geometry
+renpy.mask renpy.mask
+renpy.blur renpy.geometry renpy.matrixcolor
+renpy.geometry renpy.imagedissolve
+>>>>>>> a0591009a6a28be5bfece82ad867846d41173f6e

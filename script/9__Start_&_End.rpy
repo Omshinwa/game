@@ -24,6 +24,7 @@ label main_menu:
 # will dump you directly to the start label & start the game.
 # You do have to return from the splashscreen label or it doesn't leave the menu context properly
 
+
 label splashscreen:
     show splash
     pause 0.5
@@ -134,6 +135,7 @@ screen game_complete():
 
 # credits: people in the renpy server:
 # renpytom Junior @juniorthejunior Pinky! HB38  Fen (Feniks) + link seronis Jse(idk how much he helped lol)
+<<<<<<< HEAD
 # Consider leaving a good review if you enjoyed the game, it goes a long way to help me keep working!
 
 
@@ -204,3 +206,6 @@ style about_frame:
 
 style about_label_text:
     size gui.label_text_size
+=======
+# Consider leaving a good review if you enjoyed the game, it goes a long way to help me keep working!
+>>>>>>> a0591009a6a28be5bfece82ad867846d41173f6e
