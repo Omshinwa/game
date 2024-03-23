@@ -76,6 +76,19 @@ image moan_bubble:
     #     repeat
 
 
+#############################################################################
+#                                                                                     
+#
+#         :::            :::   :::   ::: :::::::::: :::::::::  :::::::::: :::::::::  
+#         :+:          :+: :+: :+:   :+: :+:        :+:    :+: :+:        :+:    :+: 
+#         +:+         +:+   +:+ +:+ +:+  +:+        +:+    +:+ +:+        +:+    +:+ 
+#         +#+        +#++:++#++: +#++:   +#++:++#   +#++:++#:  +#++:++#   +#+    +:+ 
+#         +#+        +#+     +#+  +#+    +#+        +#+    +#+ +#+        +#+    +#+ 
+#         #+#        #+#     #+#  #+#    #+#        #+#    #+# #+#        #+#    #+# 
+#         ########## ###     ###  ###    ########## ###    ### ########## #########  
+#
+#
+#############################################################################
 
 init python:
     def joyce_adjuster(names):
@@ -263,7 +276,7 @@ layeredimage joyce:
         attribute foxy
         attribute wink
         attribute happy
-        attribute eyes_closed
+        attribute eyesclosed "joyce_eyes_closed"
         attribute eyesdown
         attribute squint
         attribute bored
@@ -462,6 +475,45 @@ init python:
         else:
             return slow_img
 
+# ############################################################################
+#
+#             ::::::::  :::::::::: :::    ::: 
+#            :+:    :+: :+:        :+:    :+: 
+#            +:+        +:+         +:+  +:+  
+#            +#++:++#++ +#++:++#     +#++:+   
+#                   +#+ +#+         +#+  +#+  
+#            #+#    #+# #+#        #+#    #+# 
+#             ########  ########## ###    ### 
+#
+# ############################################################################
+image img_joyce_doggy_naked:
+    "Joyce/sex/doggy/joyce doggy 1 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 2 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 3 naked.png"
+    function renpy.curry(play_sexsound)(filename="sex/_sloppy.wav") #hacky
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 4 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 5 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 6 naked.png"
+    pause(animation_speed)
+    "Joyce/sex/doggy/joyce doggy 7 naked.png"
+    pause(animation_speed)
+    repeat
+
+layeredimage joyce doggy:
+    group doggy:
+        attribute v1 default:
+            "img_joyce_doggy_naked"
+        # attribute naked if_not "v2":
+        #     "img_joyce_footjob_naked"
+        # attribute v2:
+        #     "img_joyce_footjob_v2"
+
+
 image img_joyce_cowgirl:
     img_if_naked("cowgirl/joyce cowgirl 1")
     pause(animation_speed)
@@ -488,7 +540,6 @@ layeredimage joyce cowgirl:
             "img_joyce_cowgirl"
         attribute v2 if_all "naked":
             "img_joyce_cowgirl"
-
 
 image img_joyce_footjob:
     "Joyce/sex/footjob/joyce footjob 1.png"
@@ -746,6 +797,20 @@ layeredimage joyce blowjob:
             "img_joyce_blowjob_v2"
         attribute v2 if_all "naked":
             "img_joyce_blowjob_v2_naked"
+
+
+
+############################################################################################################
+#
+#        ::::    ::::  ::::::::::: ::::::::   ::::::::  
+#        +:+:+: :+:+:+     :+:    :+:    :+: :+:    :+: 
+#        +:+ +:+:+ +:+     +:+    +:+        +:+        
+#        +#+  +:+  +#+     +#+    +#++:++#++ +#+        
+#        +#+       +#+     +#+           +#+ +#+        
+#        #+#       #+#     #+#    #+#    #+# #+#    #+# 
+#        ###       ### ########### ########   ########  
+#
+###########################################################################################################
 
 
 image img_toilet-static:

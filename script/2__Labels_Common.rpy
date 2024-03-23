@@ -13,7 +13,7 @@ label label_newDay(var_label_callback="label_home"):
 
     if game.day % game.dateEvery == 0:
         pause 1.5
-        play music "music/clock-tick.mp3" noloop
+        play music "day/clock-tick.wav" noloop
         $ game.day += 1
         with blinds
     else:
@@ -53,7 +53,7 @@ label label_add_card_to_deck( toWhere, card, xfrom=960, yfrom=-100, pauseTime=0,
     
     show expression card.img onlayer screens at trans_anim_move_card(xfrom, yfrom, xto, yto, pauseTime)
         
-    pause (0.4 + pauseTime)
+    $ renpy.pause(0.4 + pauseTime)
     play sound "card/ghost.mp3"
     pause 0.3
     if toWhere == "list":

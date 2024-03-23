@@ -1,48 +1,17 @@
 # in webbrowser, it cant find the strings of the name of the methods ie "date.increment('lust',-3, negative=True)" it wont find date.increment, it can find attributes though
 
-label label_card_calm:
-    $ date.increment('lust',-3, negative=True)
-    return
-label label_card_maxcalm:
-    $ date.increment('lust',-10)
-    $ deck.hand.append(Card('stop'))
-    return
-label label_card_slower:
-    $ date.speedDown(False)
-    $ date.lustPerTurn -= 3
-    return
-label label_card_slowsteady:
-    $ date.speedDown(False)
-    $ date.speedDown(False)
-    $ date.lustPerTurn -= 5
-    return
-label label_card_fool:
-    $ date.speedDown(False)
-    $ date.speedDown(False)
-    $ date.lustPerTurn -= 5
-    return
-label label_card_faster:
-    $ date.speedUp(False)
-    return
-label label_card_draw2:
-    $ deck.draw(2)
-    return
-label label_card_devil:
-    $ deck.draw(2)
-    $ temp = date.lust
-    $ date.lust = 0
-    play sound "rpg/Lust.wav"
-    $ date.increment('lust', temp*2, negative=True)
-    $ del temp
-    return
-label label_card_pair:
-    $ deck.draw(2)
-    return
-label label_card_universeout:
-    $ deck.add_to_hand(Card('spaceout'));
-    pause 0.2
-    $ deck.add_to_hand(Card('spaceout'));
-    return
+
+
+#      ::::::::::: :::     :::        :::    :::      :::::::::: :::        ::::::::::: ::::::::: ::::::::::: 
+#          :+:   :+: :+:   :+:        :+:   :+:       :+:        :+:            :+:     :+:    :+:    :+:     
+#          +:+  +:+   +:+  +:+        +:+  +:+        +:+        +:+            +:+     +:+    +:+    +:+     
+#          +#+ +#++:++#++: +#+        +#++:++         :#::+::#   +#+            +#+     +#++:++#:     +#+     
+#          +#+ +#+     +#+ +#+        +#+  +#+        +#+        +#+            +#+     +#+    +#+    +#+     
+#          #+# #+#     #+# #+#        #+#   #+#       #+#        #+#            #+#     #+#    #+#    #+#     
+#          ### ###     ### ########## ###    ###      ###        ########## ########### ###    ###    ###     
+
+
+
 label label_card_peek:
     play sound "rpg/Lust.wav"
     $ date.increment('lust',2)
@@ -63,64 +32,36 @@ label label_card_peek5:
     $ date.increment('lust',30)
     return
 label label_card_eyecontact:
-    if "eyecontact" in date.playedThisTurn:
-        pass
-    elif renpy.has_label(date.name + "_eyecontact"):
-        $ renpy.call(date.name + "_eyecontact") 
-    else:
-        call label_reaction
+    $ default_card_behavior("eyecontact")
     $ date.increment('attraction',1,False);
     return
 label label_card_flirt:
-    if "flirt" in date.playedThisTurn:
-        pass
-    elif renpy.has_label(date.name + "_flirt"):
-        $ renpy.call(date.name + "_flirt") 
-    else:
-        call label_reaction
+    $ default_card_behavior("flirt")
     $ date.increment('attraction',2,False);
     return
 label label_card_touchy:
-    if "touchy" in date.playedThisTurn:
-        pass
-    elif renpy.has_label(date.name + "_touchy"):
-        $ renpy.call(date.name + "_touchy") 
-    else:
-        call label_reaction
+    $ default_card_behavior("touchy")
     $ date.attractionMultiplier *= 2
     return
-label label_card_talk:
-    if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
+label label_card_chat:
+    if "chat" in date.playedThisTurn or "ask" in date.playedThisTurn:
         pass
-    elif renpy.has_label(date.name + "_talk"):
-        $ renpy.call(date.name + "_talk") 
-    else:
-        call label_reaction_talk
+    $ default_card_behavior("chat")
     $ date.increment('trust',1)
     return
-label label_card_talk2:
-    if "talk" in date.playedThisTurn or "talk2" in date.playedThisTurn:
-        pass
-    elif renpy.has_label(date.name + "_talk"):
-        $ renpy.call(date.name + "_talk") 
-    else:
-        call label_reaction_talk
+label label_card_ask:
+    $ default_card_behavior("ask")
     $ date.increment('trust',2)
     return
 label label_card_listen:
-    if "listen" in date.playedThisTurn:
-        pass
-    elif renpy.has_label(date.name + "_listen"):
-        $ renpy.call(date.name + "_listen") 
-    # else:
-    #     call label_reaction_talk
+    $ default_card_behavior("listen")
     $ date.trustMultiplier *= 2
     return
 label label_card_spaceout:
     return
 
 label label_card_undress:
-    if "naked" in renpy.get_attributes("joyce"):
+    if has_attribute("naked"):
         #already naked
         return
 
@@ -131,16 +72,110 @@ label label_card_undress:
         call label_reaction_undress
     return
 
-label label_card_awakening(card=None):
-    python:
-        i = int(len(deck.deck)/2)
-        for card in range(i):
-            renpy.sound.play("card/shuffle.mp3", channel='drawcard')
-            deck.discard_pile.append( deck.deck.pop(-1) )
-            renpy.pause(0.1)
+############################################################################################################
+#
+#        ::::    ::::  ::::::::::: ::::::::   ::::::::  
+#        +:+:+: :+:+:+     :+:    :+:    :+: :+:    :+: 
+#        +:+ +:+:+ +:+     +:+    +:+        +:+        
+#        +#+  +:+  +#+     +#+    +#++:++#++ +#+        
+#        +#+       +#+     +#+           +#+ +#+        
+#        #+#       #+#     #+#    #+#    #+# #+#    #+# 
+#        ###       ### ########### ########   ########  
+#
+###########################################################################################################
 
-        renpy.sound.play("rpg/_Absorption2.wav", channel="drawcard")
-        date.increment("lust",-999)
+
+label label_card_awakening(card=None):
+    # python:
+    #     i = int(len(deck.deck)/2)
+    #     for card in range(i):
+    #         renpy.sound.play("card/shuffle.mp3", channel='drawcard')
+    #         deck.discard_pile.append( deck.deck.pop(-1) )
+    #         renpy.pause(0.1)
+
+    #     renpy.sound.play("rpg/_Absorption2.wav", channel="drawcard")
+    #     date.increment("lust",-999)
+    play sound "sfx/powerup_whoosh.wav"
+    $ date.lustMultiplier *= 2
+    return
+
+label label_card_calm:
+    $ date.increment('lust',-3, negative=True)
+    return
+label label_card_devil:
+    $ deck.draw(2)
+    $ temp = date.lust
+    $ date.lust = 0
+    play sound "rpg/Lust.wav"
+    $ date.increment('lust', temp*2, negative=True)
+    $ del temp
+    return
+label label_card_draw2:
+    $ deck.draw(2)
+    return
+label label_card_faster:
+    $ date.speedUp(False)
+    $ date.turnLeft -= 1
+    return
+label label_card_fool:
+    $ date.speedDown(False)
+    $ date.speedDown(False)
+    $ date.lustPerTurn -= 5
+    return
+label label_card_maxcalm:
+    $ date.increment('lust',-10)
+    $ deck.hand.append(Card('stop'))
+    return
+label label_card_pair:
+    $ deck.draw(2)
+    return
+
+label label_card_recall():
+    $ game.jeu_sensitive = True
+    $ deck.discard_pile.pop(-1) #prevent the player from selecting the card
+    $ renpy.show_screen('screen_show_deck', what=deck.hand, var_label_callback='label_card_recall_exe', instruction='Choose a card to discard', background='#000a', cancelAction=Call("label_card_recall_cancel", index))
+    queue sound "rpg/powerup7.wav"
+    call screen screen_gameloop()
+    $ deck.discard_pile.append(Card("recall"))
+    return
+
+label label_card_recall_cancel(index):
+    hide screen screen_show_deck
+    $ deck.hand.insert(index, Card("recall"))
+    $ deck.discard_pile.pop(-1)
+    return
+
+label label_card_recall_exe(index):
+    hide screen screen_show_deck with dissolve
+    $ deck.discard(index)
+    $ game.jeu_sensitive = True
+    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, var_label_callback='label_card_recall_exe2', instruction='Choose a card to get back', background='#000a', cancelAction=Call("label_card_recall_cancel", index))
+    call screen screen_gameloop()
+    return
+
+label label_card_recall_exe2(index):
+    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, var_label_callback='label_card_recall_exe2', instruction='Choose a card to get back', background='#000a', cancelAction=Call("label_card_recall_cancel"))
+    $ renpy.call('label_add_card_to_deck','hand', deck.discard_pile.pop(index), xfrom=150, yfrom=850, pauseTime=0.2, index=0)
+    hide screen screen_show_deck with dissolve
+    return
+
+label label_card_slower:
+    $ date.speedDown(False)
+    $ date.lustPerTurn -= 3
+    return
+label label_card_slowsteady:
+    $ date.speedDown(False)
+    $ date.speedDown(False)
+    $ date.lustPerTurn -= 5
+    return
+label label_card_triple:
+    $ deck.draw(3)
+    return
+
+label label_card_universeout:
+    $ deck.add_to_hand(Card('spaceout'));
+    pause 0.2
+    $ deck.add_to_hand(Card('spaceout'));
     return
 
 label label_card_nova:
@@ -216,19 +251,33 @@ label label_card_recycle(index):
 
 label label_card_sisyphus(index):
     $ game.jeu_sensitive = True
-    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, var_label_callback='label_card_sisyphus2', instruction='Choose a card to add back', background='#000a', cancelAction=Call("label_card_sisyphus_cancel"))
+    $ renpy.show_screen('screen_show_deck', what=deck.discard_pile, var_label_callback='label_card_sisyphus2', instruction='Choose a card to add back', background='#000a', cancelAction=Call("label_card_sisyphus_cancel", index))
     call screen screen_gameloop()
     return
 
-label label_card_sisyphus_cancel():
+label label_card_sisyphus_cancel(index):
     hide screen screen_show_deck
-    $ deck.hand.append(Card("sisyphus"))
+    $ deck.hand.insert(index, Card("sisyphus"))
     $ deck.discard_pile.pop(-1)
     return
 
 label label_card_sisyphus2(index):
     $ renpy.call('label_add_card_to_deck','deck', deck.discard_pile.pop(index), xfrom=150, yfrom=850, pauseTime=0.2, index=0)
     hide screen screen_show_deck with dissolve
+    return
+
+label label_card_offering:
+    python:
+        i = int(len(deck.deck)/2)
+        for card in range(i):
+            renpy.sound.play("card/shuffle.mp3", channel='drawcard')
+            deck.discard_pile.append( deck.deck.pop(-1) )
+            date.increment("lust",-1, resetAllMultiplier = False)
+            renpy.pause(0.1)
+        
+        date.increment("lust",0)
+
+        renpy.sound.play("rpg/_Absorption2.wav", channel="drawcard")
     return
 
 label label_card_ouroboros:

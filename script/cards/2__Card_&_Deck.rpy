@@ -23,11 +23,11 @@ init python:
 
 
         def __lt__(self,other): #this makes operation with '<' possible, and so sorting cards are by names.
-            if "sort" in cardList[self.name]:
+            if self.name in cardList and "sort" in cardList[self.name]:
                 i = cardList[self.name]["sort"]
             else:
                 i = self.name
-            if "sort" in cardList[other.name]:
+            if other.name in cardList and "sort" in cardList[other.name]:
                 j = cardList[other.name]["sort"]
             else:
                 j = other.name
@@ -154,14 +154,10 @@ label playCard(card, index, playCardindex=0):
     $ commands.replace("index", str(index))
     $ commands = commands.split("; ")
     while playCardindex < len(commands):
-        # "[commands] [playCardindex]"
         $ exec(commands[playCardindex])
         $ playCardindex+=1
-        # "done exec [playCardindex]"
-        # pause 0.1
-    # "deleting [playCardindex]"
-    if card.name not in date.playedThisTurn:
-        $ date.playedThisTurn.append(card.name)
+    if date.lastPlayed.name not in date.playedThisTurn:
+        $ date.playedThisTurn.append(date.lastPlayed.name)
     return
 
 label playCardfromHand(index):

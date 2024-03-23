@@ -12,10 +12,10 @@ define cardList = {
     "slower": {"txt":_("Go slower, -3 Lust per turn."), "eff":"renpy.call('label_card_slower')", "value":1, "sort":"21"},
     "slowsteady": {"txt":_("IF this is your leftmost card: \nGo much slower, -5 Lust per turn"), "cond":"index == 0", "eff":"renpy.call('label_card_slowsteady')", "value":1, "sort":"22"},
     "fool": {"txt": _("IF you have 3 cards or less in hand: \nGo much slower, -5 Lust per turn"), "cond":"len(deck.hand)<=3", "eff":"renpy.call('label_card_fool')", "value":1, "sort":"23" },
-    "faster": {"txt":_("Go faster, +3 Lust per turn."), "eff":"renpy.call('label_card_faster')", "value":-1, "sort":"24"},
+    "faster": {"txt":_("Go faster, move the turn counter."), "eff":"renpy.call('label_card_faster')", "value":0, "sort":"24"},
 
     "stop": {"txt":_("Can't be played"), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
-    "tired": {"txt":_("You're tired."), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
+    "tired": {"txt":_("You're tired.\nIf you have 5 of those: you lose."), "cond":"False", "eff":"", "value":-3,"sort":"zzz", "color":"bad"},
 
     "awakening": {"txt":_("Double the next Lust change."), "eff":"date.lustMultiplier *= 2", "value":3,"sort":"30"},
     # "awakening": {"txt":_("Reset your lust to Zero.\nDiscard half your deck."), "value":3,"sort":"30"},
@@ -23,6 +23,8 @@ define cardList = {
     "draw2": {"txt":_("draw 2 cards"), "eff":"renpy.call('label_card_draw2')", "value":4,"sort":"42"},#
     "devil": {"txt":_("Draw 2 cards, Double your current lust."), "eff":"renpy.call('label_card_devil')", "value":3,"sort":"43"},
     "pair": {"txt":_("IF you have a pair in your hand: draw 2 cards"), "cond":"deck.hasPair()>1", "eff":"renpy.call('label_card_pair')", "value":3,"sort":"44"},
+    "triple": {"txt":_("IF you have a triple in your hand: draw 3 cards"), "cond":"deck.hasPair()>2", "value3":1,"sort":"45"},
+
     "recycle": {"txt":_("Discard all the cards on the right of this card, then redraw as many +1"), "eff":"renpy.call('label_card_recycle', index)", "value":1,"sort":"45"},
 
 
@@ -32,9 +34,12 @@ define cardList = {
     
     
     "sisyphus": {"txt":_("Choose a card played, put it back on top of your deck."), "eff":"renpy.call('label_card_sisyphus', index)", "value":2,"sort":"61"},
-    "reload": {"txt":_("The most recent card in the discard pile is played again."), "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"62"},
+    "recall":{"txt":_("Discard a card (of your choice) to get back another card."), "cond":"len(deck.discard_pile)>0 and len(deck.hand)>1", "value3":2, "sort":"62"},
+    "reload": {"txt":_("The most recent card in the discard pile is played again."), "cond":"len(deck.discard_pile)>0", "eff":"renpy.call('label_card_reload', index)", "value":2, "sort":"63"},
 
-    "ouroboros": {"txt":_("Shuffle back all the cards played into the deck."), "eff":"renpy.call('label_card_ouroboros')", },#"value":3,
+    "ouroboros": {"txt":_("Shuffle back all the cards played into the deck.")},#"value":3,
+
+    "offering" : {"txt":_("Discard half your deck: Reduce your lust by this amount.")},
 
     "exodia3" : {"txt":_("{b}WORLD{/b}\ninto Power.\nthe right\nthis effect"), "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"93"},
     "exodia2" : {"txt":_("{b}OF THE{/b}\ncurrent Lust\n3 pieces in\nactivate"), "eff":"renpy.call('label_card_exodia', index)", "value":0,"rarity":0.5, "sort":"92"},
@@ -60,8 +65,8 @@ define cardList = {
     # "kiss" : {"txt":_("+4 attraction"), "eff":"date.increment('attraction',4,False);","value2":3, "sort":"05"},
     "touchy" : {"txt":_("For the rest of this turn: Attraction gains are doubled."),"value2":2, "sort":"06", "color":"attraction"}, #
 
-    "talk": {"txt":_("+1 trust"), "eff":"renpy.call('label_card_talk')","value2":1, "sort":"00", "color":"trust"}, #+1 trust
-    "talk2": {"txt":_("+2 trust"), "eff":"renpy.call('label_card_talk2')","value2":2, "sort":"01", "color":"trust"},
+    "chat": {"txt":_("+1 trust"),"value2":1, "sort":"00", "color":"trust"}, #+1 trust
+    "ask": {"txt":_("+2 trust"), "eff":"renpy.call('label_card_ask')","value2":2, "sort":"01", "color":"trust"},
     "listen": {"txt":_("For the rest of this turn: Trust gains are doubled"), "value2":2, "sort":"02", "color":"trust"},
 
     ####            POKER MENU STUFF
@@ -74,6 +79,7 @@ define cardList = {
     "achievement" : {"txt":_("Check Achievements")},
     "memory" : {"txt":_("Check Memories")},
     "fullscreen": {"txt":_("Switch between Windowed and Fullscreen mode.")},
+    "debug":{"txt":"Open debug menu"},
 
     "undress" : {"txt":_("Remove clothing."), "value":0 }
         }
@@ -82,6 +88,10 @@ init python:
     CARD_IMG_DICT = {}
     for card in cardList:
         CARD_IMG_DICT[card] = Image("cards/"+card+".png")
+
+label label_card_debug:
+    call screen screen_debug_menu
+    return
 
 label label_card_fullscreen:
     $ renpy.run(Preference("display", "fullscreen"))

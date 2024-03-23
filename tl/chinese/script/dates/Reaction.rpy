@@ -52,7 +52,7 @@ translate chinese label_reaction_5429cf7b:
 translate chinese label_reaction_c566352e:
 
     # j eyes_closed -armscrossed "Though I regret wearing so many layers today."
-    j eyes_closed -armscrossed ""
+    j eyesclosed -armscrossed ""
 
 # game/script/dates/Reaction.rpy:35
 translate chinese label_reaction_d7a6af6c:
