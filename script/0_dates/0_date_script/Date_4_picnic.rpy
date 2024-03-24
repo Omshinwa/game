@@ -1,3 +1,9 @@
+transform trs_contrejour:
+    # matrixcolor BrightnessMatrix(-0.15)
+    matrixcolor ColorizeMatrix(Color(hsv=(0,0,-0.1)),"#f0e8dc")
+transform trs_contrejour_pluie:
+    matrixcolor ColorizeMatrix(Color(hsv=(0,0,0.0)),"#eff3e6")
+    
 image fg2 joyce-shadow = ShowingSwitch("joyce sitted","fg2 picnic-joyce-shadow-sitted",
     "joyce","fg2 picnic-joyce-shadow-stand",
     None ,"#fff0")

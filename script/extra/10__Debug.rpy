@@ -36,6 +36,7 @@ screen screen_debug_menu():
             textbutton "jogging" action Call("label_jogging") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "poker" action Call("label_stripPoker") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "picnic" action Call("label_picnic") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
+            textbutton "beach" action Call("label_beach") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "footjob" action Call("label_footjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "handjob" action Call("label_handjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color
             textbutton "titjob" action Call("label_titjob") style "style_text_button" text_color "#fff" text_hover_color gui.hover_color

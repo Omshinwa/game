@@ -46,12 +46,6 @@ transform trs_sitting:
     yanchor 0.0
     zoom 1.0 xpos 405 #xalign 0.5
 
-transform trs_contrejour:
-    # matrixcolor BrightnessMatrix(-0.15)
-    matrixcolor ColorizeMatrix(Color(hsv=(0,0,-0.1)),"#f0e8dc")
-transform trs_contrejour_pluie:
-    matrixcolor ColorizeMatrix(Color(hsv=(0,0,0.0)),"#eff3e6")
-
 transform trs_lighting_bbt:
     # matrixcolor IdentityMatrix()
     matrixcolor ColorizeMatrix(Color(hsv=(0,0,-0.1)),Color(rgb=(1.0, 1.03, 1.01))) #BrightnessMatrix(-0.15)

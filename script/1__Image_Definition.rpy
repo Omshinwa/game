@@ -122,7 +122,9 @@ layeredimage joyce:
         attribute night4 null
         attribute night5 null
         attribute night6 null
-        attribute sitted null
+        attribute sitted-outfit3 null
+        attribute sitted-swimsuit null
+        attribute swimsuit null
 
         attribute outfit3 null
         attribute outfit4 null
@@ -255,12 +257,17 @@ layeredimage joyce:
         attribute night5 if_not "reveal-2"
         attribute outfitsport if_not "undress"
         
+    
+    group accessories:
+        attribute hat  "joyce_accessories-hat_back"
+        attribute hat2 "joyce_accessories-hat_back"
+        attribute hat3 "joyce_accessories-hat_back"
+
     group face:
         attribute face default:
             "joyce_face"
         attribute sweaty
         attribute sweaty2
-
 
     group skin:
         attribute null_skin if_any "null":
