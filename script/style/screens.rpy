@@ -349,6 +349,7 @@ style navigation_button:
 
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
+    outlines [ (4, "#e5e5e5", 0, 2) ]
 
 
 ## Main Menu screen ############################################################
@@ -741,6 +742,7 @@ screen preferences():
 
             hbox:
                 box_wrap True
+                spacing 30
 
                 if renpy.variant("pc") or renpy.variant("web"):
 
@@ -770,13 +772,20 @@ screen preferences():
                         ysize 70
                     
                     button:
-                        text _("Touchscreen") style "radio_button_text" yalign 0.5 xpos 80
+                        text _("Touch\nscreen") style "radio_button_text" yalign 0.5 xpos 80
                         action ToggleTouchMode(1)
                         add "gui/touch.png":
                             xalign 0.0
                             yalign 0.5
-                        ysize 70
+                        ysize 100
                     # textbutton _("Touchscreen") action ToggleTouchMode(1)
+                
+                vbox:
+                    style_prefix "check"
+                    label _("Skip")
+                    textbutton _("Unseen Text") action Preference("skip", "toggle")
+                    textbutton _("After Choices") action Preference("after choices", "toggle")
+                    textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.
@@ -871,6 +880,7 @@ style pref_label:
 
 style pref_label_text:
     yalign 1.0
+    outlines [ (4, "#050505", 0, 2) ]
 
 style pref_vbox:
     xsize 338

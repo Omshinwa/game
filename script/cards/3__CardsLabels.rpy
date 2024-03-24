@@ -267,6 +267,15 @@ label label_card_sisyphus2(index):
     return
 
 label label_card_offering:
+    show offering:
+        zoom 2.0
+        align (0.5, 0.5)
+        alpha 0.0
+        ease 0.5 yalign 0.4 alpha 1.0
+        pause 0.5
+        ease 0.5 alpha 0.0
+    $ renpy.sound.play("rpg/_Absorption2.wav", channel="sound")
+    pause 0.6
     python:
         i = int(len(deck.deck)/2)
         for card in range(i):
@@ -274,10 +283,7 @@ label label_card_offering:
             deck.discard_pile.append( deck.deck.pop(-1) )
             date.increment("lust",-1, resetAllMultiplier = False)
             renpy.pause(0.1)
-        
         date.increment("lust",0)
-
-        renpy.sound.play("rpg/_Absorption2.wav", channel="drawcard")
     return
 
 label label_card_ouroboros:

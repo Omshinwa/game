@@ -454,18 +454,15 @@ init python:
             return "Joyce/sex/" + filename + ".png"
 
 
-
     def skip_frame_if_slow(minimum = 2):
         if animation_speed < date.animation_speed_hash[minimum]:
-            # return "pause(animation_speed)"
-            return "pause " + animation_speed
+            return animation_speed
         else:
             return "this_will_skip_the_frame"
 
     def skip_frame_if_fast(minimum = 2):
         if date.animation_speed > minimum:
-            # return "pause(animation_speed)"
-            return "pause " + animation_speed
+            return animation_speed
         else:
             return "this_will_skip_the_frame"
 

@@ -126,6 +126,12 @@ label label_footjob_gameLoop:
     label .gameLoop:
         $ game.jeu_sensitive = False
 
+        
+        if date.isWin():
+            call label_after_successful_Date_common from _call_label_after_successful_Date_common_5
+            call label_footjob_Win
+            call label_newDay("label_prison") from _call_label_newDay_17
+
         if len(deck.hand) == 0:
             call expression date.endTurn from _call_expression_6
 
@@ -151,14 +157,6 @@ label label_footjob_endTurn:
     if date.turn >= 2:
         call label_add_card_to_deck("hand", Card("peek2"), pauseTime=0.5) from _call_label_add_card_to_deck_12
         pause 0.5
-
-    if date.isWin():
-        
-        call label_after_successful_Date_common from _call_label_after_successful_Date_common_5
-        call label_footjob_Win
-        call label_newDay("label_prison") from _call_label_newDay_17
-
-
     return
 
 label label_footjob_Lost:
@@ -205,8 +203,12 @@ label label_footjob_Lost:
     
     $ game.lust = 0
     pause
-    j "You naughty boy, you just couldn't resist, could you?"
-    j "You just came all over me ew"
+    if date.turnLeft == 0:
+        j "Oh... poor boy."
+        j "You were so close"
+    else:
+        j "You naughty boy, you just couldn't resist, could you?"
+    j "You came all over me ew"
     j "I'm all sticky."
     j "You failed this exam."
     j "Time to lock you up again"

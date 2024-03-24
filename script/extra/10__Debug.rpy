@@ -10,11 +10,12 @@ init 50 python:
 
     # when we wanna jump into a label but have empty deck, no lust etc
 
-    def fix_stats():
+    def debug_fix_stats():
         global deck, game
         if len(deck.list) == 0:
             deck = deckdebug
         game.lustMax = 50
+        date.lustMax = 50
 
 label label_image_tools:
     call screen image_tools
