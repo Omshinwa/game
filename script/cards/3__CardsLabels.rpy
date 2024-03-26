@@ -106,7 +106,7 @@ label label_card_devil:
     $ deck.draw(2)
     $ temp = date.lust
     $ date.lust = 0
-    play sound "rpg/Lust.wav"
+    # play sound "rpg/Lust.wav"
     $ date.increment('lust', temp*2, negative=True)
     $ del temp
     return

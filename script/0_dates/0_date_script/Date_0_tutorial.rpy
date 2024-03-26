@@ -51,39 +51,27 @@ label label_tutorial:
         hide screen screen_tutorial with dissolve
         j smile "Got it?\nLet's start the date!"
     
-    label .gameLoop:
-        $ game.jeu_sensitive = False
-
-        label .winCondition:
-            if date.isWin():
-
-                call label_after_successful_Date_common from _call_label_after_successful_Date_common
-                j smile "I had a good time."
-                j "I feel like I can trust you."
-                j "Do you want to meet again later this week?"
-                j "Here's my number."
-                j "I'll text you."
-                j "See ya."
-                hide joyce with dissolve
-                
-                call label_newDay("label_home_tutorial")
-        
-        show joyce null with Dissolve(0.1)
-        if len(deck.hand) == 0:
-            call expression date.endTurn
-
-        $ game.jeu_sensitive = True
-        call screen screen_gameloop()
-        # pause
-        
-    jump .gameLoop
+    call label_gameLoop()
 
 
 label label_tutorial_endTurn:
-    call label_endTurn_common
-    call label_date_isLost_common("label_home_tutorial")
+    call label_date_Lost_common("label_home_tutorial")
     return
 
+
+label label_tutorial_Win:
+    j smile "I had a good time."
+    j "I feel like I can trust you."
+    j "Do you want to meet again later this week?"
+    j "Here's my number."
+    j "I'll text you."
+    j "See ya."
+    hide joyce with dissolve
+    return
+
+label label_tutorial_Lost:
+    jump label_reaction_default_Lost
+    return
 
 label label_tutorial_talk:
     if "tutorial_talk" not in done_flag["seen_labels"]:

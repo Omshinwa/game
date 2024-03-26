@@ -35,7 +35,7 @@ label label_picnic:
     show fg sunflare onlayer master zorder 2:
         additive 1.0
         alpha 0.4
-    j "Fiou! Today is so sunny."
+    j "Phew! Today is so sunny."
     j "Good thing I brought my sunglasses."
     show joyce holdglasses with dissolve
     pause 0.3
@@ -83,7 +83,7 @@ label label_picnic_isWin:
     show rain zorder -1 with dissolve
     play music "date/rain_bgm.ogg" fadein 1.0
     pause
-    j surprised sunglasses2 holdglasses opened "Oh my god."
+    j surprised sunglasses2 holdglasses mouthopen "Oh my god."
     j "Let's go hide somewhere."
     show joyce standup at trs_depied with dissolve:
         ypos -800
@@ -127,7 +127,6 @@ label label_picnic_isWin:
     return
 
 label label_picnic_endTurn:
-    call label_endTurn_common
     if date.turn == 2:
         hide screen screen_date_ui with dissolve
         show water_droplet

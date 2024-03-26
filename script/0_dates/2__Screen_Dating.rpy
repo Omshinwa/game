@@ -560,10 +560,10 @@ screen screen_buttons_ui():
     button:
         add "button_img_end_turn"
         align (0.0, 1.0)
-        action [Play('sound',"card/switch.mp3", selected=True), Call(date.endTurn)]
+        action [Play('sound',"card/switch.mp3", selected=True), Call("label_endTurn_common")]
         sensitive game.jeu_sensitive
             
-    if game.state == "sexing" or game.debug_mode: # game.progress[0]>=2 or 
+    if game.state == "sexing" or game.debug_mode or game.progress[0]>99: # game.progress[0]>=2 or 
         fixed:
             xpos 1790
             ypos 605

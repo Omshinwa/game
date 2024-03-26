@@ -210,7 +210,6 @@ label label_home:
     jump .gameLoop
 
 label label_home_end():
-
     $ game.state = "living"
     scene bg home
     show screen screen_home_end_act_2 onlayer master

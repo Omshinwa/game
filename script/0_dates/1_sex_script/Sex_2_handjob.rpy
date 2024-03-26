@@ -90,29 +90,11 @@ label label_handjob:
 
 
 label label_handjob_endTurn:
-    call label_endTurn_common
-
-    $ date.speedUp()
-    $ date.lustPerTurn += 3
-    pause(0.5)
-    
-    if date.isLost():
-        call label_handjob_Lost
-        call label_newDay("label_prison") from _call_label_newDay_18
-
     if date.turn == 3:
         call label_handjob_v2
-
     elif date.turn > 3:
         call label_add_card_to_deck("deck", Card("peek2"), pauseTime=1.0) from _call_label_add_card_to_deck_17   
         pause 0.5
-
-    if date.isWin():
-            
-            call label_after_successful_Date_common from _call_label_after_successful_Date_common_6
-            call label_handjob_Win    
-            call label_newDay("label_prison") from _call_label_newDay_19
-
     return
 
 

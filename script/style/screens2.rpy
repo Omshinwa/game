@@ -59,7 +59,8 @@ style choice_button_text is default:
 screen quick_menu():
     
     key 'K_F2' action [Show("screen_debug"),ToggleVariable("game.debug_mode")]
-    
+    key 'K_2' action ShowMenu("layered_image_visualizer")
+
     zorder 100
 
     if _in_replay:

@@ -47,8 +47,7 @@ label label_bubbleTea:
 
 
 label label_bubbleTea_endTurn:
-    call label_endTurn_common
-    call label_date_isLost_common from _call_label_date_isLost_common_1
+    call label_date_Lost_common from _call_label_date_Lost_common_1
     if game.progress[1]<=1:
         if date.turn == 1:
             hide screen screen_date_ui with dissolve

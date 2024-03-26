@@ -2,20 +2,25 @@
 # default game._lustPerDay = "game.progress[0] + 1"
 # default game.act = 0
 
+default game = Game()
+# default date = Date("date")
+default date.neutralJoyce = "joyce null"
 
 init 50 python:
     deckdebug = Deck()
     for card in cardList:
-        deckdebug.list.append(Card(card))
+        if "value" in cardList[card]:
+            deckdebug.list.append(Card(card))
+    deckdebug.list += [Card("ask"),Card("listen"),Card("chat"),Card("eyecontact"),Card("touchy"),Card("flirt"),Card("listen"),Card("touchy")]
 
     # when we wanna jump into a label but have empty deck, no lust etc
 
-    def debug_fix_stats():
-        global deck, game
+    def debug_deck_playtest():
+        global deck, game, date
         if len(deck.list) == 0:
             deck = deckdebug
-        game.lustMax = 50
-        date.lustMax = 50
+            game.lustMax = 50
+            date.lustMax = 50
 
 label label_image_tools:
     call screen image_tools

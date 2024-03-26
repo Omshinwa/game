@@ -1,10 +1,8 @@
-﻿define j = Character(None, image="joyce", kind=bubble)
+﻿default povname = "William"
+
+define j = Character(None, image="joyce", kind=bubble)
 define rat = Character(None, image="rat", kind=bubble)
-
-default povname = "William"
-
-default game = Game()
-default date = Date("date")
+default mc = Character(povname)
 
 # The game starts here.
 

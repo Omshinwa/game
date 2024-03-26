@@ -149,8 +149,7 @@ label label_library:
     call label_newDay("label_home")
 
 label label_library_endTurn:
-    call label_endTurn_common
-    call label_date_isLost_common
+    call label_date_Lost_common
 
 label label_library_talk:
     # menu:

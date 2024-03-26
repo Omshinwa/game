@@ -22,6 +22,12 @@ init python:
                 self._turnLeft = 0
             
             self.objectives = {}
+            
+            if "neutralJoyce" in kwargs:
+                self.neutralJoyce = kwargs["neutralJoyce"]
+            else:
+                self.neutralJoyce = "joyce null"
+
 
             if "objectif_trust" in kwargs:
                 self.objectives["trust"] = kwargs["objectif_trust"]
@@ -41,8 +47,9 @@ init python:
             if "isLost" in kwargs:
                 self._isLost = kwargs["isLost"]
             else:
+                self._isLost = None
                 if game.state == "dating":
-                    self._isLost = None
+                    self._isLost = "len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0"
                 else:
                     self._isLost = "date.lust >= date.lustMax"
 
@@ -127,8 +134,6 @@ init python:
                 i += 1
 
         def isLost(self):
-            if self._isLost == None: #default behavior
-                return eval("len(deck.deck) == 0 or (date.lust > date.trust and date.lust > date.attraction) or date.turnLeft == 0")
             return eval(self._isLost)
         def isWin(self):
             return eval(self._isWin)
@@ -151,7 +156,7 @@ init python:
                     self.attraction += value * self.attractionMultiplier * self.allMultiplierOnce
                 elif which == "lust":
                     if value>0:
-                        renpy.sound.play("rpg/Lust.wav", relative_volume=min(0.5,0.05*value))
+                        renpy.sound.play("rpg/Lust.wav", relative_volume=max(0.5,0.08*value))
                     if negative:
                         self.lust += value * self.lustMultiplier * self.allMultiplierOnce
                     else:
@@ -207,10 +212,12 @@ label label_beginDuel_common():
     if game.progress[1] == -1:
         $ game.progress[1] = 0
 
+    $ debug_deck_playtest()
     $ deck.deck = deck.list.copy()
     $ deck.shuffle()
     $ deck.discard_pile = []
     $ deck.hand = []
+
 
     if game.state == "dating":
         show screen screen_date_ui()
@@ -241,33 +248,32 @@ label label_beginDuel_common():
             hide screen screen_tutorial with dissolve
     return
 
-label label_gameLoop(neutralJoyce = "joyce null"):
+label label_gameLoop():
     label .gameLoop:
         $ game.jeu_sensitive = False
 
         if date.isWin():
             call label_after_successful_Date_common
-            call date.Win
-            if date.dateOrSex == "date":
+            $ renpy.call(date.name + "_Win")
+            if game.state == "date":
                 call label_newDay("label_home")
             else:
                 call label_newDay("label_prison")
+        elif date.isLost():
+            call label_Lost_common
         
         if len(deck.hand) == 0:
-            call expression date.endTurn
+            call label_endTurn_common
         $ game.jeu_sensitive = True
-        show expression neutralJoyce as joyce with Dissolve(0.1)
+
+        if game.state == "dating":
+            if hasattr(date, "neutralJoyce"):
+                $ renpy.show(date.neutralJoyce)
+            with Dissolve(0.1)
         
         call screen screen_gameloop()
         
     jump .gameLoop
-
-
-label label_sex_endTurn():
-
-    $ date.lust += date.lustPerTurn
-    $ date.orgasm += date.lustPerTurn # times the sensitivity
-    return
 
 label label_endTurn_common():
     # """
@@ -280,7 +286,8 @@ label label_endTurn_common():
         play sound "card/switch.mp3"
 
     if game.state == "sexing":
-        call label_sex_endTurn
+        $ date.lust += date.lustPerTurn
+        $ date.orgasm += date.lustPerTurn # times the sensitivity
 
     pause 0.3 #allows for the animation to be played
 
@@ -297,12 +304,21 @@ label label_endTurn_common():
         play sound "rpg/Item1_quiz.mp3"
         pause 0.3
 
+    $ renpy.call(date.endTurn)
+
     if not date.isLost():
         $ handSize = len(deck.hand)
         while handSize < 5 and len(deck.deck)>0:
             $ deck.draw(1)
             $ handSize = len(deck.hand)
-    
+    else:
+        if game.state == "dating":
+            call label_Lost_common
+            call label_newDay("label_home")
+        elif game.state == "sexing":
+            $ renpy.call(date.name + "_Lost")
+            call label_newDay("label_prison")
+
     return
 
 label label_after_successful_Date_common():
@@ -339,12 +355,11 @@ label label_after_successful_Date_common():
     
     return
 
-label label_date_isLost_common(var_label_callback = "label_home"):
-    if date.isLost():
+label label_Lost_common():
+    if _in_replay or game.debug_mode :
+        $ renpy.end_replay()
 
-        if _in_replay or game.debug_mode :
-            $ renpy.end_replay()
-
+    if game.state == "dating":
         play sound "rpg/Fall1.wav"
         show date-fail onlayer screens at truecenter with blinds
         pause 0.3
@@ -352,40 +367,13 @@ label label_date_isLost_common(var_label_callback = "label_home"):
         hide screen screen_date_ui with dissolve
         show joyce null
 
-        if date.lust > date.trust and date.lust > date.attraction:
-            call label_date_isLost_lust
+    if renpy.has_label(date.name + "_Lost"):
+        call expression date.name + "_Lost"
+    else:
+        call label_reaction_default_Lost()
 
-        elif len(deck.deck) == 0:
-            j eyeside armscrossed "..."
-            j "Seems like you've run out of things to say."
-            j "I guess the date's over then..."
-            j "Next time, think about other topics to talk about."
-                
-        elif date.turnLeft <= 1:
-            if game.progress[0]<4:
-                j eyeside armscrossed "Oh, look at the time!"
-                j "Sorry, I gotta go."
-                j "That kinda dragged on anyway, right?"
-                j "Maybe we can do this another day? See ya."
-            else:
-                if game.progress[1]<3:
-                    j foxy armscrossed "Oh, look at the time!"
-                    j smile "Seems like today's not your day."
-                    j tongue "Hehe, try next time."
-                    j smirk "My door is always open for you."
-                else:
-                    j foxy armscrossed "Ooh time's up."
-                    j smile "You should take your time."
-                    j "You don't need to burst everything in one go."
-                    j "Just focus on each step, one at a time."
-                    j wink tongue "Big boy."
-
-        hide joyce with dissolve
-
-        if not BALANCE["keepStat"]:
-            $ date.lust = 0
-            $ date.trust = 0
-            $ date.attraction = 0
-        call label_newDay(var_label_callback)
-
+    if game.state == "dating":
+        call label_newDay("label_home")
+    else:
+        call label_newDay("label_prison")
     return

@@ -45,15 +45,13 @@ label label_terrasse:
 
 
 label label_terrasse_endTurn:
-    
-    call label_endTurn_common
-    call label_date_isLost_common from _call_label_date_isLost_common_2
+    call label_date_Lost_common from _call_label_date_Lost_common_2
     
     if game.progress[1]<=0:            
         if date.turn == 0:
             hide screen screen_date_ui with dissolve
             show joyce null
-            j blush bored opened "Geez, it's so hot today."
+            j blush bored mouthopen "Geez, it's so hot today."
             j "Hold on, I'm gonna go to the bathroom."
             j "Be right back."
             show joyce at trs_standing with dissolve

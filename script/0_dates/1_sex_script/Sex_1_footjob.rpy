@@ -141,7 +141,6 @@ label label_footjob_gameLoop:
 
 
 label label_footjob_endTurn:
-    call label_endTurn_common
     
     if date.isLost():
         call label_footjob_Lost

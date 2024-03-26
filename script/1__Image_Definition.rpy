@@ -172,6 +172,8 @@ layeredimage joyce:
         attribute arm if_any "sitted" "joyce_arm_back_right_half"
         attribute arm if_any "sitted" "joyce_arm_back_left_half"
 
+        attribute armhip
+        attribute armhip "joyce_arm_right_back"
 
         attribute posé:
             "joyce_arm_back_right_half"
@@ -227,6 +229,8 @@ layeredimage joyce:
         attribute throwWater "joyce_arm_right_back"
         attribute wave "joyce_arm_back_diagonal_right"
         attribute wave "joyce_arm_left_back"
+        attribute wave if_all "outfitsport" "joyce_arm_left_back_sport"
+        attribute wave if_all "outfitsport" "joyce_arm_back_diagonal_right_sport"
         attribute whip "joyce_arm_whip_back_sm"
         attribute whisper "joyce_arm_whisper_back"
         attribute whisper if_not "outfit4" "joyce_arm_right_back"
@@ -256,6 +260,7 @@ layeredimage joyce:
         attribute night4 if_not "reveal-2"
         attribute night5 if_not "reveal-2"
         attribute outfitsport if_not "undress"
+        attribute outfitsport if_all "undress" "joyce_base_outfitsport_undress"
         
     
     group accessories:
@@ -283,12 +288,11 @@ layeredimage joyce:
         attribute foxy
         attribute wink
         attribute happy
-        attribute eyesclosed "joyce_eyes_closed"
         attribute eyesdown
         attribute squint
         attribute bored
 
-    group mouth: #if_not "null":
+    group mouth auto: #if_not "null":
         attribute null_mouth default:
             "joyce_mouth_normal"
         attribute smile 
@@ -296,7 +300,7 @@ layeredimage joyce:
         attribute tongue
         attribute bite
         attribute breath
-        attribute opened
+        attribute mouthopen
 
     group arm variant "front": #frontarm
 
@@ -319,8 +323,8 @@ layeredimage joyce:
             "joyce_arm_right_reveal (2)"
         attribute reveal-2 if_any ["night"]:
             "joyce_arm_right_reveal (2)_night"
+        attribute showboobs 
 
-        
         attribute arm if_any "sitted" "joyce_arm_front_sitted_right"
         attribute arm if_any "sitted" "joyce_arm_front_sitted_left"
 
@@ -404,8 +408,8 @@ layeredimage joyce:
         attribute undress if_any ["outfitsport", "outfitsport2"]:
             "joyce_arm_front_sport_undress"
         
-        attribute wave:
-            "joyce_arm_wave"
+        attribute wave "joyce_arm_wave"
+        attribute wave if_all "outfitsport" "joyce_arm_wave_sport"
         attribute whisper:
             "joyce_arm_whisper_front"
         attribute whisper if_all "outfit4":
@@ -417,7 +421,7 @@ image img_blink:
     pause(3.0)
     "joyce_eyes_half"
     pause(0.1)
-    "joyce_eyes_closed"
+    "joyce_eyes_eyesclosed"
     pause(0.1)
     "joyce_eyes_half"
     pause(0.1)

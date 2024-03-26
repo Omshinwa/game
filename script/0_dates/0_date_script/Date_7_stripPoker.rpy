@@ -219,8 +219,7 @@ label label_stripPoker:
 
 
 label label_stripPoker_endTurn:
-    call label_endTurn_common
-    call label_date_isLost_common from _call_label_date_isLost_common_4
+    call label_date_Lost_common from _call_label_date_Lost_common_4
     
     # call label_reaction from _call_label_reaction_4
 

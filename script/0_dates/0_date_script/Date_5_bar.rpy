@@ -79,8 +79,7 @@ label label_barDate:
 
 
 label label_barDate_endTurn:
-    call label_endTurn_common
-    call label_date_isLost_common from _call_label_date_isLost_common_3
+    call label_date_Lost_common from _call_label_date_Lost_common_3
     if date.turn == 2 and game.progress[1]<=2:
         call label_barDate_event
 

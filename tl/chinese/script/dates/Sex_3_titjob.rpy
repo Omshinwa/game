@@ -21,7 +21,7 @@ translate chinese label_titjob_288a317b:
 # game/script/dates/Sex_3_titjob.rpy:26
 translate chinese label_titjob_f0e327b0:
 
-    # j -1 2 "Fiou it smells here."
+    # j -1 2 "Phew it smells here."
     j -1 2 ""
 
 # game/script/dates/Sex_3_titjob.rpy:27

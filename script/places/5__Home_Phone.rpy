@@ -277,6 +277,7 @@ label label_pic7_reaction:
     "Maybe she's not so bad."
     "The End"
     window hide
+    $ game.progress = [100,0]
     show screen game_complete with Dissolve(2.0)
     return
 

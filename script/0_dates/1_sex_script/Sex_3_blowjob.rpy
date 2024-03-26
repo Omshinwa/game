@@ -67,7 +67,6 @@ label label_blowjob:
     return
 
 label label_blowjob_SexEndTurn:
-    call label_endTurn_common
     
     $ date.speedUp()
     if has_attribute("v2"):

@@ -19,7 +19,7 @@ label label_titjob:
         play sound "rpg/soubi-01.ogg"
         show joyce titjob get-hard 1 with dissolve
         pause
-        j -1 2 "Fiou it smells here."
+        j -1 2 "Phew it smells here."
         j "But you're doing a good job so far."
         j "You resisted cumming from my feet."
         j "And also from my hands."
@@ -77,7 +77,6 @@ label label_titjob:
     return
 
 label label_titjob_endTurn:
-    call label_endTurn_common
     
     $ date.speedUp()
     pause(0.5)

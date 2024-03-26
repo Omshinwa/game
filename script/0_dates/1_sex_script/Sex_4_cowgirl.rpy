@@ -97,7 +97,6 @@ label label_cowgirl:
     return
 
 label label_cowgirl_SexEndTurn:
-    call label_endTurn_common
     
     $ date.speedUp()
     show joyce cowgirl
