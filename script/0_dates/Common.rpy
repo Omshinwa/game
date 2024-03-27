@@ -204,7 +204,7 @@ label label_beginDuel_common():
         if (_in_replay or game.debug_mode):
             show screen screen_replay(date.name)
             $ deck.hand = [Card("undress")] #useful to have a card in hand so it doesnt skip turns
-            $ update_animationSpeed()
+            $ update_animationSpeed(changeSprite=False)
             return
         
         $ update_animationSpeed(changeSprite=False)

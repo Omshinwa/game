@@ -21,25 +21,25 @@ label label_titjob:
         pause
         j -1 2 "Phew it smells here."
         j "But you're doing a good job so far."
-        j "You resisted cumming from my feet."
+        j -2 1 "You resisted cumming from my feet."
         j "And also from my hands."
         j "Now..."
-        j -2 3 "What is today going to be?"
+        j -1 3 "What is today going to be?"
         show joyce -3 4 with dissolve
-        pause 0.7
-        j -4 3 "Whoops, did you see anything?"
-        j "The suspense is killing you no?"
-        show joyce -3 4 with dissolve
-        show joyce -4 5 with dissolve
-        pause 0.2
+        pause 0.1
+        j -4 3 "Whoops"
+        j "Did you see anything?"
+        show joyce -3 5 with dissolve
         show joyce -5 6 with dissolve
-        j "Oh, I think your dick knows what is going to happen."
-        j "What about you? Have you guessed it?"
+        pause
+        j "Mhh, I guess you did."
+        j "You don't miss a peek huh?"
+        j -6 7 "So, do you know what's going to happen to you?"
         menu:
             "You're going to rape me with your tits.":
                 j "Ding ding ding. You're correct."
         j "I'm gonna rape you."
-        j "With my big, slutty tits."
+        j -7 8 "With my big, slutty tits."
 
     else:
         j "Hello sweetheart ♥"
@@ -60,7 +60,7 @@ label label_titjob:
 
     call label_beginDuel_common()
 
-    show joyce -get-hard -6 with dissolve
+    show joyce -get-hard -7 with dissolve
     
     label .gameLoop:
         $ game.jeu_sensitive = False
@@ -118,8 +118,9 @@ label label_titjob_v2:
     show joyce 4
     pause 0.1
     j "Do you feel the squeeze?"
+    show joyce -4 talk with dissolve
     j "I'm gonna squeeze your cum out."
-    show joyce -4
+    show joyce -talk
     with dissolve
     pause
     return
@@ -178,7 +179,7 @@ label label_titjob_Lost:
         show titjob tongue 3 as tongue
         pause 0.5
 
-    j "Not bad."
+    j wink "Not bad."
     play sound "rpg/soubi-01.ogg"
     hide tongue
     if has_attribute("v2"):
